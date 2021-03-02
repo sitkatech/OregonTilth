@@ -1,8 +1,8 @@
 version: '3.5'
 
 services:
-  fresca.api:
+  oregontilth.api:
     image: sitkacontainers.azurecr.io/fresca/api
     build:
       context: ..
-      dockerfile: Fresca.API/Dockerfile
+      dockerfile: OregonTilth.API/Dockerfile
