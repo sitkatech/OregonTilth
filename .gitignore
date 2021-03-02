@@ -1,0 +1,9 @@
+Hotfixes
+/Source/_ReSharper.Caches
+
+Source/Fresca.Web/src/assets/config.json
+Source/Fresca.API/appsecrets.json
+/Source/Fresca.GeoServer/data_dir/geoserver-environment.properties
+/Source/Fresca.GeoServer/data_dir/.updatepassword.lock
+/Source/Fresca.GeoServer/data_dir/security/*
+/Source/Fresca.Web/.vscode
