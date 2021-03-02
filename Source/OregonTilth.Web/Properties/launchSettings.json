@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Fresca.Web": {
+    "OregonTilth.Web": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

@@ -4,11 +4,11 @@
   "newProjectRoot": "projects",
   
   "projects": {
-    "Fresca.Web": {
+    "OregonTilth.Web": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
-      "prefix": "fresca",
+      "prefix": "oregontilth",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
@@ -91,18 +91,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Fresca.Web:build"
+            "browserTarget": "OregonTilth.Web:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "Fresca.Web:build:production"
+              "browserTarget": "OregonTilth.Web:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Fresca.Web:build"
+            "browserTarget": "OregonTilth.Web:build"
           }
         },
         "test": {
@@ -137,7 +137,7 @@
         }
       }
     },
-    "Fresca.Web-e2e": {
+    "OregonTilth.Web-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -146,11 +146,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "Fresca.Web:serve"
+            "devServerTarget": "OregonTilth.Web:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "Fresca.Web:serve:production"
+              "devServerTarget": "OregonTilth.Web:serve:production"
             }
           }
         },
@@ -166,5 +166,5 @@
       }
     }
   },
-  "defaultProject": "Fresca.Web"
+  "defaultProject": "OregonTilth.Web"
 }

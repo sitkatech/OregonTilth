@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fresca.Web", "Fresca.Web.csproj", "{C273C6A6-7B8D-4B45-9884-78B381889A6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OregonTilth.Web", "OregonTilth.Web.csproj", "{C273C6A6-7B8D-4B45-9884-78B381889A6E}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose\docker-compose.dcproj", "{E0680796-12B4-46DF-816B-4BA28FD4FD5D}"
 EndProject

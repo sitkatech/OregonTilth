@@ -15,12 +15,12 @@ RUN curl -SL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-lin
     && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
     
-COPY Fresca.Web/                        ./Fresca.Web
+COPY OregonTilth.Web/                        ./OregonTilth.Web
 
-RUN dotnet restore Fresca.Web/Fresca.Web.csproj
+RUN dotnet restore OregonTilth.Web/OregonTilth.Web.csproj
 
-RUN dotnet build ./Fresca.Web/Fresca.Web.csproj -c Release -o /app
-WORKDIR /src/Fresca.Web/
+RUN dotnet build ./OregonTilth.Web/OregonTilth.Web.csproj -c Release -o /app
+WORKDIR /src/OregonTilth.Web/
 
 RUN npm cache clean --force
 RUN npm uninstall   -g angular-cli
@@ -31,9 +31,9 @@ ARG env
 RUN npm run build-${env}
 
 FROM build AS publish
-RUN dotnet publish Fresca.Web.csproj -c Release -o /app
+RUN dotnet publish OregonTilth.Web.csproj -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "Fresca.Web.dll"]
+ENTRYPOINT ["dotnet", "OregonTilth.Web.dll"]
