@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fresca.EFModels", "Fresca.EFModels\Fresca.EFModels.csproj", "{BCA833B8-BDA4-410B-811D-381C420EAA57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OregonTilth.EFModels", "OregonTilth.EFModels\OregonTilth.EFModels.csproj", "{BCA833B8-BDA4-410B-811D-381C420EAA57}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fresca.API", "Fresca.API\Fresca.API.csproj", "{08A79878-7C33-4006-BF72-F0862B30A916}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OregonTilth.API", "OregonTilth.API\OregonTilth.API.csproj", "{08A79878-7C33-4006-BF72-F0862B30A916}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fresca.Models", "Fresca.Models\Fresca.Models.csproj", "{33EFE513-43CA-4375-A3BA-3D0CD3513571}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OregonTilth.Models", "OregonTilth.Models\OregonTilth.Models.csproj", "{33EFE513-43CA-4375-A3BA-3D0CD3513571}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose\docker-compose.dcproj", "{4ADC0EA7-5D32-4AEC-B818-FCC266A4E6F6}"
 EndProject

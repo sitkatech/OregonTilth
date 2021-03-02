@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Fresca.Models\Fresca.Models.csproj" />
+    <ProjectReference Include="..\OregonTilth.Models\OregonTilth.Models.csproj" />
   </ItemGroup>
 
 </Project>

@@ -26,8 +26,8 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\Fresca.EFModels\Fresca.EFModels.csproj" />
-    <ProjectReference Include="..\Fresca.Models\Fresca.Models.csproj" />
+    <ProjectReference Include="..\OregonTilth.EFModels\OregonTilth.EFModels.csproj" />
+    <ProjectReference Include="..\OregonTilth.Models\OregonTilth.Models.csproj" />
   </ItemGroup>
 
 </Project>
