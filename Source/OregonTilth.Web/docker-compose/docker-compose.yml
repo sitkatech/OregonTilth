@@ -1,0 +1,10 @@
+version: '3.5'
+
+services:
+  oregontilth.web:
+    image: sitkacontainers.azurecr.io/fresca/web
+    build:
+      args:
+        env: ${ENVIRONMENT}
+      context: ../..
+      dockerfile: OregonTilth.Web/Dockerfile
