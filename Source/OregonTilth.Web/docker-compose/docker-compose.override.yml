@@ -1,6 +1,6 @@
 version: '3.5'
 
 services:
-  fresca.web:  
+  oregontilth.web:  
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
