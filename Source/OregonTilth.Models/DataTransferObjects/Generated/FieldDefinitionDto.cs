@@ -2,8 +2,10 @@
 //  This file is generated. Your changes will be lost.
 //  Use the corresponding partial class for customizations.
 //  Source Table: [dbo].[FieldDefinition]
+using System;
 
-namespace OregonTilth.Models.DataTransferObjects.Generated
+
+namespace OregonTilth.Models.DataTransferObjects
 {
     public partial class FieldDefinitionDto
     {

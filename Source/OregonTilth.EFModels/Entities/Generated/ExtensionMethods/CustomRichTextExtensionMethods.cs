@@ -3,7 +3,6 @@
 //  Use the corresponding partial class for customizations.
 //  Source Table: [dbo].[CustomRichText]
 
-
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities

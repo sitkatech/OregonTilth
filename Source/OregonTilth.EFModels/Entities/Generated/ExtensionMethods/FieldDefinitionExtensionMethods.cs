@@ -3,7 +3,7 @@
 //  Use the corresponding partial class for customizations.
 //  Source Table: [dbo].[FieldDefinition]
 
-using OregonTilth.Models.DataTransferObjects.Generated;
+using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
 {
