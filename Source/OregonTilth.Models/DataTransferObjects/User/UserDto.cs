@@ -1,6 +1,4 @@
-﻿using OregonTilth.Models.DataTransferObjects.Generated;
-
-namespace OregonTilth.Models.DataTransferObjects
+﻿namespace OregonTilth.Models.DataTransferObjects
 {
     public partial class UserDto
     {

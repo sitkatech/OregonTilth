@@ -3,9 +3,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OregonTilth.API.Services;
 using OregonTilth.API.Services.Authorization;
-using OregonTilth.Models.DataTransferObjects.Generated;
-using System.Collections.Generic;
 using OregonTilth.EFModels.Entities;
+using System.Collections.Generic;
+using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.API.Controllers
 {

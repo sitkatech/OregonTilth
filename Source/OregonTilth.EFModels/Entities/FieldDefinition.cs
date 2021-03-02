@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OregonTilth.Models.DataTransferObjects.Generated;
 using System.Collections.Generic;
 using System.Linq;
+using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
 {
