@@ -4,7 +4,7 @@ using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Http;
 
-namespace Fresca.API.Services.Telemetry
+namespace OregonTilth.API.Services.Telemetry
 {
     public class UserInfoTelemetryInitializer : ITelemetryInitializer
     {

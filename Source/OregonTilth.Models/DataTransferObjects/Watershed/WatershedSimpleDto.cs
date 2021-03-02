@@ -1,4 +1,4 @@
-﻿namespace Fresca.Models.DataTransferObjects.Watershed
+﻿namespace OregonTilth.Models.DataTransferObjects.Watershed
 {
     public class WatershedSimpleDto
     {

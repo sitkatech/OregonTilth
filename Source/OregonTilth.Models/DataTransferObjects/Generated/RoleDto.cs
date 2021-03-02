@@ -2,10 +2,8 @@
 //  This file is generated. Your changes will be lost.
 //  Use the corresponding partial class for customizations.
 //  Source Table: [dbo].[Role]
-using System;
 
-
-namespace Fresca.Models.DataTransferObjects
+namespace OregonTilth.Models.DataTransferObjects
 {
     public partial class RoleDto
     {

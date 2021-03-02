@@ -2,6 +2,9 @@
 using System.Linq;
 using System.Threading;
 using IdentityServer4.AccessTokenValidation;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DependencyCollector;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,21 +12,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using OregonTilth.API.Services;
+using OregonTilth.API.Services.Telemetry;
+using OregonTilth.EFModels.Entities;
 using Serilog;
-using Fresca.API.Services;
-using Fresca.API.Services.Telemetry;
-using Fresca.EFModels.Entities;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.DependencyCollector;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.Extensions.Logging;
 using Serilog.Sinks.ApplicationInsights.Sinks.ApplicationInsights.TelemetryConverters;
 using ILogger = Serilog.ILogger;
 
-namespace Fresca.API
+namespace OregonTilth.API
 {
     public class Startup
     {
@@ -89,7 +89,7 @@ namespace Fresca.API
                 options.SupportedTokens = SupportedTokens.Jwt;
             });
 
-            services.AddDbContext<FrescaDbContext>(c =>
+            services.AddDbContext<OregonTilthDbContext>(c =>
             {
                 c.UseSqlServer(frescaConfiguration.DB_CONNECTION_STRING, x =>
 {
@@ -110,7 +110,7 @@ x.UseNetTopologySuite();
             services.AddSingleton(x => new SitkaSmtpClientService(frescaConfiguration));
 
             services.AddScoped(s => s.GetService<IHttpContextAccessor>().HttpContext);
-            services.AddScoped(s => UserContext.GetUserFromHttpContext(s.GetService<FrescaDbContext>(), s.GetService<IHttpContextAccessor>().HttpContext));
+            services.AddScoped(s => UserContext.GetUserFromHttpContext(s.GetService<OregonTilthDbContext>(), s.GetService<IHttpContextAccessor>().HttpContext));
             services.AddControllers();
         }
 

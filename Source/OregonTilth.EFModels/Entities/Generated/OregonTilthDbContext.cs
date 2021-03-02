@@ -1,18 +1,16 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Fresca.EFModels.Entities
+namespace OregonTilth.EFModels.Entities
 {
-    public partial class FrescaDbContext : DbContext
+    public partial class OregonTilthDbContext : DbContext
     {
-        public FrescaDbContext()
+        public OregonTilthDbContext()
         {
         }
 
-        public FrescaDbContext(DbContextOptions<FrescaDbContext> options)
+        public OregonTilthDbContext(DbContextOptions<OregonTilthDbContext> options)
             : base(options)
         {
         }
@@ -26,8 +24,6 @@ namespace Fresca.EFModels.Entities
         public virtual DbSet<FileResourceMimeType> FileResourceMimeTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Watershed> Watersheds { get; set; }
-        public virtual DbSet<vGeoServerWatershed> vGeoServerWatersheds { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -151,19 +147,7 @@ namespace Fresca.EFModels.Entities
                     .HasForeignKey(d => d.RoleID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
-
-            modelBuilder.Entity<Watershed>(entity =>
-            {
-                entity.Property(e => e.WatershedName).IsUnicode(false);
-            });
-
-            modelBuilder.Entity<vGeoServerWatershed>(entity =>
-            {
-                entity.ToView("vGeoServerWatersheds");
-
-                entity.Property(e => e.WatershedName).IsUnicode(false);
-            });
-
+            
             OnModelCreatingPartial(modelBuilder);
         }
 

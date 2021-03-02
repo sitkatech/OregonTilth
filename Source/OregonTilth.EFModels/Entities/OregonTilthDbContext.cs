@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Fresca.EFModels.Entities
+namespace OregonTilth.EFModels.Entities
 {
-    public partial class FrescaDbContext
+    public partial class OregonTilthDbContext
     {
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
         {

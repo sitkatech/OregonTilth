@@ -1,12 +1,12 @@
-﻿using Fresca.Models.DataTransferObjects;
+﻿using Microsoft.EntityFrameworkCore;
+using OregonTilth.Models.DataTransferObjects;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
-namespace Fresca.EFModels.Entities
+namespace OregonTilth.EFModels.Entities
 {
     public partial class CustomRichText
     {
-        public static CustomRichTextDto GetByCustomRichTextTypeID(FrescaDbContext dbContext, int customRichTextTypeID)
+        public static CustomRichTextDto GetByCustomRichTextTypeID(OregonTilthDbContext dbContext, int customRichTextTypeID)
         {
             var customRichText = dbContext.CustomRichTexts
                 .Include(x => x.CustomRichTextType)
@@ -15,7 +15,7 @@ namespace Fresca.EFModels.Entities
             return customRichText?.AsDto();
         }
 
-        public static CustomRichTextDto UpdateCustomRichText(FrescaDbContext dbContext, int customRichTextTypeID,
+        public static CustomRichTextDto UpdateCustomRichText(OregonTilthDbContext dbContext, int customRichTextTypeID,
             CustomRichTextDto customRichTextUpdateDto)
         {
             var customRichText = dbContext.CustomRichTexts

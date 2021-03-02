@@ -1,4 +1,4 @@
-﻿namespace Fresca.API.Services
+﻿namespace OregonTilth.API.Services
 {
     public class FrescaConfiguration
     {

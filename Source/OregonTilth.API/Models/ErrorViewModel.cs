@@ -1,6 +1,4 @@
-using System;
-
-namespace Fresca.API.Models
+namespace OregonTilth.API.Models
 {
     public class ErrorViewModel
     {

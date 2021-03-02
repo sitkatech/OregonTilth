@@ -1,18 +1,18 @@
-﻿using System.Collections.Generic;
-using Fresca.Models.DataTransferObjects;
+﻿using Microsoft.EntityFrameworkCore;
+using OregonTilth.Models.DataTransferObjects.Generated;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
-namespace Fresca.EFModels.Entities
+namespace OregonTilth.EFModels.Entities
 {
     public partial class FieldDefinition
     {
-        public static List<FieldDefinitionDto> List(FrescaDbContext dbContext)
+        public static List<FieldDefinitionDto> List(OregonTilthDbContext dbContext)
         {
             return dbContext.FieldDefinitions.Include(x => x.FieldDefinitionType).Select(x => x.AsDto()).ToList();
         }
 
-        public static FieldDefinitionDto GetByFieldDefinitionTypeID(FrescaDbContext dbContext, int FieldDefinitionTypeID)
+        public static FieldDefinitionDto GetByFieldDefinitionTypeID(OregonTilthDbContext dbContext, int FieldDefinitionTypeID)
         {
             var fieldDefinition = dbContext.FieldDefinitions
                 .Include(x => x.FieldDefinitionType)
@@ -21,7 +21,7 @@ namespace Fresca.EFModels.Entities
             return fieldDefinition?.AsDto();
         }
 
-        public static FieldDefinitionDto UpdateFieldDefinition(FrescaDbContext dbContext, int FieldDefinitionTypeID,
+        public static FieldDefinitionDto UpdateFieldDefinition(OregonTilthDbContext dbContext, int FieldDefinitionTypeID,
             FieldDefinitionDto FieldDefinitionUpdateDto)
         {
             var fieldDefinition = dbContext.FieldDefinitions

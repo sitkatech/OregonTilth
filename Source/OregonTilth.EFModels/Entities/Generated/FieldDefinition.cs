@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Fresca.EFModels.Entities
+namespace OregonTilth.EFModels.Entities
 {
     [Table("FieldDefinition")]
     public partial class FieldDefinition

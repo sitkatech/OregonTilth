@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Fresca.EFModels.Entities
+namespace OregonTilth.EFModels.Entities
 {
     [Table("FieldDefinitionType")]
     [Index(nameof(FieldDefinitionTypeDisplayName), Name = "AK_FieldDefinitionType_FieldDefinitionTypeDisplayName", IsUnique = true)]

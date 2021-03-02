@@ -4,9 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
-using Fresca.Models.DataTransferObjects.User;
 
-namespace Fresca.API.Services
+namespace OregonTilth.API.Services
 {
     public class SitkaSmtpClientService
     {

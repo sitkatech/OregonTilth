@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Fresca.Models.Helpers
+namespace OregonTilth.Models.Helpers
 {
     public static class JSONHelpers
     {

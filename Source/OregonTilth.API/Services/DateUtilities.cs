@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Fresca.API.Services
+namespace OregonTilth.API.Services
 {
     public static class DateUtilities
     {

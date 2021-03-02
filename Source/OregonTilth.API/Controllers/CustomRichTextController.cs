@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Fresca.API.Services;
-using Fresca.API.Services.Authorization;
-using Fresca.EFModels.Entities;
-using Fresca.Models.DataTransferObjects;
+using OregonTilth.API.Services;
+using OregonTilth.API.Services.Authorization;
+using OregonTilth.EFModels.Entities;
+using OregonTilth.Models.DataTransferObjects;
 
-namespace Fresca.API.Controllers
+
+namespace OregonTilth.API.Controllers
 {
     [ApiController]
     public class CustomRichTextController : SitkaController<CustomRichTextController>
     {
-        public CustomRichTextController(FrescaDbContext dbContext, ILogger<CustomRichTextController> logger, KeystoneService keystoneService, IOptions<FrescaConfiguration> frescaConfiguration) : base(dbContext, logger, keystoneService, frescaConfiguration)
+        public CustomRichTextController(OregonTilthDbContext dbContext, ILogger<CustomRichTextController> logger, KeystoneService keystoneService, IOptions<FrescaConfiguration> frescaConfiguration) : base(dbContext, logger, keystoneService, frescaConfiguration)
         {
         }
 

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using OregonTilth.Models.DataTransferObjects;
+using System;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
-using Fresca.EFModels.Entities;
-using Fresca.Models.DataTransferObjects;
+using OregonTilth.EFModels.Entities;
 
-namespace Fresca.API.Services
+namespace OregonTilth.API.Services
 {
     public class UserContext
     {
@@ -15,7 +15,7 @@ namespace Fresca.API.Services
             User = user;
         }
 
-        public static UserDto GetUserFromHttpContext(FrescaDbContext dbContext, HttpContext httpContext)
+        public static UserDto GetUserFromHttpContext(OregonTilthDbContext dbContext, HttpContext httpContext)
         {
 
             var claimsPrincipal = httpContext.User;
@@ -25,7 +25,7 @@ namespace Fresca.API.Services
             }
 
             var userGuid = Guid.Parse(claimsPrincipal.Claims.Single(c => c.Type == "sub").Value);
-            var keystoneUser = Fresca.EFModels.Entities.User.GetByUserGuid(dbContext, userGuid);
+            var keystoneUser = EFModels.Entities.User.GetByUserGuid(dbContext, userGuid);
             return keystoneUser;
         }
     }

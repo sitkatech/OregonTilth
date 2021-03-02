@@ -8,7 +8,7 @@ using System.Text;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
-namespace Fresca.API.Services
+namespace OregonTilth.API.Services
 {
     public class KeystoneService
     {

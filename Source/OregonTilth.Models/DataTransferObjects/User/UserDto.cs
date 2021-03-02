@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using OregonTilth.Models.DataTransferObjects.Generated;
 
-namespace Fresca.Models.DataTransferObjects
+namespace OregonTilth.Models.DataTransferObjects
 {
     public partial class UserDto
     {

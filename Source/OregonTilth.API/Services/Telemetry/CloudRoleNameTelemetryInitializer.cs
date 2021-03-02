@@ -1,11 +1,8 @@
-﻿using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.Extensibility;
 
-namespace Fresca.API.Services.Telemetry
+namespace OregonTilth.API.Services.Telemetry
 {
     // This will annotate the log messages and application map with the correct service name instead of the application insights resource name (terratrak-<env>-insights for everything)
     public class CloudRoleNameTelemetryInitializer : ITelemetryInitializer

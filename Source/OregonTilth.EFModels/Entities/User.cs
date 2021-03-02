@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using OregonTilth.Models.DataTransferObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.EntityFrameworkCore;
-using Fresca.Models.DataTransferObjects;
-using Fresca.Models.DataTransferObjects.User;
 
-namespace Fresca.EFModels.Entities
+namespace OregonTilth.EFModels.Entities
 {
     public partial class User
     {
-        public static UserDto CreateNewUser(FrescaDbContext dbContext, UserUpsertDto userToCreate, string loginName, Guid userGuid)
+        public static UserDto CreateNewUser(OregonTilthDbContext dbContext, UserUpsertDto userToCreate, string loginName, Guid userGuid)
         {
             if (!userToCreate.RoleID.HasValue)
             {
@@ -36,7 +34,7 @@ namespace Fresca.EFModels.Entities
             return GetByUserID(dbContext, user.UserID);
         }
 
-        public static IEnumerable<UserDto> List(FrescaDbContext dbContext)
+        public static IEnumerable<UserDto> List(OregonTilthDbContext dbContext)
         {
             return dbContext.Users
                 .Include(x => x.Role)
@@ -46,7 +44,7 @@ namespace Fresca.EFModels.Entities
                 .Select(x => x.AsDto()).AsEnumerable();
         }
 
-        public static IEnumerable<UserDto> ListByRole(FrescaDbContext dbContext, RoleEnum roleEnum)
+        public static IEnumerable<UserDto> ListByRole(OregonTilthDbContext dbContext, RoleEnum roleEnum)
         {
             var users = GetUserImpl(dbContext)
                 .Where(x => x.IsActive && x.RoleID == (int) roleEnum)
@@ -57,7 +55,7 @@ namespace Fresca.EFModels.Entities
             return users;
         }
 
-        public static IEnumerable<string> GetEmailAddressesForAdminsThatReceiveSupportEmails(FrescaDbContext dbContext)
+        public static IEnumerable<string> GetEmailAddressesForAdminsThatReceiveSupportEmails(OregonTilthDbContext dbContext)
         {
             var users = GetUserImpl(dbContext)
                 .Where(x => x.IsActive && x.RoleID == (int) RoleEnum.Admin && x.ReceiveSupportEmails)
@@ -67,19 +65,19 @@ namespace Fresca.EFModels.Entities
             return users;
         }
 
-        public static UserDto GetByUserID(FrescaDbContext dbContext, int userID)
+        public static UserDto GetByUserID(OregonTilthDbContext dbContext, int userID)
         {
             var user = GetUserImpl(dbContext).SingleOrDefault(x => x.UserID == userID);
             return user?.AsDto();
         }
 
-        public static List<UserDto> GetByUserID(FrescaDbContext dbContext, List<int> userIDs)
+        public static List<UserDto> GetByUserID(OregonTilthDbContext dbContext, List<int> userIDs)
         {
             return GetUserImpl(dbContext).Where(x => userIDs.Contains(x.UserID)).Select(x=>x.AsDto()).ToList();
             
         }
 
-        public static UserDto GetByUserGuid(FrescaDbContext dbContext, Guid userGuid)
+        public static UserDto GetByUserGuid(OregonTilthDbContext dbContext, Guid userGuid)
         {
             var user = GetUserImpl(dbContext)
                 .SingleOrDefault(x => x.UserGuid == userGuid);
@@ -87,20 +85,20 @@ namespace Fresca.EFModels.Entities
             return user?.AsDto();
         }
 
-        private static IQueryable<User> GetUserImpl(FrescaDbContext dbContext)
+        private static IQueryable<User> GetUserImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.Users
                 .Include(x => x.Role)
                 .AsNoTracking();
         }
 
-        public static UserDto GetByEmail(FrescaDbContext dbContext, string email)
+        public static UserDto GetByEmail(OregonTilthDbContext dbContext, string email)
         {
             var user = GetUserImpl(dbContext).SingleOrDefault(x => x.Email == email);
             return user?.AsDto();
         }
 
-        public static UserDto UpdateUserEntity(FrescaDbContext dbContext, int userID, UserUpsertDto userEditDto)
+        public static UserDto UpdateUserEntity(OregonTilthDbContext dbContext, int userID, UserUpsertDto userEditDto)
         {
             if (!userEditDto.RoleID.HasValue)
             {
@@ -120,7 +118,7 @@ namespace Fresca.EFModels.Entities
             return GetByUserID(dbContext, userID);
         }
 
-        public static UserDto SetDisclaimerAcknowledgedDate(FrescaDbContext dbContext, int userID)
+        public static UserDto SetDisclaimerAcknowledgedDate(OregonTilthDbContext dbContext, int userID)
         {
             var user = dbContext.Users.Single(x => x.UserID == userID);
 
@@ -133,7 +131,7 @@ namespace Fresca.EFModels.Entities
             return GetByUserID(dbContext, userID);
         }
 
-        public static UserDto UpdateUserGuid(FrescaDbContext dbContext, int userID, Guid userGuid)
+        public static UserDto UpdateUserGuid(OregonTilthDbContext dbContext, int userID, Guid userGuid)
         {
             var user = dbContext.Users
                 .Single(x => x.UserID == userID);
@@ -146,7 +144,7 @@ namespace Fresca.EFModels.Entities
             return GetByUserID(dbContext, userID);
         }
 
-        public static List<ErrorMessage> ValidateUpdate(FrescaDbContext dbContext, UserUpsertDto userEditDto, int userID)
+        public static List<ErrorMessage> ValidateUpdate(OregonTilthDbContext dbContext, UserUpsertDto userEditDto, int userID)
         {
             var result = new List<ErrorMessage>();
             if (!userEditDto.RoleID.HasValue)

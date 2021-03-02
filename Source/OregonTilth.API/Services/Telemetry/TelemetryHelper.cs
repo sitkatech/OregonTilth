@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.AspNetCore.Http;
 
-namespace Fresca.API.Services.Telemetry
+namespace OregonTilth.API.Services.Telemetry
 {
     public static class TelemetryHelper
     {

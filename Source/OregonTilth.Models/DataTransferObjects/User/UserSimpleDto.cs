@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fresca.Models.DataTransferObjects.User
+﻿namespace OregonTilth.Models.DataTransferObjects
 {
     public class UserSimpleDto
     {

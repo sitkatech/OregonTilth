@@ -1,18 +1,18 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Fresca.API.Services;
-using Fresca.API.Services.Authorization;
-using Fresca.EFModels.Entities;
-using Fresca.Models.DataTransferObjects;
+using OregonTilth.API.Services;
+using OregonTilth.API.Services.Authorization;
+using OregonTilth.Models.DataTransferObjects.Generated;
+using System.Collections.Generic;
+using OregonTilth.EFModels.Entities;
 
-namespace Fresca.API.Controllers
+namespace OregonTilth.API.Controllers
 {
     [ApiController]
     public class FieldDefinitionController : SitkaController<FieldDefinitionController>
     {
-        public FieldDefinitionController(FrescaDbContext dbContext, ILogger<FieldDefinitionController> logger, KeystoneService keystoneService, IOptions<FrescaConfiguration> frescaConfiguration) : base(dbContext, logger, keystoneService, frescaConfiguration)
+        public FieldDefinitionController(OregonTilthDbContext dbContext, ILogger<FieldDefinitionController> logger, KeystoneService keystoneService, IOptions<FrescaConfiguration> frescaConfiguration) : base(dbContext, logger, keystoneService, frescaConfiguration)
         {
         }
 

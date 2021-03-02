@@ -3,9 +3,9 @@
 //  Use the corresponding partial class for customizations.
 //  Source Table: [dbo].[User]
 
-using Fresca.Models.DataTransferObjects;
+using OregonTilth.Models.DataTransferObjects;
 
-namespace Fresca.EFModels.Entities
+namespace OregonTilth.EFModels.Entities
 {
     public static partial class UserExtensionMethods
     {

@@ -2,10 +2,8 @@
 //  This file is generated. Your changes will be lost.
 //  Use the corresponding partial class for customizations.
 //  Source Table: [dbo].[FieldDefinition]
-using System;
 
-
-namespace Fresca.Models.DataTransferObjects
+namespace OregonTilth.Models.DataTransferObjects.Generated
 {
     public partial class FieldDefinitionDto
     {

@@ -1,20 +1,19 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Fresca.API.Services;
-using Fresca.EFModels.Entities;
+using OregonTilth.API.Services;
+using OregonTilth.EFModels.Entities;
 
-namespace Fresca.API.Controllers
+namespace OregonTilth.API.Controllers
 {
     public abstract class SitkaController<T> : ControllerBase
     {
-        protected readonly FrescaDbContext _dbContext;
+        protected readonly OregonTilthDbContext _dbContext;
         protected readonly ILogger<T> _logger;
         protected readonly KeystoneService _keystoneService;
         protected readonly FrescaConfiguration _frescaConfiguration;
 
-        protected SitkaController(FrescaDbContext dbContext, ILogger<T> logger, KeystoneService keystoneService, IOptions<FrescaConfiguration> frescaConfiguration)
+        protected SitkaController(OregonTilthDbContext dbContext, ILogger<T> logger, KeystoneService keystoneService, IOptions<FrescaConfiguration> frescaConfiguration)
         {
             _dbContext = dbContext;
             _logger = logger;

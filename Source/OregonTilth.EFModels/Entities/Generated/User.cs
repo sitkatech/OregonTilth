@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Fresca.EFModels.Entities
+namespace OregonTilth.EFModels.Entities
 {
     [Table("User")]
     [Index(nameof(Email), Name = "AK_User_Email", IsUnique = true)]

@@ -1,4 +1,4 @@
-﻿namespace Fresca.Models.DataTransferObjects
+﻿namespace OregonTilth.Models.DataTransferObjects
 {
     public partial class CustomRichTextDto
     {

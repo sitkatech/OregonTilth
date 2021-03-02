@@ -3,7 +3,7 @@ using NetTopologySuite.Geometries;
 using ProjNet.CoordinateSystems;
 using ProjNet.CoordinateSystems.Transformations;
 
-namespace Fresca.Models.DataTransferObjects
+namespace OregonTilth.Models.DataTransferObjects
 {
     public static class Proj4NetHelpers
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Fresca.Models.DataTransferObjects.User
+namespace OregonTilth.Models.DataTransferObjects
 {
     public class UserUpsertDto
     {

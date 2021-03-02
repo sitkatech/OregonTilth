@@ -3,9 +3,10 @@
 //  Use the corresponding partial class for customizations.
 //  Source Table: [dbo].[CustomRichText]
 
-using Fresca.Models.DataTransferObjects;
 
-namespace Fresca.EFModels.Entities
+using OregonTilth.Models.DataTransferObjects;
+
+namespace OregonTilth.EFModels.Entities
 {
     public static partial class CustomRichTextExtensionMethods
     {

@@ -1,6 +1,6 @@
 ﻿using System.Web;
 
-namespace Fresca.API.Services
+namespace OregonTilth.API.Services
 {
     public static class StringUtilities
     {

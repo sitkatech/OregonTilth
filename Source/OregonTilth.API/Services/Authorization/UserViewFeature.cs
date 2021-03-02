@@ -1,6 +1,6 @@
-﻿using Fresca.EFModels.Entities;
+﻿using OregonTilth.EFModels.Entities;
 
-namespace Fresca.API.Services.Authorization
+namespace OregonTilth.API.Services.Authorization
 {
     public class UserViewFeature : BaseAuthorizationAttribute
     {

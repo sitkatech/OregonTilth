@@ -1,21 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Fresca.API.Services;
-using Fresca.API.Services.Authorization;
-using Fresca.EFModels.Entities;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using OregonTilth.API.Services;
+using OregonTilth.API.Services.Authorization;
+using OregonTilth.EFModels.Entities;
 
-namespace Fresca.API.Controllers
+namespace OregonTilth.API.Controllers
 {
     [ApiController]
     public class FileResourceController : SitkaController<FileResourceController>
     {
-        public FileResourceController(FrescaDbContext dbContext, ILogger<FileResourceController> logger, KeystoneService keystoneService, IOptions<FrescaConfiguration> frescaConfiguration) : base(dbContext, logger, keystoneService, frescaConfiguration)
+        public FileResourceController(OregonTilthDbContext dbContext, ILogger<FileResourceController> logger, KeystoneService keystoneService, IOptions<FrescaConfiguration> frescaConfiguration) : base(dbContext, logger, keystoneService, frescaConfiguration)
         {
         }
 

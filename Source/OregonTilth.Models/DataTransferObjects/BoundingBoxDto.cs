@@ -2,7 +2,7 @@
 using System.Linq;
 using NetTopologySuite.Geometries;
 
-namespace Fresca.Models.DataTransferObjects
+namespace OregonTilth.Models.DataTransferObjects
 {
     public class BoundingBoxDto
     {

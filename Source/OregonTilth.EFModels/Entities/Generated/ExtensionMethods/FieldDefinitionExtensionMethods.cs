@@ -3,9 +3,9 @@
 //  Use the corresponding partial class for customizations.
 //  Source Table: [dbo].[FieldDefinition]
 
-using Fresca.Models.DataTransferObjects;
+using OregonTilth.Models.DataTransferObjects.Generated;
 
-namespace Fresca.EFModels.Entities
+namespace OregonTilth.EFModels.Entities
 {
     public static partial class FieldDefinitionExtensionMethods
     {

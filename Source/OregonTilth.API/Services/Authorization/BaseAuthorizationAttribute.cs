@@ -4,9 +4,9 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Fresca.EFModels.Entities;
+using OregonTilth.EFModels.Entities;
 
-namespace Fresca.API.Services.Authorization
+namespace OregonTilth.API.Services.Authorization
 {
     public abstract class BaseAuthorizationAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
@@ -29,8 +29,8 @@ namespace Fresca.API.Services.Authorization
                 return;
             }
 
-            var dbContextService = context.HttpContext.RequestServices.GetService(typeof(FrescaDbContext));
-            if (dbContextService == null || !(dbContextService is FrescaDbContext dbContext))
+            var dbContextService = context.HttpContext.RequestServices.GetService(typeof(OregonTilthDbContext));
+            if (dbContextService == null || !(dbContextService is OregonTilthDbContext dbContext))
             {
                 //MK 1/16/2018 - If we don't have a repository we are in a terrible state.
                 throw new ApplicationException(

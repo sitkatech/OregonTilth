@@ -1,24 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Fresca.API.Services;
-using Fresca.API.Services.Authorization;
-using Fresca.EFModels.Entities;
-using Fresca.Models.DataTransferObjects.User;
+using OregonTilth.API.Services;
+using OregonTilth.API.Services.Authorization;
+using OregonTilth.EFModels.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using Fresca.Models.DataTransferObjects;
-using Microsoft.Extensions.DependencyInjection;
+using OregonTilth.Models.DataTransferObjects;
+using User = OregonTilth.EFModels.Entities.User;
 
-namespace Fresca.API.Controllers
+namespace OregonTilth.API.Controllers
 {
     [ApiController]
     public class UserController : SitkaController<UserController>
     {
-        public UserController(FrescaDbContext dbContext, ILogger<UserController> logger, KeystoneService keystoneService, IOptions<FrescaConfiguration> frescaConfiguration) : base(dbContext, logger, keystoneService, frescaConfiguration)
+        public UserController(OregonTilthDbContext dbContext, ILogger<UserController> logger, KeystoneService keystoneService, IOptions<FrescaConfiguration> frescaConfiguration) : base(dbContext, logger, keystoneService, frescaConfiguration)
         {
         }
 
@@ -169,7 +169,7 @@ namespace Fresca.API.Controllers
             }
 
             var validationMessages =
-                Fresca.EFModels.Entities.User.ValidateUpdate(_dbContext, userUpsertDto, userDto.UserID);
+                EFModels.Entities.User.ValidateUpdate(_dbContext, userUpsertDto, userDto.UserID);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
 
             if (!ModelState.IsValid)
@@ -183,7 +183,7 @@ namespace Fresca.API.Controllers
                 return BadRequest($"Could not find a System Role with the ID {userUpsertDto.RoleID}");
             }
 
-            var updatedUserDto = Fresca.EFModels.Entities.User.UpdateUserEntity(_dbContext, userID, userUpsertDto);
+            var updatedUserDto = EFModels.Entities.User.UpdateUserEntity(_dbContext, userID, userUpsertDto);
             return Ok(updatedUserDto);
         }
 
@@ -196,12 +196,12 @@ namespace Fresca.API.Controllers
                 return actionResult;
             }
 
-            var updatedUserDto = Fresca.EFModels.Entities.User.SetDisclaimerAcknowledgedDate(_dbContext, userID);
+            var updatedUserDto = EFModels.Entities.User.SetDisclaimerAcknowledgedDate(_dbContext, userID);
             return Ok(updatedUserDto);
         }
 
 
-        private MailMessage GenerateUserCreatedEmail(string frescaUrl, UserDto user, FrescaDbContext dbContext,
+        private MailMessage GenerateUserCreatedEmail(string frescaUrl, UserDto user, OregonTilthDbContext dbContext,
             SitkaSmtpClientService smtpClient)
         {
             var messageBody = $@"A new user has signed up to the {_frescaConfiguration.PlatformLongName}: <br/><br/>

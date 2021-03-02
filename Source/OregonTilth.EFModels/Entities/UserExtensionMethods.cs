@@ -1,6 +1,6 @@
-﻿using Fresca.Models.DataTransferObjects.User;
+﻿using OregonTilth.Models.DataTransferObjects;
 
-namespace Fresca.EFModels.Entities
+namespace OregonTilth.EFModels.Entities
 {
     public static partial class UserExtensionMethods
     {

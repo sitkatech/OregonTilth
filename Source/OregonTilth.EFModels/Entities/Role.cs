@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
-using Fresca.Models.DataTransferObjects;
-using Microsoft.EntityFrameworkCore;
+using OregonTilth.Models.DataTransferObjects;
 
-namespace Fresca.EFModels.Entities
+namespace OregonTilth.EFModels.Entities
 {
     public partial class Role
     {
-        public static IEnumerable<RoleDto> List(FrescaDbContext dbContext)
+        public static IEnumerable<RoleDto> List(OregonTilthDbContext dbContext)
         {
             var roles = dbContext.Roles
                 .AsNoTracking()
@@ -16,7 +16,7 @@ namespace Fresca.EFModels.Entities
             return roles;
         }
 
-        public static RoleDto GetByRoleID(FrescaDbContext dbContext, int roleID)
+        public static RoleDto GetByRoleID(OregonTilthDbContext dbContext, int roleID)
         {
             var role = dbContext.Roles
                 .AsNoTracking()

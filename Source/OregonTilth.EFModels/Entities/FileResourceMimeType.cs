@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 
-namespace Fresca.EFModels.Entities
+namespace OregonTilth.EFModels.Entities
 {
     public partial class FileResourceMimeType
     {
-        public static FileResourceMimeType GetFileResourceMimeTypeByContentTypeName(FrescaDbContext dbContext, string contentTypeName)
+        public static FileResourceMimeType GetFileResourceMimeTypeByContentTypeName(OregonTilthDbContext dbContext, string contentTypeName)
         {
             return dbContext.FileResourceMimeTypes.Single(x => x.FileResourceMimeTypeContentTypeName == contentTypeName);
         }
