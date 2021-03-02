@@ -7,5 +7,5 @@ services:
         source: ${DOCKER_BUILD_SOURCE}
     image: sitkacontainers.azurecr.io/fresca/web
     ports:
-      - "8113:80"
-      - "8114:443"
+      - "8887:80"
+      - "8886:443"

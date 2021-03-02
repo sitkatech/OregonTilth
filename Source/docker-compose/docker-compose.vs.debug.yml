@@ -9,5 +9,5 @@ services:
       args:
         source: ${DOCKER_BUILD_SOURCE}
     ports:
-      - "8111:80"
-      - "8112:443"
+      - "8887:80"
+      - "8886:443"
