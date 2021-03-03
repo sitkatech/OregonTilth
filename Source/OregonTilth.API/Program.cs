@@ -13,7 +13,6 @@ namespace OregonTilth.API
     {
         public static void Main(string[] args)
         {
-
             var host = new HostBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureWebHostDefaults(webBuilder =>
@@ -23,8 +22,8 @@ namespace OregonTilth.API
                         var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
                         serverOptions.Listen(IPAddress.Any, 80);
 
-                            // 1/23 CG & MK - This is done so that Azure wont load the cert, it will only be used locally.
-                            if (env == Microsoft.Extensions.Hosting.Environments.Development)
+                        // 1/23 CG & MK - This is done so that Azure wont load the cert, it will only be used locally.
+                        if (env == Microsoft.Extensions.Hosting.Environments.Development)
                         {
                             serverOptions.Listen(IPAddress.Any, 443, configure =>
                             {
@@ -44,8 +43,8 @@ namespace OregonTilth.API
                 })
                 .ConfigureAppConfiguration((hostContext, config) =>
                 {
-                        // delete all default configuration providers
-                        config.Sources.Clear();
+                    // delete all default configuration providers
+                    config.Sources.Clear();
                     config.SetBasePath(Directory.GetCurrentDirectory());
                     config.AddEnvironmentVariables();
 
