@@ -200,6 +200,18 @@ namespace OregonTilth.API.Controllers
             return Ok(updatedUserDto);
         }
 
+        [HttpPost("users/update-activity-date")]
+        public ActionResult<UserDto> UpdateActivityDate([FromBody] int userID)
+        {
+            var userDto = EFModels.Entities.User.GetByUserID(_dbContext, userID);
+            if (ThrowNotFound(userDto, "User", userID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            var updatedUserDto = EFModels.Entities.User.SetLastActivityDateDate(_dbContext, userID);
+            return Ok(updatedUserDto);
+        }
 
         private MailMessage GenerateUserCreatedEmail(string frescaUrl, UserDto user, OregonTilthDbContext dbContext,
             SitkaSmtpClientService smtpClient)

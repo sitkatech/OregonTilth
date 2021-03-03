@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'fresca-login-callback',
@@ -9,16 +10,20 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class LoginCallbackComponent implements OnInit, OnDestroy {
   private watchUserChangeSubscription: any;
+  private updateLastActivityDateRequest: any;
 
-  constructor(private router: Router, private authenticationService: AuthenticationService) { }
+  constructor(private router: Router, private authenticationService: AuthenticationService, private userService: UserService) { }
 
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
-      this.router.navigate(['/']);
+      this.updateLastActivityDateRequest = this.userService.updateLastActivityDate(currentUser.UserID).subscribe(user => {
+        this.router.navigate(['/']);
+      });
     });
   }
 
   ngOnDestroy(): void {
     this.watchUserChangeSubscription.unsubscribe();
+    this.updateLastActivityDateRequest.unsubscribe();
   }
 }

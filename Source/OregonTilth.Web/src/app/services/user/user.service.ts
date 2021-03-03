@@ -40,6 +40,11 @@ export class UserService {
         let route = `/users/${userID}`;
         return this.apiService.putToApi(route, userUpdateDto);
     }
+
+    updateLastActivityDate(userID: number): Observable<UserDetailedDto> {
+        let route = `/users/update-activity-date`;
+        return this.apiService.postToApi(route, userID);
+    }
     
     getUnassignedUserReport(): Observable<UnassignedUserReportDto> {
         let route = `/users/unassigned-report`;

@@ -131,6 +131,18 @@ namespace OregonTilth.EFModels.Entities
             return GetByUserID(dbContext, userID);
         }
 
+        public static UserDto SetLastActivityDateDate(OregonTilthDbContext dbContext, int userID)
+        {
+            var user = dbContext.Users.Single(x => x.UserID == userID);
+
+            user.LastActivityDate = DateTime.UtcNow;
+
+            dbContext.SaveChanges();
+            dbContext.Entry(user).Reload();
+
+            return GetByUserID(dbContext, userID);
+        }
+
         public static UserDto UpdateUserGuid(OregonTilthDbContext dbContext, int userID, Guid userGuid)
         {
             var user = dbContext.Users
