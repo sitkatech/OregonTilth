@@ -10,6 +10,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { UserCreateDto } from 'src/app/shared/models/user/user-create-dto';
 import { RoleEnum } from 'src/app/shared/models/enums/role.enum';
+import { DatePipe } from '@angular/common';
 
 declare var $:any;
 
@@ -28,10 +29,16 @@ export class UserListComponent implements OnInit, OnDestroy {
   public rowData = [];
   columnDefs: ColDef[];
   columnDefsUnassigned: ColDef[];
+  columnTypes : any;
   users: UserDetailedDto[];
   unassignedUsers: UserDetailedDto[];
 
-  constructor(private cdr: ChangeDetectorRef, private authenticationService: AuthenticationService, private utilityFunctionsService: UtilityFunctionsService, private userService: UserService, private decimalPipe: DecimalPipe) { }
+  constructor(private cdr: ChangeDetectorRef, 
+    private authenticationService: AuthenticationService, 
+    private utilityFunctionsService: UtilityFunctionsService, 
+    private userService: UserService, 
+    private decimalPipe: DecimalPipe,
+    private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -47,37 +54,74 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       });
       let _decimalPipe = this.decimalPipe;
+      let _datePipe = this.datePipe;
 
-        this.columnDefs = [
-          {
-            headerName: 'Name', valueGetter: function (params: any) {
-              return { LinkValue: params.data.UserID, LinkDisplay: params.data.FullName };
-            }, cellRendererFramework: LinkRendererComponent,
-            cellRendererParams: { inRouterLink: "/users/" },
-            filterValueGetter: function (params: any) {
-              return params.data.FullName;
-            },
-            comparator: function (id1: any, id2: any) {
-              let link1 = id1.LinkDisplay;
-              let link2 = id2.LinkDisplay;
-              if (link1 < link2) {
+      this.columnDefs = [
+        {
+          headerName: 'Name', valueGetter: function (params: any) {
+            return { LinkValue: params.data.UserID, LinkDisplay: params.data.FullName };
+          }, cellRendererFramework: LinkRendererComponent,
+          cellRendererParams: { inRouterLink: "/users/" },
+          filterValueGetter: function (params: any) {
+            return params.data.FullName;
+          },
+          comparator: function (id1: any, id2: any) {
+            let link1 = id1.LinkDisplay;
+            let link2 = id2.LinkDisplay;
+            if (link1 < link2) {
+              return -1;
+            }
+            if (link1 > link2) {
+              return 1;
+            }
+            return 0;
+          },
+          sortable: true, filter: true, width: 170
+        },
+        { headerName: 'Email', field: 'Email', sortable: true, filter: true },
+        { headerName: 'Role', field: 'Role.RoleDisplayName', sortable: true, filter: true, width: 100 },
+        { headerName: 'Receives System Communications?', field: 'ReceiveSupportEmails', valueGetter: function (params) { return params.data.ReceiveSupportEmails ? "Yes" : "No";}, sortable: true, filter: true, width: 250 },
+        {
+          headerName: 'Last Activity Date', field: 'LastActivityDate', valueFormatter: function (params) {
+            return _datePipe.transform(params.value, "M/d/yyyy")
+          },
+          filterValueGetter: function (params: any) {
+            return _datePipe.transform(params.data.Date, "M/d/yyyy");
+          },
+          filterParams: {
+            // provide comparator function
+            comparator: function (filterLocalDate, cellValue) {
+              var dateAsString = cellValue;
+              if (dateAsString == null) return -1;
+              var cellDate = Date.parse(dateAsString);
+              const filterLocalDateAtMidnight = filterLocalDate.getTime();
+              if (filterLocalDateAtMidnight == cellDate) {
+                return 0;
+              }
+              if (cellDate < filterLocalDateAtMidnight) {
                 return -1;
               }
-              if (link1 > link2) {
+              if (cellDate > filterLocalDateAtMidnight) {
                 return 1;
               }
-              return 0;
-            },
-            sortable: true, filter: true, width: 170
+            }
           },
-          { headerName: 'Email', field: 'Email', sortable: true, filter: true },
-          { headerName: 'Role', field: 'Role.RoleDisplayName', sortable: true, filter: true, width: 100 },
-          { headerName: 'Receives System Communications?', field: 'ReceiveSupportEmails', valueGetter: function (params) { return params.data.ReceiveSupportEmails ? "Yes" : "No";}, sortable: true, filter: true, width: 250 },
-        ];
+          comparator: function (id1: any, id2: any) {
+            if (id1 < id2) {
+              return -1;
+            }
+            if (id1 > id2) {
+              return 1;
+            }
+            return 0;
+          },
+          sortable: true, filter: 'agDateColumnFilter', width: 145
+        },
+      ];
         
-        this.columnDefs.forEach(x => {
-          x.resizable = true;
-        });
+      this.columnDefs.forEach(x => {
+        x.resizable = true;
+      });
     });
   }
 
