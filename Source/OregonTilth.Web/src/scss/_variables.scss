@@ -1,7 +1,7 @@
 $footer-height: 60px;
 
 $theme-colors: (
-        "primary": #F0644B,     // systemBlue
+        "primary": #FF5E33,     // systemBlue
         "secondary": #c4c4c4,   // lightGray
         "info": #228be6,        // brightBlue
         "light": #f5f5f5,       // offWhite
@@ -24,7 +24,7 @@ $theme-colors: (
 
 // this looks redundant, but we need to override the bootstrap variables in both ways.
 //Custom variables only need the one override
-$primary: #F0644B;
+$primary: #FF5E33;
 $secondary: #c4c4c4;
 $info: #228be6;
 $light: #f5f5f5;
@@ -34,17 +34,18 @@ $success: #00cc00;
 $warning: #ffff9f;
 
 $account-dropdown-text: #fff;
-$button-border-and-background: #F0644B;
+$button-border-and-background: $primary;
 $button-hover-text-color: #ffffff;
-$button-text-color: #f6d992;
-$button-hover-background: #f6d992;
+$button-text-color: #fff;
+$button-hover-background: #ff3a05;
 $button-toggle-hover: #637ca1;
 $footer: #999999;  
-$header-background: #F0644B;
+$body-background: #f1f1f1;
+$header-background: #f1f1f1;
 $header-gradient-start: transparent;
 $header-gradient-end: transparent;
 $header-nav-after-height: 0px;
-$header-nav-link: #fff;         
+$header-nav-link: #000;         
 $header-nav-link-font-weight: inherit;
 $h4-styled: #194349;
 $select: #1F4D3D;
