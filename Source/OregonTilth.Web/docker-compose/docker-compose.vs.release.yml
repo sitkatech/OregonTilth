@@ -4,6 +4,6 @@ services:
   oregontilth.web:
     environment:
       - DOTNET_USE_POLLING_FILE_WATCHER=1    
-    image: sitkacontainers.azurecr.io/fresca/web
+    image: sitkacontainers.azurecr.io/oregontilth/web
     labels:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
