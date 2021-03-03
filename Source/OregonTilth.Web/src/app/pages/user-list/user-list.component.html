@@ -7,7 +7,7 @@
     <app-alert-display></app-alert-display>
     <h2 class="d-inline-block">Unassigned Users</h2>
     <p class="lead" *ngIf="users && unassignedUsers.length">
-      This is a list of all users who are awaiting account configuration. Assign the user a role and billing account(s). If the account was created in error, set their Role to “Disabled” to remove them from this list.
+      This is a list of all users who are awaiting account configuration. In order to access the system the users need to be assigned a role. If the account was created in error, set their Role to “Disabled” to remove them from this list.
     </p>
     <p class="lead" *ngIf="users && !unassignedUsers.length">
       Congratulations! All users have been assigned a role.
