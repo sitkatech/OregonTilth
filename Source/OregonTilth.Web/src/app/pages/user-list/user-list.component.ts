@@ -82,7 +82,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         { headerName: 'Role', field: 'Role.RoleDisplayName', sortable: true, filter: true, width: 100 },
         { headerName: 'Receives System Communications?', field: 'ReceiveSupportEmails', valueGetter: function (params) { return params.data.ReceiveSupportEmails ? "Yes" : "No";}, sortable: true, filter: true, width: 250 },
         {
-          headerName: 'Last Activity Date', field: 'LastActivityDate', valueFormatter: function (params) {
+          headerName: 'Last Login Date', field: 'LastActivityDate', valueFormatter: function (params) {
             return _datePipe.transform(params.value, "M/d/yyyy")
           },
           filterValueGetter: function (params: any) {
