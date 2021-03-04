@@ -17,6 +17,7 @@ import { DisclaimerComponent } from './pages/disclaimer/disclaimer.component';
 import { FieldDefinitionListComponent } from './pages/field-definition-list/field-definition-list.component';
 import { FieldDefinitionEditComponent } from './pages/field-definition-edit/field-definition-edit.component';
 import { TrainingComponent } from './pages/training/training.component';
+import { WorkbooksComponent } from './pages/workbooks/workbooks.component';
 
 const routes: Routes = [
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: "help", component: HelpComponent },
   { path: "training", component: TrainingComponent},
   { path: "platform-overview", component: AboutComponent},
+  { path: "workbooks", component: WorkbooksComponent},
   { path: "login-callback", component: LoginCallbackComponent },
   { path: "create-user-callback", component: CreateUserCallbackComponent },
   { path: "not-found", component: NotFoundComponent },

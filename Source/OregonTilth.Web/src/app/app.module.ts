@@ -31,6 +31,7 @@ import { MyDatePickerModule } from 'mydatepicker';
 import { MultiLinkRendererComponent } from './shared/components/ag-grid/multi-link-renderer/multi-link-renderer.component';
 import { CreateUserCallbackComponent } from './pages/create-user-callback/create-user-callback.component';
 import { AboutComponent } from './pages/about/about.component';
+import { WorkbooksComponent } from './pages/workbooks/workbooks.component';
 import { DisclaimerComponent } from './pages/disclaimer/disclaimer.component';
 import { AppInitService } from './app.init';
 import { FieldDefinitionListComponent } from './pages/field-definition-list/field-definition-list.component';
@@ -63,6 +64,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     HelpComponent,
     CreateUserCallbackComponent,
     AboutComponent,
+    WorkbooksComponent,
     DisclaimerComponent,
     FieldDefinitionListComponent,
     FieldDefinitionEditComponent,
