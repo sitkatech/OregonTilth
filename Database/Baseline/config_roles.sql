@@ -6,11 +6,11 @@ print ''
 
 
 drop table if exists #allAccounts
-select 'SITKA\OregonTilthWebLocal' as AccountName, 'Local' as Environment, 'db_owner' as DatabaseRoleName
+select 'OregonTilthWebLocal' as AccountName, 'Local' as Environment, 'db_owner' as DatabaseRoleName
 into #allAccounts
-union select 'SITKA\OregonTilthWebQA', 'QA', 'db_owner'
-union select 'SITKA\OregonTilthWebProd', 'Prod', 'db_owner'
-union select 'SITKA\OregonTilthBatchLocal', 'Local', 'db_owner'
+union select 'OregonTilthWebQA', 'QA', 'db_owner'
+union select 'OregonTilthWebProd', 'Prod', 'db_owner'
+union select 'SITKA\SWTBatchLocal', 'Local', 'db_owner' -- We don't have a batch user for local so just putting in SWT one
 union select 'SITKA\OregonTilthBatchQA', 'QA', 'db_owner'
 union select 'SITKA\OregonTilthBatchProd', 'Prod', 'db_owner'
 union select 'SITKA\Hawk Moth Production Support', 'Prod', 'db_owner'
