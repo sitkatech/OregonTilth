@@ -8,6 +8,7 @@ export class WorkbookDto {
 	WorkbookID : number
 	User : UserDto
 	CreateDate : Date
+	WorkbookName : string
 
     constructor(obj?: any) {
         Object.assign(this, obj);

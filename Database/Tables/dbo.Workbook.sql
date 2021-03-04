@@ -6,6 +6,7 @@ CREATE TABLE [dbo].[Workbook](
 	[WorkbookID] [int] IDENTITY(1,1) NOT NULL,
 	[UserID] [int] NOT NULL,
 	[CreateDate] [datetime] NOT NULL,
+	[WorkbookName] [varchar](255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
  CONSTRAINT [PK_Workbook_WorkbookID] PRIMARY KEY CLUSTERED 
 (
 	[WorkbookID] ASC

@@ -15,7 +15,8 @@ namespace OregonTilth.EFModels.Entities
             {
                 WorkbookID = workbook.WorkbookID,
                 User = workbook.User.AsDto(),
-                CreateDate = workbook.CreateDate
+                CreateDate = workbook.CreateDate,
+                WorkbookName = workbook.WorkbookName
             };
             DoCustomMappings(workbook, workbookDto);
             return workbookDto;

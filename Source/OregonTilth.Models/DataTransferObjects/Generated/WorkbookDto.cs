@@ -12,5 +12,6 @@ namespace OregonTilth.Models.DataTransferObjects
         public int WorkbookID { get; set; }
         public UserDto User { get; set; }
         public DateTime CreateDate { get; set; }
+        public string WorkbookName { get; set; }
     }
 }

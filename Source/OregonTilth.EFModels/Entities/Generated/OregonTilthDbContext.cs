@@ -153,6 +153,8 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<Workbook>(entity =>
             {
+                entity.Property(e => e.WorkbookName).IsUnicode(false);
+
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Workbooks)
                     .HasForeignKey(d => d.UserID)

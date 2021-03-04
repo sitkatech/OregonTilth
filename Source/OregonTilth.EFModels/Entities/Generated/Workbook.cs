@@ -16,6 +16,9 @@ namespace OregonTilth.EFModels.Entities
         public int UserID { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime CreateDate { get; set; }
+        [Required]
+        [StringLength(255)]
+        public string WorkbookName { get; set; }
 
         [ForeignKey(nameof(UserID))]
         [InverseProperty("Workbooks")]
