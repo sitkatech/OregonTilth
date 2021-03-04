@@ -26,6 +26,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<FileResourceMimeType> FileResourceMimeTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Workbook> Workbooks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -147,6 +148,14 @@ namespace OregonTilth.EFModels.Entities
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<Workbook>(entity =>
+            {
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Workbooks)
+                    .HasForeignKey(d => d.UserID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 

@@ -15,6 +15,7 @@ namespace OregonTilth.EFModels.Entities
         public User()
         {
             FileResources = new HashSet<FileResource>();
+            Workbooks = new HashSet<Workbook>();
         }
 
         [Key]
@@ -52,5 +53,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual Role Role { get; set; }
         [InverseProperty(nameof(FileResource.CreateUser))]
         public virtual ICollection<FileResource> FileResources { get; set; }
+        [InverseProperty(nameof(Workbook.User))]
+        public virtual ICollection<Workbook> Workbooks { get; set; }
     }
 }
