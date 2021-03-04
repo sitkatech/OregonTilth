@@ -7,6 +7,8 @@ import { UserService } from 'src/app/services/user/user.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { WorkbookService } from 'src/app/services/workbook/workbook.service';
 import { WorkbookDto } from 'src/app/shared/models/generated/workbook-dto';
+import { ColDef } from 'ag-grid-community';
+import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 
 @Component({
   selector: 'workbooks',
@@ -24,6 +26,7 @@ export class WorkbooksComponent implements OnInit {
 
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
+  public columnDefs: ColDef[];
   public richTextTypeID : number = CustomRichTextType.PlatformOverview;
   
   private getWorkbooksRequest: any;
@@ -36,7 +39,71 @@ export class WorkbooksComponent implements OnInit {
       this.getWorkbooksRequest = this.workbookService.getWorkbooks(this.currentUser).subscribe(workbooks => {
         this.workbooks = workbooks;
       });
-
+      
+      let _datePipe = this.datePipe;
+      this.columnDefs = [
+        {
+          headerName: 'ID', valueGetter: function (params: any) {
+            return { LinkValue: params.data.WorkbookID, LinkDisplay: params.data.WorkbookID };
+          }, cellRendererFramework: LinkRendererComponent,
+          cellRendererParams: { inRouterLink: "/workbooks/" },
+          filterValueGetter: function (params: any) {
+            return params.data.WorkbookID;
+          },
+          comparator: function (id1: any, id2: any) {
+            let link1 = id1.LinkDisplay;
+            let link2 = id2.LinkDisplay;
+            if (link1 < link2) {
+              return -1;
+            }
+            if (link1 > link2) {
+              return 1;
+            }
+            return 0;
+          },
+          sortable: true, filter: true, width: 170
+        },
+        {
+          headerName: 'Create Date', field: 'CreateDate', valueFormatter: function (params) {
+            return _datePipe.transform(params.value, "M/d/yyyy")
+          },
+          filterValueGetter: function (params: any) {
+            return _datePipe.transform(params.data.Date, "M/d/yyyy");
+          },
+          filterParams: {
+            // provide comparator function
+            comparator: function (filterLocalDate, cellValue) {
+              var dateAsString = cellValue;
+              if (dateAsString == null) return -1;
+              var cellDate = Date.parse(dateAsString);
+              const filterLocalDateAtMidnight = filterLocalDate.getTime();
+              if (filterLocalDateAtMidnight == cellDate) {
+                return 0;
+              }
+              if (cellDate < filterLocalDateAtMidnight) {
+                return -1;
+              }
+              if (cellDate > filterLocalDateAtMidnight) {
+                return 1;
+              }
+            }
+          },
+          comparator: function (id1: any, id2: any) {
+            if (id1 < id2) {
+              return -1;
+            }
+            if (id1 > id2) {
+              return 1;
+            }
+            return 0;
+          },
+          sortable: true, filter: 'agDateColumnFilter', width: 145
+        },
+      ];
+        
+      this.columnDefs.forEach(x => {
+        x.resizable = true;
+      });
 
     });
   }
