@@ -30,7 +30,7 @@ export class WorkbooksComponent implements OnInit {
   public richTextTypeID : number = CustomRichTextType.PlatformOverview;
   
   private getWorkbooksRequest: any;
-  private workbooks: WorkbookDto[];
+  public workbooks: WorkbookDto[];
 
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -39,16 +39,16 @@ export class WorkbooksComponent implements OnInit {
       this.getWorkbooksRequest = this.workbookService.getWorkbooks(this.currentUser).subscribe(workbooks => {
         this.workbooks = workbooks;
       });
-      
+
       let _datePipe = this.datePipe;
       this.columnDefs = [
         {
-          headerName: 'ID', valueGetter: function (params: any) {
-            return { LinkValue: params.data.WorkbookID, LinkDisplay: params.data.WorkbookID };
+          headerName: 'Name', valueGetter: function (params: any) {
+            return { LinkValue: params.data.WorkbookID, LinkDisplay: params.data.WorkbookName };
           }, cellRendererFramework: LinkRendererComponent,
           cellRendererParams: { inRouterLink: "/workbooks/" },
           filterValueGetter: function (params: any) {
-            return params.data.WorkbookID;
+            return params.data.WorkbookName;
           },
           comparator: function (id1: any, id2: any) {
             let link1 = id1.LinkDisplay;
