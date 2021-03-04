@@ -33,8 +33,6 @@ from
 (
     select '${db-user}' as AccountName, 'db_owner' as DatabaseRoleName
     union select '${db-batch-user}', 'db_owner'
-    union select '${db-geoserver-user}', 'db_owner'
-    union select '${db-geoserver-docker-user}', 'db_owner'
 ) x
 left join #accountsToCreate a on x.AccountName = a.AccountName and x.DatabaseRoleName = a.DatabaseRoleName
 where a.AccountName is null
