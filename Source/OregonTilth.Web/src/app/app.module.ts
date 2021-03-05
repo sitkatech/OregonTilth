@@ -32,6 +32,7 @@ import { MultiLinkRendererComponent } from './shared/components/ag-grid/multi-li
 import { CreateUserCallbackComponent } from './pages/create-user-callback/create-user-callback.component';
 import { AboutComponent } from './pages/about/about.component';
 import { WorkbooksComponent } from './pages/workbooks/workbooks.component';
+import { NewWorkbookComponent } from './pages/workbooks/new-workbook/new-workbook.component';
 import { DisclaimerComponent } from './pages/disclaimer/disclaimer.component';
 import { AppInitService } from './app.init';
 import { FieldDefinitionListComponent } from './pages/field-definition-list/field-definition-list.component';
@@ -65,6 +66,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     CreateUserCallbackComponent,
     AboutComponent,
     WorkbooksComponent,
+    NewWorkbookComponent,
     DisclaimerComponent,
     FieldDefinitionListComponent,
     FieldDefinitionEditComponent,
