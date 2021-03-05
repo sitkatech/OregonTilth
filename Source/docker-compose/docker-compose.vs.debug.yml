@@ -1,13 +1,13 @@
 version: '3.5'
 
 services:
-  fresca.api:
-    image: sitkacontainers.azurecr.io/fresca/api
+  oregontilth.api:
+    image: sitkacontainers.azurecr.io/oregontilth/api
     labels:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}
     ports:
-      - "8111:80"
-      - "8112:443"
+      - "8887:80"
+      - "8886:443"

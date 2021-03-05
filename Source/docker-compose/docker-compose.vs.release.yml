@@ -1,7 +1,7 @@
 version: '3.5'
 
 services:
-  fresca.api:
+  oregontilth.api:
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}
