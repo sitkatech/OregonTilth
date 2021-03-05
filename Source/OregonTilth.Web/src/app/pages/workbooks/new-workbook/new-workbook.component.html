@@ -18,7 +18,7 @@
 <div class="container">
     <div class="row mb-2">
         <div class="col">
-            <form (ngSubmit)="onSubmit(newWorkbookForm)" #newWorkbookForm="ngForm">
+            <form *ngIf=(model) (ngSubmit)="onSubmit(newWorkbookForm)" #newWorkbookForm="ngForm">
                 <div class="form-group mt-4">
                   <div class="col-sm-5 control-label">
                     <label class="required">Workbook Name</label>

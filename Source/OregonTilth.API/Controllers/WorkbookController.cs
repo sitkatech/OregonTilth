@@ -97,29 +97,26 @@ namespace OregonTilth.API.Controllers
         //    return Ok(user);
         //}
 
-        //[HttpPost("users")]
-        //[LoggedInUnclassifiedFeature]
-        //public ActionResult<UserDto> CreateUser([FromBody] UserCreateDto userUpsertDto)
-        //{
-        //    var user = EFModels.Entities.User.CreateNewUser(_dbContext, userUpsertDto, userUpsertDto.LoginName,
-        //        userUpsertDto.UserGuid);
-
-        //    var smtpClient = HttpContext.RequestServices.GetRequiredService<SitkaSmtpClientService>();
-        //    var mailMessage = GenerateUserCreatedEmail(_frescaConfiguration.WEB_URL, user, _dbContext, smtpClient);
-        //    SitkaSmtpClientService.AddCcRecipientsToEmail(mailMessage,
-        //                EFModels.Entities.User.GetEmailAddressesForAdminsThatReceiveSupportEmails(_dbContext));
-        //    SendEmailMessage(smtpClient, mailMessage);
-
-        //    return Ok(user);
-        //}
+        [HttpPost("workbooks")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<WorkbookDto> CreateWorkbook([FromBody] WorkbookDto workbookDto)
+        {
+            var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+            var workbook = Workbook.CreateNewWorkbook(_dbContext,workbookDto, userDto.UserID);
+            
+            return Ok(workbook);
+        }
 
         [HttpGet("workbooks")]
-        [AdminFeature]
+        [LoggedInUnclassifiedFeature]
         public ActionResult<IEnumerable<WorkbookDto>> List()
         {
             var workbookDtos = Workbook.List(_dbContext);
             return Ok(workbookDtos);
         }
         
+
+
+
     }
 }
