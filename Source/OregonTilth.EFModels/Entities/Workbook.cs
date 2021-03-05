@@ -43,11 +43,31 @@ namespace OregonTilth.EFModels.Entities
             return workbook?.AsDto();
         }
 
+        public static IQueryable<WorkbookDto> GetByUserID(OregonTilthDbContext dbContext, int userID)
+        {
+            var workbooks = GetWorkbookImpl(dbContext).Where(x => x.UserID == userID);
+            return workbooks.Select(x => x.AsDto());
+        }
+
         private static IQueryable<Workbook> GetWorkbookImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.Workbooks
                 .Include(x => x.User).ThenInclude(x => x.Role)
                 .AsNoTracking();
         }
+
+        public static List<ErrorMessage> ValidateUpsert(OregonTilthDbContext dbContext, WorkbookDto workbookDto, int userDtoUserID)
+        {
+            var result = new List<ErrorMessage>();
+
+            var userWorkbooks = GetByUserID(dbContext, userDtoUserID).ToList();
+            if (userWorkbooks.Any(x => x.WorkbookName.ToLower() == workbookDto.WorkbookName.ToLower() && x.WorkbookID != workbookDto.WorkbookID))
+            {
+                result.Add(new ErrorMessage() { Type = "Workbook Name", Message = "Workbook names must be unique." });
+            }
+            
+            return result;
+        }
+
     }
 }

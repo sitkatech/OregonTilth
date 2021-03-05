@@ -4,3 +4,9 @@ CREATE TABLE dbo.[Workbook](
     CreateDate datetime NOT NULL,
     WorkbookName varchar(255) NOT NULL
 )
+
+ALTER TABLE [dbo].[Workbook] ADD CONSTRAINT [AK_Workbook_UserID_WorkbookName] UNIQUE NONCLUSTERED 
+(
+	[UserID] ASC,
+	[WorkbookName] ASC
+)

@@ -22,88 +22,20 @@ namespace OregonTilth.API.Controllers
         {
         }
 
-        //[HttpPost("/users/invite")]
-        //[AdminFeature]
-        //public IActionResult InviteUser([FromBody] UserInviteDto inviteDto)
-        //{
-        //    if (inviteDto.RoleID.HasValue)
-        //    {
-        //        var role = Role.GetByRoleID(_dbContext, inviteDto.RoleID.Value);
-        //        if (role == null)
-        //        {
-        //            return BadRequest($"Could not find a Role with the ID {inviteDto.RoleID}");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return BadRequest("Role ID is required.");
-        //    }
-
-        //    var applicationName = $"{_frescaConfiguration.PlatformLongName}";
-        //    var leadOrganizationLongName = $"{_frescaConfiguration.LeadOrganizationLongName}";
-        //    var inviteModel = new KeystoneService.KeystoneInviteModel
-        //    {
-        //        FirstName = inviteDto.FirstName,
-        //        LastName = inviteDto.LastName,
-        //        Email = inviteDto.Email,
-        //        Subject = $"Invitation to the {applicationName}",
-        //        WelcomeText = $"You are receiving this notification because an administrator of the {applicationName}, an online service of the {leadOrganizationLongName}, has invited you to create an account.",
-        //        SiteName = applicationName,
-        //        SignatureBlock = $"{leadOrganizationLongName}<br /><a href='mailto:{_frescaConfiguration.LeadOrganizationEmail}'>{_frescaConfiguration.LeadOrganizationEmail}</a><a href='{_frescaConfiguration.LeadOrganizationHomeUrl}'>{_frescaConfiguration.LeadOrganizationHomeUrl}</a>",
-        //        RedirectURL = _frescaConfiguration.KEYSTONE_REDIRECT_URL
-        //    };
-
-        //    var response = _keystoneService.Invite(inviteModel);
-        //    if (response.StatusCode != HttpStatusCode.OK || response.Error != null)
-        //    {
-        //        ModelState.AddModelError("Email", $"There was a problem inviting the user to Keystone: {response.Error.Message}.");
-        //        if (response.Error.ModelState != null)
-        //        {
-        //            foreach (var modelStateKey in response.Error.ModelState.Keys)
-        //            {
-        //                foreach (var err in response.Error.ModelState[modelStateKey])
-        //                {
-        //                    ModelState.AddModelError(modelStateKey, err);
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    var keystoneUser = response.Payload.Claims;
-        //    var existingUser = EFModels.Entities.User.GetByEmail(_dbContext, inviteDto.Email);
-        //    if (existingUser != null)
-        //    {
-        //        existingUser = EFModels.Entities.User.UpdateUserGuid(_dbContext, existingUser.UserID, keystoneUser.UserGuid);
-        //        return Ok(existingUser);
-        //    }
-
-        //    var newUser = new UserUpsertDto
-        //    {
-        //        FirstName = keystoneUser.FirstName,
-        //        LastName = keystoneUser.LastName,
-        //        OrganizationName = keystoneUser.OrganizationName,
-        //        Email = keystoneUser.Email,
-        //        PhoneNumber = keystoneUser.PrimaryPhone,
-        //        RoleID = inviteDto.RoleID.Value
-        //    };
-
-        //    var user = EFModels.Entities.User.CreateNewUser(_dbContext, newUser, keystoneUser.LoginName,
-        //        keystoneUser.UserGuid);
-        //    return Ok(user);
-        //}
-
         [HttpPost("workbooks")]
         [LoggedInUnclassifiedFeature]
         public ActionResult<WorkbookDto> CreateWorkbook([FromBody] WorkbookDto workbookDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
-            var workbook = Workbook.CreateNewWorkbook(_dbContext,workbookDto, userDto.UserID);
+
+            var validationMessages = Workbook.ValidateUpsert(_dbContext, workbookDto, userDto.UserID);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             
+            var workbook = Workbook.CreateNewWorkbook(_dbContext,workbookDto, userDto.UserID);
             return Ok(workbook);
         }
 
@@ -111,12 +43,10 @@ namespace OregonTilth.API.Controllers
         [LoggedInUnclassifiedFeature]
         public ActionResult<IEnumerable<WorkbookDto>> List()
         {
-            var workbookDtos = Workbook.List(_dbContext);
+            var currentUserDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+            var workbookDtos = Workbook.GetByUserID(_dbContext, currentUserDto.UserID);
             return Ok(workbookDtos);
         }
         
-
-
-
     }
 }

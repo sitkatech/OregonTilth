@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace OregonTilth.EFModels.Entities
 {
     [Table("Workbook")]
+    [Index(nameof(UserID), nameof(WorkbookName), Name = "AK_Workbook_UserID_WorkbookName", IsUnique = true)]
     public partial class Workbook
     {
         [Key]
