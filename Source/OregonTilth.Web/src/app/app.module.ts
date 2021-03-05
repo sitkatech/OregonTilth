@@ -18,6 +18,7 @@ import { UserEditComponent } from './pages/user-edit/user-edit.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { DecimalPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { LinkRendererComponent } from './shared/components/ag-grid/link-renderer/link-renderer.component';
+import { ButtonRendererComponent } from './shared/components/ag-grid/button-renderer/button-renderer.component';
 
 
 import { FormsModule } from '@angular/forms';
@@ -100,7 +101,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     },
     DecimalPipe, CurrencyPipe, DatePipe
   ],
-  entryComponents: [LinkRendererComponent, FontAwesomeIconLinkRendererComponent, MultiLinkRendererComponent],
+  entryComponents: [LinkRendererComponent, FontAwesomeIconLinkRendererComponent, MultiLinkRendererComponent, ButtonRendererComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

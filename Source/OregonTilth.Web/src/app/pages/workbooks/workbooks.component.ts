@@ -9,6 +9,7 @@ import { WorkbookService } from 'src/app/services/workbook/workbook.service';
 import { WorkbookDto } from 'src/app/shared/models/generated/workbook-dto';
 import { ColDef } from 'ag-grid-community';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
+import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 
 @Component({
   selector: 'workbooks',
@@ -35,7 +36,8 @@ export class WorkbooksComponent implements OnInit {
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      
+      var workbookComponentScope = this;
+
       this.getWorkbooksRequest = this.workbookService.getWorkbooks(this.currentUser).subscribe(workbooks => {
         this.workbooks = workbooks;
       });
@@ -99,6 +101,23 @@ export class WorkbooksComponent implements OnInit {
           },
           sortable: true, filter: 'agDateColumnFilter', width: 145
         },
+        {
+          headerName: 'Delete', field: 'WorkbookID', valueGetter: function (params: any) {
+            return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.WorkbookID, ObjectDisplayName: params.data.WorkbookName };
+          }, cellRendererFramework: ButtonRendererComponent,
+          cellRendererParams: { 
+            clicked: function(field: any) {
+              if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Workbook?`)) {
+                workbookComponentScope.deleteWorkbook(field.PrimaryKey)
+              }
+            }
+           },
+          sortable: true, filter: true, width: 170
+        },
+        {
+          headerName: 'Edit',
+          maxWidth: 100,
+        }
       ];
         
       this.columnDefs.forEach(x => {
@@ -115,4 +134,8 @@ export class WorkbooksComponent implements OnInit {
     this.cdr.detach();
   }
 
+  deleteWorkbook(workbookID: number) {
+    // todo: delete the workbook
+    alert('deleting');
+  }
 }

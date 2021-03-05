@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { ApiService } from 'src/app/shared/services';
 import { Observable } from 'rxjs';
-import { UserCreateDto } from 'src/app/shared/models/user/user-create-dto';
 import { WorkbookDto } from 'src/app/shared/models/generated/workbook-dto';
 
 @Injectable({
