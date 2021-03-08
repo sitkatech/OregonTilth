@@ -41,7 +41,7 @@ export class EditWorkbookComponent implements OnInit {
 
   public editWorkbookRequest: any;
 
-  onSubmit(editUserForm: HTMLFormElement): void {
+  onSubmit(editWorkbookForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
 
     this.editWorkbookRequest = this.workbookService.editWorkbook(this.model).subscribe(response => {
@@ -65,8 +65,6 @@ export class EditWorkbookComponent implements OnInit {
         this.model = workbook;
       })
       
-
-      this.model = new WorkbookDto();
     });
   }
 
@@ -75,7 +73,9 @@ export class EditWorkbookComponent implements OnInit {
     if (this.editWorkbookRequest && this.editWorkbookRequest.unsubscribe) {
       this.editWorkbookRequest.unsubscribe();
     }
-    
+    if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
+      this.getWorkbookRequest.unsubscribe();
+    }
     this.authenticationService.dispose();
     this.cdr.detach();
   }
