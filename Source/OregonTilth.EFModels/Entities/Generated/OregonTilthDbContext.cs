@@ -22,9 +22,15 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<DatabaseMigration> DatabaseMigrations { get; set; }
         public virtual DbSet<FieldDefinition> FieldDefinitions { get; set; }
         public virtual DbSet<FieldDefinitionType> FieldDefinitionTypes { get; set; }
+        public virtual DbSet<FieldLaborActivityCategory> FieldLaborActivityCategories { get; set; }
+        public virtual DbSet<FieldUnitType> FieldUnitTypes { get; set; }
         public virtual DbSet<FileResource> FileResources { get; set; }
         public virtual DbSet<FileResourceMimeType> FileResourceMimeTypes { get; set; }
+        public virtual DbSet<HarvestType> HarvestTypes { get; set; }
+        public virtual DbSet<LaborType> LaborTypes { get; set; }
+        public virtual DbSet<Phase> Phases { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<TpTypeOrD> TpTypeOrDs { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Workbook> Workbooks { get; set; }
 
@@ -87,6 +93,24 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.FieldDefinitionTypeName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<FieldLaborActivityCategory>(entity =>
+            {
+                entity.Property(e => e.FieldLaborActivityCategoryID).ValueGeneratedNever();
+
+                entity.Property(e => e.FieldLaborActivityCategoryDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.FieldLaborActivityCategoryName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<FieldUnitType>(entity =>
+            {
+                entity.Property(e => e.FieldUnitTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.FieldUnitTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.FieldUnitTypeName).IsUnicode(false);
+            });
+
             modelBuilder.Entity<FileResource>(entity =>
             {
                 entity.Property(e => e.OriginalBaseFilename).IsUnicode(false);
@@ -120,6 +144,33 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.FileResourceMimeTypeName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<HarvestType>(entity =>
+            {
+                entity.Property(e => e.HarvestTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.HarvestTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.HarvestTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<LaborType>(entity =>
+            {
+                entity.Property(e => e.LaborTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.LaborTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.LaborTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Phase>(entity =>
+            {
+                entity.Property(e => e.PhaseID).ValueGeneratedNever();
+
+                entity.Property(e => e.PhaseDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.PhaseName).IsUnicode(false);
+            });
+
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.Property(e => e.RoleID).ValueGeneratedNever();
@@ -129,6 +180,18 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.RoleDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.RoleName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<TpTypeOrD>(entity =>
+            {
+                entity.HasKey(e => e.TpTypeOrDsID)
+                    .HasName("PK_TpTypeOrDs_TpTypeOrDsID");
+
+                entity.Property(e => e.TpTypeOrDsID).ValueGeneratedNever();
+
+                entity.Property(e => e.TpTypeOrDsDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.TpTypeOrDsName).IsUnicode(false);
             });
 
             modelBuilder.Entity<User>(entity =>
