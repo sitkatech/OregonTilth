@@ -11,6 +11,7 @@ import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/butto
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'workbooks',
@@ -23,7 +24,8 @@ export class WorkbooksComponent implements OnInit {
     private authenticationService: AuthenticationService, 
     private datePipe: DatePipe,
     private workbookService: WorkbookService,
-    private alertService: AlertService) { }
+    private alertService: AlertService,
+    private router: Router) { }
 
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
@@ -115,8 +117,17 @@ export class WorkbooksComponent implements OnInit {
           sortable: true, filter: true, width: 100, autoHeight:true
         },
         {
-          headerName: 'Edit',
-          maxWidth: 100,
+          headerName: 'Edit', field: 'WorkbookID', valueGetter: function (params: any) {
+            return { ButtonText: 'Edit', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.WorkbookID, ObjectDisplayName: params.data.WorkbookName };
+          }, cellRendererFramework: ButtonRendererComponent,
+          cellRendererParams: { 
+            clicked: function(field: any) {
+              workbookComponentScope.router.navigateByUrl(`/workbooks/${field.PrimaryKey}/edit`).then(x => {
+                this.alertService.pushAlert(new Alert("Successfully created Workbook.", AlertContext.Success));
+              });
+            }
+           },
+          sortable: true, filter: true, width: 100, autoHeight:true
         }
       ];
         

@@ -34,6 +34,7 @@ import { CreateUserCallbackComponent } from './pages/create-user-callback/create
 import { AboutComponent } from './pages/about/about.component';
 import { WorkbooksComponent } from './pages/workbooks/workbooks.component';
 import { NewWorkbookComponent } from './pages/workbooks/new-workbook/new-workbook.component';
+import { EditWorkbookComponent } from './pages/workbooks/edit-workbook/edit-workbook.component';
 import { DisclaimerComponent } from './pages/disclaimer/disclaimer.component';
 import { AppInitService } from './app.init';
 import { FieldDefinitionListComponent } from './pages/field-definition-list/field-definition-list.component';
@@ -68,6 +69,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     AboutComponent,
     WorkbooksComponent,
     NewWorkbookComponent,
+    EditWorkbookComponent,
     DisclaimerComponent,
     FieldDefinitionListComponent,
     FieldDefinitionEditComponent,

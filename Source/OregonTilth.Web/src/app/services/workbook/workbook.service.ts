@@ -15,9 +15,19 @@ export class WorkbookService {
         return this.apiService.getFromApi(route);
     }
 
-    createWorkbook(createWorkbookDto: any): Observable<WorkbookDto> {
+    getWorkbook(workbookID: number): Observable<WorkbookDto> {
+        let route = `/workbooks/${workbookID}`;
+        return this.apiService.getFromApi(route);
+    }
+
+    createWorkbook(createWorkbookDto: WorkbookDto): Observable<WorkbookDto> {
         let route = `/workbooks/`;
         return this.apiService.postToApi(route, createWorkbookDto);
+    }
+
+    editWorkbook(workbookDto: WorkbookDto): Observable<WorkbookDto> {
+        let route = `/workbooks/`;
+        return this.apiService.putToApi(route, workbookDto);
     }
 
     deleteWorkbook(workbookID: number): Observable<WorkbookDto> {

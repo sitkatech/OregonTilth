@@ -39,6 +39,23 @@ namespace OregonTilth.API.Controllers
             return Ok(workbook);
         }
 
+        [HttpPut("workbooks")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<WorkbookDto> EditWorkbook([FromBody] WorkbookDto workbookDto)
+        {
+            var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+
+            var validationMessages = Workbook.ValidateUpsert(_dbContext, workbookDto, userDto.UserID);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var workbook = Workbook.EditWorkbook(_dbContext, workbookDto);
+            return Ok(workbook);
+        }
+
         [HttpGet("workbooks")]
         [LoggedInUnclassifiedFeature]
         public ActionResult<IEnumerable<WorkbookDto>> List()
@@ -67,5 +84,23 @@ namespace OregonTilth.API.Controllers
 
             return NoContent();
         }
+
+
+        [HttpGet("workbooks/{workbookID}")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<WorkbookDto>> GetWorkbook([FromRoute] int workbookID)
+        {
+            var currentUserDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+            var workbook = Workbook.GetDtoByWorkbookID(_dbContext, workbookID);
+            
+            // todo: get around to handling some feature permissions to access to personal objects
+            if (workbook.User.UserID != currentUserDto.UserID)
+            {
+                return BadRequest();
+            }
+
+            return Ok(workbook);
+        }
+
     }
 }

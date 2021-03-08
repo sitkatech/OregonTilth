@@ -37,6 +37,22 @@ namespace OregonTilth.EFModels.Entities
             return GetDtoByWorkbookID(dbContext, workbook.WorkbookID);
         }
 
+        public static WorkbookDto EditWorkbook(OregonTilthDbContext dbContext, WorkbookDto workbookToEdit)
+        {
+            
+            var workbook = dbContext.Workbooks
+                .Include(x => x.User).ThenInclude(x => x.Role)
+                .Single(x => x.WorkbookID == workbookToEdit.WorkbookID);
+
+            workbook.WorkbookName = workbookToEdit.WorkbookName;
+
+            dbContext.SaveChanges();
+            dbContext.Entry(workbook).Reload();
+
+
+            return GetDtoByWorkbookID(dbContext, workbook.WorkbookID);
+        }
+
         public static WorkbookDto GetDtoByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
         {
             var workbook = GetWorkbookImpl(dbContext).SingleOrDefault(x => x.WorkbookID == workbookID);
@@ -71,7 +87,12 @@ namespace OregonTilth.EFModels.Entities
             {
                 result.Add(new ErrorMessage() { Type = "Workbook Name", Message = "Workbook names must be unique." });
             }
-            
+
+            if (string.IsNullOrEmpty(workbookDto.WorkbookName))
+            {
+                result.Add(new ErrorMessage() { Type = "Workbook Name", Message = "Workbooks must have a name." });
+            }
+
             return result;
         }
 
