@@ -12,6 +12,11 @@ namespace OregonTilth.EFModels.Entities
     [Index(nameof(UserID), nameof(WorkbookName), Name = "AK_Workbook_UserID_WorkbookName", IsUnique = true)]
     public partial class Workbook
     {
+        public Workbook()
+        {
+            FieldLaborActivities = new HashSet<FieldLaborActivity>();
+        }
+
         [Key]
         public int WorkbookID { get; set; }
         public int UserID { get; set; }
@@ -24,5 +29,7 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(UserID))]
         [InverseProperty("Workbooks")]
         public virtual User User { get; set; }
+        [InverseProperty(nameof(FieldLaborActivity.Workbook))]
+        public virtual ICollection<FieldLaborActivity> FieldLaborActivities { get; set; }
     }
 }
