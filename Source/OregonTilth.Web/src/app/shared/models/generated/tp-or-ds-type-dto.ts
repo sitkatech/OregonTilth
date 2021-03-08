@@ -1,13 +1,13 @@
 //  IMPORTANT:
 //  This file is generated. Your changes will be lost.
 //  Use the corresponding partial class for customizations.
-//  Source Table: [dbo].[TpTypeOrDs]
+//  Source Table: [dbo].[TpOrDsType]
 
 
-export class TpTypeOrDsDto {
-	TpTypeOrDsID : number
-	TpTypeOrDsName : string
-	TpTypeOrDsDisplayName : string
+export class TpOrDsTypeDto {
+	TpOrDsTypeID : number
+	TpOrDsTypeName : string
+	TpOrDsTypeDisplayName : string
 
     constructor(obj?: any) {
         Object.assign(this, obj);
