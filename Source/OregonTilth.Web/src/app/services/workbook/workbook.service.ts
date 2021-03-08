@@ -20,4 +20,8 @@ export class WorkbookService {
         return this.apiService.postToApi(route, createWorkbookDto);
     }
 
+    deleteWorkbook(workbookID: number): Observable<WorkbookDto> {
+        let route = `/workbooks/${workbookID}`;
+        return this.apiService.deleteToApi(route);
+    }
 }

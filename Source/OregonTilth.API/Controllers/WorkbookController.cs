@@ -47,6 +47,25 @@ namespace OregonTilth.API.Controllers
             var workbookDtos = Workbook.GetByUserID(_dbContext, currentUserDto.UserID);
             return Ok(workbookDtos);
         }
-        
+
+
+        [HttpDelete("workbooks/{workbookID}")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<WorkbookDto>> DeleteWorkbook([FromRoute] int workbookID)
+        {
+            var currentUserDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+            
+            var validationMessages = Workbook.ValidateDelete(_dbContext, workbookID, currentUserDto);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Workbook.Delete(_dbContext, workbookID);
+
+            return NoContent();
+        }
     }
 }
