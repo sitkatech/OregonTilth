@@ -2,13 +2,16 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
-import { UserService } from 'src/app/services/user/user.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { WorkbookService } from 'src/app/services/workbook/workbook.service';
 import { WorkbookDto } from 'src/app/shared/models/generated/workbook-dto';
 import { ColDef } from 'ag-grid-community';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
+import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
+import { Alert } from 'src/app/shared/models/alert';
+import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { AlertService } from 'src/app/shared/services/alert.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'workbooks',
@@ -19,10 +22,10 @@ export class WorkbooksComponent implements OnInit {
 
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
-    private utilityFunctionsService: UtilityFunctionsService, 
-    private decimalPipe: DecimalPipe,
     private datePipe: DatePipe,
-    private workbookService: WorkbookService) { }
+    private workbookService: WorkbookService,
+    private alertService: AlertService,
+    private router: Router) { }
 
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
@@ -32,13 +35,14 @@ export class WorkbooksComponent implements OnInit {
   private getWorkbooksRequest: any;
   public workbooks: WorkbookDto[];
 
+  private deleteWorkbookRequest: any;
+
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      
-      this.getWorkbooksRequest = this.workbookService.getWorkbooks(this.currentUser).subscribe(workbooks => {
-        this.workbooks = workbooks;
-      });
+      var workbookComponentScope = this;
+
+      this.refreshData();
 
       let _datePipe = this.datePipe;
       this.columnDefs = [
@@ -99,6 +103,32 @@ export class WorkbooksComponent implements OnInit {
           },
           sortable: true, filter: 'agDateColumnFilter', width: 145
         },
+        {
+          headerName: 'Delete', field: 'WorkbookID', valueGetter: function (params: any) {
+            return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.WorkbookID, ObjectDisplayName: params.data.WorkbookName };
+          }, cellRendererFramework: ButtonRendererComponent,
+          cellRendererParams: { 
+            clicked: function(field: any) {
+              if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Workbook?`)) {
+                workbookComponentScope.deleteWorkbook(field.PrimaryKey)
+              }
+            }
+           },
+          sortable: true, filter: true, width: 100, autoHeight:true
+        },
+        {
+          headerName: 'Edit', field: 'WorkbookID', valueGetter: function (params: any) {
+            return { ButtonText: 'Edit', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.WorkbookID, ObjectDisplayName: params.data.WorkbookName };
+          }, cellRendererFramework: ButtonRendererComponent,
+          cellRendererParams: { 
+            clicked: function(field: any) {
+              workbookComponentScope.router.navigateByUrl(`/workbooks/${field.PrimaryKey}/edit`).then(x => {
+                this.alertService.pushAlert(new Alert("Successfully created Workbook.", AlertContext.Success));
+              });
+            }
+           },
+          sortable: true, filter: true, width: 100, autoHeight:true
+        }
       ];
         
       this.columnDefs.forEach(x => {
@@ -109,10 +139,32 @@ export class WorkbooksComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.getWorkbooksRequest.unsubscribe();
     this.authenticationService.dispose();
+
+    if (this.watchUserChangeSubscription && this.watchUserChangeSubscription.unsubscribe) {
+      this.watchUserChangeSubscription.unsubscribe();
+    }
+
+    if (this.getWorkbooksRequest && this.getWorkbooksRequest.unsubscribe) {
+      this.getWorkbooksRequest.unsubscribe();
+    }
+
+    if (this.deleteWorkbookRequest && this.deleteWorkbookRequest.unsubscribe) {
+      this.deleteWorkbookRequest.unsubscribe();
+    }
     this.cdr.detach();
   }
 
+  refreshData(){
+    this.getWorkbooksRequest = this.workbookService.getWorkbooks(this.currentUser).subscribe(workbooks => {
+      this.workbooks = workbooks;
+    });
+  }
+
+  deleteWorkbook(workbookID: number) {
+    this.deleteWorkbookRequest = this.workbookService.deleteWorkbook(workbookID).subscribe(results => {
+      this.refreshData();
+      this.alertService.pushAlert(new Alert("Successfully deleted Workbook", AlertContext.Success));
+    })
+  }
 }

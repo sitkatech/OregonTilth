@@ -9,6 +9,7 @@ import { SubscriptionInsufficientComponent } from './pages/subscription-insuffic
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { RouterModule } from '@angular/router';
 import { LinkRendererComponent } from './components/ag-grid/link-renderer/link-renderer.component';
+import { ButtonRendererComponent } from './components/ag-grid/button-renderer/button-renderer.component';
 import { FontAwesomeIconLinkRendererComponent } from './components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { MultiLinkRendererComponent } from './components/ag-grid/multi-link-renderer/multi-link-renderer.component';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
@@ -27,6 +28,7 @@ import { FieldDefinitionGridHeaderComponent } from './components/field-definitio
         UnauthenticatedComponent,
         SubscriptionInsufficientComponent,
         LinkRendererComponent,
+        ButtonRendererComponent,
         FontAwesomeIconLinkRendererComponent,
         MultiLinkRendererComponent,
         CustomRichTextComponent,
