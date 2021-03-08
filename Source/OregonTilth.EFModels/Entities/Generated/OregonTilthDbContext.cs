@@ -30,7 +30,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<LaborType> LaborTypes { get; set; }
         public virtual DbSet<Phase> Phases { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<TpTypeOrD> TpTypeOrDs { get; set; }
+        public virtual DbSet<TpOrDsType> TpOrDsTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Workbook> Workbooks { get; set; }
 
@@ -182,16 +182,13 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.RoleName).IsUnicode(false);
             });
 
-            modelBuilder.Entity<TpTypeOrD>(entity =>
+            modelBuilder.Entity<TpOrDsType>(entity =>
             {
-                entity.HasKey(e => e.TpTypeOrDsID)
-                    .HasName("PK_TpTypeOrDs_TpTypeOrDsID");
+                entity.Property(e => e.TpOrDsTypeID).ValueGeneratedNever();
 
-                entity.Property(e => e.TpTypeOrDsID).ValueGeneratedNever();
+                entity.Property(e => e.TpOrDsTypeDisplayName).IsUnicode(false);
 
-                entity.Property(e => e.TpTypeOrDsDisplayName).IsUnicode(false);
-
-                entity.Property(e => e.TpTypeOrDsName).IsUnicode(false);
+                entity.Property(e => e.TpOrDsTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<User>(entity =>

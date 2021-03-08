@@ -16,10 +16,10 @@ CREATE TABLE dbo.LaborType(
 	LaborTypeDisplayName varchar(100) NOT NULL CONSTRAINT AK_LaborType_LaborTypeDisplayName UNIQUE
 )
 
-CREATE TABLE dbo.TpTypeOrDs(
-	TpTypeOrDsID int NOT NULL CONSTRAINT PK_TpTypeOrDs_TpTypeOrDsID PRIMARY KEY,
-	TpTypeOrDsName varchar(100) NOT NULL CONSTRAINT AK_TpTypeOrDs_TpTypeOrDsName UNIQUE,
-	TpTypeOrDsDisplayName varchar(100) NOT NULL CONSTRAINT AK_TpTypeOrDs_TpTypeOrDsDisplayName UNIQUE
+CREATE TABLE dbo.TpOrDsType(
+	TpOrDsTypeID int NOT NULL CONSTRAINT PK_TpOrDsType_TpOrDsTypeID PRIMARY KEY,
+	TpOrDsTypeName varchar(100) NOT NULL CONSTRAINT AK_TpOrDsType_TpOrDsTypeName UNIQUE,
+	TpOrDsTypeDisplayName varchar(100) NOT NULL CONSTRAINT AK_TpOrDsType_TpOrDsTypeDisplayName UNIQUE
 )
 
 CREATE TABLE dbo.Phase(
