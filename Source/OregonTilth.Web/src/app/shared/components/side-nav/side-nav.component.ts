@@ -1,15 +1,8 @@
 import { Component, OnInit, HostListener, ChangeDetectorRef, OnDestroy, Input } from '@angular/core';
-import { CookieStorageService } from '../../services/cookies/cookie-storage.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserDetailedDto } from '../../models';
-import { UserService } from 'src/app/services/user/user.service';
-import { AlertService } from '../../services/alert.service';
-import { Alert } from '../../models/alert';
-import { environment } from 'src/environments/environment';
-import { AlertContext } from '../../models/enums/alert-context.enum';
 import { WorkbookDto } from '../../models/generated/workbook-dto';
 import { ActivatedRoute, Router } from '@angular/router';
-import { WorkbookService } from 'src/app/services/workbook/workbook.service';
 
 @Component({
     selector: 'side-nav',
