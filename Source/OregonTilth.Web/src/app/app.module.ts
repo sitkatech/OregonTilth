@@ -18,6 +18,7 @@ import { UserEditComponent } from './pages/user-edit/user-edit.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { DecimalPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { LinkRendererComponent } from './shared/components/ag-grid/link-renderer/link-renderer.component';
+import { ButtonRendererComponent } from './shared/components/ag-grid/button-renderer/button-renderer.component';
 
 
 import { FormsModule } from '@angular/forms';
@@ -33,6 +34,7 @@ import { CreateUserCallbackComponent } from './pages/create-user-callback/create
 import { AboutComponent } from './pages/about/about.component';
 import { WorkbooksComponent } from './pages/workbooks/workbooks.component';
 import { NewWorkbookComponent } from './pages/workbooks/new-workbook/new-workbook.component';
+import { EditWorkbookComponent } from './pages/workbooks/edit-workbook/edit-workbook.component';
 import { DisclaimerComponent } from './pages/disclaimer/disclaimer.component';
 import { AppInitService } from './app.init';
 import { FieldDefinitionListComponent } from './pages/field-definition-list/field-definition-list.component';
@@ -67,6 +69,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     AboutComponent,
     WorkbooksComponent,
     NewWorkbookComponent,
+    EditWorkbookComponent,
     DisclaimerComponent,
     FieldDefinitionListComponent,
     FieldDefinitionEditComponent,
@@ -100,7 +103,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     },
     DecimalPipe, CurrencyPipe, DatePipe
   ],
-  entryComponents: [LinkRendererComponent, FontAwesomeIconLinkRendererComponent, MultiLinkRendererComponent],
+  entryComponents: [LinkRendererComponent, FontAwesomeIconLinkRendererComponent, MultiLinkRendererComponent, ButtonRendererComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
