@@ -14,6 +14,10 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-labor-activity-dto';
+import { FieldLaborActivityCreateDto } from 'src/app/shared/models/forms/field-labor-activities/field-labor-activity-create-dto';
+import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/field-labor-activity-category-dto';
+import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 
 @Component({
   selector: 'field-labor-activities',
@@ -25,31 +29,41 @@ export class FieldLaborActivitiesComponent implements OnInit {
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
+    private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
     private router: Router,
     private route: ActivatedRoute) { }
 
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
-  public columnDefs: ColDef[];
-  public richTextTypeID : number = CustomRichTextType.PlatformOverview;
   public workbook: WorkbookDto;
-  public roles: Array<RoleDto>;
+  
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
+  private addFieldLaborActivityRequest: any;
+  public model: FieldLaborActivityCreateDto;
 
 
+  public fieldLaborActivityCategories: Array<FieldLaborActivityCategoryDto>;
+  private getFieldLaborActivityCategoriesRequest: any;
 
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-
+      this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID});
+      
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID).subscribe(workbook => {
         this.workbook = workbook;
       })
+
+      this.getFieldLaborActivityCategoriesRequest = this.lookupTablesService.getFieldLaborActivityCategories().subscribe(result => {
+        this.fieldLaborActivityCategories = result;
+      })
+
+
+
       
     });
   }
@@ -61,6 +75,20 @@ export class FieldLaborActivitiesComponent implements OnInit {
     }
     this.authenticationService.dispose();
     this.cdr.detach();
+  }
+
+  onSubmit(fieldLaborActivityForm: HTMLFormElement): void {
+    this.isLoadingSubmit = true;
+    alert('adding');
+    // this.addFieldLaborActivityRequest = this.workbookService.editWorkbook(this.model).subscribe(response => {
+    //   this.isLoadingSubmit = false;
+    //   this.router.navigateByUrl("/workbooks").then(x => {
+    //     this.alertService.pushAlert(new Alert("Successfully edited Workbook.", AlertContext.Success));
+    //   });
+    // }, error => { 
+    //   this.isLoadingSubmit = false;
+    //   this.cdr.detectChanges();
+    // });
   }
 
 }
