@@ -39,21 +39,7 @@ export class WorkbookDetailComponent implements OnInit {
   private workbookID: number;
   private getWorkbookRequest: any;
 
-  public editWorkbookRequest: any;
 
-  // onSubmit(editUserForm: HTMLFormElement): void {
-  //   this.isLoadingSubmit = true;
-
-  //   this.editWorkbookRequest = this.workbookService.editWorkbook(this.model).subscribe(response => {
-  //     this.isLoadingSubmit = false;
-  //     this.router.navigateByUrl("/workbooks").then(x => {
-  //       this.alertService.pushAlert(new Alert("Successfully edited Workbook.", AlertContext.Success));
-  //     });
-  //   }, error => { 
-  //     this.isLoadingSubmit = false;
-  //     this.cdr.detectChanges();
-  //   });
-  // }
 
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -70,9 +56,6 @@ export class WorkbookDetailComponent implements OnInit {
 
   ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();
-    if (this.editWorkbookRequest && this.editWorkbookRequest.unsubscribe) {
-      this.editWorkbookRequest.unsubscribe();
-    }
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
