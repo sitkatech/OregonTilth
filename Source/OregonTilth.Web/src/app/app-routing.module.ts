@@ -39,7 +39,7 @@ const routes: Routes = [
   { path: "workbooks", component: WorkbooksComponent},
   { path: "workbooks/new", component: NewWorkbookComponent},
   { path: "workbooks/:id/edit", component: EditWorkbookComponent},
-  { path: "workbooks/:id/detail", component: WorkbookDetailComponent},
+  { path: "workbooks/:id", component: WorkbookDetailComponent},
   { path: "login-callback", component: LoginCallbackComponent },
   { path: "create-user-callback", component: CreateUserCallbackComponent },
   { path: "not-found", component: NotFoundComponent },
