@@ -1,0 +1,23 @@
+<nav aria-label="breadcrumb" *ngIf="workbook">
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item" aria-current="page">
+        <a routerLink="/workbooks">Workbooks</a>
+      </li>
+      <li class="breadcrumb-item" aria-current="page">
+        <a routerLink="/workbooks/{{workbook.WorkbookID}}">{{workbook.WorkbookName}}</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Field Labor Activities</li>
+  </ol>
+</nav>
+
+<div class="container" *ngIf="workbook">
+  <div class="row mb-2">
+    <div class="col-sm-2">
+      <side-nav [workbook]="workbook"></side-nav>
+    </div>
+    <div class="col-sm-10">
+        <app-alert-display></app-alert-display>
+        <h1 class="d-inline-block">Field Labor Activities</h1>
+    </div>
+  </div>
+</div>
