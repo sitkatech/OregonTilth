@@ -1,0 +1,17 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page">
+          <a routerLink="/workbooks">Workbooks</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{workbook.WorkbookName}}</li>
+    </ol>
+</nav>
+
+<div class="container">
+    <app-alert-display></app-alert-display>
+    <div class="row mb-2">
+        <div class="col">
+            <h2 class="d-inline-block">{{workbook.WorkbookName}}</h2>
+        </div>
+    </div>
+</div>
