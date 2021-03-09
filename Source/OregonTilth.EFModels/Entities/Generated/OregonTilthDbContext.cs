@@ -28,6 +28,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<FileResourceMimeType> FileResourceMimeTypes { get; set; }
         public virtual DbSet<HarvestType> HarvestTypes { get; set; }
         public virtual DbSet<LaborType> LaborTypes { get; set; }
+        public virtual DbSet<Machinery> Machineries { get; set; }
         public virtual DbSet<Phase> Phases { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<TpOrDsType> TpOrDsTypes { get; set; }
@@ -160,6 +161,16 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.LaborTypeDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.LaborTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Machinery>(entity =>
+            {
+                entity.Property(e => e.MachineryName).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.Machineries)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<Phase>(entity =>
