@@ -52,8 +52,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
   private getFieldLaborActivityCategoriesRequest: any;
 
   public columnDefs: ColDef[];
-  private gridApi;
-  private gridColumnApi;
+ 
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -72,7 +71,6 @@ export class FieldLaborActivitiesComponent implements OnInit {
           this.cdr.markForCheck();
       });
 
-      
     });
   }
 
@@ -95,24 +93,20 @@ export class FieldLaborActivitiesComponent implements OnInit {
         valueFormatter: function (params) {
           return params.value.FieldLaborActivityCategoryDisplayName;
         },
+        valueSetter: params => {
+          params.data.FieldLaborActivityCategory = this.fieldLaborActivityCategories.find(element => {
+            return element.FieldLaborActivityCategoryDisplayName == params.newValue;
+          });
+          return true;
+        },
         onCellValueChanged: function (data: any) {
-          // we CAN go this route, but I'm not a fan of it currently
-          console.log(data, 'data')
-          console.log(data.oldValue, 'old value')
-          console.log(data.newValue, 'new value')
+         // lets send the post request to actually update this
+         var dtoToPost = data.data;
+         console.log(dtoToPost);
         }
         
       }
     ]
-  }
-
-  onGridReady(params) {
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
-  }
-
-  onCellValueChanged(event) {
-    console.log(event.data);
   }
 
   ngOnDestroy() {
@@ -154,8 +148,3 @@ export class FieldLaborActivitiesComponent implements OnInit {
 
 }
 
-function fieldLaborActivityCategoryParser(params) {
-  debugger;
-  alert('test');
-  return Number(params.newValue);
-}
