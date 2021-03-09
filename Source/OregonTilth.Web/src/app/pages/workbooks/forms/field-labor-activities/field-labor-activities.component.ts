@@ -83,7 +83,6 @@ export class FieldLaborActivitiesComponent implements OnInit {
         field: 'FieldLaborActivityName',
         editable: true,
         cellEditor: 'agTextCellEditor',
-        valueParser: fieldLaborActivityCategoryParser
       },
       {
         headerName: 'Field Labor Category', 
@@ -91,13 +90,18 @@ export class FieldLaborActivitiesComponent implements OnInit {
         editable: true,
         cellEditor: 'select',
         cellEditorParams: {
-          values: ['test', 'test2']
-          // values: this.fieldLaborActivityCategories.map(x => x.FieldLaborActivityCategoryDisplayName)
+          values: this.fieldLaborActivityCategories.map(x => x.FieldLaborActivityCategoryDisplayName)
         },
-        // valueFormatter: function (params) {
-        //   return params.value.FieldLaborActivityCategoryDisplayName;
-        // },
-        valueParser: fieldLaborActivityCategoryParser
+        valueFormatter: function (params) {
+          return params.value.FieldLaborActivityCategoryDisplayName;
+        },
+        onCellValueChanged: function (data: any) {
+          // we CAN go this route, but I'm not a fan of it currently
+          console.log(data, 'data')
+          console.log(data.oldValue, 'old value')
+          console.log(data.newValue, 'new value')
+        }
+        
       }
     ]
   }
