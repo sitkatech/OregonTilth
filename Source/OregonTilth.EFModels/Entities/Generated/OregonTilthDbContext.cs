@@ -96,8 +96,6 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<FieldLaborActivity>(entity =>
             {
-                entity.Property(e => e.FieldLaborActivityID).ValueGeneratedNever();
-
                 entity.Property(e => e.FieldLaborActivityName).IsUnicode(false);
 
                 entity.HasOne(d => d.FieldLaborActivityCategory)

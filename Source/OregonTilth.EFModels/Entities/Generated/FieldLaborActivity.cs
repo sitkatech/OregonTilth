@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace OregonTilth.EFModels.Entities
 {
     [Table("FieldLaborActivity")]
-    [Index(nameof(FieldLaborActivityName), Name = "AK_FieldLaborActivity_FieldLaborActivityName", IsUnique = true)]
+    [Index(nameof(FieldLaborActivityName), nameof(WorkbookID), Name = "AK_FieldLaborActivity_FieldLaborActivityName_WorkbookID", IsUnique = true)]
     public partial class FieldLaborActivity
     {
         [Key]

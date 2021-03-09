@@ -62,7 +62,9 @@ export class FieldLaborActivitiesComponent implements OnInit {
         this.fieldLaborActivityCategories = result;
       })
 
-
+      this.getFieldLaborActivitiesRequest = this.workbookService.getFieldLaborActivities(this.workbookID).subscribe(result => {
+        this.fieldLaborActivities = result;
+      })
 
       
     });
@@ -73,22 +75,24 @@ export class FieldLaborActivitiesComponent implements OnInit {
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
+    if (this.addFieldLaborActivityRequest && this.addFieldLaborActivityRequest.unsubscribe) {
+      this.addFieldLaborActivityRequest.unsubscribe();
+    }
     this.authenticationService.dispose();
     this.cdr.detach();
   }
 
   onSubmit(fieldLaborActivityForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-    alert('adding');
-    // this.addFieldLaborActivityRequest = this.workbookService.editWorkbook(this.model).subscribe(response => {
-    //   this.isLoadingSubmit = false;
-    //   this.router.navigateByUrl("/workbooks").then(x => {
-    //     this.alertService.pushAlert(new Alert("Successfully edited Workbook.", AlertContext.Success));
-    //   });
-    // }, error => { 
-    //   this.isLoadingSubmit = false;
-    //   this.cdr.detectChanges();
-    // });
+    this.addFieldLaborActivityRequest = this.workbookService.addFieldLaborActivity(this.model).subscribe(response => {
+      this.isLoadingSubmit = false;
+      
+      this.alertService.pushAlert(new Alert("Successfully added Field Labor Activity.", AlertContext.Success));
+      
+    }, error => { 
+      this.isLoadingSubmit = false;
+      this.cdr.detectChanges();
+    });
   }
 
 }
