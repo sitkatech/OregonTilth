@@ -34,13 +34,35 @@ namespace OregonTilth.EFModels.Entities
             dbContext.SaveChanges();
             dbContext.Entry(workbook).Reload();
 
-            return GetByWorkbookID(dbContext, workbook.WorkbookID);
+            return GetDtoByWorkbookID(dbContext, workbook.WorkbookID);
         }
 
-        public static WorkbookDto GetByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
+        public static WorkbookDto EditWorkbook(OregonTilthDbContext dbContext, WorkbookDto workbookToEdit)
+        {
+            
+            var workbook = dbContext.Workbooks
+                .Include(x => x.User).ThenInclude(x => x.Role)
+                .Single(x => x.WorkbookID == workbookToEdit.WorkbookID);
+
+            workbook.WorkbookName = workbookToEdit.WorkbookName;
+
+            dbContext.SaveChanges();
+            dbContext.Entry(workbook).Reload();
+
+
+            return GetDtoByWorkbookID(dbContext, workbook.WorkbookID);
+        }
+
+        public static WorkbookDto GetDtoByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
         {
             var workbook = GetWorkbookImpl(dbContext).SingleOrDefault(x => x.WorkbookID == workbookID);
             return workbook?.AsDto();
+        }
+
+        public static Workbook GetByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
+        {
+            var workbook = GetWorkbookImpl(dbContext).SingleOrDefault(x => x.WorkbookID == workbookID);
+            return workbook;
         }
 
         public static IQueryable<WorkbookDto> GetByUserID(OregonTilthDbContext dbContext, int userID)
@@ -65,8 +87,39 @@ namespace OregonTilth.EFModels.Entities
             {
                 result.Add(new ErrorMessage() { Type = "Workbook Name", Message = "Workbook names must be unique." });
             }
-            
+
+            if (string.IsNullOrEmpty(workbookDto.WorkbookName))
+            {
+                result.Add(new ErrorMessage() { Type = "Workbook Name", Message = "Workbooks must have a name." });
+            }
+
             return result;
+        }
+
+        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int workbookID, UserDto userDto)
+        {
+            var result = new List<ErrorMessage>();
+            var workbook = Workbook.GetByWorkbookID(dbContext, workbookID);
+            
+            if (workbook.UserID != userDto.UserID)
+            {
+                result.Add(new ErrorMessage() { Type = "Workbook", Message = "You do not have permission to delete this Workbook." });
+            }
+
+            return result;
+        }
+
+        public static void Delete(OregonTilthDbContext dbContext, int workbookID)
+        {
+            var existingWorkbook = dbContext
+                .Workbooks
+                .FirstOrDefault(x => x.WorkbookID == workbookID);
+
+            if (existingWorkbook != null)
+            {
+                dbContext.Workbooks.Remove(existingWorkbook);
+                dbContext.SaveChanges();
+            }
         }
 
     }

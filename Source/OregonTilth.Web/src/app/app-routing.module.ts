@@ -19,6 +19,7 @@ import { FieldDefinitionEditComponent } from './pages/field-definition-edit/fiel
 import { TrainingComponent } from './pages/training/training.component';
 import { WorkbooksComponent } from './pages/workbooks/workbooks.component';
 import { NewWorkbookComponent } from './pages/workbooks/new-workbook/new-workbook.component';
+import { EditWorkbookComponent } from './pages/workbooks/edit-workbook/edit-workbook.component';
 
 const routes: Routes = [
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -36,6 +37,7 @@ const routes: Routes = [
   { path: "platform-overview", component: AboutComponent},
   { path: "workbooks", component: WorkbooksComponent},
   { path: "workbooks/new", component: NewWorkbookComponent},
+  { path: "workbooks/:id/edit", component: EditWorkbookComponent},
   { path: "login-callback", component: LoginCallbackComponent },
   { path: "create-user-callback", component: CreateUserCallbackComponent },
   { path: "not-found", component: NotFoundComponent },

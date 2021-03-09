@@ -3,7 +3,7 @@
         <li class="breadcrumb-item" aria-current="page">
           <a routerLink="/workbooks">Workbooks</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">New</li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
     </ol>
 </nav>
 
@@ -11,8 +11,7 @@
     <app-alert-display></app-alert-display>
     <div class="row mb-2">
         <div class="col">
-            <h2 class="d-inline-block">Create new Workbook</h2>
-            <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+            <h2 class="d-inline-block">Edit Workbook</h2>
         </div>
     </div>
 </div>
@@ -21,8 +20,8 @@
     <div class="row mb-2">
         <div class="col">
             <form *ngIf=(model) (ngSubmit)="onSubmit(newWorkbookForm)" #newWorkbookForm="ngForm">
-                <div class="form-group mt-4">
-                  <div class="col-sm-5 control-label">
+                <div class="form-group mt-4 row">
+                  <div class="col-sm-2 control-label">
                     <label class="required">Workbook Name</label>
                   </div>
                   <div class="col-sm-10">
