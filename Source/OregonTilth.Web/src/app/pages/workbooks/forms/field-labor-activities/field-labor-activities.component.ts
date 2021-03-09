@@ -52,7 +52,8 @@ export class FieldLaborActivitiesComponent implements OnInit {
   private getFieldLaborActivityCategoriesRequest: any;
 
   public columnDefs: ColDef[];
-
+  private gridApi;
+  private gridColumnApi;
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -67,21 +68,49 @@ export class FieldLaborActivitiesComponent implements OnInit {
           this.workbook = workbook;
           this.fieldLaborActivityCategories = fieldLaborActivityCategories;
           this.fieldLaborActivities = fieldLaborActivities;
+          this.defineColumnDefs();
           this.cdr.markForCheck();
       });
 
-      this.columnDefs = [
-        {
-          headerName: 'Field Labor Activity', 
-          field: 'FieldLaborActivityName',
-          editable: true
-        },
-        {
-          headerName: 'Field Labor Category', 
-          field: 'FieldLaborActivityCategory.FieldLaborActivityCategoryDisplayName'
-        }
-      ]
+      
     });
+  }
+
+  defineColumnDefs() {
+    this.columnDefs = [
+      {
+        headerName: 'Field Labor Activity', 
+        field: 'FieldLaborActivityName',
+        editable: true,
+        cellEditor: 'agTextCellEditor'
+      },
+      {
+        headerName: 'Field Labor Category', 
+        field: 'FieldLaborActivityCategory',
+        editable: true,
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: this.fieldLaborActivityCategories.map(x => x.FieldLaborActivityCategoryDisplayName)
+        },
+        valueFormatter: function (params) {return params.value.FieldLaborActivityCategoryDisplayName ;},
+        valueParser: this.fieldLaborActivityCategoryParser
+      }
+    ]
+  }
+
+  onGridReady(params) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
+  onCellValueChanged(event) {
+    console.log(event.data);
+  }
+
+  fieldLaborActivityCategoryParser(params) {
+    var name = params.newValue;
+    alert('test');
+    return 'test';
   }
 
   ngOnDestroy() {
