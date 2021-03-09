@@ -82,18 +82,22 @@ export class FieldLaborActivitiesComponent implements OnInit {
         headerName: 'Field Labor Activity', 
         field: 'FieldLaborActivityName',
         editable: true,
-        cellEditor: 'agTextCellEditor'
+        cellEditor: 'agTextCellEditor',
+        valueParser: fieldLaborActivityCategoryParser
       },
       {
         headerName: 'Field Labor Category', 
         field: 'FieldLaborActivityCategory',
         editable: true,
-        cellEditor: 'agSelectCellEditor',
+        cellEditor: 'select',
         cellEditorParams: {
-          values: this.fieldLaborActivityCategories.map(x => x.FieldLaborActivityCategoryDisplayName)
+          values: ['test', 'test2']
+          // values: this.fieldLaborActivityCategories.map(x => x.FieldLaborActivityCategoryDisplayName)
         },
-        valueFormatter: function (params) {return params.value.FieldLaborActivityCategoryDisplayName ;},
-        valueParser: this.fieldLaborActivityCategoryParser
+        // valueFormatter: function (params) {
+        //   return params.value.FieldLaborActivityCategoryDisplayName;
+        // },
+        valueParser: fieldLaborActivityCategoryParser
       }
     ]
   }
@@ -105,12 +109,6 @@ export class FieldLaborActivitiesComponent implements OnInit {
 
   onCellValueChanged(event) {
     console.log(event.data);
-  }
-
-  fieldLaborActivityCategoryParser(params) {
-    var name = params.newValue;
-    alert('test');
-    return 'test';
   }
 
   ngOnDestroy() {
@@ -150,4 +148,10 @@ export class FieldLaborActivitiesComponent implements OnInit {
     this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID, FieldLaborActivityCategoryID: this.model.FieldLaborActivityCategoryID});
   }
 
+}
+
+function fieldLaborActivityCategoryParser(params) {
+  debugger;
+  alert('test');
+  return Number(params.newValue);
 }
