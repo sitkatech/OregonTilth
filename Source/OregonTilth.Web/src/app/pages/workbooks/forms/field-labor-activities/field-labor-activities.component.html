@@ -1,0 +1,76 @@
+<nav aria-label="breadcrumb" *ngIf="workbook">
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item" aria-current="page">
+        <a routerLink="/workbooks">Workbooks</a>
+      </li>
+      <li class="breadcrumb-item" aria-current="page">
+        <a routerLink="/workbooks/{{workbook.WorkbookID}}">{{workbook.WorkbookName}}</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Field Labor Activities</li>
+  </ol>
+</nav>
+
+<div class="container" *ngIf="workbook">
+  <div class="row mb-2">
+    <div class="col-sm-2">
+      <side-nav [workbook]="workbook"></side-nav>
+    </div>
+    <div class="col-sm-10">
+        <app-alert-display></app-alert-display>
+        <h1>Field Labor Activities</h1>
+        <div class="card mt-4">
+          <div class="card-header">
+            Add new Field Labor Activity
+          </div>
+          <div class="card-body">
+            <form *ngIf=(model) (ngSubmit)="onSubmit(fieldLaborActivityForm)" #fieldLaborActivityForm="ngForm">
+              <div class="row">
+                
+                <div class="form-group col-md-8">
+                  <label class="required">Field Labor Activity</label>
+                  <input class="form-control" type="text" name="FieldLaborActivityName" [(ngModel)]="model.FieldLaborActivityName">
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="required">Labor Activity Category</label>
+                  <select name="FieldLaborActivityCategoryID" class="form-control" [(ngModel)]="model.FieldLaborActivityCategoryID" required>
+                    <option value=""></option>
+                    <option *ngFor="let category of fieldLaborActivityCategories" [value]="category.FieldLaborActivityCategoryID">
+                      {{category.FieldLaborActivityCategoryDisplayName}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-sm">
+                  <i class="fas fa-bolt"></i> Required field
+                </div>
+                <div class="col-sm text-right">
+                  <button type="submit" class="btn btn-fresca" [disabled]="!fieldLaborActivityForm.form.valid || isLoadingSubmit">
+                    <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                    Submit
+                  </button>
+                  <a class="btn btn-secondary ml-1" routerLink="/workbooks">Cancel</a>
+                </div>
+              </div>
+            </form>
+          </div>
+          
+        </div>
+
+        
+        
+        <div class="row mt-4">
+          <div class="col">
+            <ag-grid-angular #fieldLaborActivitiesGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="fieldLaborActivities"
+              [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (cellValueChanged)="onCellValueChanged($event)">
+            </ag-grid-angular>
+          </div>
+        </div>
+
+
+
+    </div>
+  </div>
+  
+</div>

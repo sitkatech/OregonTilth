@@ -16,11 +16,11 @@ import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 
 @Component({
-  selector: 'edit-workbook',
-  templateUrl: './edit-workbook.component.html',
-  styleUrls: ['./edit-workbook.component.scss']
+  selector: 'workbook-detail',
+  templateUrl: './workbook-detail.component.html',
+  styleUrls: ['./workbook-detail.component.scss']
 })
-export class EditWorkbookComponent implements OnInit {
+export class WorkbookDetailComponent implements OnInit {
 
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
@@ -33,27 +33,13 @@ export class EditWorkbookComponent implements OnInit {
   private currentUser: UserDetailedDto;
   public columnDefs: ColDef[];
   public richTextTypeID : number = CustomRichTextType.PlatformOverview;
-  public model: WorkbookDto;
+  public workbook: WorkbookDto;
   public roles: Array<RoleDto>;
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
 
-  public editWorkbookRequest: any;
 
-  onSubmit(editWorkbookForm: HTMLFormElement): void {
-    this.isLoadingSubmit = true;
-
-    this.editWorkbookRequest = this.workbookService.editWorkbook(this.model).subscribe(response => {
-      this.isLoadingSubmit = false;
-      this.router.navigateByUrl("/workbooks").then(x => {
-        this.alertService.pushAlert(new Alert("Successfully edited Workbook.", AlertContext.Success));
-      });
-    }, error => { 
-      this.isLoadingSubmit = false;
-      this.cdr.detectChanges();
-    });
-  }
 
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -62,7 +48,7 @@ export class EditWorkbookComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
 
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID).subscribe(workbook => {
-        this.model = workbook;
+        this.workbook = workbook;
       })
       
     });
@@ -70,9 +56,6 @@ export class EditWorkbookComponent implements OnInit {
 
   ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();
-    if (this.editWorkbookRequest && this.editWorkbookRequest.unsubscribe) {
-      this.editWorkbookRequest.unsubscribe();
-    }
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }

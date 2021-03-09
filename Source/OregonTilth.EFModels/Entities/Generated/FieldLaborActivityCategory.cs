@@ -13,6 +13,11 @@ namespace OregonTilth.EFModels.Entities
     [Index(nameof(FieldLaborActivityCategoryName), Name = "AK_FieldLaborActivityCategory_FieldLaborActivityCategoryName", IsUnique = true)]
     public partial class FieldLaborActivityCategory
     {
+        public FieldLaborActivityCategory()
+        {
+            FieldLaborActivities = new HashSet<FieldLaborActivity>();
+        }
+
         [Key]
         public int FieldLaborActivityCategoryID { get; set; }
         [Required]
@@ -21,5 +26,8 @@ namespace OregonTilth.EFModels.Entities
         [Required]
         [StringLength(100)]
         public string FieldLaborActivityCategoryDisplayName { get; set; }
+
+        [InverseProperty(nameof(FieldLaborActivity.FieldLaborActivityCategory))]
+        public virtual ICollection<FieldLaborActivity> FieldLaborActivities { get; set; }
     }
 }
