@@ -85,13 +85,13 @@ export class FieldLaborActivitiesComponent implements OnInit {
         headerName: 'Field Labor Activity', 
         field: 'FieldLaborActivityName',
         editable: true,
-        cellEditor: 'agTextCellEditor',
+        cellEditor: 'agPopupTextCellEditor',
       },
       {
         headerName: 'Field Labor Category', 
         field: 'FieldLaborActivityCategory',
         editable: true,
-        cellEditor: 'select',
+        cellEditor: 'agPopupSelectCellEditor',
         cellEditorParams: {
           values: this.fieldLaborActivityCategories.map(x => x.FieldLaborActivityCategoryDisplayName)
         },
