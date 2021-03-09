@@ -53,4 +53,9 @@ export class WorkbookService {
         return this.apiService.putToApi(route, fieldLaborActivity);
     }
 
+    deleteFieldLaborActivity(workbookID:number, fieldLaborActivityID: number): Observable<FieldLaborActivityDto[]> {
+        let route = `workbooks/${workbookID}/forms/field-labor-activities/${fieldLaborActivityID}`;
+        return this.apiService.deleteToApi(route);
+    }
+
 }

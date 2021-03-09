@@ -19,6 +19,7 @@ import { FieldLaborActivityCreateDto } from 'src/app/shared/models/forms/field-l
 import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/field-labor-activity-category-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { forkJoin } from 'rxjs';
+import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 
 @Component({
   selector: 'field-labor-activities',
@@ -52,6 +53,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
   private getFieldLaborActivityCategoriesRequest: any;
 
   private updateFieldLaborActivityRequest: any;
+  private deleteFieldLaborActivityRequest: any;
 
   public columnDefs: ColDef[];
  
@@ -77,6 +79,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
   }
 
   defineColumnDefs() {
+    var componentScope = this;
     this.columnDefs = [
       {
         headerName: 'Field Labor Activity', 
@@ -101,10 +104,31 @@ export class FieldLaborActivitiesComponent implements OnInit {
           });
           return true;
         },
-      }
+      },
+      {
+        headerName: 'Delete', field: 'FieldLaborActivityID', valueGetter: function (params: any) {
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.FieldLaborActivityID, ObjectDisplayName: params.data.FieldLaborActivityName };
+        }, cellRendererFramework: ButtonRendererComponent,
+        cellRendererParams: { 
+          clicked: function(field: any) {
+            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Field Labor Activity?`)) {
+              componentScope.deleteFieldLaborActivity(field.PrimaryKey)
+            }
+          }
+          },
+        sortable: true, filter: true, width: 100, autoHeight:true
+      },
     ]
   }
 
+  deleteFieldLaborActivity(fieldLaborActivityID: number) {
+    this.deleteFieldLaborActivityRequest = this.workbookService.deleteFieldLaborActivity(this.workbookID, fieldLaborActivityID).subscribe(fieldLaborActivityDtos => {
+      this.fieldLaborActivities = fieldLaborActivityDtos;
+      this.cdr.detectChanges();
+    }, error => {
+
+    })
+  }
 
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
@@ -135,6 +159,12 @@ export class FieldLaborActivitiesComponent implements OnInit {
     }
     if (this.getFieldLaborActivityCategoriesRequest && this.getFieldLaborActivityCategoriesRequest.unsubscribe) {
       this.getFieldLaborActivityCategoriesRequest.unsubscribe();
+    }
+    if (this.updateFieldLaborActivityRequest && this.updateFieldLaborActivityRequest.unsubscribe) {
+      this.updateFieldLaborActivityRequest.unsubscribe();
+    }
+    if (this.deleteFieldLaborActivityRequest && this.deleteFieldLaborActivityRequest.unsubscribe) {
+      this.deleteFieldLaborActivityRequest.unsubscribe();
     }
     this.authenticationService.dispose();
     this.cdr.detach();

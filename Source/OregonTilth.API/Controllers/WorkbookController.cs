@@ -121,7 +121,7 @@ namespace OregonTilth.API.Controllers
         [LoggedInUnclassifiedFeature]
         public ActionResult<IEnumerable<FieldLaborActivityDto>> GetFieldLaborActivities([FromRoute] int workbookID)
         {
-            var fieldLaborActivities = FieldLaborActivity.GetByWorkbookID(_dbContext, workbookID);
+            var fieldLaborActivities = FieldLaborActivity.GetDtoListByWorkbookID(_dbContext, workbookID);
             return Ok(fieldLaborActivities);
         }
 
@@ -138,6 +138,25 @@ namespace OregonTilth.API.Controllers
 
             var fieldLaborActivityDtos = FieldLaborActivity.UpdateFieldLaborActivity(_dbContext, fieldLaborActivityDto);
             return Ok(fieldLaborActivityDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/field-labor-activities/{fieldLaborActivityID}")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldLaborActivityDto>> DeleteFieldLaborActivity([FromRoute] int workbookID, [FromRoute] int fieldLaborActivityID)
+        {
+            var validationMessages = FieldLaborActivity.ValidateDelete(_dbContext, fieldLaborActivityID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            FieldLaborActivity.Delete(_dbContext, fieldLaborActivityID);
+
+            var returnDtos = FieldLaborActivity.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
         }
 
     }

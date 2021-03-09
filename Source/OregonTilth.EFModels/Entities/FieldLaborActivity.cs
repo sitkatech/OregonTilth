@@ -19,7 +19,7 @@ namespace OregonTilth.EFModels.Entities
         {
             var result = new List<ErrorMessage>();
 
-            var userFieldLaborActivitiesForWorkbook = GetByWorkbookID(dbContext, fieldLaborActivityUpsertDto.WorkbookID).ToList();
+            var userFieldLaborActivitiesForWorkbook = GetDtoListByWorkbookID(dbContext, fieldLaborActivityUpsertDto.WorkbookID).ToList();
             if (userFieldLaborActivitiesForWorkbook.Any(x => x.FieldLaborActivityName.ToLower() == fieldLaborActivityUpsertDto.FieldLaborActivityName.ToLower()))
             {
                 result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "Field Labor Activity Names must be unique within this workbook." });
@@ -37,9 +37,9 @@ namespace OregonTilth.EFModels.Entities
         {
             var result = new List<ErrorMessage>();
 
-            var userFieldLaborActivitiesForWorkbook = GetByWorkbookID(dbContext, fieldLaborActivityDto.Workbook.WorkbookID).ToList();
+            var userFieldLaborActivitiesForWorkbook = GetDtoListByWorkbookID(dbContext, fieldLaborActivityDto.Workbook.WorkbookID).ToList();
             if (userFieldLaborActivitiesForWorkbook.Any(x => x.FieldLaborActivityName.ToLower() == fieldLaborActivityDto.FieldLaborActivityName.ToLower() 
-                                                             && fieldLaborActivityDto.FieldLaborActivityID != x.FieldLaborActivityID))
+            && fieldLaborActivityDto.FieldLaborActivityID != x.FieldLaborActivityID))
             {
                 result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "Field Labor Activity Names must be unique within this workbook." });
             }
@@ -58,7 +58,7 @@ namespace OregonTilth.EFModels.Entities
             return fieldLaborActivities.Select(x => x.AsDto());
         }
 
-        public static IQueryable<FieldLaborActivityDto> GetByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
+        public static IQueryable<FieldLaborActivityDto> GetDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
         {
             var fieldLaborActivities = GetFieldLaborActivityImpl(dbContext).Where(x => x.WorkbookID == workbookID);
             return fieldLaborActivities.Select(x => x.AsDto());
@@ -91,7 +91,7 @@ namespace OregonTilth.EFModels.Entities
             dbContext.SaveChanges();
             dbContext.Entry(fieldLaborActivity).Reload();
 
-            return GetByWorkbookID(dbContext, fieldLaborActivityUpsertDto.WorkbookID);
+            return GetDtoListByWorkbookID(dbContext, fieldLaborActivityUpsertDto.WorkbookID);
         }
 
         public static FieldLaborActivityDto UpdateFieldLaborActivity(OregonTilthDbContext dbContext, FieldLaborActivityDto fieldLaborActivityDto)
@@ -109,5 +109,25 @@ namespace OregonTilth.EFModels.Entities
             return GetDtoByFieldLaborActivityID(dbContext, fieldLaborActivity.WorkbookID);
         }
 
+        // todo: validate deletion
+        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int fieldLaborActivityID)
+        {
+            var result = new List<ErrorMessage>();
+            
+            return result;
+        }
+
+        public static void Delete(OregonTilthDbContext dbContext, int fieldLaborActivityID)
+        {
+            var existingFieldLaborActivity = dbContext
+                .FieldLaborActivities
+                .FirstOrDefault(x => x.FieldLaborActivityID == fieldLaborActivityID);
+
+            if (existingFieldLaborActivity != null)
+            {
+                dbContext.FieldLaborActivities.Remove(existingFieldLaborActivity);
+                dbContext.SaveChanges();
+            }
+        }
     }
 }
