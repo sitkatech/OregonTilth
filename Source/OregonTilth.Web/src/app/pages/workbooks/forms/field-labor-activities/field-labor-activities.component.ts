@@ -51,6 +51,8 @@ export class FieldLaborActivitiesComponent implements OnInit {
   public fieldLaborActivityCategories: Array<FieldLaborActivityCategoryDto>;
   private getFieldLaborActivityCategoriesRequest: any;
 
+  private updateFieldLaborActivityRequest: any;
+
   public columnDefs: ColDef[];
  
   ngOnInit() {
@@ -99,14 +101,25 @@ export class FieldLaborActivitiesComponent implements OnInit {
           });
           return true;
         },
-        onCellValueChanged: function (data: any) {
-         // lets send the post request to actually update this
-         var dtoToPost = data.data;
-         console.log(dtoToPost);
-        }
-        
       }
     ]
+  }
+
+
+  onCellValueChanged(data: any) {
+    var dtoToPost = data.data;
+
+
+
+    this.updateFieldLaborActivityRequest = this.workbookService.updateFieldLaborActivity(dtoToPost).subscribe(fieldLaborActivity => {
+      this.isLoadingSubmit = false;
+      this.alertService.pushAlert(new Alert("Successfully updated Field Labor Activity", AlertContext.Success));
+    }, error => {
+      this.isLoadingSubmit = false;
+      this.cdr.detectChanges();
+    })
+
+    console.log(dtoToPost);
   }
 
   ngOnDestroy() {

@@ -33,6 +33,25 @@ namespace OregonTilth.EFModels.Entities
             return result;
         }
 
+        public static List<ErrorMessage> ValidateUpdate(OregonTilthDbContext dbContext, FieldLaborActivityDto fieldLaborActivityDto)
+        {
+            var result = new List<ErrorMessage>();
+
+            var userFieldLaborActivitiesForWorkbook = GetByWorkbookID(dbContext, fieldLaborActivityDto.Workbook.WorkbookID).ToList();
+            if (userFieldLaborActivitiesForWorkbook.Any(x => x.FieldLaborActivityName.ToLower() == fieldLaborActivityDto.FieldLaborActivityName.ToLower() 
+                                                             && fieldLaborActivityDto.FieldLaborActivityID != x.FieldLaborActivityID))
+            {
+                result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "Field Labor Activity Names must be unique within this workbook." });
+            }
+
+            if (string.IsNullOrEmpty(fieldLaborActivityDto.FieldLaborActivityName))
+            {
+                result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "Field Labor Activities must have a name." });
+            }
+
+            return result;
+        }
+
         public static IQueryable<FieldLaborActivityDto> GetByUserID(OregonTilthDbContext dbContext, int userID)
         {
             var fieldLaborActivities = GetFieldLaborActivityImpl(dbContext).Where(x => x.Workbook.UserID == userID);
@@ -53,6 +72,12 @@ namespace OregonTilth.EFModels.Entities
                 .AsNoTracking();
         }
 
+        public static FieldLaborActivityDto GetDtoByFieldLaborActivityID(OregonTilthDbContext dbContext, int fieldLaborActivityID)
+        {
+            var fieldLaborActivity = GetFieldLaborActivityImpl(dbContext).SingleOrDefault(x => x.FieldLaborActivityID == fieldLaborActivityID);
+            return fieldLaborActivity?.AsDto();
+        }
+
         public static IQueryable<FieldLaborActivityDto> CreateNewFieldLaborActivity(OregonTilthDbContext dbContext, FieldLaborActivityUpsertDto fieldLaborActivityUpsertDto, UserDto userDtoUserID)
         {
             var fieldLaborActivity = new FieldLaborActivity
@@ -68,5 +93,21 @@ namespace OregonTilth.EFModels.Entities
 
             return GetByWorkbookID(dbContext, fieldLaborActivityUpsertDto.WorkbookID);
         }
+
+        public static FieldLaborActivityDto UpdateFieldLaborActivity(OregonTilthDbContext dbContext, FieldLaborActivityDto fieldLaborActivityDto)
+        {
+            var fieldLaborActivity = dbContext.FieldLaborActivities
+                .Include(x => x.FieldLaborActivityCategory)
+                .Single(x => x.FieldLaborActivityID == fieldLaborActivityDto.FieldLaborActivityID);
+
+            fieldLaborActivity.FieldLaborActivityCategoryID = fieldLaborActivityDto.FieldLaborActivityCategory.FieldLaborActivityCategoryID;
+            fieldLaborActivity.FieldLaborActivityName = fieldLaborActivityDto.FieldLaborActivityName;
+
+            dbContext.SaveChanges();
+            dbContext.Entry(fieldLaborActivity).Reload();
+
+            return GetDtoByFieldLaborActivityID(dbContext, fieldLaborActivity.WorkbookID);
+        }
+
     }
 }

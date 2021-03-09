@@ -125,5 +125,20 @@ namespace OregonTilth.API.Controllers
             return Ok(fieldLaborActivities);
         }
 
+        [HttpPut("workbooks/forms/field-labor-activities")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<FieldLaborActivityDto> UpdateFieldLaborActivity([FromBody] FieldLaborActivityDto fieldLaborActivityDto)
+        {
+            var validationMessages = FieldLaborActivity.ValidateUpdate(_dbContext, fieldLaborActivityDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var fieldLaborActivityDtos = FieldLaborActivity.UpdateFieldLaborActivity(_dbContext, fieldLaborActivityDto);
+            return Ok(fieldLaborActivityDtos);
+        }
+
     }
 }

@@ -48,5 +48,9 @@ export class WorkbookService {
         return this.apiService.getFromApi(route);
     }
 
+    updateFieldLaborActivity(fieldLaborActivity: FieldLaborActivityDto): Observable<FieldLaborActivityDto> {
+        let route = `/workbooks/forms/field-labor-activities`;
+        return this.apiService.putToApi(route, fieldLaborActivity);
+    }
 
 }
