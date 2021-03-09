@@ -20,6 +20,8 @@ import { TrainingComponent } from './pages/training/training.component';
 import { WorkbooksComponent } from './pages/workbooks/workbooks.component';
 import { NewWorkbookComponent } from './pages/workbooks/new-workbook/new-workbook.component';
 import { EditWorkbookComponent } from './pages/workbooks/edit-workbook/edit-workbook.component';
+import { WorkbookDetailComponent } from './pages/workbooks/workbook-detail/workbook-detail.component';
+import { FieldLaborActivitiesComponent } from './pages/workbooks/forms/field-labor-activities/field-labor-activities.component';
 
 const routes: Routes = [
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -38,6 +40,8 @@ const routes: Routes = [
   { path: "workbooks", component: WorkbooksComponent},
   { path: "workbooks/new", component: NewWorkbookComponent},
   { path: "workbooks/:id/edit", component: EditWorkbookComponent},
+  { path: "workbooks/:id/forms/field-labor-activities", component: FieldLaborActivitiesComponent},
+  { path: "workbooks/:id", component: WorkbookDetailComponent},
   { path: "login-callback", component: LoginCallbackComponent },
   { path: "create-user-callback", component: CreateUserCallbackComponent },
   { path: "not-found", component: NotFoundComponent },

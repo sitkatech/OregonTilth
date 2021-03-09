@@ -90,16 +90,73 @@ namespace OregonTilth.API.Controllers
         [LoggedInUnclassifiedFeature]
         public ActionResult<IEnumerable<WorkbookDto>> GetWorkbook([FromRoute] int workbookID)
         {
-            var currentUserDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
             var workbook = Workbook.GetDtoByWorkbookID(_dbContext, workbookID);
-            
-            // todo: get around to handling some feature permissions to access to personal objects
-            if (workbook.User.UserID != currentUserDto.UserID)
+
+            if (workbook == null)
             {
                 return BadRequest();
             }
 
             return Ok(workbook);
+        }
+
+        [HttpPost("workbooks/forms/field-labor-activities")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldLaborActivityDto>> CreateFieldLaborActivity([FromBody] FieldLaborActivityUpsertDto fieldLaborActivityUpsertDto)
+        {
+            var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+
+            var validationMessages = FieldLaborActivity.ValidateUpsert(_dbContext, fieldLaborActivityUpsertDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var fieldLaborActivityDtos = FieldLaborActivity.CreateNewFieldLaborActivity(_dbContext, fieldLaborActivityUpsertDto, userDto);
+            return Ok(fieldLaborActivityDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/field-labor-activities")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldLaborActivityDto>> GetFieldLaborActivities([FromRoute] int workbookID)
+        {
+            var fieldLaborActivities = FieldLaborActivity.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldLaborActivities);
+        }
+
+        [HttpPut("workbooks/forms/field-labor-activities")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<FieldLaborActivityDto> UpdateFieldLaborActivity([FromBody] FieldLaborActivityDto fieldLaborActivityDto)
+        {
+            var validationMessages = FieldLaborActivity.ValidateUpdate(_dbContext, fieldLaborActivityDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var fieldLaborActivityDtos = FieldLaborActivity.UpdateFieldLaborActivity(_dbContext, fieldLaborActivityDto);
+            return Ok(fieldLaborActivityDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/field-labor-activities/{fieldLaborActivityID}")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldLaborActivityDto>> DeleteFieldLaborActivity([FromRoute] int workbookID, [FromRoute] int fieldLaborActivityID)
+        {
+            var validationMessages = FieldLaborActivity.ValidateDelete(_dbContext, fieldLaborActivityID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            FieldLaborActivity.Delete(_dbContext, fieldLaborActivityID);
+
+            var returnDtos = FieldLaborActivity.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
         }
 
     }

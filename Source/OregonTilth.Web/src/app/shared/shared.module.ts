@@ -14,6 +14,7 @@ import { FontAwesomeIconLinkRendererComponent } from './components/ag-grid/fonta
 import { MultiLinkRendererComponent } from './components/ag-grid/multi-link-renderer/multi-link-renderer.component';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { CustomRichTextComponent } from './components/custom-rich-text/custom-rich-text.component'
+import { SideNavComponent } from './components/side-nav/side-nav.component'
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FieldDefinitionComponent } from './components/field-definition/field-definition.component';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
@@ -32,6 +33,7 @@ import { FieldDefinitionGridHeaderComponent } from './components/field-definitio
         FontAwesomeIconLinkRendererComponent,
         MultiLinkRendererComponent,
         CustomRichTextComponent,
+        SideNavComponent,
         FieldDefinitionComponent,
         FieldDefinitionGridHeaderComponent
     ],
@@ -52,6 +54,7 @@ import { FieldDefinitionGridHeaderComponent } from './components/field-definitio
         NotFoundComponent,
         HeaderNavComponent,
         CustomRichTextComponent,
+        SideNavComponent,
         FieldDefinitionComponent,
         FieldDefinitionGridHeaderComponent
     ],
