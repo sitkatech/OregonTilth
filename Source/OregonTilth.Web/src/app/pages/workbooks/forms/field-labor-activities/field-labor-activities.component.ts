@@ -51,6 +51,8 @@ export class FieldLaborActivitiesComponent implements OnInit {
   public fieldLaborActivityCategories: Array<FieldLaborActivityCategoryDto>;
   private getFieldLaborActivityCategoriesRequest: any;
 
+  public columnDefs: ColDef[];
+
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -67,6 +69,19 @@ export class FieldLaborActivitiesComponent implements OnInit {
           this.fieldLaborActivities = fieldLaborActivities;
           this.cdr.markForCheck();
       });
+
+      this.columnDefs = [
+        {
+          headerName: 'Field Labor Activity', 
+          field: 'FieldLaborActivityName'
+        },
+        {
+          headerName: 'Field Labor Category', 
+          field: 'FieldLaborActivityCategory.FieldLaborActivityCategoryDisplayName'
+        }
+      ]
+
+
     });
   }
 
