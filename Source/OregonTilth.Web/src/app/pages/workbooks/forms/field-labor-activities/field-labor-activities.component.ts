@@ -18,6 +18,7 @@ import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-lab
 import { FieldLaborActivityCreateDto } from 'src/app/shared/models/forms/field-labor-activities/field-labor-activity-create-dto';
 import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/field-labor-activity-category-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'field-labor-activities',
@@ -44,6 +45,8 @@ export class FieldLaborActivitiesComponent implements OnInit {
   private addFieldLaborActivityRequest: any;
   public model: FieldLaborActivityCreateDto;
 
+  public getFieldLaborActivitiesRequest: any;
+  public fieldLaborActivities: FieldLaborActivityDto[];
 
   public fieldLaborActivityCategories: Array<FieldLaborActivityCategoryDto>;
   private getFieldLaborActivityCategoriesRequest: any;
@@ -54,19 +57,16 @@ export class FieldLaborActivitiesComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID).subscribe(workbook => {
-        this.workbook = workbook;
-      })
+      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+      this.getFieldLaborActivityCategoriesRequest = this.lookupTablesService.getFieldLaborActivityCategories();
+      this.getFieldLaborActivitiesRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
 
-      this.getFieldLaborActivityCategoriesRequest = this.lookupTablesService.getFieldLaborActivityCategories().subscribe(result => {
-        this.fieldLaborActivityCategories = result;
-      })
-
-      this.getFieldLaborActivitiesRequest = this.workbookService.getFieldLaborActivities(this.workbookID).subscribe(result => {
-        this.fieldLaborActivities = result;
-      })
-
-      
+      forkJoin([this.getWorkbookRequest, this.getFieldLaborActivityCategoriesRequest, this.getFieldLaborActivitiesRequest]).subscribe(([workbook, fieldLaborActivityCategories, fieldLaborActivities]: [WorkbookDto, FieldLaborActivityCategoryDto[], FieldLaborActivityDto[]] ) => {
+          this.workbook = workbook;
+          this.fieldLaborActivityCategories = fieldLaborActivityCategories;
+          this.fieldLaborActivities = fieldLaborActivities;
+          this.cdr.markForCheck();
+      });
     });
   }
 
@@ -78,6 +78,12 @@ export class FieldLaborActivitiesComponent implements OnInit {
     if (this.addFieldLaborActivityRequest && this.addFieldLaborActivityRequest.unsubscribe) {
       this.addFieldLaborActivityRequest.unsubscribe();
     }
+    if (this.getFieldLaborActivitiesRequest && this.getFieldLaborActivitiesRequest.unsubscribe) {
+      this.getFieldLaborActivitiesRequest.unsubscribe();
+    }
+    if (this.getFieldLaborActivityCategoriesRequest && this.getFieldLaborActivityCategoriesRequest.unsubscribe) {
+      this.getFieldLaborActivityCategoriesRequest.unsubscribe();
+    }
     this.authenticationService.dispose();
     this.cdr.detach();
   }
@@ -86,9 +92,9 @@ export class FieldLaborActivitiesComponent implements OnInit {
     this.isLoadingSubmit = true;
     this.addFieldLaborActivityRequest = this.workbookService.addFieldLaborActivity(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      
+      this.fieldLaborActivities = response;
       this.alertService.pushAlert(new Alert("Successfully added Field Labor Activity.", AlertContext.Success));
-      
+      this.cdr.detectChanges();
     }, error => { 
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();

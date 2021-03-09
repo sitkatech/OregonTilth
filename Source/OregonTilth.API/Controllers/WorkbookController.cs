@@ -90,7 +90,6 @@ namespace OregonTilth.API.Controllers
         [LoggedInUnclassifiedFeature]
         public ActionResult<IEnumerable<WorkbookDto>> GetWorkbook([FromRoute] int workbookID)
         {
-            var currentUserDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
             var workbook = Workbook.GetDtoByWorkbookID(_dbContext, workbookID);
 
             if (workbook == null)
@@ -108,7 +107,6 @@ namespace OregonTilth.API.Controllers
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
 
             var validationMessages = FieldLaborActivity.ValidateUpsert(_dbContext, fieldLaborActivityUpsertDto);
-
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
             if (!ModelState.IsValid)
             {
@@ -123,12 +121,9 @@ namespace OregonTilth.API.Controllers
         [LoggedInUnclassifiedFeature]
         public ActionResult<IEnumerable<FieldLaborActivityDto>> GetFieldLaborActivities([FromRoute] int workbookID)
         {
-            //var currentUserDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
             var fieldLaborActivities = FieldLaborActivity.GetByWorkbookID(_dbContext, workbookID);
-
             return Ok(fieldLaborActivities);
         }
-
 
     }
 }
