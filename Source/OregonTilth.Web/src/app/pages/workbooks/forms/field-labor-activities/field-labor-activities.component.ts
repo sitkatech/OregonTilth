@@ -73,15 +73,14 @@ export class FieldLaborActivitiesComponent implements OnInit {
       this.columnDefs = [
         {
           headerName: 'Field Labor Activity', 
-          field: 'FieldLaborActivityName'
+          field: 'FieldLaborActivityName',
+          editable: true
         },
         {
           headerName: 'Field Labor Category', 
           field: 'FieldLaborActivityCategory.FieldLaborActivityCategoryDisplayName'
         }
       ]
-
-
     });
   }
 
@@ -109,11 +108,17 @@ export class FieldLaborActivitiesComponent implements OnInit {
       this.isLoadingSubmit = false;
       this.fieldLaborActivities = response;
       this.alertService.pushAlert(new Alert("Successfully added Field Labor Activity.", AlertContext.Success));
+      this.resetForm();
       this.cdr.detectChanges();
+      
     }, error => { 
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     });
+  }
+
+  resetForm() {
+    this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID, FieldLaborActivityCategoryID: this.model.FieldLaborActivityCategoryID});
   }
 
 }

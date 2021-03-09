@@ -66,7 +66,7 @@ namespace OregonTilth.EFModels.Entities
             dbContext.SaveChanges();
             dbContext.Entry(fieldLaborActivity).Reload();
 
-            return GetByUserID(dbContext, userDtoUserID.UserID);
+            return GetByWorkbookID(dbContext, fieldLaborActivityUpsertDto.WorkbookID);
         }
     }
 }
