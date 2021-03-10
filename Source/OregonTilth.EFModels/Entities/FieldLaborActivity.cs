@@ -106,7 +106,7 @@ namespace OregonTilth.EFModels.Entities
             dbContext.SaveChanges();
             dbContext.Entry(fieldLaborActivity).Reload();
 
-            return GetDtoByFieldLaborActivityID(dbContext, fieldLaborActivity.WorkbookID);
+            return GetDtoByFieldLaborActivityID(dbContext, fieldLaborActivity.FieldLaborActivityID);
         }
 
         // todo: validate deletion

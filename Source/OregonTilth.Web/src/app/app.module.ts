@@ -37,6 +37,7 @@ import { NewWorkbookComponent } from './pages/workbooks/new-workbook/new-workboo
 import { EditWorkbookComponent } from './pages/workbooks/edit-workbook/edit-workbook.component';
 import { WorkbookDetailComponent } from './pages/workbooks/workbook-detail/workbook-detail.component';
 import { FieldLaborActivitiesComponent } from './pages/workbooks/forms/field-labor-activities/field-labor-activities.component';
+import { CropsComponent } from './pages/workbooks/forms/crops/crops.component';
 import { DisclaimerComponent } from './pages/disclaimer/disclaimer.component';
 import { AppInitService } from './app.init';
 import { FieldDefinitionListComponent } from './pages/field-definition-list/field-definition-list.component';
@@ -73,6 +74,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     NewWorkbookComponent,
     WorkbookDetailComponent,
     FieldLaborActivitiesComponent,
+    CropsComponent,
     EditWorkbookComponent,
     DisclaimerComponent,
     FieldDefinitionListComponent,

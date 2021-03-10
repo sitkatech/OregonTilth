@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { WorkbookDto } from 'src/app/shared/models/generated/workbook-dto';
 import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-labor-activity-dto';
 import { FieldLaborActivityCreateDto } from 'src/app/shared/models/forms/field-labor-activities/field-labor-activity-create-dto';
+import { CropDto } from 'src/app/shared/models/generated/crop-dto';
+import { CropCreateDto } from 'src/app/shared/models/forms/crops/crop-create-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -55,6 +57,27 @@ export class WorkbookService {
 
     deleteFieldLaborActivity(workbookID:number, fieldLaborActivityID: number): Observable<FieldLaborActivityDto[]> {
         let route = `workbooks/${workbookID}/forms/field-labor-activities/${fieldLaborActivityID}`;
+        return this.apiService.deleteToApi(route);
+    }
+
+    // Crops form
+    addCrop(cropCreateDto: CropCreateDto): Observable<CropDto[]> {
+        let route = `/workbooks/forms/crops`;
+        return this.apiService.postToApi(route, cropCreateDto);
+    }
+
+    getCrops(workbookID: number): Observable<CropDto[]> {
+        let route = `workbooks/${workbookID}/forms/crops`;
+        return this.apiService.getFromApi(route);
+    }
+
+    updateCrop(crop: CropDto): Observable<CropDto> {
+        let route = `/workbooks/forms/crops`;
+        return this.apiService.putToApi(route, crop);
+    }
+
+    deleteCrop(workbookID:number, cropID: number): Observable<CropDto[]> {
+        let route = `workbooks/${workbookID}/forms/crops/${cropID}`;
         return this.apiService.deleteToApi(route);
     }
 
