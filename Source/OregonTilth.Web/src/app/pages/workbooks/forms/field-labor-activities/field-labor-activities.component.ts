@@ -128,6 +128,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
   deleteFieldLaborActivity(fieldLaborActivityID: number) {
     this.deleteFieldLaborActivityRequest = this.workbookService.deleteFieldLaborActivity(this.workbookID, fieldLaborActivityID).subscribe(fieldLaborActivityDtos => {
       this.fieldLaborActivities = fieldLaborActivityDtos;
+      this.alertService.pushAlert(new Alert("Successfully deleted Field Labor Activity", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
 

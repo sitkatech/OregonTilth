@@ -2,9 +2,6 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
-import { UserService } from 'src/app/services/user/user.service';
-import { DatePipe, DecimalPipe } from '@angular/common';
 import { WorkbookService } from 'src/app/services/workbook/workbook.service';
 import { WorkbookDto } from 'src/app/shared/models/generated/workbook-dto';
 import { ColDef } from 'ag-grid-community';
@@ -14,15 +11,15 @@ import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
-import { CropCreateDto } from 'src/app/shared/models/forms/crops/crop-create-dto';
-import { CropDto } from 'src/app/shared/models/generated/crop-dto';
+import { CropUnitCreateDto } from 'src/app/shared/models/forms/crop-units/crop-unit-create-dto';
+import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
 
 @Component({
-  selector: 'crops',
-  templateUrl: './crops.component.html',
-  styleUrls: ['./crops.component.scss']
+  selector: 'crop-units',
+  templateUrl: './crop-units.component.html',
+  styleUrls: ['./crop-units.component.scss']
 })
-export class CropsComponent implements OnInit {
+export class CropUnitsComponent implements OnInit {
 
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
@@ -33,19 +30,19 @@ export class CropsComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
-  public richTextTypeID : number = CustomRichTextType.CropsForm;
+  public richTextTypeID : number = CustomRichTextType.CropUnitsForm;
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
 
-  public model: CropCreateDto;
-  private addCropRequest: any;
+  public model: CropUnitCreateDto;
+  private addCropUnitRequest: any;
 
-  public getCropsRequest: any;
-  public crops: CropDto[];
+  public getCropUnitsRequest: any;
+  public cropUnits: CropUnitDto[];
 
-  private updateCropRequest: any;
-  private deleteCropRequest: any;
+  private updateCropUnitRequest: any;
+  private deleteCropUnitRequest: any;
 
   public columnDefs: ColDef[];
  
@@ -53,14 +50,14 @@ export class CropsComponent implements OnInit {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      this.model = new CropCreateDto({WorkbookID: this.workbookID});
+      this.model = new CropUnitCreateDto({WorkbookID: this.workbookID});
       
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getCropsRequest = this.workbookService.getCrops(this.workbookID);
+      this.getCropUnitsRequest = this.workbookService.getCropUnits(this.workbookID);
 
-      forkJoin([this.getWorkbookRequest, this.getCropsRequest]).subscribe(([workbook, crops]: [WorkbookDto, CropDto[]] ) => {
+      forkJoin([this.getWorkbookRequest, this.getCropUnitsRequest]).subscribe(([workbook, cropUnits]: [WorkbookDto, CropUnitDto[]] ) => {
           this.workbook = workbook;
-          this.crops = crops;
+          this.cropUnits = cropUnits;
           this.defineColumnDefs();
           this.cdr.markForCheck();
       });
@@ -72,21 +69,21 @@ export class CropsComponent implements OnInit {
     var componentScope = this;
     this.columnDefs = [
       {
-        headerName: 'Crop', 
-        field: 'CropName',
+        headerName: 'Crop Unit', 
+        field: 'CropUnitName',
         editable: true,
         cellEditor: 'agPopupTextCellEditor',
         sortable: true, 
         filter: true
       },
       {
-        headerName: 'Delete', field: 'CropID', valueGetter: function (params: any) {
-          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.CropID, ObjectDisplayName: params.data.CropName };
+        headerName: 'Delete', field: 'CropUnitID', valueGetter: function (params: any) {
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.CropUnitID, ObjectDisplayName: params.data.CropUnitName };
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
-            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Crop?`)) {
-              componentScope.deleteCrop(field.PrimaryKey)
+            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Crop Unit?`)) {
+              componentScope.deleteCropUnit(field.PrimaryKey)
             }
           }
           },
@@ -95,10 +92,10 @@ export class CropsComponent implements OnInit {
     ]
   }
 
-  deleteCrop(cropID: number) {
-    this.deleteCropRequest = this.workbookService.deleteCrop(this.workbookID, cropID).subscribe(cropDtos => {
-      this.crops = cropDtos;
-      this.alertService.pushAlert(new Alert("Successfully deleted Crop", AlertContext.Success));
+  deleteCropUnit(cropUnitID: number) {
+    this.deleteCropUnitRequest = this.workbookService.deleteCropUnit(this.workbookID, cropUnitID).subscribe(cropUnitDtos => {
+      this.cropUnits = cropUnitDtos;
+      this.alertService.pushAlert(new Alert("Successfully deleted Crop Unit", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
 
@@ -108,9 +105,9 @@ export class CropsComponent implements OnInit {
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
 
-    this.updateCropRequest = this.workbookService.updateCrop(dtoToPost).subscribe(crop => {
+    this.updateCropUnitRequest = this.workbookService.updateCropUnit(dtoToPost).subscribe(cropUnit => {
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Crop.", AlertContext.Success));
+      this.alertService.pushAlert(new Alert("Successfully updated Crop Unit", AlertContext.Success));
     }, error => {
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
@@ -123,17 +120,17 @@ export class CropsComponent implements OnInit {
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
-    if (this.addCropRequest && this.addCropRequest.unsubscribe) {
-      this.addCropRequest.unsubscribe();
+    if (this.addCropUnitRequest && this.addCropUnitRequest.unsubscribe) {
+      this.addCropUnitRequest.unsubscribe();
     }
-    if (this.getCropsRequest && this.getCropsRequest.unsubscribe) {
-      this.getCropsRequest.unsubscribe();
+    if (this.getCropUnitsRequest && this.getCropUnitsRequest.unsubscribe) {
+      this.getCropUnitsRequest.unsubscribe();
     }
-    if (this.updateCropRequest && this.updateCropRequest.unsubscribe) {
-      this.updateCropRequest.unsubscribe();
+    if (this.updateCropUnitRequest && this.updateCropUnitRequest.unsubscribe) {
+      this.updateCropUnitRequest.unsubscribe();
     }
-    if (this.deleteCropRequest && this.deleteCropRequest.unsubscribe) {
-      this.deleteCropRequest.unsubscribe();
+    if (this.deleteCropUnitRequest && this.deleteCropUnitRequest.unsubscribe) {
+      this.deleteCropUnitRequest.unsubscribe();
     }
     this.authenticationService.dispose();
     this.cdr.detach();
@@ -141,10 +138,10 @@ export class CropsComponent implements OnInit {
 
   onSubmit(fieldLaborActivityForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-    this.addCropRequest = this.workbookService.addCrop(this.model).subscribe(response => {
+    this.addCropUnitRequest = this.workbookService.addCropUnit(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.crops = response;
-      this.alertService.pushAlert(new Alert("Successfully added Crop.", AlertContext.Success));
+      this.cropUnits = response;
+      this.alertService.pushAlert(new Alert("Successfully added Crop Unit.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
       
@@ -155,7 +152,7 @@ export class CropsComponent implements OnInit {
   }
 
   resetForm() {
-    this.model = new CropCreateDto({WorkbookID: this.workbookID});
+    this.model = new CropUnitCreateDto({WorkbookID: this.workbookID});
   }
 
 }
