@@ -220,6 +220,67 @@ namespace OregonTilth.API.Controllers
 
             return Ok(returnDtos);
         }
+        #endregion
+
+        #region Crop Units
+        [HttpPost("workbooks/forms/crop-units")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<CropUnitDto>> CreateCropUnit([FromBody] CropUnitCreateDto cropUnitCreateDto)
+        {
+            var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+
+            var validationMessages = CropUnit.ValidateCreate(_dbContext, cropUnitCreateDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var cropUnitDtos = CropUnit.CreateNewCropUnit(_dbContext, cropUnitCreateDto, userDto);
+            return Ok(cropUnitDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/crop-units")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<CropUnitDto>> GetCropUnits([FromRoute] int workbookID)
+        {
+            var cropUnits = CropUnit.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(cropUnits);
+        }
+
+        [HttpPut("workbooks/forms/crop-units")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<CropUnitDto> UpdateCropUnit([FromBody] CropUnitDto cropUnitDto)
+        {
+            var validationMessages = CropUnit.ValidateUpdate(_dbContext, cropUnitDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var cropUnitDtos = CropUnit.UpdateCropUnit(_dbContext, cropUnitDto);
+            return Ok(cropUnitDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/crop-units/{cropUnitID}")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<CropUnitDto>> DeleteCropUnit([FromRoute] int workbookID, [FromRoute] int cropUnitID)
+        {
+            var validationMessages = CropUnit.ValidateDelete(_dbContext, cropUnitID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            CropUnit.Delete(_dbContext, cropUnitID);
+
+            var returnDtos = CropUnit.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
         #endregion 
 
     }
