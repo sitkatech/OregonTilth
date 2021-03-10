@@ -24,6 +24,7 @@ import { WorkbookDetailComponent } from './pages/workbooks/workbook-detail/workb
 import { FieldLaborActivitiesComponent } from './pages/workbooks/forms/field-labor-activities/field-labor-activities.component';
 import { CropsComponent } from './pages/workbooks/forms/crops/crops.component';
 import { CropUnitsComponent } from './pages/workbooks/forms/crop-units/crop-units.component';
+import { FieldLaborByCropComponent } from './pages/workbooks/forms/field-labor-by-crop/field-labor-by-crop.component';
 
 const routes: Routes = [
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -43,6 +44,7 @@ const routes: Routes = [
   { path: "workbooks/new", component: NewWorkbookComponent},
   { path: "workbooks/:id/edit", component: EditWorkbookComponent},
   { path: "workbooks/:id/forms/field-labor-activities", component: FieldLaborActivitiesComponent},
+  { path: "workbooks/:id/forms/field-labor-by-crop", component: FieldLaborByCropComponent},
   { path: "workbooks/:id/forms/crops", component: CropsComponent},
   { path: "workbooks/:id/forms/crop-units", component: CropUnitsComponent},
   { path: "workbooks/:id", component: WorkbookDetailComponent},
