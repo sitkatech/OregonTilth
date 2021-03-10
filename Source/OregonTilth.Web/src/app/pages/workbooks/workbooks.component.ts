@@ -30,7 +30,7 @@ export class WorkbooksComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public columnDefs: ColDef[];
-  public richTextTypeID : number = CustomRichTextType.PlatformOverview;
+  public richTextTypeID : number = CustomRichTextType.Workbooks;
   
   private getWorkbooksRequest: any;
   public workbooks: WorkbookDto[];
@@ -140,7 +140,6 @@ export class WorkbooksComponent implements OnInit {
 
   ngOnDestroy() {
     this.authenticationService.dispose();
-
     if (this.watchUserChangeSubscription && this.watchUserChangeSubscription.unsubscribe) {
       this.watchUserChangeSubscription.unsubscribe();
     }
