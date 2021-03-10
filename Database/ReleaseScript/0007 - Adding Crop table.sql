@@ -7,3 +7,12 @@ CREATE TABLE dbo.Crop(
 
 ALTER TABLE dbo.Crop
   ADD CONSTRAINT AK_Crop_CropName_WorkbookID UNIQUE(CropName, WorkbookID);
+
+
+  Insert into dbo.CustomRichTextType (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
+values
+(27, 'CropsForm', 'Crops Form')
+
+Insert into dbo.CustomRichText(CustomRichTextTypeID, CustomRichTextContent)
+values
+(27, '<p>Crops Form</p>')
