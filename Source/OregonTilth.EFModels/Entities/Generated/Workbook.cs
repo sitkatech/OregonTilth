@@ -15,6 +15,7 @@ namespace OregonTilth.EFModels.Entities
         public Workbook()
         {
             FieldLaborActivities = new HashSet<FieldLaborActivity>();
+            Machineries = new HashSet<Machinery>();
         }
 
         [Key]
@@ -31,5 +32,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual User User { get; set; }
         [InverseProperty(nameof(FieldLaborActivity.Workbook))]
         public virtual ICollection<FieldLaborActivity> FieldLaborActivities { get; set; }
+        [InverseProperty(nameof(Machinery.Workbook))]
+        public virtual ICollection<Machinery> Machineries { get; set; }
     }
 }

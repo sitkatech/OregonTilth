@@ -14,6 +14,7 @@ namespace OregonTilth.EFModels.Entities
         [Key]
         public int MachineryID { get; set; }
         public int WorkbookID { get; set; }
+        [Required]
         [StringLength(200)]
         public string MachineryName { get; set; }
         [Column(TypeName = "money")]
