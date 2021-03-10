@@ -13,6 +13,11 @@ namespace OregonTilth.EFModels.Entities
     [Index(nameof(LaborTypeName), Name = "AK_LaborType_LaborTypeName", IsUnique = true)]
     public partial class LaborType
     {
+        public LaborType()
+        {
+            FieldStandardTimes = new HashSet<FieldStandardTime>();
+        }
+
         [Key]
         public int LaborTypeID { get; set; }
         [Required]
@@ -21,5 +26,8 @@ namespace OregonTilth.EFModels.Entities
         [Required]
         [StringLength(100)]
         public string LaborTypeDisplayName { get; set; }
+
+        [InverseProperty(nameof(FieldStandardTime.LaborType))]
+        public virtual ICollection<FieldStandardTime> FieldStandardTimes { get; set; }
     }
 }
