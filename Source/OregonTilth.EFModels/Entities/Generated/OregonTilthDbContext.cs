@@ -17,6 +17,7 @@ namespace OregonTilth.EFModels.Entities
         {
         }
 
+        public virtual DbSet<Crop> Crops { get; set; }
         public virtual DbSet<CustomRichText> CustomRichTexts { get; set; }
         public virtual DbSet<CustomRichTextType> CustomRichTextTypes { get; set; }
         public virtual DbSet<DatabaseMigration> DatabaseMigrations { get; set; }
@@ -47,6 +48,16 @@ namespace OregonTilth.EFModels.Entities
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<Crop>(entity =>
+            {
+                entity.Property(e => e.CropName).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.Crops)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
 
             modelBuilder.Entity<CustomRichText>(entity =>
             {
