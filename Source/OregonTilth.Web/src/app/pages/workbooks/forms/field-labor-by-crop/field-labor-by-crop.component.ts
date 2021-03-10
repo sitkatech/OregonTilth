@@ -20,6 +20,8 @@ import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/f
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
+import { FieldLaborByCropCreateDto } from 'src/app/shared/models/forms/field-labor-by-crop/field-labor-by-crop-create-dto';
+import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor-by-crop-dto';
 
 @Component({
   selector: 'field-labor-by-crop',
@@ -39,21 +41,21 @@ export class FieldLaborByCropComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
-  public richTextTypeID : number = CustomRichTextType.FieldLaborActivityForm;
+  public richTextTypeID : number = CustomRichTextType.FieldLaborByCropForm;
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
-  private addFieldLaborActivityRequest: any;
-  public model: FieldLaborActivityCreateDto;
+  private addFieldLaborByCropRequest: any;
+  public model: FieldLaborByCropCreateDto;
 
-  public getFieldLaborActivitiesRequest: any;
-  public fieldLaborActivities: FieldLaborActivityDto[];
+  public getFieldLaborByCropsRequest: any;
+  public fieldLaborByCropDtos: FieldLaborByCropDto[];
 
-  public fieldLaborActivityCategories: Array<FieldLaborActivityCategoryDto>;
-  private getFieldLaborActivityCategoriesRequest: any;
+  // public fieldLaborActivityCategories: Array<FieldLaborActivityCategoryDto>;
+  // private getFieldLaborActivityCategoriesRequest: any;
 
-  private updateFieldLaborActivityRequest: any;
-  private deleteFieldLaborActivityRequest: any;
+  private updateFieldLaborByCropRequest: any;
+  private deleteFieldLaborByCropRequest: any;
 
   public columnDefs: ColDef[];
  
@@ -61,16 +63,16 @@ export class FieldLaborByCropComponent implements OnInit {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID});
+      this.model = new FieldLaborByCropCreateDto({WorkbookID: this.workbookID});
       
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getFieldLaborActivityCategoriesRequest = this.lookupTablesService.getFieldLaborActivityCategories();
-      this.getFieldLaborActivitiesRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
+      // this.getFieldLaborActivityCategoriesRequest = this.lookupTablesService.getFieldLaborActivityCategories();
+      this.getFieldLaborByCropsRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
 
-      forkJoin([this.getWorkbookRequest, this.getFieldLaborActivityCategoriesRequest, this.getFieldLaborActivitiesRequest]).subscribe(([workbook, fieldLaborActivityCategories, fieldLaborActivities]: [WorkbookDto, FieldLaborActivityCategoryDto[], FieldLaborActivityDto[]] ) => {
+      forkJoin([this.getWorkbookRequest, this.getFieldLaborByCropsRequest]).subscribe(([workbook, fieldLaborByCrops]: [WorkbookDto, FieldLaborByCropDto[]] ) => {
           this.workbook = workbook;
-          this.fieldLaborActivityCategories = fieldLaborActivityCategories;
-          this.fieldLaborActivities = fieldLaborActivities;
+          // this.fieldLaborActivityCategories = fieldLaborActivityCategories;
+          this.fieldLaborByCropDtos = fieldLaborByCrops;
           this.defineColumnDefs();
           this.cdr.markForCheck();
       });
@@ -89,33 +91,33 @@ export class FieldLaborByCropComponent implements OnInit {
         sortable: true, 
         filter: true,
       },
-      {
-        headerName: 'Field Labor Category', 
-        field: 'FieldLaborActivityCategory',
-        editable: true,
-        cellEditor: 'agPopupSelectCellEditor',
-        cellEditorParams: {
-          values: this.fieldLaborActivityCategories.map(x => x.FieldLaborActivityCategoryDisplayName)
-        },
-        valueFormatter: function (params) {
-          return params.value.FieldLaborActivityCategoryDisplayName;
-        },
-        valueSetter: params => {
-          params.data.FieldLaborActivityCategory = this.fieldLaborActivityCategories.find(element => {
-            return element.FieldLaborActivityCategoryDisplayName == params.newValue;
-          });
-          return true;
-        },
-        sortable: true, 
-        filter: true,
-      },
+      // {
+      //   headerName: 'Field Labor Category', 
+      //   field: 'FieldLaborActivityCategory',
+      //   editable: true,
+      //   cellEditor: 'agPopupSelectCellEditor',
+      //   cellEditorParams: {
+      //     values: this.fieldLaborActivityCategories.map(x => x.FieldLaborActivityCategoryDisplayName)
+      //   },
+      //   valueFormatter: function (params) {
+      //     return params.value.FieldLaborActivityCategoryDisplayName;
+      //   },
+      //   valueSetter: params => {
+      //     params.data.FieldLaborActivityCategory = this.fieldLaborActivityCategories.find(element => {
+      //       return element.FieldLaborActivityCategoryDisplayName == params.newValue;
+      //     });
+      //     return true;
+      //   },
+      //   sortable: true, 
+      //   filter: true,
+      // },
       {
         headerName: 'Delete', field: 'FieldLaborActivityID', valueGetter: function (params: any) {
           return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.FieldLaborActivityID, ObjectDisplayName: params.data.FieldLaborActivityName };
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
-            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Field Labor Activity?`)) {
+            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Field Labor By Crop?`)) {
               componentScope.deleteFieldLaborActivity(field.PrimaryKey)
             }
           }
@@ -125,10 +127,10 @@ export class FieldLaborByCropComponent implements OnInit {
     ]
   }
 
-  deleteFieldLaborActivity(fieldLaborActivityID: number) {
-    this.deleteFieldLaborActivityRequest = this.workbookService.deleteFieldLaborActivity(this.workbookID, fieldLaborActivityID).subscribe(fieldLaborActivityDtos => {
-      this.fieldLaborActivities = fieldLaborActivityDtos;
-      this.alertService.pushAlert(new Alert("Successfully deleted Field Labor Activity", AlertContext.Success));
+  deleteFieldLaborActivity(fieldLaborByCropID: number) {
+    this.deleteFieldLaborByCropRequest = this.workbookService.deleteFieldLaborByCrop(this.workbookID, fieldLaborByCropID).subscribe(fieldLaborByCropDtos => {
+      this.fieldLaborByCropDtos = fieldLaborByCropDtos;
+      this.alertService.pushAlert(new Alert("Successfully deleted Field Labor By Crop", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
 
@@ -138,9 +140,9 @@ export class FieldLaborByCropComponent implements OnInit {
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
 
-    this.updateFieldLaborActivityRequest = this.workbookService.updateFieldLaborActivity(dtoToPost).subscribe(fieldLaborActivity => {
+    this.updateFieldLaborByCropRequest = this.workbookService.updateFieldLaborActivity(dtoToPost).subscribe(fieldLaborActivity => {
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Field Labor Activity", AlertContext.Success));
+      this.alertService.pushAlert(new Alert("Successfully updated Field Labor By Crop", AlertContext.Success));
     }, error => {
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
@@ -153,20 +155,20 @@ export class FieldLaborByCropComponent implements OnInit {
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
-    if (this.addFieldLaborActivityRequest && this.addFieldLaborActivityRequest.unsubscribe) {
-      this.addFieldLaborActivityRequest.unsubscribe();
+    if (this.addFieldLaborByCropRequest && this.addFieldLaborByCropRequest.unsubscribe) {
+      this.addFieldLaborByCropRequest.unsubscribe();
     }
-    if (this.getFieldLaborActivitiesRequest && this.getFieldLaborActivitiesRequest.unsubscribe) {
-      this.getFieldLaborActivitiesRequest.unsubscribe();
+    if (this.getFieldLaborByCropsRequest && this.getFieldLaborByCropsRequest.unsubscribe) {
+      this.getFieldLaborByCropsRequest.unsubscribe();
     }
-    if (this.getFieldLaborActivityCategoriesRequest && this.getFieldLaborActivityCategoriesRequest.unsubscribe) {
-      this.getFieldLaborActivityCategoriesRequest.unsubscribe();
+    // if (this.getFieldLaborActivityCategoriesRequest && this.getFieldLaborActivityCategoriesRequest.unsubscribe) {
+    //   this.getFieldLaborActivityCategoriesRequest.unsubscribe();
+    // }
+    if (this.updateFieldLaborByCropRequest && this.updateFieldLaborByCropRequest.unsubscribe) {
+      this.updateFieldLaborByCropRequest.unsubscribe();
     }
-    if (this.updateFieldLaborActivityRequest && this.updateFieldLaborActivityRequest.unsubscribe) {
-      this.updateFieldLaborActivityRequest.unsubscribe();
-    }
-    if (this.deleteFieldLaborActivityRequest && this.deleteFieldLaborActivityRequest.unsubscribe) {
-      this.deleteFieldLaborActivityRequest.unsubscribe();
+    if (this.deleteFieldLaborByCropRequest && this.deleteFieldLaborByCropRequest.unsubscribe) {
+      this.deleteFieldLaborByCropRequest.unsubscribe();
     }
     this.authenticationService.dispose();
     this.cdr.detach();
@@ -174,10 +176,10 @@ export class FieldLaborByCropComponent implements OnInit {
 
   onSubmit(fieldLaborActivityForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-    this.addFieldLaborActivityRequest = this.workbookService.addFieldLaborActivity(this.model).subscribe(response => {
+    this.addFieldLaborByCropRequest = this.workbookService.addFieldLaborByCrop(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.fieldLaborActivities = response;
-      this.alertService.pushAlert(new Alert("Successfully added Field Labor Activity.", AlertContext.Success));
+      this.fieldLaborByCropDtos = response;
+      this.alertService.pushAlert(new Alert("Successfully added Field Labor By Crop.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
       
@@ -188,7 +190,7 @@ export class FieldLaborByCropComponent implements OnInit {
   }
 
   resetForm() {
-    this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID, FieldLaborActivityCategoryID: this.model.FieldLaborActivityCategoryID});
+    this.model = new FieldLaborByCropCreateDto({WorkbookID: this.workbookID});
   }
 
 }
