@@ -1,12 +1,6 @@
-MERGE INTO dbo.CustomRichTextType AS Target
-USING (VALUES
-(1, 'PlatformOverview', 'Platform Overview'),
-(2, 'Disclaimer', 'Disclaimer'),
-(3, 'Homepage', 'Home page'),
-(4, 'Help', 'Help'),
-(5, 'LabelsAndDefinitionsList', 'Labels and Definitions List'),
-(6, 'WatershedList', 'Watershed List'),
-(7, 'Training', 'Training'),
+
+Insert into dbo.CustomRichTextType (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
+values
 (8, 'Workbooks', 'Workbooks'),
 (9, 'WorkbookDetail', 'Workbook Details'),
 (10, 'FieldLaborActivityForm', 'Field Labor Activity Form'),
@@ -27,15 +21,25 @@ USING (VALUES
 (25, 'CropChannelSpecificInfoForm', 'Crop Channel Specific Info Form'),
 (26, 'OverheadCostEstimator', 'Overhead Cost Estimator')
 
-)
-AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
-ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID
-WHEN MATCHED THEN
-UPDATE SET
-	CustomRichTextTypeName = Source.CustomRichTextTypeName,
-	CustomRichTextTypeDisplayName = Source.CustomRichTextTypeDisplayName
-WHEN NOT MATCHED BY TARGET THEN
-	INSERT (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
-	VALUES (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
-WHEN NOT MATCHED BY SOURCE THEN
-	DELETE;
+Insert into dbo.CustomRichText(CustomRichTextTypeID, CustomRichTextContent)
+values
+(8, '<p>Text for Workbooks goes here.</p>'),
+(9, '<p>Text for a Workbook Detail page goes here.</p>'),
+(10, '<p>Text for Field Labor Activities goes here.</p>'),
+(11, '<p>Machinery Cost Form</p>'),
+(12, '<p>Field Standard Times Form</p>'),
+(13, '<p>Field Labor By Crop Form</p>'),
+(14, '<p>Field Input Cost Form</p>'),
+(15, '<p>Field Input By Crop Form</p>'),
+(16, '<p>TP Labor Activity Form</p>'),
+(17, '<p>TP Tray Type Form</p>'),
+(18, '<p>TP Standard Times Form</p>'),
+(19, '<p>TP Labor By Crop Form</p>'),
+(20, '<p>TP Input Form</p>'),
+(21, '<p>TP Input Cost Form</p>'),
+(22, '<p>TP Info Form</p>'),
+(23, '<p>General Farm Info Form</p>'),
+(24, '<p>Crop Specific Info Form</p>'),
+(25, '<p>Crop Channel Specific Info Form</p>'),
+(26, '<p>Overhead Cost Estimator</p>')
+

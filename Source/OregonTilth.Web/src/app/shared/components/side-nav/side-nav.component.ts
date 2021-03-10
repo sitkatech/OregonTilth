@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     styleUrls: ['./side-nav.component.scss']
 })
 
-export class SideNavComponent implements OnInit, OnDestroy {
+export class SideNavComponent implements OnInit {
     @Input() workbook: WorkbookDto;
     private watchUserChangeSubscription: any;
     private currentUser: UserDetailedDto;
