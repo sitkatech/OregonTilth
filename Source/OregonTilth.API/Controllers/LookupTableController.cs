@@ -23,6 +23,12 @@ namespace OregonTilth.API.Controllers
             return fieldlaborActivityCategoryDtos;
         }
 
-        
+        [HttpGet("lookupTable/labor-types")]
+        public ActionResult<List<LaborTypeDto>> ListAllLaborTypes()
+        {
+            var laborTypeDtos = LaborType.List(_dbContext);
+            return laborTypeDtos;
+        }
+
     }
 }

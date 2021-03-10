@@ -22,6 +22,8 @@ import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { FieldLaborByCropCreateDto } from 'src/app/shared/models/forms/field-labor-by-crop/field-labor-by-crop-create-dto';
 import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor-by-crop-dto';
+import { CropDto } from 'src/app/shared/models/generated/crop-dto';
+import { LaborTypeDto } from 'src/app/shared/models/generated/labor-type-dto';
 
 @Component({
   selector: 'field-labor-by-crop',
@@ -51,8 +53,16 @@ export class FieldLaborByCropComponent implements OnInit {
   public getFieldLaborByCropsRequest: any;
   public fieldLaborByCropDtos: FieldLaborByCropDto[];
 
-  // public fieldLaborActivityCategories: Array<FieldLaborActivityCategoryDto>;
-  // private getFieldLaborActivityCategoriesRequest: any;
+  
+
+  public cropDtos: CropDto[];
+  private getCropDtosRequest: any;
+
+  public fieldLaborActivityDtos: FieldLaborActivityDto[];
+  private getFieldLaborActivityDtosRequest: any;
+
+  public laborTypeDtos: LaborTypeDto[];
+  private getLaborTypeDtosRequest: any;
 
   private updateFieldLaborByCropRequest: any;
   private deleteFieldLaborByCropRequest: any;
@@ -66,12 +76,16 @@ export class FieldLaborByCropComponent implements OnInit {
       this.model = new FieldLaborByCropCreateDto({WorkbookID: this.workbookID});
       
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      // this.getFieldLaborActivityCategoriesRequest = this.lookupTablesService.getFieldLaborActivityCategories();
-      this.getFieldLaborByCropsRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
+      this.getCropDtosRequest = this.workbookService.getCrops(this.workbookID);
+      this.getFieldLaborActivityDtosRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
+      this.getLaborTypeDtosRequest = this.lookupTablesService.getLaborTypes();
+      this.getFieldLaborByCropsRequest = this.workbookService.getFieldLaborByCrops(this.workbookID);
 
-      forkJoin([this.getWorkbookRequest, this.getFieldLaborByCropsRequest]).subscribe(([workbook, fieldLaborByCrops]: [WorkbookDto, FieldLaborByCropDto[]] ) => {
-          this.workbook = workbook;
-          // this.fieldLaborActivityCategories = fieldLaborActivityCategories;
+      forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldLaborActivityDtosRequest, this.getLaborTypeDtosRequest, this.getFieldLaborByCropsRequest]).subscribe(([workbookDto, cropDtos, fieldLaborActivityDtos, laborTypeDtos, fieldLaborByCrops]: [WorkbookDto, CropDto[], FieldLaborActivityDto[], LaborTypeDto[], FieldLaborByCropDto[]] ) => {
+          this.workbook = workbookDto;
+          this.cropDtos = cropDtos;
+          this.fieldLaborActivityDtos = fieldLaborActivityDtos;
+          this.laborTypeDtos = laborTypeDtos;
           this.fieldLaborByCropDtos = fieldLaborByCrops;
           this.defineColumnDefs();
           this.cdr.markForCheck();
@@ -84,8 +98,8 @@ export class FieldLaborByCropComponent implements OnInit {
     var componentScope = this;
     this.columnDefs = [
       {
-        headerName: 'Field Labor Activity', 
-        field: 'FieldLaborActivityName',
+        headerName: 'Crop', 
+        field: 'Crop',
         editable: true,
         cellEditor: 'agPopupTextCellEditor',
         sortable: true, 

@@ -22,6 +22,7 @@ namespace OregonTilth.API.Controllers
         {
         }
 
+        #region Workbook
         [HttpPost("workbooks")]
         [LoggedInUnclassifiedFeature]
         public ActionResult<WorkbookDto> CreateWorkbook([FromBody] WorkbookDto workbookDto)
@@ -99,6 +100,7 @@ namespace OregonTilth.API.Controllers
 
             return Ok(workbook);
         }
+        #endregion
 
         #region Field Labor Activities
         [HttpPost("workbooks/forms/field-labor-activities")]
