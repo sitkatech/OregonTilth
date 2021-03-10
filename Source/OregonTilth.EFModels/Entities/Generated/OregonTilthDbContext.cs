@@ -18,6 +18,7 @@ namespace OregonTilth.EFModels.Entities
         }
 
         public virtual DbSet<Crop> Crops { get; set; }
+        public virtual DbSet<CropUnit> CropUnits { get; set; }
         public virtual DbSet<CustomRichText> CustomRichTexts { get; set; }
         public virtual DbSet<CustomRichTextType> CustomRichTextTypes { get; set; }
         public virtual DbSet<DatabaseMigration> DatabaseMigrations { get; set; }
@@ -55,6 +56,16 @@ namespace OregonTilth.EFModels.Entities
 
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.Crops)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<CropUnit>(entity =>
+            {
+                entity.Property(e => e.CropUnitName).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.CropUnits)
                     .HasForeignKey(d => d.WorkbookID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
