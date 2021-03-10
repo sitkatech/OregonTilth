@@ -26,6 +26,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<FieldDefinitionType> FieldDefinitionTypes { get; set; }
         public virtual DbSet<FieldLaborActivity> FieldLaborActivities { get; set; }
         public virtual DbSet<FieldLaborActivityCategory> FieldLaborActivityCategories { get; set; }
+        public virtual DbSet<FieldLaborByCrop> FieldLaborByCrops { get; set; }
         public virtual DbSet<FieldUnitType> FieldUnitTypes { get; set; }
         public virtual DbSet<FileResource> FileResources { get; set; }
         public virtual DbSet<FileResourceMimeType> FileResourceMimeTypes { get; set; }
@@ -138,6 +139,29 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.FieldLaborActivityCategoryDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.FieldLaborActivityCategoryName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<FieldLaborByCrop>(entity =>
+            {
+                entity.HasOne(d => d.Crop)
+                    .WithMany(p => p.FieldLaborByCrops)
+                    .HasForeignKey(d => d.CropID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.FieldLaborActivity)
+                    .WithMany(p => p.FieldLaborByCrops)
+                    .HasForeignKey(d => d.FieldLaborActivityID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.LaborType)
+                    .WithMany(p => p.FieldLaborByCrops)
+                    .HasForeignKey(d => d.LaborTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.FieldLaborByCrops)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<FieldUnitType>(entity =>

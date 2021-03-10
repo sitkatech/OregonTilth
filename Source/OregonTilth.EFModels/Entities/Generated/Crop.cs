@@ -12,6 +12,11 @@ namespace OregonTilth.EFModels.Entities
     [Index(nameof(CropName), nameof(WorkbookID), Name = "AK_Crop_CropName_WorkbookID", IsUnique = true)]
     public partial class Crop
     {
+        public Crop()
+        {
+            FieldLaborByCrops = new HashSet<FieldLaborByCrop>();
+        }
+
         [Key]
         public int CropID { get; set; }
         public int WorkbookID { get; set; }
@@ -22,5 +27,7 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("Crops")]
         public virtual Workbook Workbook { get; set; }
+        [InverseProperty(nameof(FieldLaborByCrop.Crop))]
+        public virtual ICollection<FieldLaborByCrop> FieldLaborByCrops { get; set; }
     }
 }
