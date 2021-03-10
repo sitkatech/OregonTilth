@@ -39,7 +39,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
-  public richTextTypeID : number = CustomRichTextType.FieldLaborActivities;
+  public richTextTypeID : number = CustomRichTextType.FieldLaborActivityForm;
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
