@@ -100,7 +100,7 @@ namespace OregonTilth.API.Controllers
             return Ok(workbook);
         }
 
-        #region Field Labor Activities
+        #region "Field Labor Activities Form"
         [HttpPost("workbooks/forms/field-labor-activities")]
         [LoggedInUnclassifiedFeature]
         public ActionResult<IEnumerable<FieldLaborActivityDto>> CreateFieldLaborActivity([FromBody] FieldLaborActivityUpsertDto fieldLaborActivityUpsertDto)
@@ -159,7 +159,70 @@ namespace OregonTilth.API.Controllers
 
             return Ok(returnDtos);
         }
-        #endregion 
+
+        #endregion "Field Labor Activities Form"
+
+
+        #region "Machinery Form"
+        [HttpPost("workbooks/forms/machinery")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<MachineryDto>> CreateMachinery([FromBody] MachineryUpsertDto machineryUpsertDto)
+        {
+            var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+
+            var validationMessages = Machinery.ValidateUpsert(_dbContext, machineryUpsertDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var machineryDtos = Machinery.CreateNewMachinery(_dbContext, machineryUpsertDto, userDto);
+            return Ok(machineryDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/machinery")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<MachineryDto>> GetMachineries([FromRoute] int workbookID)
+        {
+            var machineries = Machinery.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(machineries);
+        }
+
+        [HttpPut("workbooks/forms/machinery")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<MachineryDto> UpdateMachinery([FromBody] MachineryDto machineryDto)
+        {
+            var validationMessages = Machinery.ValidateUpdate(_dbContext, machineryDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var machineryDtos = Machinery.UpdateMachinery(_dbContext, machineryDto);
+            return Ok(machineryDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/machinery/{machineryID}")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<MachineryDto>> DeleteMachinery([FromRoute] int workbookID, [FromRoute] int machineryID)
+        {
+            var validationMessages = Machinery.ValidateDelete(_dbContext, machineryID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Machinery.Delete(_dbContext, machineryID);
+
+            var returnDtos = Machinery.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+        #endregion "Machinery Form"
 
         #region Crops
         [HttpPost("workbooks/forms/crops")]

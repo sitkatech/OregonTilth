@@ -22,6 +22,7 @@ import { NewWorkbookComponent } from './pages/workbooks/new-workbook/new-workboo
 import { EditWorkbookComponent } from './pages/workbooks/edit-workbook/edit-workbook.component';
 import { WorkbookDetailComponent } from './pages/workbooks/workbook-detail/workbook-detail.component';
 import { FieldLaborActivitiesComponent } from './pages/workbooks/forms/field-labor-activities/field-labor-activities.component';
+import { MachineryComponent } from './pages/workbooks/forms/machinery/machinery.component';
 import { CropsComponent } from './pages/workbooks/forms/crops/crops.component';
 import { CropUnitsComponent } from './pages/workbooks/forms/crop-units/crop-units.component';
 
@@ -43,6 +44,7 @@ const routes: Routes = [
   { path: "workbooks/new", component: NewWorkbookComponent},
   { path: "workbooks/:id/edit", component: EditWorkbookComponent},
   { path: "workbooks/:id/forms/field-labor-activities", component: FieldLaborActivitiesComponent},
+  { path: "workbooks/:id/forms/machinery", component: MachineryComponent},
   { path: "workbooks/:id/forms/crops", component: CropsComponent},
   { path: "workbooks/:id/forms/crop-units", component: CropUnitsComponent},
   { path: "workbooks/:id", component: WorkbookDetailComponent},
