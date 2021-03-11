@@ -11,16 +11,10 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item dropdown" routerLinkActive="active" *ngIf="isAdministrator()">
-                <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                    View
+            <li class="nav-item" routerLinkActive="active" *ngIf="isAdministrator()">
+                <a routerLink="/workbooks" class="nav-link">
+                    My Workbooks
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a routerLink="/workbooks" class="dropdown-item">
-                        My Workbooks
-                    </a>
-                </div>
             </li>
             <li class="nav-item dropdown" routerLinkActive="active" *ngIf="isAdministrator()">
                 <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
