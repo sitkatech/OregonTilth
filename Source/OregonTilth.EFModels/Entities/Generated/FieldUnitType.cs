@@ -13,6 +13,11 @@ namespace OregonTilth.EFModels.Entities
     [Index(nameof(FieldUnitTypeName), Name = "AK_FieldUnitType_FieldUnitTypeName", IsUnique = true)]
     public partial class FieldUnitType
     {
+        public FieldUnitType()
+        {
+            FieldInputByCosts = new HashSet<FieldInputByCost>();
+        }
+
         [Key]
         public int FieldUnitTypeID { get; set; }
         [Required]
@@ -21,5 +26,8 @@ namespace OregonTilth.EFModels.Entities
         [Required]
         [StringLength(100)]
         public string FieldUnitTypeDisplayName { get; set; }
+
+        [InverseProperty(nameof(FieldInputByCost.FieldUnitType))]
+        public virtual ICollection<FieldInputByCost> FieldInputByCosts { get; set; }
     }
 }
