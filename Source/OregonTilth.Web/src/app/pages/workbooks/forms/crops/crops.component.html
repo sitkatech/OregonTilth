@@ -6,7 +6,7 @@
       <li class="breadcrumb-item" aria-current="page">
         <a routerLink="/workbooks/{{workbook.WorkbookID}}">{{workbook.WorkbookName}}</a>
       </li>
-      <li class="breadcrumb-item active" aria-current="page">Field Labor Activities</li>
+      <li class="breadcrumb-item active" aria-current="page">Crops</li>
   </ol>
 </nav>
 
@@ -17,28 +17,19 @@
     </div>
     <div class="col-sm-10">
         <app-alert-display></app-alert-display>
-        <h1>Field Labor Activities</h1>
+        <h1>Crops</h1>
         <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
         <div class="card mt-4">
           <div class="card-header">
-            Add new Field Labor Activity
+            Add new Crop
           </div>
           <div class="card-body">
-            <form *ngIf=(model) (ngSubmit)="onSubmit(fieldLaborActivityForm)" #fieldLaborActivityForm="ngForm">
+            <form *ngIf=(model) (ngSubmit)="onSubmit(cropForm)" #cropForm="ngForm">
               <div class="row">
                 
-                <div class="form-group col-md-8">
-                  <label class="required">Field Labor Activity</label>
-                  <input class="form-control" type="text" name="FieldLaborActivityName" [(ngModel)]="model.FieldLaborActivityName">
-                </div>
-                <div class="form-group col-md-4">
-                  <label class="required">Labor Activity Category</label>
-                  <select name="FieldLaborActivityCategoryID" class="form-control" [(ngModel)]="model.FieldLaborActivityCategoryID" required>
-                    <option value=""></option>
-                    <option *ngFor="let category of fieldLaborActivityCategories" [value]="category.FieldLaborActivityCategoryID">
-                      {{category.FieldLaborActivityCategoryDisplayName}}
-                    </option>
-                  </select>
+                <div class="form-group col-md-12">
+                  <label class="required">Crop</label>
+                  <input class="form-control" type="text" name="CropName" [(ngModel)]="model.CropName">
                 </div>
               </div>
               
@@ -47,30 +38,23 @@
                   <i class="fas fa-bolt"></i> Required field
                 </div>
                 <div class="col-sm text-right">
-                  <button type="submit" class="btn btn-fresca" [disabled]="!fieldLaborActivityForm.form.valid || isLoadingSubmit">
+                  <button type="submit" class="btn btn-fresca" [disabled]="!cropForm.form.valid || isLoadingSubmit">
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                     Submit
                   </button>
+                  
                 </div>
               </div>
             </form>
           </div>
-          
         </div>
-
-        
-        
         <div class="row mt-4">
           <div class="col">
-            <ag-grid-angular #fieldLaborActivitiesGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="fieldLaborActivities"
+            <ag-grid-angular #fieldLaborActivitiesGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="crops"
               [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (cellValueChanged)="onCellValueChanged($event)">
             </ag-grid-angular>
           </div>
         </div>
-
-
-
     </div>
   </div>
-  
 </div>

@@ -32,7 +32,7 @@ export class WorkbookDetailComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public columnDefs: ColDef[];
-  public richTextTypeID : number = CustomRichTextType.PlatformOverview;
+  public richTextTypeID : number = CustomRichTextType.WorkbookDetail;
   public workbook: WorkbookDto;
   public roles: Array<RoleDto>;
   public isLoadingSubmit: boolean = false;
@@ -55,12 +55,27 @@ export class WorkbookDetailComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.watchUserChangeSubscription.unsubscribe();
+
+    this.authenticationService.dispose();
+
+    if (this.watchUserChangeSubscription && this.watchUserChangeSubscription.unsubscribe) {
+      this.watchUserChangeSubscription.unsubscribe();
+    }
+
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
-    this.authenticationService.dispose();
+
+    
     this.cdr.detach();
+
+
+    // this.watchUserChangeSubscription.unsubscribe();
+    // if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
+    //   this.getWorkbookRequest.unsubscribe();
+    // }
+    // this.authenticationService.dispose();
+    // this.cdr.detach();
   }
 
 }

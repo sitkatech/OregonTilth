@@ -39,7 +39,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
-  
+  public richTextTypeID : number = CustomRichTextType.FieldLaborActivityForm;
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
@@ -86,6 +86,8 @@ export class FieldLaborActivitiesComponent implements OnInit {
         field: 'FieldLaborActivityName',
         editable: true,
         cellEditor: 'agPopupTextCellEditor',
+        sortable: true, 
+        filter: true,
       },
       {
         headerName: 'Field Labor Category', 
@@ -104,6 +106,8 @@ export class FieldLaborActivitiesComponent implements OnInit {
           });
           return true;
         },
+        sortable: true, 
+        filter: true,
       },
       {
         headerName: 'Delete', field: 'FieldLaborActivityID', valueGetter: function (params: any) {
@@ -124,6 +128,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
   deleteFieldLaborActivity(fieldLaborActivityID: number) {
     this.deleteFieldLaborActivityRequest = this.workbookService.deleteFieldLaborActivity(this.workbookID, fieldLaborActivityID).subscribe(fieldLaborActivityDtos => {
       this.fieldLaborActivities = fieldLaborActivityDtos;
+      this.alertService.pushAlert(new Alert("Successfully deleted Field Labor Activity", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
 
@@ -133,8 +138,6 @@ export class FieldLaborActivitiesComponent implements OnInit {
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
 
-
-
     this.updateFieldLaborActivityRequest = this.workbookService.updateFieldLaborActivity(dtoToPost).subscribe(fieldLaborActivity => {
       this.isLoadingSubmit = false;
       this.alertService.pushAlert(new Alert("Successfully updated Field Labor Activity", AlertContext.Success));
@@ -143,7 +146,6 @@ export class FieldLaborActivitiesComponent implements OnInit {
       this.cdr.detectChanges();
     })
 
-    console.log(dtoToPost);
   }
 
   ngOnDestroy() {

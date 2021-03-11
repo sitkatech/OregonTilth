@@ -41,6 +41,7 @@ export class CustomRichTextComponent implements OnInit {
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
+      this.cdr.detectChanges();
     });
     //window.Editor = this.Editor;
 
