@@ -101,7 +101,52 @@ export class FieldLaborByCropComponent implements OnInit {
         headerName: 'Crop', 
         field: 'Crop',
         editable: true,
-        cellEditor: 'agPopupTextCellEditor',
+        valueFormatter: function (params) {
+          return params.value.CropName;
+        },
+        cellEditor: 'agPopupSelectCellEditor',
+        cellEditorParams: {
+          values: this.cropDtos.map(x => x.CropName)
+        },
+        sortable: true, 
+        filter: true,
+      },
+      {
+        headerName: 'Field Labor Activity', 
+        field: 'FieldLaborActivity',
+        editable: true,
+        valueFormatter: function (params) {
+          return params.value.FieldLaborActivityName;
+        },
+        cellEditor: 'agPopupSelectCellEditor',
+        cellEditorParams: {
+          values: this.fieldLaborActivityDtos.map(x => x.FieldLaborActivityName)
+        },
+        sortable: true, 
+        filter: true,
+      },
+      {
+        headerName: 'Labor Type', 
+        field: 'LaborType',
+        editable: true,
+        valueFormatter: function (params) {
+          return params.value.LaborTypeName;
+        },
+        cellEditor: 'agPopupSelectCellEditor',
+        cellEditorParams: {
+          values: this.laborTypeDtos.map(x => x.LaborTypeName)
+        },
+        sortable: true, 
+        filter: true,
+      },
+      {
+        headerName: 'Occurrances', 
+        field: 'Occurrances',
+        editable: true,
+        cellEditor: 'agTextCellEditor',
+        cellEditorParams: {
+          values: this.laborTypeDtos.map(x => x.LaborTypeName)
+        },
         sortable: true, 
         filter: true,
       },

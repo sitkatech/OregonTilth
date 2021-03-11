@@ -83,7 +83,8 @@ namespace OregonTilth.EFModels.Entities
                 WorkbookID = fieldLaborByCropCreateDto.WorkbookID,
                 CropID = fieldLaborByCropCreateDto.CropID,
                 FieldLaborActivityID = fieldLaborByCropCreateDto.FieldLaborActivityID,
-                LaborTypeID = fieldLaborByCropCreateDto.LaborTypeID
+                LaborTypeID = fieldLaborByCropCreateDto.LaborTypeID,
+                Occurrances = fieldLaborByCropCreateDto.Occurrances
             };
 
             dbContext.FieldLaborByCrops.Add(fieldLaborByCrop);
