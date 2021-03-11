@@ -22,6 +22,7 @@ namespace OregonTilth.API.Controllers
         {
         }
 
+        #region Workbook
         [HttpPost("workbooks")]
         [LoggedInUnclassifiedFeature]
         public ActionResult<WorkbookDto> CreateWorkbook([FromBody] WorkbookDto workbookDto)
@@ -99,6 +100,7 @@ namespace OregonTilth.API.Controllers
 
             return Ok(workbook);
         }
+        #endregion
 
         #region "Field Labor Activities Form"
         [HttpPost("workbooks/forms/field-labor-activities")]
@@ -344,7 +346,65 @@ namespace OregonTilth.API.Controllers
 
             return Ok(returnDtos);
         }
-        #endregion 
+        #endregion
 
+        #region Field Labor By Crop
+        [HttpPost("workbooks/forms/field-labor-by-crop")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldLaborByCropDto>> CreateFieldLaborByCrop([FromBody] FieldLaborByCropCreateDto fieldLaborByCropCreateDto)
+        {
+            var validationMessages = FieldLaborByCrop.ValidateCreate(_dbContext, fieldLaborByCropCreateDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var fieldLaborByCropDtos = FieldLaborByCrop.CreateNewFieldLaborByCrop(_dbContext, fieldLaborByCropCreateDto);
+            return Ok(fieldLaborByCropDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/field-labor-by-crop")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldLaborActivityDto>> GetFieldLaborByCrops([FromRoute] int workbookID)
+        {
+            var fieldLaborByCrops = FieldLaborByCrop.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldLaborByCrops);
+        }
+
+        [HttpPut("workbooks/forms/field-labor-by-crop")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<FieldLaborActivityDto> UpdateFieldLaborByCrop([FromBody] FieldLaborByCropDto fieldLaborByCropDto)
+        {
+            var validationMessages = FieldLaborByCrop.ValidateUpdate(_dbContext, fieldLaborByCropDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var fieldLaborByCropDtos = FieldLaborByCrop.UpdateFieldLaborByCrop(_dbContext, fieldLaborByCropDto);
+            return Ok(fieldLaborByCropDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/field-labor-by-crop/{fieldLaborByCropID}")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldLaborActivityDto>> DeleteFieldLaborByCrop([FromRoute] int workbookID, [FromRoute] int fieldLaborByCropID)
+        {
+            var validationMessages = FieldLaborByCrop.ValidateDelete(_dbContext, fieldLaborByCropID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            FieldLaborByCrop.Delete(_dbContext, fieldLaborByCropID);
+
+            var returnDtos = FieldLaborByCrop.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+        #endregion 
     }
 }

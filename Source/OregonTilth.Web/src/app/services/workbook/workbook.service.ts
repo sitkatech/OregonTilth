@@ -11,6 +11,8 @@ import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { CropCreateDto } from 'src/app/shared/models/forms/crops/crop-create-dto';
 import { CropUnitCreateDto } from 'src/app/shared/models/forms/crop-units/crop-unit-create-dto';
 import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
+import { FieldLaborByCropCreateDto } from 'src/app/shared/models/forms/field-labor-by-crop/field-labor-by-crop-create-dto';
+import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor-by-crop-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -83,6 +85,27 @@ export class WorkbookService {
 
     deleteMachinery(workbookID:number, machineryID: number): Observable<MachineryDto[]> {
         let route = `workbooks/${workbookID}/forms/machinery/${machineryID}`;
+        return this.apiService.deleteToApi(route);
+    }
+
+    // Field Labor By Crop Form
+    addFieldLaborByCrop(fieldLaborByCropCreateDto: FieldLaborByCropCreateDto): Observable<FieldLaborByCropDto[]> {
+        let route = `/workbooks/forms/field-labor-by-crop`;
+        return this.apiService.postToApi(route, fieldLaborByCropCreateDto);
+    }
+
+    getFieldLaborByCrops(workbookID: number): Observable<FieldLaborByCropDto[]> {
+        let route = `workbooks/${workbookID}/forms/field-labor-by-crop`;
+        return this.apiService.getFromApi(route);
+    }
+
+    updateFieldLaborByCrop(fieldLaborByCrop: FieldLaborByCropDto): Observable<FieldLaborByCropDto> {
+        let route = `/workbooks/forms/field-labor-by-crop`;
+        return this.apiService.putToApi(route, fieldLaborByCrop);
+    }
+
+    deleteFieldLaborByCrop(workbookID:number, fieldLaborByCropID: number): Observable<FieldLaborByCropDto[]> {
+        let route = `workbooks/${workbookID}/forms/field-labor-by-crop/${fieldLaborByCropID}`;
         return this.apiService.deleteToApi(route);
     }
 
