@@ -1,9 +1,9 @@
-<nav aria-label="breadcrumb" *ngIf="workbook">
+<nav aria-label="breadcrumb">
   <ol class="breadcrumb">
       <li class="breadcrumb-item" aria-current="page">
         <a routerLink="/workbooks">Workbooks</a>
       </li>
-      <li class="breadcrumb-item" aria-current="page">
+      <li *ngIf="workbook" class="breadcrumb-item" aria-current="page">
         <a routerLink="/workbooks/{{workbook.WorkbookID}}">{{workbook.WorkbookName}}</a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">Machinery</li>
