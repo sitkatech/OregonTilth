@@ -9,10 +9,8 @@ namespace OregonTilth.EFModels.Entities
     {
         public static IEnumerable<FieldLaborByCropDto> List(OregonTilthDbContext dbContext)
         {
-            return dbContext.FieldLaborByCrops
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
-                .AsNoTracking()
-                .Select(x => FieldLaborByCropExtensionMethods.AsDto(x)).AsEnumerable();
+            return GetFieldLaborByCropImpl(dbContext).Select(x => FieldLaborByCropExtensionMethods.AsDto(x))
+                .AsEnumerable();
         }
 
         public static List<ErrorMessage> ValidateCreate(OregonTilthDbContext dbContext, FieldLaborByCropCreateDto fieldLaborByCropCreateDto)
@@ -56,10 +54,10 @@ namespace OregonTilth.EFModels.Entities
             return fieldLaborByCrops.Select(x => x.AsDto());
         }
 
-        public static IQueryable<FieldLaborByCropDto> GetDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
+        public static IQueryable<FieldLaborByCropSummaryDto> GetDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
         {
-            var FieldLaborByCrops = GetFieldLaborByCropImpl(dbContext).Where(x => x.WorkbookID == workbookID);
-            return FieldLaborByCrops.Select(x => x.AsDto());
+            var fieldLaborByCrops = GetFieldLaborByCropImpl(dbContext).Where(x => x.WorkbookID == workbookID);
+            return fieldLaborByCrops.Select(x => x.AsSummaryDto());
         }
 
         private static IQueryable<FieldLaborByCrop> GetFieldLaborByCropImpl(OregonTilthDbContext dbContext)
@@ -78,7 +76,7 @@ namespace OregonTilth.EFModels.Entities
             return fieldLaborByCrop?.AsDto();
         }
 
-        public static IQueryable<FieldLaborByCropDto> CreateNewFieldLaborByCrop(OregonTilthDbContext dbContext, FieldLaborByCropCreateDto fieldLaborByCropCreateDto)
+        public static IQueryable<FieldLaborByCropSummaryDto> CreateNewFieldLaborByCrop(OregonTilthDbContext dbContext, FieldLaborByCropCreateDto fieldLaborByCropCreateDto)
         {
             var fieldLaborByCrop = new FieldLaborByCrop
             {
