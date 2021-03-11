@@ -104,6 +104,12 @@ export class FieldLaborByCropComponent implements OnInit {
         valueFormatter: function (params) {
           return params.value.CropName;
         },
+        valueSetter: params => {
+          params.data.Crop = this.cropDtos.find(element => {
+            return element.CropName == params.newValue;
+          });
+          return true;
+        },
         cellEditor: 'agPopupSelectCellEditor',
         cellEditorParams: {
           values: this.cropDtos.map(x => x.CropName)
@@ -118,6 +124,12 @@ export class FieldLaborByCropComponent implements OnInit {
         valueFormatter: function (params) {
           return params.value.FieldLaborActivityName;
         },
+        valueSetter: params => {
+          params.data.FieldLaborActivity = this.fieldLaborActivityDtos.find(element => {
+            return element.FieldLaborActivityName == params.newValue;
+          });
+          return true;
+        },
         cellEditor: 'agPopupSelectCellEditor',
         cellEditorParams: {
           values: this.fieldLaborActivityDtos.map(x => x.FieldLaborActivityName)
@@ -131,6 +143,12 @@ export class FieldLaborByCropComponent implements OnInit {
         editable: true,
         valueFormatter: function (params) {
           return params.value.LaborTypeName;
+        },
+        valueSetter: params => {
+          params.data.LaborType = this.laborTypeDtos.find(element => {
+            return element.LaborTypeDisplayName == params.newValue;
+          });
+          return true;
         },
         cellEditor: 'agPopupSelectCellEditor',
         cellEditorParams: {
@@ -150,34 +168,14 @@ export class FieldLaborByCropComponent implements OnInit {
         sortable: true, 
         filter: true,
       },
-      // {
-      //   headerName: 'Field Labor Category', 
-      //   field: 'FieldLaborActivityCategory',
-      //   editable: true,
-      //   cellEditor: 'agPopupSelectCellEditor',
-      //   cellEditorParams: {
-      //     values: this.fieldLaborActivityCategories.map(x => x.FieldLaborActivityCategoryDisplayName)
-      //   },
-      //   valueFormatter: function (params) {
-      //     return params.value.FieldLaborActivityCategoryDisplayName;
-      //   },
-      //   valueSetter: params => {
-      //     params.data.FieldLaborActivityCategory = this.fieldLaborActivityCategories.find(element => {
-      //       return element.FieldLaborActivityCategoryDisplayName == params.newValue;
-      //     });
-      //     return true;
-      //   },
-      //   sortable: true, 
-      //   filter: true,
-      // },
       {
-        headerName: 'Delete', field: 'FieldLaborActivityID', valueGetter: function (params: any) {
-          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.FieldLaborActivityID, ObjectDisplayName: params.data.FieldLaborActivityName };
+        headerName: 'Delete', valueGetter: function (params: any) {
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.FieldLaborByCropID, ObjectDisplayName: null };
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
-            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Field Labor By Crop?`)) {
-              componentScope.deleteFieldLaborActivity(field.PrimaryKey)
+            if(confirm(`Are you sure you want to delete this record?`)) {
+              componentScope.deleteFieldLaborByCrop(field.PrimaryKey)
             }
           }
           },
@@ -186,7 +184,7 @@ export class FieldLaborByCropComponent implements OnInit {
     ]
   }
 
-  deleteFieldLaborActivity(fieldLaborByCropID: number) {
+  deleteFieldLaborByCrop(fieldLaborByCropID: number) {
     this.deleteFieldLaborByCropRequest = this.workbookService.deleteFieldLaborByCrop(this.workbookID, fieldLaborByCropID).subscribe(fieldLaborByCropDtos => {
       this.fieldLaborByCropDtos = fieldLaborByCropDtos;
       this.alertService.pushAlert(new Alert("Successfully deleted Field Labor By Crop", AlertContext.Success));
@@ -199,7 +197,7 @@ export class FieldLaborByCropComponent implements OnInit {
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
 
-    this.updateFieldLaborByCropRequest = this.workbookService.updateFieldLaborActivity(dtoToPost).subscribe(fieldLaborActivity => {
+    this.updateFieldLaborByCropRequest = this.workbookService.updateFieldLaborByCrop(dtoToPost).subscribe(fieldLaborByCrop => {
       this.isLoadingSubmit = false;
       this.alertService.pushAlert(new Alert("Successfully updated Field Labor By Crop", AlertContext.Success));
     }, error => {
@@ -220,15 +218,22 @@ export class FieldLaborByCropComponent implements OnInit {
     if (this.getFieldLaborByCropsRequest && this.getFieldLaborByCropsRequest.unsubscribe) {
       this.getFieldLaborByCropsRequest.unsubscribe();
     }
-    // if (this.getFieldLaborActivityCategoriesRequest && this.getFieldLaborActivityCategoriesRequest.unsubscribe) {
-    //   this.getFieldLaborActivityCategoriesRequest.unsubscribe();
-    // }
     if (this.updateFieldLaborByCropRequest && this.updateFieldLaborByCropRequest.unsubscribe) {
       this.updateFieldLaborByCropRequest.unsubscribe();
     }
     if (this.deleteFieldLaborByCropRequest && this.deleteFieldLaborByCropRequest.unsubscribe) {
       this.deleteFieldLaborByCropRequest.unsubscribe();
     }
+    if (this.getCropDtosRequest && this.getCropDtosRequest.unsubscribe) {
+      this.getCropDtosRequest.unsubscribe();
+    }
+    if (this.getFieldLaborActivityDtosRequest && this.getFieldLaborActivityDtosRequest.unsubscribe) {
+      this.getFieldLaborActivityDtosRequest.unsubscribe();
+    }
+    if (this.getLaborTypeDtosRequest && this.getLaborTypeDtosRequest.unsubscribe) {
+      this.getLaborTypeDtosRequest.unsubscribe();
+    }
+
     this.authenticationService.dispose();
     this.cdr.detach();
   }

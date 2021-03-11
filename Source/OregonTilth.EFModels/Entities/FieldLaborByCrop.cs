@@ -70,10 +70,10 @@ namespace OregonTilth.EFModels.Entities
                 .AsNoTracking();
         }
 
-        public static FieldLaborByCropDto GetDtoByFieldLaborByCropID(OregonTilthDbContext dbContext, int fieldLaborByCropID)
+        public static FieldLaborByCropSummaryDto GetDtoByFieldLaborByCropID(OregonTilthDbContext dbContext, int fieldLaborByCropID)
         {
             var fieldLaborByCrop = GetFieldLaborByCropImpl(dbContext).SingleOrDefault(x => x.FieldLaborByCropID == fieldLaborByCropID);
-            return fieldLaborByCrop?.AsDto();
+            return fieldLaborByCrop?.AsSummaryDto();
         }
 
         public static IQueryable<FieldLaborByCropSummaryDto> CreateNewFieldLaborByCrop(OregonTilthDbContext dbContext, FieldLaborByCropCreateDto fieldLaborByCropCreateDto)
@@ -94,21 +94,22 @@ namespace OregonTilth.EFModels.Entities
             return GetDtoListByWorkbookID(dbContext, fieldLaborByCropCreateDto.WorkbookID);
         }
 
-        public static FieldLaborByCropDto UpdateFieldLaborByCrop(OregonTilthDbContext dbContext, FieldLaborByCropDto fieldLaborByCropDto)
+        public static FieldLaborByCropSummaryDto UpdateFieldLaborByCrop(OregonTilthDbContext dbContext, FieldLaborByCropDto fieldLaborByCropDto)
         {
 
-            var fieldLaborByCrop = GetFieldLaborByCropImpl(dbContext)
+            var fieldLaborByCrop = dbContext.FieldLaborByCrops
                 .SingleOrDefault(x => x.FieldLaborByCropID == fieldLaborByCropDto.FieldLaborByCropID);
 
 
             fieldLaborByCrop.CropID = fieldLaborByCropDto.Crop.CropID;
             fieldLaborByCrop.FieldLaborActivityID = fieldLaborByCropDto.FieldLaborActivity.FieldLaborActivityID;
             fieldLaborByCrop.LaborTypeID = fieldLaborByCropDto.LaborType.LaborTypeID;
+            fieldLaborByCrop.Occurrances = fieldLaborByCropDto.Occurrances;
 
             dbContext.SaveChanges();
             dbContext.Entry(fieldLaborByCrop).Reload();
 
-            return GetDtoByFieldLaborByCropID(dbContext, fieldLaborByCrop.FieldLaborActivityID);
+            return GetDtoByFieldLaborByCropID(dbContext, fieldLaborByCrop.FieldLaborByCropID);
         }
 
         // todo: validate deletion
@@ -123,7 +124,7 @@ namespace OregonTilth.EFModels.Entities
         {
             var existingFieldLaborByCrop = dbContext
                 .FieldLaborByCrops
-                .SingleOrDefault(x => x.FieldLaborActivityID == fieldLaborByCropID);
+                .SingleOrDefault(x => x.FieldLaborByCropID == fieldLaborByCropID);
 
             if (existingFieldLaborByCrop != null)
             {
