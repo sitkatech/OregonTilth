@@ -82,10 +82,11 @@ export class MachineryComponent implements OnInit {
         cellEditor: 'agPopupTextCellEditor',
       },
       {
-        headerName: 'Hourly', 
+        headerName: 'Hourly Machinery Operating Cost', 
         field: 'StandardMachineryCost',
         editable: true,
-        cellEditor: 'agPopup'
+        cellEditor: 'agPopupTextCellEditor',
+        valueFormatter: this.currencyFormatter
       },
       {
         headerName: 'Delete', field: 'MachineryID', valueGetter: function (params: any) {
@@ -93,7 +94,7 @@ export class MachineryComponent implements OnInit {
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
-            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Machinery?`)) {
+            if(confirm(`Are you sure you want to delete the '${field.ObjectDisplayName}' Machinery?`)) {
               componentScope.deleteMachinery(field.PrimaryKey)
             }
           }
@@ -101,6 +102,15 @@ export class MachineryComponent implements OnInit {
         sortable: true, filter: true, width: 100, autoHeight:true
       },
     ]
+  }
+
+  currencyFormatter(params) {
+    return '$' + params.value;
+  }
+  formatNumber(number) {
+    return Math.floor(number)
+      .toString()
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
 
   deleteMachinery(machineryID: number) {
@@ -119,7 +129,7 @@ export class MachineryComponent implements OnInit {
 
     this.updateMachineryRequest = this.workbookService.updateMachinery(dtoToPost).subscribe(machinery => {
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Machinery", AlertContext.Success));
+      this.alertService.pushAlert(new Alert(`Successfully updated Machinery`, AlertContext.Success));
     }, error => {
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
@@ -155,7 +165,7 @@ export class MachineryComponent implements OnInit {
     this.addMachineryRequest = this.workbookService.addMachinery(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
       this.machineries = response;
-      this.alertService.pushAlert(new Alert("Successfully added Machinery.", AlertContext.Success));
+      this.alertService.pushAlert(new Alert(`Successfully added Machinery '${this.model.MachineryName}'.`, AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
       
