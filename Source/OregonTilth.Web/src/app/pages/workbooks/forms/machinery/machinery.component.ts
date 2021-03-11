@@ -14,13 +14,11 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-// import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-labor-activity-dto';
-// import { FieldLaborActivityCreateDto } from 'src/app/shared/models/forms/field-labor-activities/field-labor-activity-create-dto';
-// import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/field-labor-activity-category-dto';
 import { MachineryDto } from 'src/app/shared/models/generated/machinery-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
+import { MachineryCreateDto } from 'src/app/shared/models/forms/machinery/machinery-create-dto';
 
 @Component({
   selector: 'machinery',
@@ -44,8 +42,8 @@ export class MachineryComponent implements OnInit {
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
-  private addFieldLaborActivityRequest: any;
-  //public model: FieldLaborActivityCreateDto;
+  private addMachineryRequest: any;
+  public model: MachineryCreateDto;
 
   public getMachineryRequest: any;
   public machineries: MachineryDto[];
@@ -59,15 +57,14 @@ export class MachineryComponent implements OnInit {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      //this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID});
+      this.model = new MachineryCreateDto({WorkbookID: this.workbookID});
       
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
       this.getMachineryRequest = this.workbookService.getMachinery(this.workbookID);
 
-      forkJoin([this.getWorkbookRequest, this.getFieldLaborActivityCategoriesRequest, this.getFieldLaborActivitiesRequest]).subscribe(([workbook, fieldLaborActivityCategories, fieldLaborActivities]: [WorkbookDto, FieldLaborActivityCategoryDto[], FieldLaborActivityDto[]] ) => {
+      forkJoin([this.getWorkbookRequest, this.getMachineryRequest]).subscribe(([workbook, machineries]: [WorkbookDto, MachineryDto[],] ) => {
           this.workbook = workbook;
-          this.fieldLaborActivityCategories = fieldLaborActivityCategories;
-          this.fieldLaborActivities = fieldLaborActivities;
+          this.machineries = machineries;
           this.defineColumnDefs();
           this.cdr.markForCheck();
       });
@@ -79,37 +76,25 @@ export class MachineryComponent implements OnInit {
     var componentScope = this;
     this.columnDefs = [
       {
-        headerName: 'Field Labor Activity', 
-        field: 'FieldLaborActivityName',
+        headerName: 'Machinery', 
+        field: 'MachineryName',
         editable: true,
         cellEditor: 'agPopupTextCellEditor',
       },
       {
-        headerName: 'Field Labor Category', 
-        field: 'FieldLaborActivityCategory',
+        headerName: 'Hourly', 
+        field: 'StandardMachineryCost',
         editable: true,
-        cellEditor: 'agPopupSelectCellEditor',
-        cellEditorParams: {
-          values: this.fieldLaborActivityCategories.map(x => x.FieldLaborActivityCategoryDisplayName)
-        },
-        valueFormatter: function (params) {
-          return params.value.FieldLaborActivityCategoryDisplayName;
-        },
-        valueSetter: params => {
-          params.data.FieldLaborActivityCategory = this.fieldLaborActivityCategories.find(element => {
-            return element.FieldLaborActivityCategoryDisplayName == params.newValue;
-          });
-          return true;
-        },
+        cellEditor: 'agPopup'
       },
       {
-        headerName: 'Delete', field: 'FieldLaborActivityID', valueGetter: function (params: any) {
-          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.FieldLaborActivityID, ObjectDisplayName: params.data.FieldLaborActivityName };
+        headerName: 'Delete', field: 'MachineryID', valueGetter: function (params: any) {
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.MachineryID, ObjectDisplayName: params.data.MachineryName };
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
-            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Field Labor Activity?`)) {
-              componentScope.deleteFieldLaborActivity(field.PrimaryKey)
+            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Machinery?`)) {
+              componentScope.deleteMachinery(field.PrimaryKey)
             }
           }
           },
@@ -118,9 +103,9 @@ export class MachineryComponent implements OnInit {
     ]
   }
 
-  deleteFieldLaborActivity(fieldLaborActivityID: number) {
-    this.deleteFieldLaborActivityRequest = this.workbookService.deleteFieldLaborActivity(this.workbookID, fieldLaborActivityID).subscribe(fieldLaborActivityDtos => {
-      this.fieldLaborActivities = fieldLaborActivityDtos;
+  deleteMachinery(machineryID: number) {
+    this.deleteMachineryRequest = this.workbookService.deleteMachinery(this.workbookID, machineryID).subscribe(machineryDtos => {
+      this.machineries = machineryDtos;
       this.cdr.detectChanges();
     }, error => {
 
@@ -132,9 +117,9 @@ export class MachineryComponent implements OnInit {
 
 
 
-    this.updateFieldLaborActivityRequest = this.workbookService.updateFieldLaborActivity(dtoToPost).subscribe(fieldLaborActivity => {
+    this.updateMachineryRequest = this.workbookService.updateMachinery(dtoToPost).subscribe(machinery => {
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Field Labor Activity", AlertContext.Success));
+      this.alertService.pushAlert(new Alert("Successfully updated Machinery", AlertContext.Success));
     }, error => {
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
@@ -148,31 +133,29 @@ export class MachineryComponent implements OnInit {
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
-    if (this.addFieldLaborActivityRequest && this.addFieldLaborActivityRequest.unsubscribe) {
-      this.addFieldLaborActivityRequest.unsubscribe();
+    if (this.addMachineryRequest && this.addMachineryRequest.unsubscribe) {
+      this.addMachineryRequest.unsubscribe();
     }
-    if (this.getFieldLaborActivitiesRequest && this.getFieldLaborActivitiesRequest.unsubscribe) {
-      this.getFieldLaborActivitiesRequest.unsubscribe();
+    if (this.getMachineryRequest && this.getMachineryRequest.unsubscribe) {
+      this.getMachineryRequest.unsubscribe();
     }
-    if (this.getFieldLaborActivityCategoriesRequest && this.getFieldLaborActivityCategoriesRequest.unsubscribe) {
-      this.getFieldLaborActivityCategoriesRequest.unsubscribe();
+
+    if (this.updateMachineryRequest && this.updateMachineryRequest.unsubscribe) {
+      this.updateMachineryRequest.unsubscribe();
     }
-    if (this.updateFieldLaborActivityRequest && this.updateFieldLaborActivityRequest.unsubscribe) {
-      this.updateFieldLaborActivityRequest.unsubscribe();
-    }
-    if (this.deleteFieldLaborActivityRequest && this.deleteFieldLaborActivityRequest.unsubscribe) {
-      this.deleteFieldLaborActivityRequest.unsubscribe();
+    if (this.deleteMachineryRequest && this.deleteMachineryRequest.unsubscribe) {
+      this.deleteMachineryRequest.unsubscribe();
     }
     this.authenticationService.dispose();
     this.cdr.detach();
   }
 
-  onSubmit(fieldLaborActivityForm: HTMLFormElement): void {
+  onSubmit(machineryForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-    this.addFieldLaborActivityRequest = this.workbookService.addFieldLaborActivity(this.model).subscribe(response => {
+    this.addMachineryRequest = this.workbookService.addMachinery(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.fieldLaborActivities = response;
-      this.alertService.pushAlert(new Alert("Successfully added Field Labor Activity.", AlertContext.Success));
+      this.machineries = response;
+      this.alertService.pushAlert(new Alert("Successfully added Machinery.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
       
@@ -183,7 +166,7 @@ export class MachineryComponent implements OnInit {
   }
 
   resetForm() {
-    this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID, FieldLaborActivityCategoryID: this.model.FieldLaborActivityCategoryID});
+    this.model = new MachineryCreateDto({WorkbookID: this.workbookID});
   }
 
 }

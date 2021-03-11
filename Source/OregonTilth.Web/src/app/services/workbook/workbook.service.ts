@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { WorkbookDto } from 'src/app/shared/models/generated/workbook-dto';
 import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-labor-activity-dto';
 import { FieldLaborActivityCreateDto } from 'src/app/shared/models/forms/field-labor-activities/field-labor-activity-create-dto';
+import { MachineryDto } from 'src/app/shared/models/generated/machinery-dto';
+import { MachineryCreateDto } from 'src/app/shared/models/forms/machinery/machinery-create-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -55,6 +57,28 @@ export class WorkbookService {
 
     deleteFieldLaborActivity(workbookID:number, fieldLaborActivityID: number): Observable<FieldLaborActivityDto[]> {
         let route = `workbooks/${workbookID}/forms/field-labor-activities/${fieldLaborActivityID}`;
+        return this.apiService.deleteToApi(route);
+    }
+
+
+    // Machinery Form
+    addMachinery(machineryCreateDto: MachineryCreateDto): Observable<MachineryDto[]> {
+        let route = `/workbooks/forms/machinery`;
+        return this.apiService.postToApi(route, machineryCreateDto);
+    }
+
+    getMachinery(workbookID: number): Observable<MachineryDto[]> {
+        let route = `workbooks/${workbookID}/forms/machinery`;
+        return this.apiService.getFromApi(route);
+    }
+
+    updateMachinery(machinery: MachineryDto): Observable<MachineryDto> {
+        let route = `/workbooks/forms/machinery`;
+        return this.apiService.putToApi(route, machinery);
+    }
+
+    deleteMachinery(workbookID:number, machineryID: number): Observable<MachineryDto[]> {
+        let route = `workbooks/${workbookID}/forms/machinery/${machineryID}`;
         return this.apiService.deleteToApi(route);
     }
 
