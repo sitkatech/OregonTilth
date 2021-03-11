@@ -28,6 +28,11 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Field Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, Field Labor Activity, and Labor Type." });
             }
 
+            if (fieldLaborByCropCreateDto.Occurrances < 0)
+            {
+                result.Add(new ErrorMessage() { Type = "Occurrances", Message = "Occurrances cannot be less than zero." });
+            }
+
             return result;
         }
 
@@ -43,6 +48,11 @@ namespace OregonTilth.EFModels.Entities
                                                           && x.FieldLaborByCropID != fieldLaborByCropDto.FieldLaborByCropID))
             {
                 result.Add(new ErrorMessage() { Type = "Field Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, Field Labor Activity, and Labor Type." });
+            }
+
+            if (fieldLaborByCropDto.Occurrances < 0)
+            {
+                result.Add(new ErrorMessage() { Type = "Occurrances", Message = "Occurrances cannot be less than zero." });
             }
             
             return result;
