@@ -24,5 +24,7 @@ export enum CustomRichTextType{
     GeneralFarmInfoForm = 23,
     CropSpecificInfoForm = 24,
     CropChannelSpecificInfoForm = 25,
-    OverheadCostEstimator = 26
+    OverheadCostEstimator = 26,
+    CropsForm = 27,
+    CropUnitsForm = 28
 }

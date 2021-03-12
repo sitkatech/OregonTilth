@@ -14,6 +14,7 @@ namespace OregonTilth.EFModels.Entities
     {
         public FieldLaborActivity()
         {
+            FieldLaborByCrops = new HashSet<FieldLaborByCrop>();
             FieldStandardTimes = new HashSet<FieldStandardTime>();
         }
 
@@ -31,6 +32,8 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("FieldLaborActivities")]
         public virtual Workbook Workbook { get; set; }
+        [InverseProperty(nameof(FieldLaborByCrop.FieldLaborActivity))]
+        public virtual ICollection<FieldLaborByCrop> FieldLaborByCrops { get; set; }
         [InverseProperty(nameof(FieldStandardTime.FieldLaborActivity))]
         public virtual ICollection<FieldStandardTime> FieldStandardTimes { get; set; }
     }

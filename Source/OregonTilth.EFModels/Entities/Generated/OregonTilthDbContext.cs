@@ -17,6 +17,8 @@ namespace OregonTilth.EFModels.Entities
         {
         }
 
+        public virtual DbSet<Crop> Crops { get; set; }
+        public virtual DbSet<CropUnit> CropUnits { get; set; }
         public virtual DbSet<CustomRichText> CustomRichTexts { get; set; }
         public virtual DbSet<CustomRichTextType> CustomRichTextTypes { get; set; }
         public virtual DbSet<DatabaseMigration> DatabaseMigrations { get; set; }
@@ -24,12 +26,14 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<FieldDefinitionType> FieldDefinitionTypes { get; set; }
         public virtual DbSet<FieldLaborActivity> FieldLaborActivities { get; set; }
         public virtual DbSet<FieldLaborActivityCategory> FieldLaborActivityCategories { get; set; }
+        public virtual DbSet<FieldLaborByCrop> FieldLaborByCrops { get; set; }
         public virtual DbSet<FieldStandardTime> FieldStandardTimes { get; set; }
         public virtual DbSet<FieldUnitType> FieldUnitTypes { get; set; }
         public virtual DbSet<FileResource> FileResources { get; set; }
         public virtual DbSet<FileResourceMimeType> FileResourceMimeTypes { get; set; }
         public virtual DbSet<HarvestType> HarvestTypes { get; set; }
         public virtual DbSet<LaborType> LaborTypes { get; set; }
+        public virtual DbSet<Machinery> Machineries { get; set; }
         public virtual DbSet<Phase> Phases { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<TimeStudy> TimeStudies { get; set; }
@@ -50,6 +54,26 @@ namespace OregonTilth.EFModels.Entities
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<Crop>(entity =>
+            {
+                entity.Property(e => e.CropName).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.Crops)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<CropUnit>(entity =>
+            {
+                entity.Property(e => e.CropUnitName).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.CropUnits)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
 
             modelBuilder.Entity<CustomRichText>(entity =>
             {
@@ -119,6 +143,29 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.FieldLaborActivityCategoryDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.FieldLaborActivityCategoryName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<FieldLaborByCrop>(entity =>
+            {
+                entity.HasOne(d => d.Crop)
+                    .WithMany(p => p.FieldLaborByCrops)
+                    .HasForeignKey(d => d.CropID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.FieldLaborActivity)
+                    .WithMany(p => p.FieldLaborByCrops)
+                    .HasForeignKey(d => d.FieldLaborActivityID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.LaborType)
+                    .WithMany(p => p.FieldLaborByCrops)
+                    .HasForeignKey(d => d.LaborTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.FieldLaborByCrops)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<FieldStandardTime>(entity =>
@@ -204,6 +251,16 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.LaborTypeDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.LaborTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Machinery>(entity =>
+            {
+                entity.Property(e => e.MachineryName).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.Machineries)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<Phase>(entity =>
