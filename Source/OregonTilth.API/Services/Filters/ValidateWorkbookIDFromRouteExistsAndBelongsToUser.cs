@@ -7,9 +7,9 @@ using OregonTilth.API.Services.Hierarchy;
 
 namespace OregonTilth.API.Services.Filters
 {
-    public class ValidateWorkbookExistsAndBelongsToUser : TypeFilterAttribute
+    public class ValidateWorkbookIDFromRouteExistsAndBelongsToUser : TypeFilterAttribute
     {
-        public ValidateWorkbookExistsAndBelongsToUser() : base(typeof(ValidateWorkbookExistsAndPopulateParamaterImpl))
+        public ValidateWorkbookIDFromRouteExistsAndBelongsToUser() : base(typeof(ValidateWorkbookExistsAndPopulateParamaterImpl))
         {
         }
 
