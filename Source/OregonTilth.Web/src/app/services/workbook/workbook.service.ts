@@ -69,7 +69,7 @@ export class WorkbookService {
 
     // Machinery Form
     addMachinery(machineryCreateDto: MachineryCreateDto): Observable<MachineryDto[]> {
-        let route = `/workbooks/forms/machinery`;
+        let route = `/workbooks/${machineryCreateDto.WorkbookID}/forms/machinery`;
         return this.apiService.postToApi(route, machineryCreateDto);
     }
 
@@ -79,7 +79,7 @@ export class WorkbookService {
     }
 
     updateMachinery(machinery: MachineryDto): Observable<MachineryDto> {
-        let route = `/workbooks/forms/machinery`;
+        let route = `/workbooks/${machinery.Workbook.WorkbookID}/forms/machinery`;
         return this.apiService.putToApi(route, machinery);
     }
 
@@ -90,7 +90,7 @@ export class WorkbookService {
 
     // Field Labor By Crop Form
     addFieldLaborByCrop(fieldLaborByCropCreateDto: FieldLaborByCropCreateDto): Observable<FieldLaborByCropDto[]> {
-        let route = `/workbooks/forms/field-labor-by-crop`;
+        let route = `/workbooks/${fieldLaborByCropCreateDto.WorkbookID}/forms/field-labor-by-crop`;
         return this.apiService.postToApi(route, fieldLaborByCropCreateDto);
     }
 
@@ -100,7 +100,7 @@ export class WorkbookService {
     }
 
     updateFieldLaborByCrop(fieldLaborByCrop: FieldLaborByCropDto): Observable<FieldLaborByCropDto> {
-        let route = `/workbooks/forms/field-labor-by-crop`;
+        let route = `/workbooks/${fieldLaborByCrop.Workbook.WorkbookID}/forms/field-labor-by-crop`;
         return this.apiService.putToApi(route, fieldLaborByCrop);
     }
 
@@ -111,7 +111,7 @@ export class WorkbookService {
 
     // Crops form
     addCrop(cropCreateDto: CropCreateDto): Observable<CropDto[]> {
-        let route = `/workbooks/forms/crops`;
+        let route = `/workbooks/${cropCreateDto.WorkbookID}/forms/crops`;
         return this.apiService.postToApi(route, cropCreateDto);
     }
 
@@ -121,7 +121,7 @@ export class WorkbookService {
     }
 
     updateCrop(crop: CropDto): Observable<CropDto> {
-        let route = `/workbooks/forms/crops`;
+        let route = `/workbooks/${crop.Workbook.WorkbookID}/forms/crops`;
         return this.apiService.putToApi(route, crop);
     }
 
@@ -132,7 +132,7 @@ export class WorkbookService {
 
     // Crop Units form
     addCropUnit(cropUnitCreateDto: CropUnitCreateDto): Observable<CropUnitDto[]> {
-        let route = `/workbooks/forms/crop-units`;
+        let route = `/workbooks/${cropUnitCreateDto.WorkbookID}/forms/crop-units`;
         return this.apiService.postToApi(route, cropUnitCreateDto);
     }
 
@@ -142,7 +142,7 @@ export class WorkbookService {
     }
 
     updateCropUnit(cropUnit: CropUnitDto): Observable<CropUnitDto> {
-        let route = `/workbooks/forms/crop-units`;
+        let route = `/workbooks/${cropUnit.Workbook.WorkbookID}/forms/crop-units`;
         return this.apiService.putToApi(route, cropUnit);
     }
 
