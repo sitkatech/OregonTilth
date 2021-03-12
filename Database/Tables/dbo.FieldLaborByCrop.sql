@@ -8,7 +8,7 @@ CREATE TABLE [dbo].[FieldLaborByCrop](
 	[CropID] [int] NOT NULL,
 	[FieldLaborActivityID] [int] NOT NULL,
 	[LaborTypeID] [int] NOT NULL,
-	[Occurrances] [decimal](18, 2) NOT NULL,
+	[Occurrances] [decimal](18, 4) NOT NULL,
  CONSTRAINT [PK_FieldLaborByCrop_FieldLaborByCropID] PRIMARY KEY CLUSTERED 
 (
 	[FieldLaborByCropID] ASC

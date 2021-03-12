@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using OregonTilth.Models.DataTransferObjects;
@@ -28,7 +29,7 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Field Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, Field Labor Activity, and Labor Type." });
             }
 
-            if (fieldLaborByCropCreateDto.Occurrances < 0)
+            if (Math.Round(fieldLaborByCropCreateDto.Occurrances, 4) <= 0)
             {
                 result.Add(new ErrorMessage() { Type = "Occurrances", Message = "Occurrances cannot be less than zero." });
             }
@@ -50,9 +51,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Field Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, Field Labor Activity, and Labor Type." });
             }
 
-            if (fieldLaborByCropDto.Occurrances < 0)
+            if (Math.Round(fieldLaborByCropDto.Occurrances, 4) <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Occurrances", Message = "Occurrances cannot be less than zero." });
+                result.Add(new ErrorMessage() { Type = "Occurrances", Message = "Occurrances must be greater than 0." });
             }
             
             return result;
