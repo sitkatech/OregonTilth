@@ -13,6 +13,7 @@ namespace OregonTilth.Models.DataTransferObjects
         public WorkbookDto Workbook { get; set; }
         public FieldLaborActivityDto FieldLaborActivity { get; set; }
         public LaborTypeDto LaborType { get; set; }
+        public MachineryDto Machinery { get; set; }
         public FieldUnitTypeDto FieldUnitType { get; set; }
         public decimal? StandardTimePerUnit { get; set; }
     }

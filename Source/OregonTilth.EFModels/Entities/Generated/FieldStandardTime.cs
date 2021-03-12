@@ -16,6 +16,7 @@ namespace OregonTilth.EFModels.Entities
         public int WorkbookID { get; set; }
         public int FieldLaborActivityID { get; set; }
         public int LaborTypeID { get; set; }
+        public int MachineryID { get; set; }
         public int FieldUnitTypeID { get; set; }
         [Column(TypeName = "decimal(18, 0)")]
         public decimal? StandardTimePerUnit { get; set; }
@@ -29,6 +30,9 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(LaborTypeID))]
         [InverseProperty("FieldStandardTimes")]
         public virtual LaborType LaborType { get; set; }
+        [ForeignKey(nameof(MachineryID))]
+        [InverseProperty("FieldStandardTimes")]
+        public virtual Machinery Machinery { get; set; }
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("FieldStandardTimes")]
         public virtual Workbook Workbook { get; set; }

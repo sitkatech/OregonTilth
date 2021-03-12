@@ -5,6 +5,7 @@
 import { WorkbookDto } from './workbook-dto'
 import { FieldLaborActivityDto } from './field-labor-activity-dto'
 import { LaborTypeDto } from './labor-type-dto'
+import { MachineryDto } from './machinery-dto'
 import { FieldUnitTypeDto } from './field-unit-type-dto'
 
 export class FieldStandardTimeDto {
@@ -12,6 +13,7 @@ export class FieldStandardTimeDto {
 	Workbook : WorkbookDto
 	FieldLaborActivity : FieldLaborActivityDto
 	LaborType : LaborTypeDto
+	Machinery : MachineryDto
 	FieldUnitType : FieldUnitTypeDto
 	StandardTimePerUnit : number
 

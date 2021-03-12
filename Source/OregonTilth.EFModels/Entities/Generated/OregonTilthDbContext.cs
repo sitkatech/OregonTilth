@@ -187,6 +187,11 @@ namespace OregonTilth.EFModels.Entities
                     .HasForeignKey(d => d.LaborTypeID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
+                entity.HasOne(d => d.Machinery)
+                    .WithMany(p => p.FieldStandardTimes)
+                    .HasForeignKey(d => d.MachineryID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.FieldStandardTimes)
                     .HasForeignKey(d => d.WorkbookID)

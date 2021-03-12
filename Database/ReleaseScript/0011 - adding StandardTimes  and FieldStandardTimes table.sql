@@ -4,14 +4,12 @@ CREATE TABLE dbo.FieldStandardTime(
 	WorkbookID int NOT NULL CONSTRAINT FK_FieldStandardTime_Workbook_WorkbookID FOREIGN KEY REFERENCES dbo.Workbook (WorkbookID),
     FieldLaborActivityID int not null CONSTRAINT FK_FieldStandardTime_FieldLaborActivity_FieldLaborActivityID FOREIGN KEY REFERENCES dbo.FieldLaborActivity (FieldLaborActivityID),
     LaborTypeID  int not null CONSTRAINT FK_FieldStandardTime_LaborType_LaborTypeID FOREIGN KEY REFERENCES dbo.LaborType (LaborTypeID),
-    -- need to add machinery here
+    MachineryID  int not null CONSTRAINT FK_FieldStandardTime_Machinery_MachineryID FOREIGN KEY REFERENCES dbo.Machinery (MachineryID),
     FieldUnitTypeID  int not null CONSTRAINT FK_FieldStandardTime_FieldUnitType_FieldUnitTypeID FOREIGN KEY REFERENCES dbo.FieldUnitType (FieldUnitTypeID),
     StandardTimePerUnit decimal null,
-    -- I think a constraint like this is required, but we need the machinery table
-    --CONSTRAINT CK_MachineryRequiredWhenLaborTypeIsOperator CHECK (LaborTypeID = 2 and FieldUnitTypeID is not null)
+    -- a constraint constraint so that Machinery is required when labor type = Operator
+    CONSTRAINT CK_MachineryRequiredWhenLaborTypeIsOperator CHECK (LaborTypeID = 2 and FieldUnitTypeID is not null)
 )
-
--- constraint so that Machinery is required when labor type = Operator?
 
 
 CREATE TABLE dbo.TimeStudyType(

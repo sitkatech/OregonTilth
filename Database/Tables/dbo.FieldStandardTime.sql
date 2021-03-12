@@ -7,6 +7,7 @@ CREATE TABLE [dbo].[FieldStandardTime](
 	[WorkbookID] [int] NOT NULL,
 	[FieldLaborActivityID] [int] NOT NULL,
 	[LaborTypeID] [int] NOT NULL,
+	[MachineryID] [int] NOT NULL,
 	[FieldUnitTypeID] [int] NOT NULL,
 	[StandardTimePerUnit] [decimal](18, 0) NULL,
  CONSTRAINT [PK_FieldStandardTime_FieldStandardTimeID] PRIMARY KEY CLUSTERED 
@@ -31,7 +32,16 @@ REFERENCES [dbo].[LaborType] ([LaborTypeID])
 GO
 ALTER TABLE [dbo].[FieldStandardTime] CHECK CONSTRAINT [FK_FieldStandardTime_LaborType_LaborTypeID]
 GO
+ALTER TABLE [dbo].[FieldStandardTime]  WITH CHECK ADD  CONSTRAINT [FK_FieldStandardTime_Machinery_MachineryID] FOREIGN KEY([MachineryID])
+REFERENCES [dbo].[Machinery] ([MachineryID])
+GO
+ALTER TABLE [dbo].[FieldStandardTime] CHECK CONSTRAINT [FK_FieldStandardTime_Machinery_MachineryID]
+GO
 ALTER TABLE [dbo].[FieldStandardTime]  WITH CHECK ADD  CONSTRAINT [FK_FieldStandardTime_Workbook_WorkbookID] FOREIGN KEY([WorkbookID])
 REFERENCES [dbo].[Workbook] ([WorkbookID])
 GO
 ALTER TABLE [dbo].[FieldStandardTime] CHECK CONSTRAINT [FK_FieldStandardTime_Workbook_WorkbookID]
+GO
+ALTER TABLE [dbo].[FieldStandardTime]  WITH CHECK ADD  CONSTRAINT [CK_MachineryRequiredWhenLaborTypeIsOperator] CHECK  (([LaborTypeID]=(2) AND [FieldUnitTypeID] IS NOT NULL))
+GO
+ALTER TABLE [dbo].[FieldStandardTime] CHECK CONSTRAINT [CK_MachineryRequiredWhenLaborTypeIsOperator]
