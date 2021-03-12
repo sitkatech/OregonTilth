@@ -1,17 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OregonTilth.API.Services;
 using OregonTilth.API.Services.Authorization;
+using OregonTilth.API.Services.Filters;
 using OregonTilth.EFModels.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
 using OregonTilth.Models.DataTransferObjects;
-using User = OregonTilth.EFModels.Entities.User;
+using System.Collections.Generic;
 
 namespace OregonTilth.API.Controllers
 {
@@ -40,20 +35,21 @@ namespace OregonTilth.API.Controllers
             return Ok(workbook);
         }
 
-        [HttpPut("workbooks")]
+        [HttpPut("workbooks/{workbookID}")]
         [LoggedInUnclassifiedFeature]
-        public ActionResult<WorkbookDto> EditWorkbook([FromBody] WorkbookDto workbookDto)
+        [ValidateWorkbookExistsAndBelongsToUser]
+        public ActionResult<WorkbookDto> EditWorkbook([FromBody] WorkbookDto editWorkbookDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
 
-            var validationMessages = Workbook.ValidateUpsert(_dbContext, workbookDto, userDto.UserID);
+            var validationMessages = Workbook.ValidateUpsert(_dbContext, editWorkbookDto, userDto.UserID);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var workbook = Workbook.EditWorkbook(_dbContext, workbookDto);
+            var workbook = Workbook.EditWorkbook(_dbContext, editWorkbookDto);
             return Ok(workbook);
         }
 
@@ -69,10 +65,11 @@ namespace OregonTilth.API.Controllers
 
         [HttpDelete("workbooks/{workbookID}")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookExistsAndBelongsToUser]
         public ActionResult<IEnumerable<WorkbookDto>> DeleteWorkbook([FromRoute] int workbookID)
         {
             var currentUserDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
-            
+
             var validationMessages = Workbook.ValidateDelete(_dbContext, workbookID, currentUserDto);
             validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
 
@@ -89,16 +86,11 @@ namespace OregonTilth.API.Controllers
 
         [HttpGet("workbooks/{workbookID}")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookExistsAndBelongsToUser]
         public ActionResult<IEnumerable<WorkbookDto>> GetWorkbook([FromRoute] int workbookID)
         {
-            var workbook = Workbook.GetDtoByWorkbookID(_dbContext, workbookID);
-
-            if (workbook == null)
-            {
-                return BadRequest();
-            }
-
-            return Ok(workbook);
+            var workbook = Workbook.GetByWorkbookID(_dbContext, workbookID);
+            return Ok(workbook.AsDto());
         }
         #endregion
 

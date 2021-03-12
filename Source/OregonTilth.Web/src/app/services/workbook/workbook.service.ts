@@ -36,7 +36,7 @@ export class WorkbookService {
     }
 
     editWorkbook(workbookDto: WorkbookDto): Observable<WorkbookDto> {
-        let route = `/workbooks/`;
+        let route = `/workbooks/${workbookDto.WorkbookID}`;
         return this.apiService.putToApi(route, workbookDto);
     }
 

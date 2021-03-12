@@ -49,6 +49,8 @@ export class WorkbookDetailComponent implements OnInit {
 
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID).subscribe(workbook => {
         this.workbook = workbook;
+      }, error => {
+        
       })
       
     });
