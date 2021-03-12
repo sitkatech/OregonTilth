@@ -15,6 +15,8 @@ import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/f
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
+import { TransplantProductionLaborActivityCreateDto } from 'src/app/shared/models/forms/transplant-production-labor-activities/transplant-production-labor-activity-create-dto';
+import { TransplantProductionLaborActivityDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-dto';
 
 @Component({
   selector: 'transplant-production-labor-activities',
@@ -34,21 +36,18 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
-  public richTextTypeID : number = CustomRichTextType.FieldLaborActivityForm;
+  public richTextTypeID : number = CustomRichTextType.TPLaborActivityForm;
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
-  private addFieldLaborActivityRequest: any;
-  public model: FieldLaborActivityCreateDto;
+  private addTransplantProductionLaborActivityRequest: any;
+  public model: TransplantProductionLaborActivityCreateDto;
 
-  public getFieldLaborActivitiesRequest: any;
-  public fieldLaborActivities: FieldLaborActivityDto[];
+  public getTransplantProductionLaborActivitiesRequest: any;
+  public transplantProductionLaborActivities: TransplantProductionLaborActivityDto[];
 
-  public fieldLaborActivityCategories: Array<FieldLaborActivityCategoryDto>;
-  private getFieldLaborActivityCategoriesRequest: any;
-
-  private updateFieldLaborActivityRequest: any;
-  private deleteFieldLaborActivityRequest: any;
+  private updateTransplantProductionLaborActivityRequest: any;
+  private deleteTransplantProductionLaborActivityRequest: any;
 
   public columnDefs: ColDef[];
  
@@ -56,16 +55,14 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID});
+      this.model = new TransplantProductionLaborActivityCreateDto({WorkbookID: this.workbookID});
       
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getFieldLaborActivityCategoriesRequest = this.lookupTablesService.getFieldLaborActivityCategories();
-      this.getFieldLaborActivitiesRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
+      this.getTransplantProductionLaborActivitiesRequest = this.workbookService.getTransplantProductionLaborActivities(this.workbookID);
 
-      forkJoin([this.getWorkbookRequest, this.getFieldLaborActivityCategoriesRequest, this.getFieldLaborActivitiesRequest]).subscribe(([workbook, fieldLaborActivityCategories, fieldLaborActivities]: [WorkbookDto, FieldLaborActivityCategoryDto[], FieldLaborActivityDto[]] ) => {
+      forkJoin([this.getWorkbookRequest,  this.getTransplantProductionLaborActivitiesRequest]).subscribe(([workbook,  fieldLaborActivities]: [WorkbookDto,  TransplantProductionLaborActivityDto[]] ) => {
           this.workbook = workbook;
-          this.fieldLaborActivityCategories = fieldLaborActivityCategories;
-          this.fieldLaborActivities = fieldLaborActivities;
+          this.transplantProductionLaborActivities = fieldLaborActivities;
           this.defineColumnDefs();
           this.cdr.markForCheck();
       });
@@ -77,41 +74,21 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
     var componentScope = this;
     this.columnDefs = [
       {
-        headerName: 'Field Labor Activity', 
-        field: 'FieldLaborActivityName',
+        headerName: 'Transplant Production Labor Activity', 
+        field: 'TransplantProductionLaborActivityName',
         editable: true,
         cellEditor: 'agPopupTextCellEditor',
         sortable: true, 
         filter: true,
       },
       {
-        headerName: 'Field Labor Category', 
-        field: 'FieldLaborActivityCategory',
-        editable: true,
-        cellEditor: 'agPopupSelectCellEditor',
-        cellEditorParams: {
-          values: this.fieldLaborActivityCategories.map(x => x.FieldLaborActivityCategoryDisplayName)
-        },
-        valueFormatter: function (params) {
-          return params.value.FieldLaborActivityCategoryDisplayName;
-        },
-        valueSetter: params => {
-          params.data.FieldLaborActivityCategory = this.fieldLaborActivityCategories.find(element => {
-            return element.FieldLaborActivityCategoryDisplayName == params.newValue;
-          });
-          return true;
-        },
-        sortable: true, 
-        filter: true,
-      },
-      {
-        headerName: 'Delete', field: 'FieldLaborActivityID', valueGetter: function (params: any) {
-          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.FieldLaborActivityID, ObjectDisplayName: params.data.FieldLaborActivityName };
+        headerName: 'Delete', field: 'TransplantProductionLaborActivityID', valueGetter: function (params: any) {
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.TransplantProductionLaborActivityID, ObjectDisplayName: params.data.TransplantProductionLaborActivityName };
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
-            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Field Labor Activity?`)) {
-              componentScope.deleteFieldLaborActivity(field.PrimaryKey)
+            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Transplant Production Labor Activity?`)) {
+              componentScope.deleteTransplantProductionLaborActivity(field.PrimaryKey)
             }
           }
           },
@@ -120,10 +97,10 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
     ]
   }
 
-  deleteFieldLaborActivity(fieldLaborActivityID: number) {
-    this.deleteFieldLaborActivityRequest = this.workbookService.deleteFieldLaborActivity(this.workbookID, fieldLaborActivityID).subscribe(fieldLaborActivityDtos => {
-      this.fieldLaborActivities = fieldLaborActivityDtos;
-      this.alertService.pushAlert(new Alert("Successfully deleted Field Labor Activity", AlertContext.Success));
+  deleteTransplantProductionLaborActivity(fieldLaborActivityID: number) {
+    this.deleteTransplantProductionLaborActivityRequest = this.workbookService.deleteTransplantProductionLaborActivity(this.workbookID, fieldLaborActivityID).subscribe(transplantProductionLaborActivityDtos => {
+      this.transplantProductionLaborActivities = transplantProductionLaborActivityDtos;
+      this.alertService.pushAlert(new Alert("Successfully deleted Transplant Production Labor Activity", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
 
@@ -133,10 +110,10 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
 
-    this.updateFieldLaborActivityRequest = this.workbookService.updateFieldLaborActivity(dtoToPost).subscribe(fieldLaborActivity => {
+    this.updateTransplantProductionLaborActivityRequest = this.workbookService.updateTransplantProductionLaborActivity(dtoToPost).subscribe(fieldLaborActivity => {
       data.node.setData(fieldLaborActivity);
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Field Labor Activity", AlertContext.Success));
+      this.alertService.pushAlert(new Alert("Successfully updated Transplant Production Labor Activity", AlertContext.Success));
     }, error => {
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
@@ -149,20 +126,18 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
-    if (this.addFieldLaborActivityRequest && this.addFieldLaborActivityRequest.unsubscribe) {
-      this.addFieldLaborActivityRequest.unsubscribe();
+    if (this.addTransplantProductionLaborActivityRequest && this.addTransplantProductionLaborActivityRequest.unsubscribe) {
+      this.addTransplantProductionLaborActivityRequest.unsubscribe();
     }
-    if (this.getFieldLaborActivitiesRequest && this.getFieldLaborActivitiesRequest.unsubscribe) {
-      this.getFieldLaborActivitiesRequest.unsubscribe();
+    if (this.getTransplantProductionLaborActivitiesRequest && this.getTransplantProductionLaborActivitiesRequest.unsubscribe) {
+      this.getTransplantProductionLaborActivitiesRequest.unsubscribe();
     }
-    if (this.getFieldLaborActivityCategoriesRequest && this.getFieldLaborActivityCategoriesRequest.unsubscribe) {
-      this.getFieldLaborActivityCategoriesRequest.unsubscribe();
+    
+    if (this.updateTransplantProductionLaborActivityRequest && this.updateTransplantProductionLaborActivityRequest.unsubscribe) {
+      this.updateTransplantProductionLaborActivityRequest.unsubscribe();
     }
-    if (this.updateFieldLaborActivityRequest && this.updateFieldLaborActivityRequest.unsubscribe) {
-      this.updateFieldLaborActivityRequest.unsubscribe();
-    }
-    if (this.deleteFieldLaborActivityRequest && this.deleteFieldLaborActivityRequest.unsubscribe) {
-      this.deleteFieldLaborActivityRequest.unsubscribe();
+    if (this.deleteTransplantProductionLaborActivityRequest && this.deleteTransplantProductionLaborActivityRequest.unsubscribe) {
+      this.deleteTransplantProductionLaborActivityRequest.unsubscribe();
     }
     this.authenticationService.dispose();
     this.cdr.detach();
@@ -170,10 +145,10 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
 
   onSubmit(fieldLaborActivityForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-    this.addFieldLaborActivityRequest = this.workbookService.addFieldLaborActivity(this.model).subscribe(response => {
+    this.addTransplantProductionLaborActivityRequest = this.workbookService.addTransplantProductionLaborActivity(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.fieldLaborActivities = response;
-      this.alertService.pushAlert(new Alert("Successfully added Field Labor Activity.", AlertContext.Success));
+      this.transplantProductionLaborActivities = response;
+      this.alertService.pushAlert(new Alert("Successfully added Transplant Production Labor Activity.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
       
@@ -184,7 +159,7 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
   }
 
   resetForm() {
-    this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID, FieldLaborActivityCategoryID: this.model.FieldLaborActivityCategoryID});
+    this.model = new TransplantProductionLaborActivityCreateDto({WorkbookID: this.workbookID});
   }
 
 }
