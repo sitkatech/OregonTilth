@@ -106,6 +106,7 @@ export class CropUnitsComponent implements OnInit {
     var dtoToPost = data.data;
 
     this.updateCropUnitRequest = this.workbookService.updateCropUnit(dtoToPost).subscribe(cropUnit => {
+      data.node.setData(cropUnit);
       this.isLoadingSubmit = false;
       this.alertService.pushAlert(new Alert("Successfully updated Crop Unit", AlertContext.Success));
     }, error => {

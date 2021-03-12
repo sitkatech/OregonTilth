@@ -198,6 +198,7 @@ export class FieldLaborByCropComponent implements OnInit {
     var dtoToPost = data.data;
 
     this.updateFieldLaborByCropRequest = this.workbookService.updateFieldLaborByCrop(dtoToPost).subscribe(fieldLaborByCrop => {
+      data.node.setData(fieldLaborByCrop);
       this.isLoadingSubmit = false;
       this.alertService.pushAlert(new Alert("Successfully updated Field Labor By Crop", AlertContext.Success));
     }, error => {
