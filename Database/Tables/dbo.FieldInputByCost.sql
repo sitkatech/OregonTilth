@@ -6,7 +6,7 @@ CREATE TABLE [dbo].[FieldInputByCost](
 	[FieldInputByCostID] [int] IDENTITY(1,1) NOT NULL,
 	[WorkbookID] [int] NOT NULL,
 	[FieldUnitTypeID] [int] NOT NULL,
-	[FieldInputName] [varchar](200) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[FieldInputByCostName] [varchar](200) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[CostPerFieldUnit] [money] NOT NULL,
 	[Notes] [varchar](2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
  CONSTRAINT [PK_FieldInputByCost_FieldInputByCostID] PRIMARY KEY CLUSTERED 

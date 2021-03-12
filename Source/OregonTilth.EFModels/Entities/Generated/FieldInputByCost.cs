@@ -17,7 +17,7 @@ namespace OregonTilth.EFModels.Entities
         public int FieldUnitTypeID { get; set; }
         [Required]
         [StringLength(200)]
-        public string FieldInputName { get; set; }
+        public string FieldInputByCostName { get; set; }
         [Column(TypeName = "money")]
         public decimal CostPerFieldUnit { get; set; }
         [StringLength(2000)]

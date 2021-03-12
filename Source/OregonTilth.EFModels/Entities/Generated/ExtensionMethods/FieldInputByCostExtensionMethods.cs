@@ -16,7 +16,7 @@ namespace OregonTilth.EFModels.Entities
                 FieldInputByCostID = fieldInputByCost.FieldInputByCostID,
                 Workbook = fieldInputByCost.Workbook.AsDto(),
                 FieldUnitType = fieldInputByCost.FieldUnitType.AsDto(),
-                FieldInputName = fieldInputByCost.FieldInputName,
+                FieldInputByCostName = fieldInputByCost.FieldInputByCostName,
                 CostPerFieldUnit = fieldInputByCost.CostPerFieldUnit,
                 Notes = fieldInputByCost.Notes
             };

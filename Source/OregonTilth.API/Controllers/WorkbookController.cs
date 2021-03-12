@@ -410,16 +410,16 @@ namespace OregonTilth.API.Controllers
         //#region "Field Input Costs Form"
         //[HttpPost("workbooks/forms/field-input-costs")]
         //[LoggedInUnclassifiedFeature]
-        //public ActionResult<IEnumerable<FieldLaborByCropDto>> CreateFieldLaborByCrop([FromBody] FieldLaborByCropCreateDto fieldLaborByCropCreateDto)
+        //public ActionResult<IEnumerable<FieldInputByCostDto>> CreateFieldInputByCost([FromBody] FieldInputByCostCreateDto fieldInputByCostCreateDto)
         //{
-        //    var validationMessages = FieldLaborByCrop.ValidateCreate(_dbContext, fieldLaborByCropCreateDto);
+        //    var validationMessages = FieldLaborByCrop.ValidateCreate(_dbContext, fieldInputByCostCreateDto);
         //    validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
         //    if (!ModelState.IsValid)
         //    {
         //        return BadRequest(ModelState);
         //    }
 
-        //    var fieldLaborByCropDtos = FieldLaborByCrop.CreateNewFieldLaborByCrop(_dbContext, fieldLaborByCropCreateDto);
+        //    var fieldLaborByCropDtos = FieldLaborByCrop.CreateNewFieldLaborByCrop(_dbContext, fieldInputByCostCreateDto);
         //    return Ok(fieldLaborByCropDtos);
         //}
 

@@ -9,7 +9,7 @@ export class FieldInputByCostDto {
 	FieldInputByCostID : number
 	Workbook : WorkbookDto
 	FieldUnitType : FieldUnitTypeDto
-	FieldInputName : string
+	FieldInputByCostName : string
 	CostPerFieldUnit : number
 	Notes : string
 

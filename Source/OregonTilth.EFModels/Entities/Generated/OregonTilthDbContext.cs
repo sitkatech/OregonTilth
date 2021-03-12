@@ -121,7 +121,7 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<FieldInputByCost>(entity =>
             {
-                entity.Property(e => e.FieldInputName).IsUnicode(false);
+                entity.Property(e => e.FieldInputByCostName).IsUnicode(false);
 
                 entity.Property(e => e.Notes).IsUnicode(false);
 
