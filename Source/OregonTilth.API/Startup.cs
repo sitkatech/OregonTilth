@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using IdentityServer4.AccessTokenValidation;
+﻿using IdentityServer4.AccessTokenValidation;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -17,10 +14,14 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OregonTilth.API.Services;
+using OregonTilth.API.Services.Hierarchy;
 using OregonTilth.API.Services.Telemetry;
 using OregonTilth.EFModels.Entities;
 using Serilog;
 using Serilog.Sinks.ApplicationInsights.Sinks.ApplicationInsights.TelemetryConverters;
+using System;
+using System.Linq;
+using System.Threading;
 using ILogger = Serilog.ILogger;
 
 namespace OregonTilth.API
@@ -108,7 +109,8 @@ namespace OregonTilth.API
             services.AddTransient(s => new KeystoneService(s.GetService<IHttpContextAccessor>(), keystoneHost.Replace("core", "")));
 
             services.AddSingleton(x => new SitkaSmtpClientService(frescaConfiguration));
-
+            
+            services.AddScoped<HierarchyContext>();
             services.AddScoped(s => s.GetService<IHttpContextAccessor>().HttpContext);
             services.AddScoped(s => UserContext.GetUserFromHttpContext(s.GetService<OregonTilthDbContext>(), s.GetService<IHttpContextAccessor>().HttpContext));
             services.AddControllers();
