@@ -36,6 +36,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<Phase> Phases { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<TpOrDsType> TpOrDsTypes { get; set; }
+        public virtual DbSet<TransplantProductionLaborActivity> TransplantProductionLaborActivities { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Workbook> Workbooks { get; set; }
 
@@ -262,6 +263,16 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.TpOrDsTypeDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.TpOrDsTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<TransplantProductionLaborActivity>(entity =>
+            {
+                entity.Property(e => e.TransplantProductionLaborActivityName).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TransplantProductionLaborActivities)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<User>(entity =>

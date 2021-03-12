@@ -26,6 +26,7 @@ import { MachineryComponent } from './pages/workbooks/forms/machinery/machinery.
 import { CropsComponent } from './pages/workbooks/forms/crops/crops.component';
 import { CropUnitsComponent } from './pages/workbooks/forms/crop-units/crop-units.component';
 import { FieldLaborByCropComponent } from './pages/workbooks/forms/field-labor-by-crop/field-labor-by-crop.component';
+import { TransplantProductionLaborActivitiesComponent } from './pages/workbooks/forms/transplant-production-labor-activities/transplant-production-labor-activities.component';
 
 const routes: Routes = [
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -45,6 +46,7 @@ const routes: Routes = [
   { path: "workbooks/new", component: NewWorkbookComponent},
   { path: "workbooks/:id/edit", component: EditWorkbookComponent},
   { path: "workbooks/:id/forms/field-labor-activities", component: FieldLaborActivitiesComponent},
+  { path: "workbooks/:id/forms/transplant-production-labor-activities", component: TransplantProductionLaborActivitiesComponent},
   { path: "workbooks/:id/forms/machinery", component: MachineryComponent},
   { path: "workbooks/:id/forms/field-labor-by-crop", component: FieldLaborByCropComponent},
   { path: "workbooks/:id/forms/crops", component: CropsComponent},

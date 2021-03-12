@@ -13,6 +13,8 @@ import { CropUnitCreateDto } from 'src/app/shared/models/forms/crop-units/crop-u
 import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
 import { FieldLaborByCropCreateDto } from 'src/app/shared/models/forms/field-labor-by-crop/field-labor-by-crop-create-dto';
 import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor-by-crop-dto';
+import { TransplantProductionLaborActivityDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-dto';
+import { TransplantProductionLaborActivityCreateDto } from 'src/app/shared/models/forms/transplant-production-labor-activities/transplant-production-labor-activity-create-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -148,6 +150,28 @@ export class WorkbookService {
 
     deleteCropUnit(workbookID:number, cropUnitID: number): Observable<CropUnitDto[]> {
         let route = `workbooks/${workbookID}/forms/crop-units/${cropUnitID}`;
+        return this.apiService.deleteToApi(route);
+    }
+
+
+    // TransplantProduction Labor Activity Form
+    addTransplantProductionLaborActivity(transplantProductionLaborActivityCreateDto: TransplantProductionLaborActivityCreateDto): Observable<TransplantProductionLaborActivityDto[]> {
+        let route = `/workbooks/${transplantProductionLaborActivityCreateDto.WorkbookID}/forms/transplant-production-labor-activities`;
+        return this.apiService.postToApi(route, transplantProductionLaborActivityCreateDto);
+    }
+
+    getTransplantProductionLaborActivities(workbookID: number): Observable<TransplantProductionLaborActivityDto[]> {
+        let route = `workbooks/${workbookID}/forms/transplant-production-labor-activities`;
+        return this.apiService.getFromApi(route);
+    }
+
+    updateTransplantProductionLaborActivity(transplantProductionLaborActivityDto: TransplantProductionLaborActivityDto): Observable<TransplantProductionLaborActivityDto> {
+        let route = `/workbooks/${transplantProductionLaborActivityDto.Workbook.WorkbookID}/forms/transplant-production-labor-activities`;
+        return this.apiService.putToApi(route, transplantProductionLaborActivityDto);
+    }
+
+    deleteTransplantProductionLaborActivity(workbookID:number, fieldLaborActivityID: number): Observable<TransplantProductionLaborActivityDto[]> {
+        let route = `workbooks/${workbookID}/forms/transplant-production-labor-activities/${fieldLaborActivityID}`;
         return this.apiService.deleteToApi(route);
     }
 }
