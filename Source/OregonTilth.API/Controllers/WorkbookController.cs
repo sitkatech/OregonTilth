@@ -407,64 +407,64 @@ namespace OregonTilth.API.Controllers
         }
         #endregion
 
-        //#region "Field Input Costs Form"
-        //[HttpPost("workbooks/forms/field-input-costs")]
-        //[LoggedInUnclassifiedFeature]
-        //public ActionResult<IEnumerable<FieldInputByCostDto>> CreateFieldInputByCost([FromBody] FieldInputByCostCreateDto fieldInputByCostCreateDto)
-        //{
-        //    var validationMessages = FieldLaborByCrop.ValidateCreate(_dbContext, fieldInputByCostCreateDto);
-        //    validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        #region "Field Input Costs Form"
+        [HttpPost("workbooks/forms/field-input-costs")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldInputByCostDto>> CreateFieldInputByCost([FromBody] FieldInputByCostCreateDto fieldInputByCostCreateDto)
+        {
+            var validationMessages = FieldInputByCost.ValidateCreate(_dbContext, fieldInputByCostCreateDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    var fieldLaborByCropDtos = FieldLaborByCrop.CreateNewFieldLaborByCrop(_dbContext, fieldInputByCostCreateDto);
-        //    return Ok(fieldLaborByCropDtos);
-        //}
+            var fieldInputByCostDtos = FieldInputByCost.CreateNewFieldInputByCost(_dbContext, fieldInputByCostCreateDto);
+            return Ok(fieldInputByCostDtos);
+        }
 
-        //[HttpGet("workbooks/{workbookID}/forms/field-labor-by-crop")]
-        //[LoggedInUnclassifiedFeature]
-        //public ActionResult<IEnumerable<FieldLaborActivityDto>> GetFieldLaborByCrops([FromRoute] int workbookID)
-        //{
-        //    var fieldLaborByCrops = FieldLaborByCrop.GetDtoListByWorkbookID(_dbContext, workbookID);
-        //    return Ok(fieldLaborByCrops);
-        //}
+        [HttpGet("workbooks/{workbookID}/forms/field-input-costs")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldInputByCostDto>> GetFieldInputByCosts([FromRoute] int workbookID)
+        {
+            var fieldInputByCosts = FieldInputByCost.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldInputByCosts);
+        }
 
-        //[HttpPut("workbooks/forms/field-labor-by-crop")]
-        //[LoggedInUnclassifiedFeature]
-        //public ActionResult<FieldLaborActivityDto> UpdateFieldLaborByCrop([FromBody] FieldLaborByCropDto fieldLaborByCropDto)
-        //{
-        //    var validationMessages = FieldLaborByCrop.ValidateUpdate(_dbContext, fieldLaborByCropDto);
-        //    validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        [HttpPut("workbooks/forms/field-input-costs")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<FieldInputByCostDto> UpdateFieldInputByCost([FromBody] FieldInputByCostDto fieldInputByCostDto)
+        {
+            var validationMessages = FieldInputByCost.ValidateUpdate(_dbContext, fieldInputByCostDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    var fieldLaborByCropDtos = FieldLaborByCrop.UpdateFieldLaborByCrop(_dbContext, fieldLaborByCropDto);
-        //    return Ok(fieldLaborByCropDtos);
-        //}
+            var fieldInputByCostDtos = FieldInputByCost.UpdateFieldInputByCost(_dbContext, fieldInputByCostDto);
+            return Ok(fieldInputByCostDtos);
+        }
 
-        //[HttpDelete("workbooks/{workbookID}/forms/field-labor-by-crop/{fieldLaborByCropID}")]
-        //[LoggedInUnclassifiedFeature]
-        //public ActionResult<IEnumerable<FieldLaborActivityDto>> DeleteFieldLaborByCrop([FromRoute] int workbookID, [FromRoute] int fieldLaborByCropID)
-        //{
-        //    var validationMessages = FieldLaborByCrop.ValidateDelete(_dbContext, fieldLaborByCropID);
-        //    validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+        [HttpDelete("workbooks/{workbookID}/forms/field-input-costs/{fieldInputByCostID}")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldInputByCostDto>> DeleteFieldInputByCost([FromRoute] int workbookID, [FromRoute] int fieldInputByCostID)
+        {
+            var validationMessages = FieldInputByCost.ValidateDelete(_dbContext, fieldInputByCostID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
 
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    FieldLaborByCrop.Delete(_dbContext, fieldLaborByCropID);
+            FieldInputByCost.Delete(_dbContext, fieldInputByCostID);
 
-        //    var returnDtos = FieldLaborByCrop.GetDtoListByWorkbookID(_dbContext, workbookID);
+            var returnDtos = FieldInputByCost.GetDtoListByWorkbookID(_dbContext, workbookID);
 
-        //    return Ok(returnDtos);
-        //}
-        //#endregion 
+            return Ok(returnDtos);
+        }
+        #endregion 
 
     }
 }
