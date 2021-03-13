@@ -27,6 +27,7 @@ import { CropsComponent } from './pages/workbooks/forms/crops/crops.component';
 import { CropUnitsComponent } from './pages/workbooks/forms/crop-units/crop-units.component';
 import { FieldLaborByCropComponent } from './pages/workbooks/forms/field-labor-by-crop/field-labor-by-crop.component';
 import { TransplantProductionLaborActivitiesComponent } from './pages/workbooks/forms/transplant-production-labor-activities/transplant-production-labor-activities.component';
+import { FieldInputCostsComponent } from './pages/workbooks/forms/field-input-costs/field-input-costs.component';
 
 const routes: Routes = [
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -51,6 +52,7 @@ const routes: Routes = [
   { path: "workbooks/:id/forms/field-labor-by-crop", component: FieldLaborByCropComponent},
   { path: "workbooks/:id/forms/crops", component: CropsComponent},
   { path: "workbooks/:id/forms/crop-units", component: CropUnitsComponent},
+  { path: "workbooks/:id/forms/field-input-costs", component: FieldInputCostsComponent},
   { path: "workbooks/:id", component: WorkbookDetailComponent},
   { path: "login-callback", component: LoginCallbackComponent },
   { path: "create-user-callback", component: CreateUserCallbackComponent },

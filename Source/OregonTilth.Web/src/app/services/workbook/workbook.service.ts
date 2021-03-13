@@ -15,6 +15,8 @@ import { FieldLaborByCropCreateDto } from 'src/app/shared/models/forms/field-lab
 import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor-by-crop-dto';
 import { TransplantProductionLaborActivityDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-dto';
 import { TransplantProductionLaborActivityCreateDto } from 'src/app/shared/models/forms/transplant-production-labor-activities/transplant-production-labor-activity-create-dto';
+import { FieldInputByCostDto } from 'src/app/shared/models/generated/field-input-by-cost-dto';
+import { FieldInputByCostCreateDto } from 'src/app/shared/models/forms/field-input-by-cost/field-input-by-cost-create-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -174,4 +176,28 @@ export class WorkbookService {
         let route = `workbooks/${workbookID}/forms/transplant-production-labor-activities/${fieldLaborActivityID}`;
         return this.apiService.deleteToApi(route);
     }
+
+    // Field Input By Cost Form
+    addFieldInputByCost(fieldInputByCostCreateDto: FieldInputByCostCreateDto): Observable<FieldInputByCostDto[]> {
+        let route = `/workbooks/forms/field-input-costs`;
+        return this.apiService.postToApi(route, fieldInputByCostCreateDto);
+    }
+
+    getFieldInputCosts(workbookID: number): Observable<FieldInputByCostDto[]> {
+        let route = `workbooks/${workbookID}/forms/field-input-costs`;
+        return this.apiService.getFromApi(route);
+    }
+
+    updateFieldInputByCost(fieldInputByCost: FieldInputByCostDto): Observable<FieldInputByCostDto> {
+        let route = `/workbooks/forms/field-input-costs`;
+        return this.apiService.putToApi(route, fieldInputByCost);
+    }
+
+    deleteFieldInputByCost(workbookID:number, fieldInputByCostID: number): Observable<FieldInputByCostDto[]> {
+        let route = `workbooks/${workbookID}/forms/field-input-costs/${fieldInputByCostID}`;
+        return this.apiService.deleteToApi(route);
+    }
+
+
+
 }

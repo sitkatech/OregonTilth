@@ -24,6 +24,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<DatabaseMigration> DatabaseMigrations { get; set; }
         public virtual DbSet<FieldDefinition> FieldDefinitions { get; set; }
         public virtual DbSet<FieldDefinitionType> FieldDefinitionTypes { get; set; }
+        public virtual DbSet<FieldInputByCost> FieldInputByCosts { get; set; }
         public virtual DbSet<FieldLaborActivity> FieldLaborActivities { get; set; }
         public virtual DbSet<FieldLaborActivityCategory> FieldLaborActivityCategories { get; set; }
         public virtual DbSet<FieldLaborByCrop> FieldLaborByCrops { get; set; }
@@ -117,6 +118,23 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.FieldDefinitionTypeDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.FieldDefinitionTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<FieldInputByCost>(entity =>
+            {
+                entity.Property(e => e.FieldInputByCostName).IsUnicode(false);
+
+                entity.Property(e => e.Notes).IsUnicode(false);
+
+                entity.HasOne(d => d.FieldUnitType)
+                    .WithMany(p => p.FieldInputByCosts)
+                    .HasForeignKey(d => d.FieldUnitTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.FieldInputByCosts)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<FieldLaborActivity>(entity =>

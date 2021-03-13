@@ -417,6 +417,65 @@ namespace OregonTilth.API.Controllers
 
             return Ok(returnDtos);
         }
+        #endregion
+
+        #region "Field Input Costs Form"
+        [HttpPost("workbooks/forms/field-input-costs")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldInputByCostDto>> CreateFieldInputByCost([FromBody] FieldInputByCostCreateDto fieldInputByCostCreateDto)
+        {
+            var validationMessages = FieldInputByCost.ValidateCreate(_dbContext, fieldInputByCostCreateDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var fieldInputByCostDtos = FieldInputByCost.CreateNewFieldInputByCost(_dbContext, fieldInputByCostCreateDto);
+            return Ok(fieldInputByCostDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/field-input-costs")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldInputByCostDto>> GetFieldInputByCosts([FromRoute] int workbookID)
+        {
+            var fieldInputByCosts = FieldInputByCost.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldInputByCosts);
+        }
+
+        [HttpPut("workbooks/forms/field-input-costs")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<FieldInputByCostDto> UpdateFieldInputByCost([FromBody] FieldInputByCostDto fieldInputByCostDto)
+        {
+            var validationMessages = FieldInputByCost.ValidateUpdate(_dbContext, fieldInputByCostDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var fieldInputByCostDtos = FieldInputByCost.UpdateFieldInputByCost(_dbContext, fieldInputByCostDto);
+            return Ok(fieldInputByCostDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/field-input-costs/{fieldInputByCostID}")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldInputByCostDto>> DeleteFieldInputByCost([FromRoute] int workbookID, [FromRoute] int fieldInputByCostID)
+        {
+            var validationMessages = FieldInputByCost.ValidateDelete(_dbContext, fieldInputByCostID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            FieldInputByCost.Delete(_dbContext, fieldInputByCostID);
+
+            var returnDtos = FieldInputByCost.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
         #endregion 
 
         #region "Transplant Production Labor Activities Form"
@@ -483,6 +542,6 @@ namespace OregonTilth.API.Controllers
             return Ok(returnDtos);
         }
 
-        #endregion "Field Labor Activities Form"
+        #endregion "Transplant Production Labor Activities Form"
     }
 }

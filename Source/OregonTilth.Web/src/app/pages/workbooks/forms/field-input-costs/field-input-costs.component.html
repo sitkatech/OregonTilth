@@ -1,0 +1,86 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item" aria-current="page">
+        <a routerLink="/workbooks">Workbooks</a>
+      </li>
+      <li *ngIf="workbook" class="breadcrumb-item" aria-current="page">
+        <a routerLink="/workbooks/{{workbook.WorkbookID}}">{{workbook.WorkbookName}}</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Field Input Costs</li>
+  </ol>
+</nav>
+
+<div class="container">
+  <div class="row mb-2">
+    <div class="col-sm-2">
+      <side-nav [workbook]="workbook"  *ngIf="workbook"></side-nav>
+    </div>
+    <div class="col-sm-10">
+        <app-alert-display></app-alert-display>
+        <h1>Field Input Costs</h1>
+        <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+        <div class="card mt-4">
+          <div class="card-header">
+            Add new Field Input Cost
+          </div>
+          <div class="card-body">
+            <form *ngIf=(model) (ngSubmit)="onSubmit(fieldInputCostForm)" #fieldInputCostForm="ngForm">
+              <div class="row">
+                
+                <div class="form-group col-md-8">
+                  <label class="required">Field Input Cost</label>
+                  <input class="form-control" type="text" name="FieldInputByCostName" [(ngModel)]="model.FieldInputByCostName">
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="required">Field Unit Type</label>
+                  <select name="FieldUnitTypeID" class="form-control" [(ngModel)]="model.FieldUnitTypeID" required>
+                    <option value=""></option>
+                    <option *ngFor="let category of fieldUnitTypes" [value]="category.FieldUnitTypeID">
+                      {{category.FieldUnitTypeDisplayName}}
+                    </option>
+                  </select>
+                </div>
+                <div class="form-group col-md-8">
+                  <label class="required">Cost Per Field Unit</label>
+                  <input class="form-control" type="number" name="CostPerFieldUnit" [(ngModel)]="model.CostPerFieldUnit">
+                </div>
+              </div>
+              <div class="row">
+                
+                <div class="form-group col-md-8">
+                  <label class="required">Notes</label>
+                  <input class="form-control" type="text" name="Notes" [(ngModel)]="model.Notes">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm">
+                  <i class="fas fa-bolt"></i> Required field
+                </div>
+                <div class="col-sm text-right">
+                  <button type="submit" class="btn btn-fresca" [disabled]="!fieldInputCostForm.form.valid || isLoadingSubmit">
+                    <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          
+        </div>
+
+        
+        
+        <div class="row mt-4">
+          <div class="col">
+            <ag-grid-angular #fieldInputCostGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="fieldInputByCosts"
+              [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (cellValueChanged)="onCellValueChanged($event)">
+            </ag-grid-angular>
+          </div>
+        </div>
+
+
+
+    </div>
+  </div>
+  
+</div>
