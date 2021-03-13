@@ -1,17 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OregonTilth.API.Services;
 using OregonTilth.API.Services.Authorization;
+using OregonTilth.API.Services.Filters;
 using OregonTilth.EFModels.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
 using OregonTilth.Models.DataTransferObjects;
-using User = OregonTilth.EFModels.Entities.User;
+using System.Collections.Generic;
 
 namespace OregonTilth.API.Controllers
 {
@@ -40,20 +35,21 @@ namespace OregonTilth.API.Controllers
             return Ok(workbook);
         }
 
-        [HttpPut("workbooks")]
+        [HttpPut("workbooks/{workbookID}")]
         [LoggedInUnclassifiedFeature]
-        public ActionResult<WorkbookDto> EditWorkbook([FromBody] WorkbookDto workbookDto)
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<WorkbookDto> EditWorkbook([FromBody] WorkbookDto editWorkbookDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
 
-            var validationMessages = Workbook.ValidateUpsert(_dbContext, workbookDto, userDto.UserID);
+            var validationMessages = Workbook.ValidateUpsert(_dbContext, editWorkbookDto, userDto.UserID);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var workbook = Workbook.EditWorkbook(_dbContext, workbookDto);
+            var workbook = Workbook.EditWorkbook(_dbContext, editWorkbookDto);
             return Ok(workbook);
         }
 
@@ -69,10 +65,11 @@ namespace OregonTilth.API.Controllers
 
         [HttpDelete("workbooks/{workbookID}")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<WorkbookDto>> DeleteWorkbook([FromRoute] int workbookID)
         {
             var currentUserDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
-            
+
             var validationMessages = Workbook.ValidateDelete(_dbContext, workbookID, currentUserDto);
             validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
 
@@ -89,22 +86,18 @@ namespace OregonTilth.API.Controllers
 
         [HttpGet("workbooks/{workbookID}")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<WorkbookDto>> GetWorkbook([FromRoute] int workbookID)
         {
-            var workbook = Workbook.GetDtoByWorkbookID(_dbContext, workbookID);
-
-            if (workbook == null)
-            {
-                return BadRequest();
-            }
-
-            return Ok(workbook);
+            var workbook = Workbook.GetByWorkbookID(_dbContext, workbookID);
+            return Ok(workbook.AsDto());
         }
         #endregion
 
         #region "Field Labor Activities Form"
-        [HttpPost("workbooks/forms/field-labor-activities")]
+        [HttpPost("workbooks/{workbookID}/forms/field-labor-activities")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<FieldLaborActivityDto>> CreateFieldLaborActivity([FromBody] FieldLaborActivityUpsertDto fieldLaborActivityUpsertDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
@@ -122,14 +115,16 @@ namespace OregonTilth.API.Controllers
 
         [HttpGet("workbooks/{workbookID}/forms/field-labor-activities")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<FieldLaborActivityDto>> GetFieldLaborActivities([FromRoute] int workbookID)
         {
             var fieldLaborActivities = FieldLaborActivity.GetDtoListByWorkbookID(_dbContext, workbookID);
             return Ok(fieldLaborActivities);
         }
 
-        [HttpPut("workbooks/forms/field-labor-activities")]
+        [HttpPut("workbooks/{workbookID}/forms/field-labor-activities")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<FieldLaborActivityDto> UpdateFieldLaborActivity([FromBody] FieldLaborActivityDto fieldLaborActivityDto)
         {
             var validationMessages = FieldLaborActivity.ValidateUpdate(_dbContext, fieldLaborActivityDto);
@@ -145,6 +140,7 @@ namespace OregonTilth.API.Controllers
 
         [HttpDelete("workbooks/{workbookID}/forms/field-labor-activities/{fieldLaborActivityID}")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<FieldLaborActivityDto>> DeleteFieldLaborActivity([FromRoute] int workbookID, [FromRoute] int fieldLaborActivityID)
         {
             var validationMessages = FieldLaborActivity.ValidateDelete(_dbContext, fieldLaborActivityID);
@@ -166,8 +162,9 @@ namespace OregonTilth.API.Controllers
 
 
         #region "Machinery Form"
-        [HttpPost("workbooks/forms/machinery")]
+        [HttpPost("workbooks/{workbookID}/forms/machinery")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<MachineryDto>> CreateMachinery([FromBody] MachineryUpsertDto machineryUpsertDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
@@ -185,14 +182,16 @@ namespace OregonTilth.API.Controllers
 
         [HttpGet("workbooks/{workbookID}/forms/machinery")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<MachineryDto>> GetMachineries([FromRoute] int workbookID)
         {
             var machineries = Machinery.GetDtoListByWorkbookID(_dbContext, workbookID);
             return Ok(machineries);
         }
 
-        [HttpPut("workbooks/forms/machinery")]
+        [HttpPut("workbooks/{workbookID}/forms/machinery")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<MachineryDto> UpdateMachinery([FromBody] MachineryDto machineryDto)
         {
             var validationMessages = Machinery.ValidateUpdate(_dbContext, machineryDto);
@@ -208,6 +207,7 @@ namespace OregonTilth.API.Controllers
 
         [HttpDelete("workbooks/{workbookID}/forms/machinery/{machineryID}")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<MachineryDto>> DeleteMachinery([FromRoute] int workbookID, [FromRoute] int machineryID)
         {
             var validationMessages = Machinery.ValidateDelete(_dbContext, machineryID);
@@ -227,8 +227,9 @@ namespace OregonTilth.API.Controllers
         #endregion "Machinery Form"
 
         #region Crops
-        [HttpPost("workbooks/forms/crops")]
+        [HttpPost("workbooks/{workbookID}/forms/crops")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<CropDto>> CreateCrop([FromBody] CropCreateDto cropCreateDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
@@ -246,14 +247,16 @@ namespace OregonTilth.API.Controllers
 
         [HttpGet("workbooks/{workbookID}/forms/crops")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<CropDto>> GetCrops([FromRoute] int workbookID)
         {
             var crops = Crop.GetDtoListByWorkbookID(_dbContext, workbookID);
             return Ok(crops);
         }
 
-        [HttpPut("workbooks/forms/crops")]
+        [HttpPut("workbooks/{workbookID}/forms/crops")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<CropDto> UpdateCrop([FromBody] CropDto cropDto)
         {
             var validationMessages = Crop.ValidateUpdate(_dbContext, cropDto);
@@ -269,6 +272,7 @@ namespace OregonTilth.API.Controllers
 
         [HttpDelete("workbooks/{workbookID}/forms/crops/{cropID}")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<CropDto>> DeleteCrop([FromRoute] int workbookID, [FromRoute] int cropID)
         {
             var validationMessages = Crop.ValidateDelete(_dbContext, cropID);
@@ -288,8 +292,9 @@ namespace OregonTilth.API.Controllers
         #endregion
 
         #region Crop Units
-        [HttpPost("workbooks/forms/crop-units")]
+        [HttpPost("workbooks/{workbookID}/forms/crop-units")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<CropUnitDto>> CreateCropUnit([FromBody] CropUnitCreateDto cropUnitCreateDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
@@ -307,14 +312,16 @@ namespace OregonTilth.API.Controllers
 
         [HttpGet("workbooks/{workbookID}/forms/crop-units")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<CropUnitDto>> GetCropUnits([FromRoute] int workbookID)
         {
             var cropUnits = CropUnit.GetDtoListByWorkbookID(_dbContext, workbookID);
             return Ok(cropUnits);
         }
 
-        [HttpPut("workbooks/forms/crop-units")]
+        [HttpPut("workbooks/{workbookID}/forms/crop-units")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<CropUnitDto> UpdateCropUnit([FromBody] CropUnitDto cropUnitDto)
         {
             var validationMessages = CropUnit.ValidateUpdate(_dbContext, cropUnitDto);
@@ -330,6 +337,7 @@ namespace OregonTilth.API.Controllers
 
         [HttpDelete("workbooks/{workbookID}/forms/crop-units/{cropUnitID}")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<CropUnitDto>> DeleteCropUnit([FromRoute] int workbookID, [FromRoute] int cropUnitID)
         {
             var validationMessages = CropUnit.ValidateDelete(_dbContext, cropUnitID);
@@ -349,8 +357,9 @@ namespace OregonTilth.API.Controllers
         #endregion
 
         #region Field Labor By Crop
-        [HttpPost("workbooks/forms/field-labor-by-crop")]
+        [HttpPost("workbooks/{workbookID}/forms/field-labor-by-crop")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<FieldLaborByCropDto>> CreateFieldLaborByCrop([FromBody] FieldLaborByCropCreateDto fieldLaborByCropCreateDto)
         {
             var validationMessages = FieldLaborByCrop.ValidateCreate(_dbContext, fieldLaborByCropCreateDto);
@@ -366,14 +375,16 @@ namespace OregonTilth.API.Controllers
 
         [HttpGet("workbooks/{workbookID}/forms/field-labor-by-crop")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<FieldLaborActivityDto>> GetFieldLaborByCrops([FromRoute] int workbookID)
         {
             var fieldLaborByCrops = FieldLaborByCrop.GetDtoListByWorkbookID(_dbContext, workbookID);
             return Ok(fieldLaborByCrops);
         }
 
-        [HttpPut("workbooks/forms/field-labor-by-crop")]
+        [HttpPut("workbooks/{workbookID}/forms/field-labor-by-crop")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<FieldLaborActivityDto> UpdateFieldLaborByCrop([FromBody] FieldLaborByCropDto fieldLaborByCropDto)
         {
             var validationMessages = FieldLaborByCrop.ValidateUpdate(_dbContext, fieldLaborByCropDto);
@@ -389,6 +400,7 @@ namespace OregonTilth.API.Controllers
 
         [HttpDelete("workbooks/{workbookID}/forms/field-labor-by-crop/{fieldLaborByCropID}")]
         [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<FieldLaborActivityDto>> DeleteFieldLaborByCrop([FromRoute] int workbookID, [FromRoute] int fieldLaborByCropID)
         {
             var validationMessages = FieldLaborByCrop.ValidateDelete(_dbContext, fieldLaborByCropID);
@@ -466,5 +478,70 @@ namespace OregonTilth.API.Controllers
         }
         #endregion 
 
+        #region "Transplant Production Labor Activities Form"
+        [HttpPost("workbooks/{workbookID}/forms/transplant-production-labor-activities")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionLaborActivityDto>> CreateTransplantProductionLaborActivity([FromBody] TransplantProductionLaborActivityCreateDto transplantProductionLaborActivityCreateDto)
+        {
+            var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+
+            var validationMessages = TransplantProductionLaborActivity.ValidateCreate(_dbContext, transplantProductionLaborActivityCreateDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transplantProductionLaborActivityDtos = TransplantProductionLaborActivity.CreateNewTransplantProductionLaborActivity(_dbContext, transplantProductionLaborActivityCreateDto, userDto);
+            return Ok(transplantProductionLaborActivityDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/transplant-production-labor-activities")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionLaborActivityDto>> GetTransplantProductionLaborActivities([FromRoute] int workbookID)
+        {
+            var fieldLaborActivities = TransplantProductionLaborActivity.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldLaborActivities);
+        }
+
+        [HttpPut("workbooks/{workbookID}/forms/transplant-production-labor-activities")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionLaborActivityDto> UpdateTransplantProductionLaborActivity([FromBody] TransplantProductionLaborActivityDto transplantProductionLaborActivityDto)
+        {
+            var validationMessages = TransplantProductionLaborActivity.ValidateUpdate(_dbContext, transplantProductionLaborActivityDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transplantProductionLaborActivityDtos = TransplantProductionLaborActivity.UpdateTransplantProductionLaborActivity(_dbContext, transplantProductionLaborActivityDto);
+            return Ok(transplantProductionLaborActivityDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/transplant-production-labor-activities/{TransplantProductionLaborActivityID}")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionLaborActivityDto>> DeleteTransplantProductionLaborActivity([FromRoute] int workbookID, [FromRoute] int transplantProductionLaborActivityID)
+        {
+            var validationMessages = TransplantProductionLaborActivity.ValidateDelete(_dbContext, transplantProductionLaborActivityID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            TransplantProductionLaborActivity.Delete(_dbContext, transplantProductionLaborActivityID);
+
+            var returnDtos = TransplantProductionLaborActivity.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+
+        #endregion "Transplant Production Labor Activities Form"
     }
 }

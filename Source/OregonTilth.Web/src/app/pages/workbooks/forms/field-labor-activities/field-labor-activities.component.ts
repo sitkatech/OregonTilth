@@ -139,6 +139,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
     var dtoToPost = data.data;
 
     this.updateFieldLaborActivityRequest = this.workbookService.updateFieldLaborActivity(dtoToPost).subscribe(fieldLaborActivity => {
+      data.node.setData(fieldLaborActivity);
       this.isLoadingSubmit = false;
       this.alertService.pushAlert(new Alert("Successfully updated Field Labor Activity", AlertContext.Success));
     }, error => {

@@ -18,7 +18,7 @@ namespace OregonTilth.EFModels.Entities
         public int CropID { get; set; }
         public int FieldLaborActivityID { get; set; }
         public int LaborTypeID { get; set; }
-        [Column(TypeName = "decimal(18, 2)")]
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal Occurrances { get; set; }
 
         [ForeignKey(nameof(CropID))]

@@ -109,6 +109,7 @@ export class CropsComponent implements OnInit {
     var dtoToPost = data.data;
 
     this.updateCropRequest = this.workbookService.updateCrop(dtoToPost).subscribe(crop => {
+      data.node.setData(crop);
       this.isLoadingSubmit = false;
       this.alertService.pushAlert(new Alert("Successfully updated Crop.", AlertContext.Success));
     }, error => {

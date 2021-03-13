@@ -128,6 +128,7 @@ export class MachineryComponent implements OnInit {
 
 
     this.updateMachineryRequest = this.workbookService.updateMachinery(dtoToPost).subscribe(machinery => {
+      data.node.setData(machinery);
       this.isLoadingSubmit = false;
       this.alertService.pushAlert(new Alert(`Successfully updated Machinery`, AlertContext.Success));
     }, error => {
