@@ -41,6 +41,7 @@ import { MachineryComponent } from './pages/workbooks/forms/machinery/machinery.
 import { FieldLaborByCropComponent } from './pages/workbooks/forms/field-labor-by-crop/field-labor-by-crop.component';
 import { CropsComponent } from './pages/workbooks/forms/crops/crops.component';
 import { CropUnitsComponent } from './pages/workbooks/forms/crop-units/crop-units.component';
+import { FieldInputCostsComponent } from './pages/workbooks/forms/field-input-costs/field-input-costs.component';
 import { DisclaimerComponent } from './pages/disclaimer/disclaimer.component';
 import { AppInitService } from './app.init';
 import { FieldDefinitionListComponent } from './pages/field-definition-list/field-definition-list.component';
@@ -78,6 +79,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     WorkbookDetailComponent,
     FieldLaborActivitiesComponent,
     MachineryComponent,
+    FieldInputCostsComponent,
     FieldLaborByCropComponent,
     CropsComponent,
     CropUnitsComponent,

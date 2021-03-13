@@ -24,7 +24,7 @@ export class LookupTablesService {
 
     
     getFieldUnitTypes(): Observable<FieldUnitTypeDto[]> {
-        let route = `/lookupTable/field-unit-type`;
+        let route = `/lookupTable/field-unit-types`;
         return this.apiService.getFromApi(route);
     }
 

@@ -67,10 +67,10 @@ export class FieldInputCostsComponent implements OnInit {
       this.getFieldUnitTypesRequest = this.lookupTablesService.getFieldUnitTypes();
       this.getFieldInputCostsRequest = this.workbookService.getFieldInputCosts(this.workbookID);
 
-      forkJoin([this.getWorkbookRequest, this.getFieldUnitTypesRequest, this.getFieldInputCostsRequest]).subscribe(([workbook, fieldLaborActivityCategories, fieldLaborActivities]: [WorkbookDto, FieldLaborActivityCategoryDto[], FieldLaborActivityDto[]] ) => {
+      forkJoin([this.getWorkbookRequest, this.getFieldUnitTypesRequest, this.getFieldInputCostsRequest]).subscribe(([workbook, fieldUnitTypes, fieldInputCosts]: [WorkbookDto, FieldUnitTypeDto[], FieldInputByCostDto[]] ) => {
           this.workbook = workbook;
-          this.fieldUnitTypes = fieldLaborActivityCategories;
-          this.fieldInputByCosts = fieldLaborActivities;
+          this.fieldUnitTypes = fieldUnitTypes;
+          this.fieldInputByCosts = fieldInputCosts;
           this.defineColumnDefs();
           this.cdr.markForCheck();
       });
@@ -82,27 +82,27 @@ export class FieldInputCostsComponent implements OnInit {
     var componentScope = this;
     this.columnDefs = [
       {
-        headerName: 'Field Labor Activity', 
-        field: 'FieldLaborActivityName',
+        headerName: 'Field Input', 
+        field: 'FieldInputByCostName',
         editable: true,
-        cellEditor: 'agPopupTextCellEditor',
+        cellEditor: 'agTextCellEditor',
         sortable: true, 
         filter: true,
       },
       {
-        headerName: 'Field Labor Category', 
-        field: 'FieldLaborActivityCategory',
+        headerName: 'Field Unit', 
+        field: 'FieldUnitType',
         editable: true,
         cellEditor: 'agPopupSelectCellEditor',
         cellEditorParams: {
-          values: this.fieldUnitTypes.map(x => x.FieldLaborActivityCategoryDisplayName)
+          values: this.fieldUnitTypes.map(x => x.FieldUnitTypeDisplayName)
         },
         valueFormatter: function (params) {
-          return params.value.FieldLaborActivityCategoryDisplayName;
+          return params.value.FieldUnitTypeDisplayName;
         },
         valueSetter: params => {
-          params.data.FieldLaborActivityCategory = this.fieldUnitTypes.find(element => {
-            return element.FieldLaborActivityCategoryDisplayName == params.newValue;
+          params.data.FieldUnitType = this.fieldUnitTypes.find(element => {
+            return element.FieldUnitTypeDisplayName == params.newValue;
           });
           return true;
         },
@@ -110,13 +110,27 @@ export class FieldInputCostsComponent implements OnInit {
         filter: true,
       },
       {
-        headerName: 'Delete', field: 'FieldLaborActivityID', valueGetter: function (params: any) {
-          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.FieldLaborActivityID, ObjectDisplayName: params.data.FieldLaborActivityName };
+        headerName: 'Cost Per Field Unit', 
+        field: 'CostPerFieldUnit',
+        editable: true,
+        cellEditor: 'agTextCellEditor',
+        //valueFormatter: this.currencyFormatter
+      },
+      {
+        headerName: 'Notes', 
+        field: 'Notes',
+        editable: true,
+        cellEditor: 'agTextCellEditor',
+        filter: true,
+      },
+      {
+        headerName: 'Delete', field: 'FieldInputByCostID', valueGetter: function (params: any) {
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.FieldInputByCostID, ObjectDisplayName: params.data.FieldInputByCostName };
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
-            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Field Labor Activity?`)) {
-              componentScope.deleteFieldLaborActivity(field.PrimaryKey)
+            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Field Input?`)) {
+              componentScope.deleteFieldInputByCost(field.PrimaryKey)
             }
           }
           },
@@ -125,10 +139,10 @@ export class FieldInputCostsComponent implements OnInit {
     ]
   }
 
-  deleteFieldLaborActivity(fieldLaborActivityID: number) {
-    this.deleteFieldInputByCostRequest = this.workbookService.deleteFieldLaborActivity(this.workbookID, fieldLaborActivityID).subscribe(fieldLaborActivityDtos => {
-      this.fieldInputByCosts = fieldLaborActivityDtos;
-      this.alertService.pushAlert(new Alert("Successfully deleted Field Labor Activity", AlertContext.Success));
+  deleteFieldInputByCost(fieldInputByCostID: number) {
+    this.deleteFieldInputByCostRequest = this.workbookService.deleteFieldInputByCost(this.workbookID, fieldInputByCostID).subscribe(fieldInputByCostDtos => {
+      this.fieldInputByCosts = fieldInputByCostDtos;
+      this.alertService.pushAlert(new Alert("Successfully deleted Field Input Cost", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
 
@@ -138,9 +152,9 @@ export class FieldInputCostsComponent implements OnInit {
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
 
-    this.updateFieldInputByCostRequest = this.workbookService.updateFieldLaborActivity(dtoToPost).subscribe(fieldLaborActivity => {
+    this.updateFieldInputByCostRequest = this.workbookService.updateFieldInputByCost(dtoToPost).subscribe(fieldInputCost => {
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Field Labor Activity", AlertContext.Success));
+      this.alertService.pushAlert(new Alert("Successfully updated Field Input Cost", AlertContext.Success));
     }, error => {
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
@@ -172,12 +186,12 @@ export class FieldInputCostsComponent implements OnInit {
     this.cdr.detach();
   }
 
-  onSubmit(fieldLaborActivityForm: HTMLFormElement): void {
+  onSubmit(fieldInputCostForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-    this.addFieldInputByCostRequest = this.workbookService.addFieldLaborActivity(this.model).subscribe(response => {
+    this.addFieldInputByCostRequest = this.workbookService.addFieldInputByCost(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
       this.fieldInputByCosts = response;
-      this.alertService.pushAlert(new Alert("Successfully added Field Labor Activity.", AlertContext.Success));
+      this.alertService.pushAlert(new Alert("Successfully added Field Input Cost.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
       
@@ -188,7 +202,7 @@ export class FieldInputCostsComponent implements OnInit {
   }
 
   resetForm() {
-    this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID, FieldLaborActivityCategoryID: this.model.FieldLaborActivityCategoryID});
+    this.model = new FieldInputByCostCreateDto({WorkbookID: this.workbookID, FieldUnitTypeID: this.model.FieldUnitTypeID});
   }
 
 }
