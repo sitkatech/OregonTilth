@@ -21,10 +21,4 @@ namespace OregonTilth.EFModels.Entities
 
         }
     }
-
-   
-
-    
-
-   
 }
