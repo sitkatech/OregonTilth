@@ -543,5 +543,68 @@ namespace OregonTilth.API.Controllers
         }
 
         #endregion "Transplant Production Labor Activities Form"
+
+        #region Transplant Production Labor Activity By Crop Form
+        [HttpPost("workbooks/{workbookID}/forms/transplant-production-labor-by-crop")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionLaborActivityByCropDto>> CreateTransplantProductionLaborActivityByCrop([FromBody] TransplantProductionLaborActivityByCropCreateDto transplantProductionLaborByCropCreateDto)
+        {
+            var validationMessages = TransplantProductionLaborActivityByCrop.ValidateCreate(_dbContext, transplantProductionLaborByCropCreateDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transplantProductionLaborByCropDtos = TransplantProductionLaborActivityByCrop.CreateNew(_dbContext, transplantProductionLaborByCropCreateDto);
+            return Ok(transplantProductionLaborByCropDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/transplant-production-labor-by-crop")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<FieldLaborActivityDto>> GetTransplantProductionLaborActivityByCrops([FromRoute] int workbookID)
+        {
+            var transplantProductionLaborByCrops = TransplantProductionLaborActivityByCrop.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(transplantProductionLaborByCrops);
+        }
+
+        [HttpPut("workbooks/{workbookID}/forms/transplant-production-labor-by-crop")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<FieldLaborActivityDto> UpdateTransplantProductionLaborActivityByCrop([FromBody] TransplantProductionLaborActivityByCropDto transplantProductionLaborByCropDto)
+        {
+            var validationMessages = TransplantProductionLaborActivityByCrop.ValidateUpdate(_dbContext, transplantProductionLaborByCropDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transplantProductionLaborByCropDtos = TransplantProductionLaborActivityByCrop.UpdateTransplantProductionLaborActivityByCrop(_dbContext, transplantProductionLaborByCropDto);
+            return Ok(transplantProductionLaborByCropDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/transplant-production-labor-by-crop/{transplantProductionLaborByCropID}")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<FieldLaborActivityDto>> DeleteTransplantProductionLaborActivityByCrop([FromRoute] int workbookID, [FromRoute] int transplantProductionLaborByCropID)
+        {
+            var validationMessages = TransplantProductionLaborActivityByCrop.ValidateDelete(_dbContext, transplantProductionLaborByCropID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            TransplantProductionLaborActivityByCrop.Delete(_dbContext, transplantProductionLaborByCropID);
+
+            var returnDtos = TransplantProductionLaborActivityByCrop.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+        #endregion
     }
 }

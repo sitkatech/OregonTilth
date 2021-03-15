@@ -77,9 +77,9 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
       
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
       this.getCropDtosRequest = this.workbookService.getCrops(this.workbookID);
-      this.getTransplantProductionLaborActivityDtosRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
+      this.getTransplantProductionLaborActivityDtosRequest = this.workbookService.getTransplantProductionLaborActivities(this.workbookID);
       this.getPhaseDtosRequest = this.lookupTablesService.getPhases();
-      this.getTransplantProductionLaborByCropsRequest = this.workbookService.getFieldLaborByCrops(this.workbookID);
+      this.getTransplantProductionLaborByCropsRequest = this.workbookService.getTransplantProductionLaborByCrops(this.workbookID);
 
       forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getTransplantProductionLaborActivityDtosRequest, this.getPhaseDtosRequest, this.getTransplantProductionLaborByCropsRequest]).subscribe(([workbookDto, cropDtos, transplantProductionLaborActivityDtos, phaseDtos, transplantProductionLaborByCrops]: [WorkbookDto, CropDto[], TransplantProductionLaborActivityDto[], PhaseDto[], TransplantProductionLaborActivityByCropDto[]] ) => {
           this.workbook = workbookDto;
@@ -122,7 +122,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         field: 'TransplantProductionLaborActivity',
         editable: true,
         valueFormatter: function (params) {
-          return params.value.FieldLaborActivityName;
+          return params.value.TransplantProductionLaborActivityName;
         },
         valueSetter: params => {
           params.data.FieldLaborActivity = this.transplantProductionLaborActivityDtos.find(element => {
@@ -142,17 +142,17 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         field: 'Phase',
         editable: true,
         valueFormatter: function (params) {
-          return params.value.LaborTypeName;
+          return params.value.PhaseDisplayName;
         },
         valueSetter: params => {
-          params.data.LaborType = this.phaseDtos.find(element => {
+          params.data.Phase = this.phaseDtos.find(element => {
             return element.PhaseDisplayName == params.newValue;
           });
           return true;
         },
         cellEditor: 'agPopupSelectCellEditor',
         cellEditorParams: {
-          values: this.phaseDtos.map(x => x.PhaseName)
+          values: this.phaseDtos.map(x => x.PhaseDisplayName)
         },
         sortable: true, 
         filter: true,
