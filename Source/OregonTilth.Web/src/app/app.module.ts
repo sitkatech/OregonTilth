@@ -53,6 +53,7 @@ import { TrainingComponent } from './pages/training/training.component';
 import { environment } from 'src/environments/environment';
 import { AppInsightsService } from './shared/services/app-insights.service';
 import { GlobalErrorHandlerService } from './shared/services/global-error-handler.service';
+import { DecimalEditor } from './shared/components/ag-grid/decimal-editor/decimal-editor.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -91,6 +92,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     FieldDefinitionListComponent,
     FieldDefinitionEditComponent,
     TrainingComponent,
+    DecimalEditor,
   ],
   imports: [
     AppRoutingModule,
@@ -103,7 +105,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     FormsModule,
     NgxChartsModule,
     BrowserAnimationsModule,
-    AgGridModule.withComponents([]),
+    AgGridModule.withComponents([DecimalEditor]),
     NgMultiSelectDropDownModule.forRoot(),
     MyDatePickerModule,
     CKEditorModule

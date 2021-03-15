@@ -17,14 +17,14 @@ import { TransplantProductionLaborActivityByCropDto } from 'src/app/shared/model
 import { TransplantProductionLaborActivityDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-dto';
 import { PhaseDto } from 'src/app/shared/models/generated/phase-dto';
 import { TransplantProductionLaborByCropCreateDto } from 'src/app/shared/models/forms/transplant-production-labor-by-crop/transplant-production-labor-by-crop-create-dto';
-
+import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 @Component({
   selector: 'transplant-production-labor-by-crop',
   templateUrl: './transplant-production-labor-by-crop.component.html',
   styleUrls: ['./transplant-production-labor-by-crop.component.scss']
 })
 export class TransplantProductionLaborByCropComponent implements OnInit {
-
+  
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
@@ -131,7 +131,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
           return params.value.TransplantProductionLaborActivityName;
         },
         valueSetter: params => {
-          params.data.FieldLaborActivity = this.transplantProductionLaborActivityDtos.find(element => {
+          params.data.TransplantProductionLaborActivity = this.transplantProductionLaborActivityDtos.find(element => {
             return element.TransplantProductionLaborActivityName == params.newValue;
           });
           return true;
@@ -173,9 +173,15 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         headerName: 'Occurrances', 
         field: 'Occurrances',
         editable: true,
-        cellEditor: 'agTextCellEditor',
+        cellEditorFramework: DecimalEditor,
         sortable: true, 
         filter: true,
+        cellStyle: params => {
+          if (params.value) {
+              return { backgroundColor: '#ccf5cc'};
+          } 
+          return {backgroundColor: '#ffdfd6'};
+        }
       },
       {
         headerName: 'Delete', valueGetter: function (params: any) {
