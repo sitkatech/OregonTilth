@@ -11,6 +11,7 @@ import { ColDef } from 'ag-grid-community';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { RoleDto } from 'src/app/shared/models/generated/role-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { GridService } from 'src/app/shared/services/grid/grid.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
@@ -33,6 +34,7 @@ export class FieldInputCostsComponent implements OnInit {
     private workbookService: WorkbookService,
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
+    private gridService: GridService,
     private router: Router,
     private route: ActivatedRoute) { }
 
@@ -114,7 +116,7 @@ export class FieldInputCostsComponent implements OnInit {
         field: 'CostPerFieldUnit',
         editable: true,
         cellEditor: 'agTextCellEditor',
-        //valueFormatter: this.currencyFormatter
+        valueFormatter: this.gridService.currencyFormatter
       },
       {
         headerName: 'Notes', 

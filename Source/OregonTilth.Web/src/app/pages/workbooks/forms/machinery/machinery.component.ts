@@ -19,6 +19,7 @@ import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-table
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { MachineryCreateDto } from 'src/app/shared/models/forms/machinery/machinery-create-dto';
+import { GridService } from 'src/app/shared/services/grid/grid.service';
 
 @Component({
   selector: 'machinery',
@@ -32,6 +33,7 @@ export class MachineryComponent implements OnInit {
     private workbookService: WorkbookService,
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
+    private gridService: GridService,
     private router: Router,
     private route: ActivatedRoute) { }
 
@@ -86,7 +88,7 @@ export class MachineryComponent implements OnInit {
         field: 'StandardMachineryCost',
         editable: true,
         cellEditor: 'agPopupTextCellEditor',
-        valueFormatter: this.currencyFormatter
+        valueFormatter: this.gridService.currencyFormatter
       },
       {
         headerName: 'Delete', field: 'MachineryID', valueGetter: function (params: any) {
@@ -104,14 +106,7 @@ export class MachineryComponent implements OnInit {
     ]
   }
 
-  currencyFormatter(params) {
-    return '$' + params.value;
-  }
-  formatNumber(number) {
-    return Math.floor(number)
-      .toString()
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-  }
+  
 
   deleteMachinery(machineryID: number) {
     this.deleteMachineryRequest = this.workbookService.deleteMachinery(this.workbookID, machineryID).subscribe(machineryDtos => {

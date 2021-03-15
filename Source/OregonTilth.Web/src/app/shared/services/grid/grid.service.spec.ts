@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ApiService } from './api.service';
+import { GridService } from './grid.service';
 
 describe('GridService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: ApiService = TestBed.get(ApiService);
+    const service: GridService = TestBed.get(GridService);
     expect(service).toBeTruthy();
   });
 });
