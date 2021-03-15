@@ -18,21 +18,7 @@ namespace OregonTilth.EFModels.Entities
         {
             var result = new List<ErrorMessage>();
 
-            var userTransplantProductionLaborActivityByCropsForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionLaborByCropCreateDto.WorkbookID).ToList();
-
-            // unique per workbook, crop, activity, labor type
-            if (userTransplantProductionLaborActivityByCropsForWorkbook.Any(x => x.Workbook.WorkbookID == transplantProductionLaborByCropCreateDto.WorkbookID
-                                                          && x.Crop.CropID == transplantProductionLaborByCropCreateDto.CropID
-                                                          && x.TransplantProductionLaborActivity.TransplantProductionLaborActivityID == transplantProductionLaborByCropCreateDto.TransplantProductionLaborActivityID
-                                                          && x.Phase.PhaseID == transplantProductionLaborByCropCreateDto.PhaseID))
-            {
-                result.Add(new ErrorMessage() { Type = "TP Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, Field Labor Activity, and Labor Type." });
-            }
-
-            if (Math.Round(transplantProductionLaborByCropCreateDto.Occurrances, 4) <= 0)
-            {
-                result.Add(new ErrorMessage() { Type = "Occurrances", Message = "Occurrances cannot be less than zero." });
-            }
+            // very loose (non-existent even) validation here. It's mostly handled on the create event to create n number of rows based on what they are etering in bulk
 
             return result;
         }
@@ -51,7 +37,8 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "TP Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, Field Labor Activity, and Labor Type." });
             }
 
-            if (Math.Round(transplantProductionLaborActivityByCropDto.Occurrances, 4) <= 0)
+            if (transplantProductionLaborActivityByCropDto.Occurrances != null 
+                && Math.Round((decimal) transplantProductionLaborActivityByCropDto.Occurrances, 4) <= 0)
             {
                 result.Add(new ErrorMessage() { Type = "Occurrances", Message = "Occurrances must be greater than 0." });
             }
@@ -87,20 +74,35 @@ namespace OregonTilth.EFModels.Entities
             return fieldLaborByCrop?.AsSummaryDto();
         }
 
-        public static IQueryable<TransplantProductionLaborActivityByCropSummaryDto> CreateNew(OregonTilthDbContext dbContext, TransplantProductionLaborActivityByCropCreateDto transplantProductionLaborByCropCreateDto)
+        public static IQueryable<TransplantProductionLaborActivityByCropSummaryDto> CreateBulk(OregonTilthDbContext dbContext, TransplantProductionLaborActivityByCropCreateDto transplantProductionLaborByCropCreateDto)
         {
-            var fieldLaborByCrop = new TransplantProductionLaborActivityByCrop
-            {
-                WorkbookID = transplantProductionLaborByCropCreateDto.WorkbookID,
-                CropID = transplantProductionLaborByCropCreateDto.CropID,
-                TransplantProductionLaborActivityID = transplantProductionLaborByCropCreateDto.TransplantProductionLaborActivityID,
-                PhaseID = transplantProductionLaborByCropCreateDto.PhaseID,
-                Occurrances = transplantProductionLaborByCropCreateDto.Occurrances
-            };
 
-            dbContext.TransplantProductionLaborActivityByCrops.Add(fieldLaborByCrop);
+            // we need to check for existing records and only add the ones that do not exist
+            var currentTpLaborByCrops = dbContext.TransplantProductionLaborActivityByCrops
+                .Where(x => x.WorkbookID == transplantProductionLaborByCropCreateDto.WorkbookID)
+                .Include(x => x.TransplantProductionLaborActivity)
+                .AsNoTracking();
+
+            foreach (var transplantProductionLaborActivityDto in transplantProductionLaborByCropCreateDto.TransplantProductionLaborActivities)
+            {
+                if (!currentTpLaborByCrops.Any(x =>
+                    x.TransplantProductionLaborActivityID ==
+                    transplantProductionLaborActivityDto.TransplantProductionLaborActivityID
+                    && x.CropID == transplantProductionLaborByCropCreateDto.CropID
+                    && x.PhaseID == transplantProductionLaborByCropCreateDto.PhaseID))
+                {
+                    var tpLaborByCrop = new TransplantProductionLaborActivityByCrop
+                    {
+                        WorkbookID = transplantProductionLaborByCropCreateDto.WorkbookID,
+                        CropID = transplantProductionLaborByCropCreateDto.CropID,
+                        TransplantProductionLaborActivityID = transplantProductionLaborActivityDto.TransplantProductionLaborActivityID,
+                        PhaseID = transplantProductionLaborByCropCreateDto.PhaseID,
+                    };
+                    dbContext.TransplantProductionLaborActivityByCrops.Add(tpLaborByCrop);
+                }
+            }
+            
             dbContext.SaveChanges();
-            dbContext.Entry(fieldLaborByCrop).Reload();
 
             return GetDtoListByWorkbookID(dbContext, transplantProductionLaborByCropCreateDto.WorkbookID);
         }

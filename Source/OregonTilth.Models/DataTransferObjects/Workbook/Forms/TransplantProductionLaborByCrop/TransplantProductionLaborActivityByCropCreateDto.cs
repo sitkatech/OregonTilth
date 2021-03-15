@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace OregonTilth.Models.DataTransferObjects
 {
@@ -6,8 +7,7 @@ namespace OregonTilth.Models.DataTransferObjects
     {
         [Required] public int WorkbookID { get; set; }
         [Required] public int CropID { get; set; }
-        [Required] public int TransplantProductionLaborActivityID { get; set; }
+        [Required] public List<TransplantProductionLaborActivityDto> TransplantProductionLaborActivities { get; set; }
         [Required] public int PhaseID { get; set; }
-        [Required] public decimal Occurrances { get; set; }
     }
 }

@@ -557,7 +557,7 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var transplantProductionLaborByCropDtos = TransplantProductionLaborActivityByCrop.CreateNew(_dbContext, transplantProductionLaborByCropCreateDto);
+            var transplantProductionLaborByCropDtos = TransplantProductionLaborActivityByCrop.CreateBulk(_dbContext, transplantProductionLaborByCropCreateDto);
             return Ok(transplantProductionLaborByCropDtos);
         }
 
