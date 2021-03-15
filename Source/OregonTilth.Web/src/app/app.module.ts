@@ -40,6 +40,7 @@ import { FieldLaborActivitiesComponent } from './pages/workbooks/forms/field-lab
 import { TransplantProductionLaborActivitiesComponent } from './pages/workbooks/forms/transplant-production-labor-activities/transplant-production-labor-activities.component';
 import { MachineryComponent } from './pages/workbooks/forms/machinery/machinery.component';
 import { FieldLaborByCropComponent } from './pages/workbooks/forms/field-labor-by-crop/field-labor-by-crop.component';
+import { TransplantProductionLaborByCropComponent } from './pages/workbooks/forms/transplant-production-labor-by-crop/transplant-production-labor-by-crop.component';
 import { CropsComponent } from './pages/workbooks/forms/crops/crops.component';
 import { CropUnitsComponent } from './pages/workbooks/forms/crop-units/crop-units.component';
 import { FieldInputCostsComponent } from './pages/workbooks/forms/field-input-costs/field-input-costs.component';
@@ -83,6 +84,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     MachineryComponent,
     FieldInputCostsComponent,
     FieldLaborByCropComponent,
+    TransplantProductionLaborByCropComponent,
     CropsComponent,
     CropUnitsComponent,
     EditWorkbookComponent,

@@ -38,6 +38,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<TpOrDsType> TpOrDsTypes { get; set; }
         public virtual DbSet<TransplantProductionLaborActivity> TransplantProductionLaborActivities { get; set; }
+        public virtual DbSet<TransplantProductionLaborActivityByCrop> TransplantProductionLaborActivityByCrops { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Workbook> Workbooks { get; set; }
 
@@ -289,6 +290,29 @@ namespace OregonTilth.EFModels.Entities
 
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.TransplantProductionLaborActivities)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<TransplantProductionLaborActivityByCrop>(entity =>
+            {
+                entity.HasOne(d => d.Crop)
+                    .WithMany(p => p.TransplantProductionLaborActivityByCrops)
+                    .HasForeignKey(d => d.CropID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Phase)
+                    .WithMany(p => p.TransplantProductionLaborActivityByCrops)
+                    .HasForeignKey(d => d.PhaseID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.TransplantProductionLaborActivity)
+                    .WithMany(p => p.TransplantProductionLaborActivityByCrops)
+                    .HasForeignKey(d => d.TransplantProductionLaborActivityID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TransplantProductionLaborActivityByCrops)
                     .HasForeignKey(d => d.WorkbookID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
