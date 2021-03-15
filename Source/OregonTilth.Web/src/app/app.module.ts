@@ -19,7 +19,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { DecimalPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { LinkRendererComponent } from './shared/components/ag-grid/link-renderer/link-renderer.component';
 import { ButtonRendererComponent } from './shared/components/ag-grid/button-renderer/button-renderer.component';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { FormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -27,7 +27,6 @@ import { ComboSeriesVerticalComponent } from './shared/components/combo-chart/co
 import { FontAwesomeIconLinkRendererComponent } from './shared/components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { LoginCallbackComponent } from './pages/login-callback/login-callback.component';
 import { HelpComponent } from './pages/help/help.component';
-import { SelectDropDownModule } from 'ngx-select-dropdown'
 import { MyDatePickerModule } from 'mydatepicker';
 import { MultiLinkRendererComponent } from './shared/components/ag-grid/multi-link-renderer/multi-link-renderer.component';
 import { CreateUserCallbackComponent } from './pages/create-user-callback/create-user-callback.component';
@@ -105,7 +104,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     NgxChartsModule,
     BrowserAnimationsModule,
     AgGridModule.withComponents([]),
-    SelectDropDownModule,
+    NgMultiSelectDropDownModule.forRoot(),
     MyDatePickerModule,
     CKEditorModule
   ],  
