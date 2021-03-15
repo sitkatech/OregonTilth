@@ -2,9 +2,6 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
-import { UserService } from 'src/app/services/user/user.service';
-import { DatePipe, DecimalPipe } from '@angular/common';
 import { WorkbookService } from 'src/app/services/workbook/workbook.service';
 import { WorkbookDto } from 'src/app/shared/models/generated/workbook-dto';
 import { ColDef } from 'ag-grid-community';
@@ -12,14 +9,10 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-labor-activity-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
-import { FieldLaborByCropCreateDto } from 'src/app/shared/models/forms/field-labor-by-crop/field-labor-by-crop-create-dto';
-import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor-by-crop-dto';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
-import { LaborTypeDto } from 'src/app/shared/models/generated/labor-type-dto';
 import { TransplantProductionLaborActivityByCropDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-by-crop-dto';
 import { TransplantProductionLaborActivityDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-dto';
 import { PhaseDto } from 'src/app/shared/models/generated/phase-dto';
@@ -37,9 +30,9 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
     private workbookService: WorkbookService,
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
-    private router: Router,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
@@ -52,8 +45,6 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
 
   public getTransplantProductionLaborByCropsRequest: any;
   public transplantProductionLaborByCropDtos: TransplantProductionLaborActivityByCropDto[];
-
-  
 
   public cropDtos: CropDto[];
   private getCropDtosRequest: any;
@@ -122,6 +113,9 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
           });
           return true;
         },
+        valueGetter: params => {
+          return params.data.Crop.CropName;
+        },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.cropDtos.map(x => x.CropName)
@@ -141,6 +135,9 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
             return element.TransplantProductionLaborActivityName == params.newValue;
           });
           return true;
+        },
+        valueGetter: params => {
+          return params.data.TransplantProductionLaborActivity.TransplantProductionLaborActivityName;
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
@@ -162,6 +159,9 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
           });
           return true;
         },
+        valueGetter: params => {
+          return params.data.Phase.PhaseDisplayName;
+        },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.phaseDtos.map(x => x.PhaseDisplayName)
@@ -179,12 +179,12 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
       },
       {
         headerName: 'Delete', valueGetter: function (params: any) {
-          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.FieldLaborByCropID, ObjectDisplayName: null };
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.TransplantProductionLaborActivityByCropID, ObjectDisplayName: null };
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
             if(confirm(`Are you sure you want to delete this record?`)) {
-              componentScope.deleteFieldLaborByCrop(field.PrimaryKey)
+              componentScope.deleteTransplantProductionLaborByCrop(field.PrimaryKey)
             }
           }
           },
@@ -193,11 +193,12 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
     ]
   }
 
-  deleteFieldLaborByCrop(transplantProductionLaborByCropID: number) {
+  deleteTransplantProductionLaborByCrop(transplantProductionLaborByCropID: number) {
     this.deleteTransplantProductionLaborByCropRequest = this.workbookService.deleteTransplantProductionLaborByCrop(this.workbookID, transplantProductionLaborByCropID).subscribe(transplantProductionLaborByCropDtos => {
       this.transplantProductionLaborByCropDtos = transplantProductionLaborByCropDtos;
       this.alertService.pushAlert(new Alert("Successfully deleted Transplant Production Labor By Crop", AlertContext.Success));
       this.cdr.detectChanges();
+      this.gridApi.redrawRows();
     }, error => {
 
     })
@@ -215,6 +216,10 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
       this.cdr.detectChanges();
     })
 
+  }
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
   }
 
   ngOnDestroy() {
@@ -248,14 +253,19 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
     this.cdr.detach();
   }
 
-  onSubmit(fieldLaborActivityForm: HTMLFormElement): void {
+  onSubmit(transplantProductionLaborActivityForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
     this.addTransplantProductionLaborByCropRequest = this.workbookService.addTransplantProductionLaborByCrop(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
+      
       this.transplantProductionLaborByCropDtos = response;
-      this.alertService.pushAlert(new Alert("Successfully added Field Labor By Crop.", AlertContext.Success));
+      
+      
+      this.alertService.pushAlert(new Alert("Successfully added record(s).", AlertContext.Success));
       this.resetForm();
+
       this.cdr.detectChanges();
+      this.gridApi.redrawRows();
       
     }, error => { 
       this.isLoadingSubmit = false;
@@ -268,4 +278,3 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
   }
 
 }
-
