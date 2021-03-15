@@ -68,6 +68,8 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
   private deleteTransplantProductionLaborByCropRequest: any;
 
   public columnDefs: ColDef[];
+
+  public dropdownSettings = {};
  
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -91,6 +93,16 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
           this.cdr.markForCheck();
       });
 
+      this.dropdownSettings = {
+        singleSelection: false,
+        idField: 'TransplantProductionLaborActivityID',
+        textField: 'TransplantProductionLaborActivityName',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 10,
+        allowSearchFilter: true
+      };
+
     });
   }
 
@@ -110,7 +122,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
           });
           return true;
         },
-        cellEditor: 'agPopupSelectCellEditor',
+        cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.cropDtos.map(x => x.CropName)
         },
@@ -130,7 +142,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
           });
           return true;
         },
-        cellEditor: 'agPopupSelectCellEditor',
+        cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.transplantProductionLaborActivityDtos.map(x => x.TransplantProductionLaborActivityName)
         },
@@ -150,7 +162,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
           });
           return true;
         },
-        cellEditor: 'agPopupSelectCellEditor',
+        cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.phaseDtos.map(x => x.PhaseDisplayName)
         },
