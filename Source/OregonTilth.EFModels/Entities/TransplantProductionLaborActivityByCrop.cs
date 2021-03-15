@@ -34,7 +34,7 @@ namespace OregonTilth.EFModels.Entities
                                                           && x.Phase.PhaseID == transplantProductionLaborActivityByCropDto.Phase.PhaseID
                                                           && x.TransplantProductionLaborActivityByCropID != transplantProductionLaborActivityByCropDto.TransplantProductionLaborActivityByCropID))
             {
-                result.Add(new ErrorMessage() { Type = "TP Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, Field Labor Activity, and Labor Type." });
+                result.Add(new ErrorMessage() { Type = "TP Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, TP Labor Activity, and Labor Type." });
             }
 
             if (transplantProductionLaborActivityByCropDto.Occurrances != null 
