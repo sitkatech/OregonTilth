@@ -20,6 +20,10 @@ import { FieldLaborByCropCreateDto } from 'src/app/shared/models/forms/field-lab
 import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor-by-crop-dto';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { LaborTypeDto } from 'src/app/shared/models/generated/labor-type-dto';
+import { TransplantProductionLaborActivityByCropDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-by-crop-dto';
+import { TransplantProductionLaborActivityDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-dto';
+import { PhaseDto } from 'src/app/shared/models/generated/phase-dto';
+import { TransplantProductionLaborByCropCreateDto } from 'src/app/shared/models/forms/transplant-production-labor-by-crop/transplant-production-labor-by-crop-create-dto';
 
 @Component({
   selector: 'transplant-production-labor-by-crop',
@@ -43,25 +47,25 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
-  private addFieldLaborByCropRequest: any;
-  public model: FieldLaborByCropCreateDto;
+  private addTransplantProductionLaborByCropRequest: any;
+  public model: TransplantProductionLaborByCropCreateDto;
 
-  public getFieldLaborByCropsRequest: any;
-  public fieldLaborByCropDtos: FieldLaborByCropDto[];
+  public getTransplantProductionLaborByCropsRequest: any;
+  public transplantProductionLaborByCropDtos: TransplantProductionLaborActivityByCropDto[];
 
   
 
   public cropDtos: CropDto[];
   private getCropDtosRequest: any;
 
-  public fieldLaborActivityDtos: FieldLaborActivityDto[];
-  private getFieldLaborActivityDtosRequest: any;
+  public transplantProductionLaborActivityDtos: TransplantProductionLaborActivityDto[];
+  private getTransplantProductionLaborActivityDtosRequest: any;
 
-  public laborTypeDtos: LaborTypeDto[];
-  private getLaborTypeDtosRequest: any;
+  public phaseDtos: PhaseDto[];
+  private getPhaseDtosRequest: any;
 
-  private updateFieldLaborByCropRequest: any;
-  private deleteFieldLaborByCropRequest: any;
+  private updateTransplantProductionLaborByCropRequest: any;
+  private deleteTransplantProductionLaborByCropRequest: any;
 
   public columnDefs: ColDef[];
  
@@ -69,20 +73,20 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      this.model = new FieldLaborByCropCreateDto({WorkbookID: this.workbookID});
+      this.model = new TransplantProductionLaborByCropCreateDto({WorkbookID: this.workbookID});
       
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
       this.getCropDtosRequest = this.workbookService.getCrops(this.workbookID);
-      this.getFieldLaborActivityDtosRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
-      this.getLaborTypeDtosRequest = this.lookupTablesService.getLaborTypes();
-      this.getFieldLaborByCropsRequest = this.workbookService.getFieldLaborByCrops(this.workbookID);
+      this.getTransplantProductionLaborActivityDtosRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
+      this.getPhaseDtosRequest = this.lookupTablesService.getPhases();
+      this.getTransplantProductionLaborByCropsRequest = this.workbookService.getFieldLaborByCrops(this.workbookID);
 
-      forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldLaborActivityDtosRequest, this.getLaborTypeDtosRequest, this.getFieldLaborByCropsRequest]).subscribe(([workbookDto, cropDtos, fieldLaborActivityDtos, laborTypeDtos, fieldLaborByCrops]: [WorkbookDto, CropDto[], FieldLaborActivityDto[], LaborTypeDto[], FieldLaborByCropDto[]] ) => {
+      forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getTransplantProductionLaborActivityDtosRequest, this.getPhaseDtosRequest, this.getTransplantProductionLaborByCropsRequest]).subscribe(([workbookDto, cropDtos, transplantProductionLaborActivityDtos, phaseDtos, transplantProductionLaborByCrops]: [WorkbookDto, CropDto[], TransplantProductionLaborActivityDto[], PhaseDto[], TransplantProductionLaborActivityByCropDto[]] ) => {
           this.workbook = workbookDto;
           this.cropDtos = cropDtos;
-          this.fieldLaborActivityDtos = fieldLaborActivityDtos;
-          this.laborTypeDtos = laborTypeDtos;
-          this.fieldLaborByCropDtos = fieldLaborByCrops;
+          this.transplantProductionLaborActivityDtos = transplantProductionLaborActivityDtos;
+          this.phaseDtos = phaseDtos;
+          this.transplantProductionLaborByCropDtos = transplantProductionLaborByCrops;
           this.defineColumnDefs();
           this.cdr.markForCheck();
       });
@@ -114,41 +118,41 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         filter: true,
       },
       {
-        headerName: 'Field Labor Activity', 
-        field: 'FieldLaborActivity',
+        headerName: 'TP Labor Activity', 
+        field: 'TransplantProductionLaborActivity',
         editable: true,
         valueFormatter: function (params) {
           return params.value.FieldLaborActivityName;
         },
         valueSetter: params => {
-          params.data.FieldLaborActivity = this.fieldLaborActivityDtos.find(element => {
-            return element.FieldLaborActivityName == params.newValue;
+          params.data.FieldLaborActivity = this.transplantProductionLaborActivityDtos.find(element => {
+            return element.TransplantProductionLaborActivityName == params.newValue;
           });
           return true;
         },
         cellEditor: 'agPopupSelectCellEditor',
         cellEditorParams: {
-          values: this.fieldLaborActivityDtos.map(x => x.FieldLaborActivityName)
+          values: this.transplantProductionLaborActivityDtos.map(x => x.TransplantProductionLaborActivityName)
         },
         sortable: true, 
         filter: true,
       },
       {
-        headerName: 'Labor Type', 
-        field: 'LaborType',
+        headerName: 'Phase', 
+        field: 'Phase',
         editable: true,
         valueFormatter: function (params) {
           return params.value.LaborTypeName;
         },
         valueSetter: params => {
-          params.data.LaborType = this.laborTypeDtos.find(element => {
-            return element.LaborTypeDisplayName == params.newValue;
+          params.data.LaborType = this.phaseDtos.find(element => {
+            return element.PhaseDisplayName == params.newValue;
           });
           return true;
         },
         cellEditor: 'agPopupSelectCellEditor',
         cellEditorParams: {
-          values: this.laborTypeDtos.map(x => x.LaborTypeName)
+          values: this.phaseDtos.map(x => x.PhaseName)
         },
         sortable: true, 
         filter: true,
@@ -158,9 +162,6 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         field: 'Occurrances',
         editable: true,
         cellEditor: 'agTextCellEditor',
-        cellEditorParams: {
-          values: this.laborTypeDtos.map(x => x.LaborTypeName)
-        },
         sortable: true, 
         filter: true,
       },
@@ -180,10 +181,10 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
     ]
   }
 
-  deleteFieldLaborByCrop(fieldLaborByCropID: number) {
-    this.deleteFieldLaborByCropRequest = this.workbookService.deleteFieldLaborByCrop(this.workbookID, fieldLaborByCropID).subscribe(fieldLaborByCropDtos => {
-      this.fieldLaborByCropDtos = fieldLaborByCropDtos;
-      this.alertService.pushAlert(new Alert("Successfully deleted Field Labor By Crop", AlertContext.Success));
+  deleteFieldLaborByCrop(transplantProductionLaborByCropID: number) {
+    this.deleteTransplantProductionLaborByCropRequest = this.workbookService.deleteTransplantProductionLaborByCrop(this.workbookID, transplantProductionLaborByCropID).subscribe(transplantProductionLaborByCropDtos => {
+      this.transplantProductionLaborByCropDtos = transplantProductionLaborByCropDtos;
+      this.alertService.pushAlert(new Alert("Successfully deleted Transplant Production Labor By Crop", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
 
@@ -193,10 +194,10 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
 
-    this.updateFieldLaborByCropRequest = this.workbookService.updateFieldLaborByCrop(dtoToPost).subscribe(fieldLaborByCrop => {
-      data.node.setData(fieldLaborByCrop);
+    this.updateTransplantProductionLaborByCropRequest = this.workbookService.updateTransplantProductionLaborByCrop(dtoToPost).subscribe(transplantProductionLaborByCrop => {
+      data.node.setData(transplantProductionLaborByCrop);
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Field Labor By Crop", AlertContext.Success));
+      this.alertService.pushAlert(new Alert("Successfully updated Transplant Production Labor By Crop", AlertContext.Success));
     }, error => {
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
@@ -209,26 +210,26 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
-    if (this.addFieldLaborByCropRequest && this.addFieldLaborByCropRequest.unsubscribe) {
-      this.addFieldLaborByCropRequest.unsubscribe();
+    if (this.addTransplantProductionLaborByCropRequest && this.addTransplantProductionLaborByCropRequest.unsubscribe) {
+      this.addTransplantProductionLaborByCropRequest.unsubscribe();
     }
-    if (this.getFieldLaborByCropsRequest && this.getFieldLaborByCropsRequest.unsubscribe) {
-      this.getFieldLaborByCropsRequest.unsubscribe();
+    if (this.getTransplantProductionLaborByCropsRequest && this.getTransplantProductionLaborByCropsRequest.unsubscribe) {
+      this.getTransplantProductionLaborByCropsRequest.unsubscribe();
     }
-    if (this.updateFieldLaborByCropRequest && this.updateFieldLaborByCropRequest.unsubscribe) {
-      this.updateFieldLaborByCropRequest.unsubscribe();
+    if (this.updateTransplantProductionLaborByCropRequest && this.updateTransplantProductionLaborByCropRequest.unsubscribe) {
+      this.updateTransplantProductionLaborByCropRequest.unsubscribe();
     }
-    if (this.deleteFieldLaborByCropRequest && this.deleteFieldLaborByCropRequest.unsubscribe) {
-      this.deleteFieldLaborByCropRequest.unsubscribe();
+    if (this.deleteTransplantProductionLaborByCropRequest && this.deleteTransplantProductionLaborByCropRequest.unsubscribe) {
+      this.deleteTransplantProductionLaborByCropRequest.unsubscribe();
     }
     if (this.getCropDtosRequest && this.getCropDtosRequest.unsubscribe) {
       this.getCropDtosRequest.unsubscribe();
     }
-    if (this.getFieldLaborActivityDtosRequest && this.getFieldLaborActivityDtosRequest.unsubscribe) {
-      this.getFieldLaborActivityDtosRequest.unsubscribe();
+    if (this.getTransplantProductionLaborActivityDtosRequest && this.getTransplantProductionLaborActivityDtosRequest.unsubscribe) {
+      this.getTransplantProductionLaborActivityDtosRequest.unsubscribe();
     }
-    if (this.getLaborTypeDtosRequest && this.getLaborTypeDtosRequest.unsubscribe) {
-      this.getLaborTypeDtosRequest.unsubscribe();
+    if (this.getPhaseDtosRequest && this.getPhaseDtosRequest.unsubscribe) {
+      this.getPhaseDtosRequest.unsubscribe();
     }
 
     this.authenticationService.dispose();
@@ -237,9 +238,9 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
 
   onSubmit(fieldLaborActivityForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-    this.addFieldLaborByCropRequest = this.workbookService.addFieldLaborByCrop(this.model).subscribe(response => {
+    this.addTransplantProductionLaborByCropRequest = this.workbookService.addTransplantProductionLaborByCrop(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.fieldLaborByCropDtos = response;
+      this.transplantProductionLaborByCropDtos = response;
       this.alertService.pushAlert(new Alert("Successfully added Field Labor By Crop.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
@@ -251,7 +252,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
   }
 
   resetForm() {
-    this.model = new FieldLaborByCropCreateDto({WorkbookID: this.workbookID});
+    this.model = new TransplantProductionLaborByCropCreateDto({WorkbookID: this.workbookID});
   }
 
 }

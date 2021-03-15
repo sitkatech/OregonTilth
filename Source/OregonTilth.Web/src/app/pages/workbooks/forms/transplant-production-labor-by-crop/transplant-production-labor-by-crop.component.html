@@ -24,7 +24,7 @@
             Add new TP Labor By Crop
           </div>
           <div class="card-body">
-            <form *ngIf=(model) (ngSubmit)="onSubmit(fieldLaborActivityForm)" #fieldLaborActivityForm="ngForm">
+            <form *ngIf=(model) (ngSubmit)="onSubmit(transplantProductionLaborActivityForm)" #transplantProductionLaborActivityForm="ngForm">
               <div class="row">
                 
                 <div class="form-group col-md-3">
@@ -37,20 +37,20 @@
                   </select>
                 </div>
                 <div class="form-group col-md-3">
-                  <label class="required">Field Labor Activity</label>
-                  <select name="FieldLaborActivityID" class="form-control" [(ngModel)]="model.FieldLaborActivityID" required>
+                  <label class="required">TP Labor Activity</label>
+                  <select name="FieldLaborActivityID" class="form-control" [(ngModel)]="model.TransplantProductionLaborActivityID" required>
                     <option value=""></option>
-                    <option *ngFor="let option of fieldLaborActivityDtos" [value]="option.FieldLaborActivityID">
-                      {{option.FieldLaborActivityName}}
+                    <option *ngFor="let option of transplantProductionLaborActivityDtos" [value]="option.TransplantProductionLaborActivityID">
+                      {{option.TransplantProductionLaborActivityName}}
                     </option>
                   </select>
                 </div>
                 <div class="form-group col-md-3">
-                  <label class="required">Labor Type</label>
-                  <select name="LaborTypeID" class="form-control" [(ngModel)]="model.LaborTypeID" required>
+                  <label class="required">Phase</label>
+                  <select name="LaborTypeID" class="form-control" [(ngModel)]="model.PhaseID" required>
                     <option value=""></option>
-                    <option *ngFor="let option of laborTypeDtos" [value]="option.LaborTypeID">
-                      {{option.LaborTypeDisplayName}}
+                    <option *ngFor="let option of phaseDtos" [value]="option.PhaseID">
+                      {{option.PhaseDisplayName}}
                     </option>
                   </select>
                 </div>
@@ -66,7 +66,7 @@
                   <i class="fas fa-bolt"></i> Required field
                 </div>
                 <div class="col-sm text-right">
-                  <button type="submit" class="btn btn-fresca" [disabled]="!fieldLaborActivityForm.form.valid || isLoadingSubmit">
+                  <button type="submit" class="btn btn-fresca" [disabled]="!transplantProductionLaborActivityForm.form.valid || isLoadingSubmit">
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                     Submit
                   </button>
@@ -81,7 +81,7 @@
         
         <div class="row mt-4">
           <div class="col">
-            <ag-grid-angular #fieldLaborByCropGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="fieldLaborByCropDtos"
+            <ag-grid-angular #fieldLaborByCropGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="transplantProductionLaborByCropDtos"
               [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (cellValueChanged)="onCellValueChanged($event)">
             </ag-grid-angular>
           </div>
