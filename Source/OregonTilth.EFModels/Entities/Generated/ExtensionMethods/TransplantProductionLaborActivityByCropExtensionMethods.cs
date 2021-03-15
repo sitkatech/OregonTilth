@@ -17,7 +17,7 @@ namespace OregonTilth.EFModels.Entities
                 Workbook = transplantProductionLaborActivityByCrop.Workbook.AsDto(),
                 Crop = transplantProductionLaborActivityByCrop.Crop.AsDto(),
                 TransplantProductionLaborActivity = transplantProductionLaborActivityByCrop.TransplantProductionLaborActivity.AsDto(),
-                Phase = transplantProductionLaborActivityByCrop.Phase.AsDto(),
+                Phase = transplantProductionLaborActivityByCrop.Phase?.AsDto(),
                 Occurrances = transplantProductionLaborActivityByCrop.Occurrances
             };
             DoCustomMappings(transplantProductionLaborActivityByCrop, transplantProductionLaborActivityByCropDto);

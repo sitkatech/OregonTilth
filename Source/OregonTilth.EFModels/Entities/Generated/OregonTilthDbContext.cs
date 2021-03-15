@@ -301,11 +301,6 @@ namespace OregonTilth.EFModels.Entities
                     .HasForeignKey(d => d.CropID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Phase)
-                    .WithMany(p => p.TransplantProductionLaborActivityByCrops)
-                    .HasForeignKey(d => d.PhaseID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
                 entity.HasOne(d => d.TransplantProductionLaborActivity)
                     .WithMany(p => p.TransplantProductionLaborActivityByCrops)
                     .HasForeignKey(d => d.TransplantProductionLaborActivityID)

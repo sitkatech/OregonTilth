@@ -7,8 +7,8 @@ CREATE TABLE [dbo].[TransplantProductionLaborActivityByCrop](
 	[WorkbookID] [int] NOT NULL,
 	[CropID] [int] NOT NULL,
 	[TransplantProductionLaborActivityID] [int] NOT NULL,
-	[PhaseID] [int] NOT NULL,
-	[Occurrances] [decimal](18, 4) NOT NULL,
+	[PhaseID] [int] NULL,
+	[Occurrances] [decimal](18, 4) NULL,
  CONSTRAINT [PK_TransplantProductionLaborActivityByCrop_TransplantProductionLaborActivityByCropID] PRIMARY KEY CLUSTERED 
 (
 	[TransplantProductionLaborActivityByCropID] ASC
@@ -43,6 +43,6 @@ REFERENCES [dbo].[Workbook] ([WorkbookID])
 GO
 ALTER TABLE [dbo].[TransplantProductionLaborActivityByCrop] CHECK CONSTRAINT [FK_TransplantProductionLaborActivityByCrop_Workbook_WorkbookID]
 GO
-ALTER TABLE [dbo].[TransplantProductionLaborActivityByCrop]  WITH CHECK ADD  CONSTRAINT [CK_TransplantProductionLaborActivityByCrop_Occurrances_Greater_Than_Zero] CHECK  (([Occurrances]>(0)))
+ALTER TABLE [dbo].[TransplantProductionLaborActivityByCrop]  WITH CHECK ADD  CONSTRAINT [CK_TransplantProductionLaborActivityByCrop_Occurrances_Greater_Than_Zero] CHECK  (([Occurrances]>(0) OR [Occurrances] IS NULL))
 GO
 ALTER TABLE [dbo].[TransplantProductionLaborActivityByCrop] CHECK CONSTRAINT [CK_TransplantProductionLaborActivityByCrop_Occurrances_Greater_Than_Zero]
