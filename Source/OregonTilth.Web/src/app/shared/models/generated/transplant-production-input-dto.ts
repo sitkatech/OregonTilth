@@ -1,17 +1,13 @@
 //  IMPORTANT:
 //  This file is generated. Your changes will be lost.
 //  Use the corresponding partial class for customizations.
-//  Source Table: [dbo].[FieldInputByCost]
+//  Source Table: [dbo].[TransplantProductionInput]
 import { WorkbookDto } from './workbook-dto'
-import { FieldUnitTypeDto } from './field-unit-type-dto'
 
-export class FieldInputByCostDto {
-	FieldInputByCostID : number
+export class TransplantProductionInputDto {
+	TransplantProductionInputID : number
 	Workbook : WorkbookDto
-	FieldUnitType : FieldUnitTypeDto
-	FieldInputByCostName : string
-	CostPerFieldUnit : number
-	Notes : string
+	TransplantProductionInputName : string
 
     constructor(obj?: any) {
         Object.assign(this, obj);

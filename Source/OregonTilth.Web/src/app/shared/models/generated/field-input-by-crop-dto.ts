@@ -4,13 +4,13 @@
 //  Source Table: [dbo].[FieldInputByCrop]
 import { WorkbookDto } from './workbook-dto'
 import { CropDto } from './crop-dto'
-import { FieldInputByCostDto } from './field-input-by-cost-dto'
+import { FieldInputCostDto } from './field-input-cost-dto'
 
 export class FieldInputByCropDto {
 	FieldInputByCropID : number
 	Workbook : WorkbookDto
 	Crop : CropDto
-	FieldInputByCost : FieldInputByCostDto
+	FieldInputByCost : FieldInputCostDto
 	Occurances : number
 
     constructor(obj?: any) {

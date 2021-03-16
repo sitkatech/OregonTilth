@@ -24,8 +24,8 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<DatabaseMigration> DatabaseMigrations { get; set; }
         public virtual DbSet<FieldDefinition> FieldDefinitions { get; set; }
         public virtual DbSet<FieldDefinitionType> FieldDefinitionTypes { get; set; }
-        public virtual DbSet<FieldInputByCost> FieldInputByCosts { get; set; }
         public virtual DbSet<FieldInputByCrop> FieldInputByCrops { get; set; }
+        public virtual DbSet<FieldInputCost> FieldInputCosts { get; set; }
         public virtual DbSet<FieldLaborActivity> FieldLaborActivities { get; set; }
         public virtual DbSet<FieldLaborActivityCategory> FieldLaborActivityCategories { get; set; }
         public virtual DbSet<FieldLaborByCrop> FieldLaborByCrops { get; set; }
@@ -38,8 +38,10 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<Phase> Phases { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<TpOrDsType> TpOrDsTypes { get; set; }
+        public virtual DbSet<TransplantProductionInput> TransplantProductionInputs { get; set; }
         public virtual DbSet<TransplantProductionLaborActivity> TransplantProductionLaborActivities { get; set; }
         public virtual DbSet<TransplantProductionLaborActivityByCrop> TransplantProductionLaborActivityByCrops { get; set; }
+        public virtual DbSet<TransplantProductionTrayType> TransplantProductionTrayTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Workbook> Workbooks { get; set; }
 
@@ -122,23 +124,6 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.FieldDefinitionTypeName).IsUnicode(false);
             });
 
-            modelBuilder.Entity<FieldInputByCost>(entity =>
-            {
-                entity.Property(e => e.FieldInputByCostName).IsUnicode(false);
-
-                entity.Property(e => e.Notes).IsUnicode(false);
-
-                entity.HasOne(d => d.FieldUnitType)
-                    .WithMany(p => p.FieldInputByCosts)
-                    .HasForeignKey(d => d.FieldUnitTypeID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
-                entity.HasOne(d => d.Workbook)
-                    .WithMany(p => p.FieldInputByCosts)
-                    .HasForeignKey(d => d.WorkbookID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-            });
-
             modelBuilder.Entity<FieldInputByCrop>(entity =>
             {
                 entity.HasOne(d => d.Crop)
@@ -149,10 +134,28 @@ namespace OregonTilth.EFModels.Entities
                 entity.HasOne(d => d.FieldInputByCost)
                     .WithMany(p => p.FieldInputByCrops)
                     .HasForeignKey(d => d.FieldInputByCostID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FieldInputByCrop_FieldInputCost_FieldInputCostID");
 
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.FieldInputByCrops)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<FieldInputCost>(entity =>
+            {
+                entity.Property(e => e.FieldInputCostName).IsUnicode(false);
+
+                entity.Property(e => e.Notes).IsUnicode(false);
+
+                entity.HasOne(d => d.FieldUnitType)
+                    .WithMany(p => p.FieldInputCosts)
+                    .HasForeignKey(d => d.FieldUnitTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.FieldInputCosts)
                     .HasForeignKey(d => d.WorkbookID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
@@ -303,6 +306,16 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.TpOrDsTypeName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<TransplantProductionInput>(entity =>
+            {
+                entity.Property(e => e.TransplantProductionInputName).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TransplantProductionInputs)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
             modelBuilder.Entity<TransplantProductionLaborActivity>(entity =>
             {
                 entity.Property(e => e.TransplantProductionLaborActivityName).IsUnicode(false);
@@ -327,6 +340,16 @@ namespace OregonTilth.EFModels.Entities
 
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.TransplantProductionLaborActivityByCrops)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<TransplantProductionTrayType>(entity =>
+            {
+                entity.Property(e => e.TransplantProductionTrayTypeName).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TransplantProductionTrayTypes)
                     .HasForeignKey(d => d.WorkbookID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });

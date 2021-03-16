@@ -422,47 +422,47 @@ namespace OregonTilth.API.Controllers
         #region "Field Input Costs Form"
         [HttpPost("workbooks/forms/field-input-costs")]
         [LoggedInUnclassifiedFeature]
-        public ActionResult<IEnumerable<FieldInputByCostDto>> CreateFieldInputByCost([FromBody] FieldInputByCostCreateDto fieldInputByCostCreateDto)
+        public ActionResult<IEnumerable<FieldInputCostDto>> CreateFieldInputCost([FromBody] FieldInputCostCreateDto fieldInputByCostCreateDto)
         {
-            var validationMessages = FieldInputByCost.ValidateCreate(_dbContext, fieldInputByCostCreateDto);
+            var validationMessages = FieldInputCost.ValidateCreate(_dbContext, fieldInputByCostCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var fieldInputByCostDtos = FieldInputByCost.CreateNewFieldInputByCost(_dbContext, fieldInputByCostCreateDto);
+            var fieldInputByCostDtos = FieldInputCost.CreateNewFieldInputCost(_dbContext, fieldInputByCostCreateDto);
             return Ok(fieldInputByCostDtos);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/field-input-costs")]
         [LoggedInUnclassifiedFeature]
-        public ActionResult<IEnumerable<FieldInputByCostDto>> GetFieldInputByCosts([FromRoute] int workbookID)
+        public ActionResult<IEnumerable<FieldInputCostDto>> GetFieldInputCosts([FromRoute] int workbookID)
         {
-            var fieldInputByCosts = FieldInputByCost.GetDtoListByWorkbookID(_dbContext, workbookID);
+            var fieldInputByCosts = FieldInputCost.GetDtoListByWorkbookID(_dbContext, workbookID);
             return Ok(fieldInputByCosts);
         }
 
         [HttpPut("workbooks/forms/field-input-costs")]
         [LoggedInUnclassifiedFeature]
-        public ActionResult<FieldInputByCostDto> UpdateFieldInputByCost([FromBody] FieldInputByCostDto fieldInputByCostDto)
+        public ActionResult<FieldInputCostDto> UpdateFieldInputCost([FromBody] FieldInputCostDto fieldInputByCostDto)
         {
-            var validationMessages = FieldInputByCost.ValidateUpdate(_dbContext, fieldInputByCostDto);
+            var validationMessages = FieldInputCost.ValidateUpdate(_dbContext, fieldInputByCostDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var fieldInputByCostDtos = FieldInputByCost.UpdateFieldInputByCost(_dbContext, fieldInputByCostDto);
+            var fieldInputByCostDtos = FieldInputCost.UpdateFieldInputCost(_dbContext, fieldInputByCostDto);
             return Ok(fieldInputByCostDtos);
         }
 
         [HttpDelete("workbooks/{workbookID}/forms/field-input-costs/{fieldInputByCostID}")]
         [LoggedInUnclassifiedFeature]
-        public ActionResult<IEnumerable<FieldInputByCostDto>> DeleteFieldInputByCost([FromRoute] int workbookID, [FromRoute] int fieldInputByCostID)
+        public ActionResult<IEnumerable<FieldInputCostDto>> DeleteFieldInputCost([FromRoute] int workbookID, [FromRoute] int fieldInputByCostID)
         {
-            var validationMessages = FieldInputByCost.ValidateDelete(_dbContext, fieldInputByCostID);
+            var validationMessages = FieldInputCost.ValidateDelete(_dbContext, fieldInputByCostID);
             validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
 
             if (!ModelState.IsValid)
@@ -470,9 +470,9 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            FieldInputByCost.Delete(_dbContext, fieldInputByCostID);
+            FieldInputCost.Delete(_dbContext, fieldInputByCostID);
 
-            var returnDtos = FieldInputByCost.GetDtoListByWorkbookID(_dbContext, workbookID);
+            var returnDtos = FieldInputCost.GetDtoListByWorkbookID(_dbContext, workbookID);
 
             return Ok(returnDtos);
         }
@@ -606,5 +606,137 @@ namespace OregonTilth.API.Controllers
             return Ok(returnDtos);
         }
         #endregion
+
+        #region "Transplant Production Inputs Form"
+        [HttpPost("workbooks/{workbookID}/forms/transplant-production-inputs")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionInputDto>> CreateTransplantProductionInput([FromBody] TransplantProductionInputCreateDto transplantProductionInputCreateDto)
+        {
+            var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+
+            var validationMessages = TransplantProductionInput.ValidateCreate(_dbContext, transplantProductionInputCreateDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transplantProductionInputDtos = TransplantProductionInput.CreateNewTransplantProductionInput(_dbContext, transplantProductionInputCreateDto, userDto);
+            return Ok(transplantProductionInputDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/transplant-production-inputs")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionInputDto>> GetTransplantProductionInputs([FromRoute] int workbookID)
+        {
+            var fieldLaborActivities = TransplantProductionInput.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldLaborActivities);
+        }
+
+        [HttpPut("workbooks/{workbookID}/forms/transplant-production-inputs")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionInputDto> UpdateTransplantProductionInput([FromBody] TransplantProductionInputDto transplantProductionInputDto)
+        {
+            var validationMessages = TransplantProductionInput.ValidateUpdate(_dbContext, transplantProductionInputDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transplantProductionInputDtos = TransplantProductionInput.UpdateTransplantProductionInput(_dbContext, transplantProductionInputDto);
+            return Ok(transplantProductionInputDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/transplant-production-inputs/{TransplantProductionInputID}")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionInputDto>> DeleteTransplantProductionInput([FromRoute] int workbookID, [FromRoute] int transplantProductionInputID)
+        {
+            var validationMessages = TransplantProductionInput.ValidateDelete(_dbContext, transplantProductionInputID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            TransplantProductionInput.Delete(_dbContext, transplantProductionInputID);
+
+            var returnDtos = TransplantProductionInput.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+
+        #endregion "Transplant Production Inputs Form"
+
+        #region "Transplant Production Tray Types Form"
+        [HttpPost("workbooks/{workbookID}/forms/transplant-production-tray-types")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionTrayTypeDto>> CreateTransplantProductionTrayType([FromBody] TransplantProductionTrayTypeCreateDto transplantProductionTrayTypeCreateDto)
+        {
+            var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+
+            var validationMessages = TransplantProductionTrayType.ValidateCreate(_dbContext, transplantProductionTrayTypeCreateDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transplantProductionTrayTypeDtos = TransplantProductionTrayType.CreateNewTransplantProductionTrayType(_dbContext, transplantProductionTrayTypeCreateDto, userDto);
+            return Ok(transplantProductionTrayTypeDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/transplant-production-tray-types")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionTrayTypeDto>> GetTransplantProductionTrayTypes([FromRoute] int workbookID)
+        {
+            var fieldLaborActivities = TransplantProductionTrayType.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldLaborActivities);
+        }
+
+        [HttpPut("workbooks/{workbookID}/forms/transplant-production-tray-types")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionTrayTypeDto> UpdateTransplantProductionTrayType([FromBody] TransplantProductionTrayTypeDto transplantProductionTrayTypeDto)
+        {
+            var validationMessages = TransplantProductionTrayType.ValidateUpdate(_dbContext, transplantProductionTrayTypeDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transplantProductionTrayTypeDtos = TransplantProductionTrayType.UpdateTransplantProductionTrayType(_dbContext, transplantProductionTrayTypeDto);
+            return Ok(transplantProductionTrayTypeDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/transplant-production-tray-types/{TransplantProductionTrayTypeID}")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionTrayTypeDto>> DeleteTransplantProductionTrayType([FromRoute] int workbookID, [FromRoute] int transplantProductionTrayTypeID)
+        {
+            var validationMessages = TransplantProductionTrayType.ValidateDelete(_dbContext, transplantProductionTrayTypeID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            TransplantProductionTrayType.Delete(_dbContext, transplantProductionTrayTypeID);
+
+            var returnDtos = TransplantProductionTrayType.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+
+        #endregion "Transplant Production Tray Types Form"
     }
 }

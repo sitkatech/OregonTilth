@@ -15,8 +15,8 @@ import { GridService } from 'src/app/shared/services/grid/grid.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { FieldInputByCostDto } from 'src/app/shared/models/generated/field-input-by-cost-dto';
-import { FieldInputByCostCreateDto } from 'src/app/shared/models/forms/field-input-by-cost/field-input-by-cost-create-dto';
+import { FieldInputCostDto } from 'src/app/shared/models/generated/field-input-cost-dto';
+import { FieldInputCostCreateDto } from 'src/app/shared/models/forms/field-input-cost/field-input-cost-create-dto';
 import { FieldUnitTypeDto } from 'src/app/shared/models/generated/field-unit-type-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { forkJoin } from 'rxjs';
@@ -45,17 +45,17 @@ export class FieldInputCostsComponent implements OnInit {
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
-  private addFieldInputByCostRequest: any;
-  public model: FieldInputByCostCreateDto;
+  private addFieldInputCostRequest: any;
+  public model: FieldInputCostCreateDto;
 
   public getFieldInputCostsRequest: any;
-  public fieldInputByCosts: FieldInputByCostDto[];
+  public fieldInputCosts: FieldInputCostDto[];
 
   public fieldUnitTypes: Array<FieldUnitTypeDto>;
   private getFieldUnitTypesRequest: any;
 
-  private updateFieldInputByCostRequest: any;
-  private deleteFieldInputByCostRequest: any;
+  private updateFieldInputCostRequest: any;
+  private deleteFieldInputCostRequest: any;
 
   public columnDefs: ColDef[];
  
@@ -63,16 +63,16 @@ export class FieldInputCostsComponent implements OnInit {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      this.model = new FieldInputByCostCreateDto({WorkbookID: this.workbookID});
+      this.model = new FieldInputCostCreateDto({WorkbookID: this.workbookID});
       
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
       this.getFieldUnitTypesRequest = this.lookupTablesService.getFieldUnitTypes();
       this.getFieldInputCostsRequest = this.workbookService.getFieldInputCosts(this.workbookID);
 
-      forkJoin([this.getWorkbookRequest, this.getFieldUnitTypesRequest, this.getFieldInputCostsRequest]).subscribe(([workbook, fieldUnitTypes, fieldInputCosts]: [WorkbookDto, FieldUnitTypeDto[], FieldInputByCostDto[]] ) => {
+      forkJoin([this.getWorkbookRequest, this.getFieldUnitTypesRequest, this.getFieldInputCostsRequest]).subscribe(([workbook, fieldUnitTypes, fieldInputCosts]: [WorkbookDto, FieldUnitTypeDto[], FieldInputCostDto[]] ) => {
           this.workbook = workbook;
           this.fieldUnitTypes = fieldUnitTypes;
-          this.fieldInputByCosts = fieldInputCosts;
+          this.fieldInputCosts = fieldInputCosts;
           this.defineColumnDefs();
           this.cdr.markForCheck();
       });
@@ -85,7 +85,7 @@ export class FieldInputCostsComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: 'Field Input', 
-        field: 'FieldInputByCostName',
+        field: 'FieldInputCostName',
         editable: true,
         cellEditor: 'agTextCellEditor',
         sortable: true, 
@@ -126,13 +126,13 @@ export class FieldInputCostsComponent implements OnInit {
         filter: true,
       },
       {
-        headerName: 'Delete', field: 'FieldInputByCostID', valueGetter: function (params: any) {
-          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.FieldInputByCostID, ObjectDisplayName: params.data.FieldInputByCostName };
+        headerName: 'Delete', field: 'FieldInputCostID', valueGetter: function (params: any) {
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.FieldInputCostID, ObjectDisplayName: params.data.FieldInputCostName };
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
             if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Field Input?`)) {
-              componentScope.deleteFieldInputByCost(field.PrimaryKey)
+              componentScope.deleteFieldInputCost(field.PrimaryKey)
             }
           }
           },
@@ -141,9 +141,9 @@ export class FieldInputCostsComponent implements OnInit {
     ]
   }
 
-  deleteFieldInputByCost(fieldInputByCostID: number) {
-    this.deleteFieldInputByCostRequest = this.workbookService.deleteFieldInputByCost(this.workbookID, fieldInputByCostID).subscribe(fieldInputByCostDtos => {
-      this.fieldInputByCosts = fieldInputByCostDtos;
+  deleteFieldInputCost(fieldInputCostID: number) {
+    this.deleteFieldInputCostRequest = this.workbookService.deleteFieldInputCost(this.workbookID, fieldInputCostID).subscribe(fieldInputCostDtos => {
+      this.fieldInputCosts = fieldInputCostDtos;
       this.alertService.pushAlert(new Alert("Successfully deleted Field Input Cost", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
@@ -154,7 +154,7 @@ export class FieldInputCostsComponent implements OnInit {
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
 
-    this.updateFieldInputByCostRequest = this.workbookService.updateFieldInputByCost(dtoToPost).subscribe(fieldInputCost => {
+    this.updateFieldInputCostRequest = this.workbookService.updateFieldInputCost(dtoToPost).subscribe(fieldInputCost => {
       this.isLoadingSubmit = false;
       this.alertService.pushAlert(new Alert("Successfully updated Field Input Cost", AlertContext.Success));
     }, error => {
@@ -169,8 +169,8 @@ export class FieldInputCostsComponent implements OnInit {
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
-    if (this.addFieldInputByCostRequest && this.addFieldInputByCostRequest.unsubscribe) {
-      this.addFieldInputByCostRequest.unsubscribe();
+    if (this.addFieldInputCostRequest && this.addFieldInputCostRequest.unsubscribe) {
+      this.addFieldInputCostRequest.unsubscribe();
     }
     if (this.getFieldInputCostsRequest && this.getFieldInputCostsRequest.unsubscribe) {
       this.getFieldInputCostsRequest.unsubscribe();
@@ -178,11 +178,11 @@ export class FieldInputCostsComponent implements OnInit {
     if (this.getFieldUnitTypesRequest && this.getFieldUnitTypesRequest.unsubscribe) {
       this.getFieldUnitTypesRequest.unsubscribe();
     }
-    if (this.updateFieldInputByCostRequest && this.updateFieldInputByCostRequest.unsubscribe) {
-      this.updateFieldInputByCostRequest.unsubscribe();
+    if (this.updateFieldInputCostRequest && this.updateFieldInputCostRequest.unsubscribe) {
+      this.updateFieldInputCostRequest.unsubscribe();
     }
-    if (this.deleteFieldInputByCostRequest && this.deleteFieldInputByCostRequest.unsubscribe) {
-      this.deleteFieldInputByCostRequest.unsubscribe();
+    if (this.deleteFieldInputCostRequest && this.deleteFieldInputCostRequest.unsubscribe) {
+      this.deleteFieldInputCostRequest.unsubscribe();
     }
     this.authenticationService.dispose();
     this.cdr.detach();
@@ -190,9 +190,9 @@ export class FieldInputCostsComponent implements OnInit {
 
   onSubmit(fieldInputCostForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-    this.addFieldInputByCostRequest = this.workbookService.addFieldInputByCost(this.model).subscribe(response => {
+    this.addFieldInputCostRequest = this.workbookService.addFieldInputCost(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.fieldInputByCosts = response;
+      this.fieldInputCosts = response;
       this.alertService.pushAlert(new Alert("Successfully added Field Input Cost.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
@@ -204,7 +204,7 @@ export class FieldInputCostsComponent implements OnInit {
   }
 
   resetForm() {
-    this.model = new FieldInputByCostCreateDto({WorkbookID: this.workbookID, FieldUnitTypeID: this.model.FieldUnitTypeID});
+    this.model = new FieldInputCostCreateDto({WorkbookID: this.workbookID, FieldUnitTypeID: this.model.FieldUnitTypeID});
   }
 
 }

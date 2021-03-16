@@ -23,8 +23,8 @@ namespace OregonTilth.EFModels.Entities
         [InverseProperty("FieldInputByCrops")]
         public virtual Crop Crop { get; set; }
         [ForeignKey(nameof(FieldInputByCostID))]
-        [InverseProperty("FieldInputByCrops")]
-        public virtual FieldInputByCost FieldInputByCost { get; set; }
+        [InverseProperty(nameof(FieldInputCost.FieldInputByCrops))]
+        public virtual FieldInputCost FieldInputByCost { get; set; }
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("FieldInputByCrops")]
         public virtual Workbook Workbook { get; set; }

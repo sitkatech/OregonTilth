@@ -15,10 +15,14 @@ import { FieldLaborByCropCreateDto } from 'src/app/shared/models/forms/field-lab
 import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor-by-crop-dto';
 import { TransplantProductionLaborActivityDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-dto';
 import { TransplantProductionLaborActivityCreateDto } from 'src/app/shared/models/forms/transplant-production-labor-activities/transplant-production-labor-activity-create-dto';
-import { FieldInputByCostDto } from 'src/app/shared/models/generated/field-input-by-cost-dto';
-import { FieldInputByCostCreateDto } from 'src/app/shared/models/forms/field-input-by-cost/field-input-by-cost-create-dto';
+import { FieldInputCostDto } from 'src/app/shared/models/generated/field-input-cost-dto';
+import { FieldInputCostCreateDto } from 'src/app/shared/models/forms/field-input-cost/field-input-cost-create-dto';
 import { TransplantProductionLaborByCropCreateDto } from 'src/app/shared/models/forms/transplant-production-labor-by-crop/transplant-production-labor-by-crop-create-dto';
 import { TransplantProductionLaborActivityByCropDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-by-crop-dto';
+import { TransplantProductionInputCreateDto } from 'src/app/shared/models/forms/transplant-production-inputs/transplant-production-input-create-dto';
+import { TransplantProductionInputDto } from 'src/app/shared/models/generated/transplant-production-input-dto';
+import { TransplantProductionTrayTypeCreateDto } from 'src/app/shared/models/forms/transplant-production-tray-types/transplant-production-tray-type-create-dto';
+import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -200,27 +204,67 @@ export class WorkbookService {
         return this.apiService.deleteToApi(route);
     }
 
-    // Field Input By Cost Form
-    addFieldInputByCost(fieldInputByCostCreateDto: FieldInputByCostCreateDto): Observable<FieldInputByCostDto[]> {
+    // Field Input Cost Form
+    addFieldInputCost(fieldInputByCostCreateDto: FieldInputCostCreateDto): Observable<FieldInputCostDto[]> {
         let route = `/workbooks/forms/field-input-costs`;
         return this.apiService.postToApi(route, fieldInputByCostCreateDto);
     }
 
-    getFieldInputCosts(workbookID: number): Observable<FieldInputByCostDto[]> {
+    getFieldInputCosts(workbookID: number): Observable<FieldInputCostDto[]> {
         let route = `workbooks/${workbookID}/forms/field-input-costs`;
         return this.apiService.getFromApi(route);
     }
 
-    updateFieldInputByCost(fieldInputByCost: FieldInputByCostDto): Observable<FieldInputByCostDto> {
+    updateFieldInputCost(fieldInputByCost: FieldInputCostDto): Observable<FieldInputCostDto> {
         let route = `/workbooks/forms/field-input-costs`;
         return this.apiService.putToApi(route, fieldInputByCost);
     }
 
-    deleteFieldInputByCost(workbookID:number, fieldInputByCostID: number): Observable<FieldInputByCostDto[]> {
+    deleteFieldInputCost(workbookID:number, fieldInputByCostID: number): Observable<FieldInputCostDto[]> {
         let route = `workbooks/${workbookID}/forms/field-input-costs/${fieldInputByCostID}`;
         return this.apiService.deleteToApi(route);
     }
 
+    // Transplant Production Inputs Form
+    addTransplantProductionInput(transplantProductionInputCreateDto: TransplantProductionInputCreateDto): Observable<TransplantProductionInputDto[]> {
+        let route = `/workbooks/${transplantProductionInputCreateDto.WorkbookID}/forms/transplant-production-inputs`;
+        return this.apiService.postToApi(route, transplantProductionInputCreateDto);
+    }
 
+    getTransplantProductionInputs(workbookID: number): Observable<TransplantProductionInputDto[]> {
+        let route = `workbooks/${workbookID}/forms/transplant-production-inputs`;
+        return this.apiService.getFromApi(route);
+    }
+
+    updateTransplantProductionInput(transplantProductionInput: TransplantProductionInputDto): Observable<TransplantProductionInputDto> {
+        let route = `/workbooks/${transplantProductionInput.Workbook.WorkbookID}/forms/transplant-production-inputs`;
+        return this.apiService.putToApi(route, transplantProductionInput);
+    }
+
+    deleteTransplantProductionInput(workbookID:number, transplantProductionInputID: number): Observable<TransplantProductionInputDto[]> {
+        let route = `workbooks/${workbookID}/forms/transplant-production-inputs/${transplantProductionInputID}`;
+        return this.apiService.deleteToApi(route);
+    }
+
+    // Transplant Production Tray Types Form
+    addTransplantProductionTrayType(transplantProductionTrayTypeCreateDto: TransplantProductionTrayTypeCreateDto): Observable<TransplantProductionTrayTypeDto[]> {
+        let route = `/workbooks/${transplantProductionTrayTypeCreateDto.WorkbookID}/forms/transplant-production-tray-types`;
+        return this.apiService.postToApi(route, transplantProductionTrayTypeCreateDto);
+    }
+
+    getTransplantProductionTrayTypes(workbookID: number): Observable<TransplantProductionTrayTypeDto[]> {
+        let route = `workbooks/${workbookID}/forms/transplant-production-tray-types`;
+        return this.apiService.getFromApi(route);
+    }
+
+    updateTransplantProductionTrayType(transplantProductionTrayTypeDto: TransplantProductionTrayTypeDto): Observable<TransplantProductionTrayTypeDto> {
+        let route = `/workbooks/${transplantProductionTrayTypeDto.Workbook.WorkbookID}/forms/transplant-production-tray-types`;
+        return this.apiService.putToApi(route, transplantProductionTrayTypeDto);
+    }
+
+    deleteTransplantProductionTrayType(workbookID:number, transplantProductionTrayTypeID: number): Observable<TransplantProductionTrayTypeDto[]> {
+        let route = `workbooks/${workbookID}/forms/transplant-production-tray-types/${transplantProductionTrayTypeID}`;
+        return this.apiService.deleteToApi(route);
+    }
 
 }

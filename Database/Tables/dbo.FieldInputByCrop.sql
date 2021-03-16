@@ -20,10 +20,10 @@ REFERENCES [dbo].[Crop] ([CropID])
 GO
 ALTER TABLE [dbo].[FieldInputByCrop] CHECK CONSTRAINT [FK_FieldInputByCrop_Crop_CropID]
 GO
-ALTER TABLE [dbo].[FieldInputByCrop]  WITH CHECK ADD  CONSTRAINT [FK_FieldInputByCrop_FieldInputByCost_FieldInputByCostID] FOREIGN KEY([FieldInputByCostID])
-REFERENCES [dbo].[FieldInputByCost] ([FieldInputByCostID])
+ALTER TABLE [dbo].[FieldInputByCrop]  WITH CHECK ADD  CONSTRAINT [FK_FieldInputByCrop_FieldInputCost_FieldInputCostID] FOREIGN KEY([FieldInputByCostID])
+REFERENCES [dbo].[FieldInputCost] ([FieldInputCostID])
 GO
-ALTER TABLE [dbo].[FieldInputByCrop] CHECK CONSTRAINT [FK_FieldInputByCrop_FieldInputByCost_FieldInputByCostID]
+ALTER TABLE [dbo].[FieldInputByCrop] CHECK CONSTRAINT [FK_FieldInputByCrop_FieldInputCost_FieldInputCostID]
 GO
 ALTER TABLE [dbo].[FieldInputByCrop]  WITH CHECK ADD  CONSTRAINT [FK_FieldInputByCrop_Workbook_WorkbookID] FOREIGN KEY([WorkbookID])
 REFERENCES [dbo].[Workbook] ([WorkbookID])
