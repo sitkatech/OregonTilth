@@ -672,5 +672,71 @@ namespace OregonTilth.API.Controllers
         }
 
         #endregion "Transplant Production Inputs Form"
+
+        #region "Transplant Production Tray Types Form"
+        [HttpPost("workbooks/{workbookID}/forms/transplant-production-tray-types")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionTrayTypeDto>> CreateTransplantProductionTrayType([FromBody] TransplantProductionTrayTypeCreateDto transplantProductionTrayTypeCreateDto)
+        {
+            var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+
+            var validationMessages = TransplantProductionTrayType.ValidateCreate(_dbContext, transplantProductionTrayTypeCreateDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transplantProductionTrayTypeDtos = TransplantProductionTrayType.CreateNewTransplantProductionTrayType(_dbContext, transplantProductionTrayTypeCreateDto, userDto);
+            return Ok(transplantProductionTrayTypeDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/transplant-production-tray-types")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionTrayTypeDto>> GetTransplantProductionTrayTypes([FromRoute] int workbookID)
+        {
+            var fieldLaborActivities = TransplantProductionTrayType.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldLaborActivities);
+        }
+
+        [HttpPut("workbooks/{workbookID}/forms/transplant-production-tray-types")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionTrayTypeDto> UpdateTransplantProductionTrayType([FromBody] TransplantProductionTrayTypeDto transplantProductionTrayTypeDto)
+        {
+            var validationMessages = TransplantProductionTrayType.ValidateUpdate(_dbContext, transplantProductionTrayTypeDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transplantProductionTrayTypeDtos = TransplantProductionTrayType.UpdateTransplantProductionTrayType(_dbContext, transplantProductionTrayTypeDto);
+            return Ok(transplantProductionTrayTypeDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/transplant-production-tray-types/{TransplantProductionTrayTypeID}")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionTrayTypeDto>> DeleteTransplantProductionTrayType([FromRoute] int workbookID, [FromRoute] int transplantProductionTrayTypeID)
+        {
+            var validationMessages = TransplantProductionTrayType.ValidateDelete(_dbContext, transplantProductionTrayTypeID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            TransplantProductionTrayType.Delete(_dbContext, transplantProductionTrayTypeID);
+
+            var returnDtos = TransplantProductionTrayType.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+
+        #endregion "Transplant Production Tray Types Form"
     }
 }
