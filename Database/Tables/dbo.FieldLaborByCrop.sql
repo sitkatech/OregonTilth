@@ -43,6 +43,6 @@ REFERENCES [dbo].[Workbook] ([WorkbookID])
 GO
 ALTER TABLE [dbo].[FieldLaborByCrop] CHECK CONSTRAINT [FK_FieldLaborByCrop_Workbook_WorkbookID]
 GO
-ALTER TABLE [dbo].[FieldLaborByCrop]  WITH CHECK ADD  CONSTRAINT [CK_Occurrances_Greater_Than_Zero] CHECK  (([Occurrances]>(0)))
+ALTER TABLE [dbo].[FieldLaborByCrop]  WITH CHECK ADD  CONSTRAINT [CK_FieldLaborByCrop_Occurrances_Greater_Than_Zero] CHECK  (([Occurrances]>(0)))
 GO
-ALTER TABLE [dbo].[FieldLaborByCrop] CHECK CONSTRAINT [CK_Occurrances_Greater_Than_Zero]
+ALTER TABLE [dbo].[FieldLaborByCrop] CHECK CONSTRAINT [CK_FieldLaborByCrop_Occurrances_Greater_Than_Zero]

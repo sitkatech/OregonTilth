@@ -162,9 +162,6 @@ export class FieldLaborByCropComponent implements OnInit {
         field: 'Occurrances',
         editable: true,
         cellEditor: 'agTextCellEditor',
-        cellEditorParams: {
-          values: this.laborTypeDtos.map(x => x.LaborTypeName)
-        },
         sortable: true, 
         filter: true,
       },

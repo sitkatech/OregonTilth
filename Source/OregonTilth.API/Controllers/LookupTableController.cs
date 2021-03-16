@@ -30,5 +30,18 @@ namespace OregonTilth.API.Controllers
             return laborTypeDtos;
         }
 
+        [HttpGet("lookupTable/field-unit-types")]
+        public ActionResult<List<FieldUnitTypeDto>> ListAllFieldUnitTypes()
+        {
+            var fieldUnitTypes = FieldUnitType.List(_dbContext);
+            return fieldUnitTypes;
+        }
+
+        [HttpGet("lookupTable/phases")]
+        public ActionResult<List<PhaseDto>> ListAllPhases()
+        {
+            var phases = Phase.List(_dbContext);
+            return phases;
+        }
     }
 }

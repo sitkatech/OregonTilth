@@ -15,6 +15,7 @@ namespace OregonTilth.EFModels.Entities
     {
         public FieldUnitType()
         {
+            FieldInputCosts = new HashSet<FieldInputCost>();
             FieldStandardTimes = new HashSet<FieldStandardTime>();
         }
 
@@ -27,6 +28,8 @@ namespace OregonTilth.EFModels.Entities
         [StringLength(100)]
         public string FieldUnitTypeDisplayName { get; set; }
 
+        [InverseProperty(nameof(FieldInputCost.FieldUnitType))]
+        public virtual ICollection<FieldInputCost> FieldInputCosts { get; set; }
         [InverseProperty(nameof(FieldStandardTime.FieldUnitType))]
         public virtual ICollection<FieldStandardTime> FieldStandardTimes { get; set; }
     }

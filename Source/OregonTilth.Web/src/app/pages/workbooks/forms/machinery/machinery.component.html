@@ -18,6 +18,7 @@
     <div class="col-sm-10">
         <app-alert-display></app-alert-display>
         <h1>Machinery</h1>
+        <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
         <div class="card mt-4">
           <div class="card-header">
             Add new Machinery
@@ -45,7 +46,6 @@
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                     Submit
                   </button>
-                  <a class="btn btn-secondary ml-1" routerLink="/workbooks">Cancel</a>
                 </div>
               </div>
             </form>
