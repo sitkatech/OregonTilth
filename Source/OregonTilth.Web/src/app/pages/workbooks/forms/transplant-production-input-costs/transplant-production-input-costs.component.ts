@@ -107,6 +107,9 @@ export class TransplantProductionInputCostsComponent implements OnInit {
           });
           return true;
         },
+        valueGetter: params => {
+          return params.data.TransplantProductionInput.TransplantProductionInputName;
+        },
         sortable: true, 
         filter: true,
       },
@@ -127,6 +130,9 @@ export class TransplantProductionInputCostsComponent implements OnInit {
           });
           return true;
         },
+        valueGetter: params => {
+          return params.data.TransplantProductionTrayType.TransplantProductionTrayTypeName;
+        },
         sortable: true, 
         filter: true,
       },
@@ -135,7 +141,9 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         field: 'CostPerTray',
         editable: true,
         cellEditor: 'agTextCellEditor',
-        valueFormatter: this.gridService.currencyFormatter
+        valueFormatter: this.gridService.currencyFormatter,
+        sortable: true, 
+        filter: true,
       },
       {
         headerName: 'Notes', 
@@ -143,6 +151,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         editable: true,
         cellEditor: 'agTextCellEditor',
         filter: true,
+        sortable: true, 
       },
       {
         headerName: 'Delete', field: 'TransplantProductionInputCostID', valueGetter: function (params: any) {
@@ -174,6 +183,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     var dtoToPost = data.data;
 
     this.updateTransplantProductionInputCostRequest = this.workbookService.updateTransplantProductionInputCost(dtoToPost).subscribe(tpInputCost => {
+      data.node.setData(tpInputCost);
       this.isLoadingSubmit = false;
       this.alertService.pushAlert(new Alert("Successfully updated Transplant Production Input Cost", AlertContext.Success));
     }, error => {

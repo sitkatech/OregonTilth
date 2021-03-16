@@ -47,7 +47,8 @@ namespace OregonTilth.EFModels.Entities
                 x.TransplantProductionTrayType.TransplantProductionTrayTypeID ==
                 transplantProductionInputCostDto.TransplantProductionTrayType.TransplantProductionTrayTypeID
                 && x.TransplantProductionInput.TransplantProductionInputID ==
-                transplantProductionInputCostDto.TransplantProductionInput.TransplantProductionInputID))
+                transplantProductionInputCostDto.TransplantProductionInput.TransplantProductionInputID
+                && x.TransplantProductionInputCostID != transplantProductionInputCostDto.TransplantProductionInputCostID))
             {
                 result.Add(new ErrorMessage() { Type = "Transplant Production Input Cost", Message = "Entries must be unique per Tray Type and Input within a workbook." });
             }
