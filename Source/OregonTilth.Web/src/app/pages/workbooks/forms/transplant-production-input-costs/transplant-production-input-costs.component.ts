@@ -15,12 +15,14 @@ import { GridService } from 'src/app/shared/services/grid/grid.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { FieldInputCostDto } from 'src/app/shared/models/generated/field-input-cost-dto';
-import { FieldInputCostCreateDto } from 'src/app/shared/models/forms/field-input-cost/field-input-cost-create-dto';
 import { FieldUnitTypeDto } from 'src/app/shared/models/generated/field-unit-type-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
+import { TransplantProductionInputCostCreateDto } from 'src/app/shared/models/forms/transplant-production-input-costs/transplant-production-input-cost-create-dto';
+import { TransplantProductionInputCostDto } from 'src/app/shared/models/generated/transplant-production-input-cost-dto';
+import { TransplantProductionInputDto } from 'src/app/shared/models/generated/transplant-production-input-dto';
+import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
 
 @Component({
   selector: 'transplant-production-input-costs',
@@ -41,21 +43,24 @@ export class TransplantProductionInputCostsComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
-  public richTextTypeID : number = CustomRichTextType.FieldInputCostForm;
+  public richTextTypeID : number = CustomRichTextType.TPInputCostForm;
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
-  private addFieldInputCostRequest: any;
-  public model: FieldInputCostCreateDto;
+  private addTransplantProductionInputCostRequest: any;
+  public model: TransplantProductionInputCostCreateDto;
 
-  public getFieldInputCostsRequest: any;
-  public fieldInputCosts: FieldInputCostDto[];
+  public getTransplantProductionInputCostsRequest: any;
+  public transplantProductionInputCosts: TransplantProductionInputCostDto[];
 
-  public fieldUnitTypes: Array<FieldUnitTypeDto>;
-  private getFieldUnitTypesRequest: any;
+  public transplantProductionInputs: Array<TransplantProductionInputDto>;
+  private getTransplantProductionInputsRequest: any;
 
-  private updateFieldInputCostRequest: any;
-  private deleteFieldInputCostRequest: any;
+  public transplantProductionTrayTypes: Array<TransplantProductionTrayTypeDto>;
+  private getTransplantProductionTrayTypesRequest: any;
+
+  private updateTransplantProductionInputCostRequest: any;
+  private deleteTransplantProductionInputCostRequest: any;
 
   public columnDefs: ColDef[];
  
@@ -63,16 +68,18 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      this.model = new FieldInputCostCreateDto({WorkbookID: this.workbookID});
+      this.model = new TransplantProductionInputCostCreateDto({WorkbookID: this.workbookID});
       
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getFieldUnitTypesRequest = this.lookupTablesService.getFieldUnitTypes();
-      this.getFieldInputCostsRequest = this.workbookService.getFieldInputCosts(this.workbookID);
+      this.getTransplantProductionInputsRequest = this.workbookService.getTransplantProductionInputs(this.workbookID);
+      this.getTransplantProductionTrayTypesRequest = this.workbookService.getTransplantProductionTrayTypes(this.workbookID);
+      this.getTransplantProductionInputCostsRequest = this.workbookService.getTransplantProductionInputCosts(this.workbookID);
 
-      forkJoin([this.getWorkbookRequest, this.getFieldUnitTypesRequest, this.getFieldInputCostsRequest]).subscribe(([workbook, fieldUnitTypes, fieldInputCosts]: [WorkbookDto, FieldUnitTypeDto[], FieldInputCostDto[]] ) => {
+      forkJoin([this.getWorkbookRequest, this.getTransplantProductionInputsRequest, this.getTransplantProductionTrayTypesRequest, this.getTransplantProductionInputCostsRequest]).subscribe(([workbook, tpInputs, tpTrayTypes, tpInputCosts]: [WorkbookDto, TransplantProductionInputDto[], TransplantProductionTrayTypeDto[], TransplantProductionInputCostDto[]] ) => {
           this.workbook = workbook;
-          this.fieldUnitTypes = fieldUnitTypes;
-          this.fieldInputCosts = fieldInputCosts;
+          this.transplantProductionInputs = tpInputs;
+          this.transplantProductionTrayTypes = tpTrayTypes;
+          this.transplantProductionInputCosts = tpInputCosts;
           this.defineColumnDefs();
           this.cdr.markForCheck();
       });
@@ -84,27 +91,19 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     var componentScope = this;
     this.columnDefs = [
       {
-        headerName: 'Field Input', 
-        field: 'FieldInputCostName',
+        headerName: 'Transplant Production Input', 
+        field: 'TransplantProductionInput',
         editable: true,
-        cellEditor: 'agTextCellEditor',
-        sortable: true, 
-        filter: true,
-      },
-      {
-        headerName: 'Field Unit', 
-        field: 'FieldUnitType',
-        editable: true,
-        cellEditor: 'agPopupSelectCellEditor',
+        cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
-          values: this.fieldUnitTypes.map(x => x.FieldUnitTypeDisplayName)
+          values: this.transplantProductionInputs.map(x => x.TransplantProductionInputName)
         },
         valueFormatter: function (params) {
-          return params.value.FieldUnitTypeDisplayName;
+          return params.value.TransplantProductionInputName;
         },
         valueSetter: params => {
-          params.data.FieldUnitType = this.fieldUnitTypes.find(element => {
-            return element.FieldUnitTypeDisplayName == params.newValue;
+          params.data.TransplantProductionInput = this.transplantProductionInputs.find(element => {
+            return element.TransplantProductionInputName == params.newValue;
           });
           return true;
         },
@@ -112,8 +111,28 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         filter: true,
       },
       {
-        headerName: 'Cost Per Field Unit', 
-        field: 'CostPerFieldUnit',
+        headerName: 'Tray Type', 
+        field: 'TransplantProductionTrayType',
+        editable: true,
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: this.transplantProductionTrayTypes.map(x => x.TransplantProductionTrayTypeName)
+        },
+        valueFormatter: function (params) {
+          return params.value.TransplantProductionTrayTypeName;
+        },
+        valueSetter: params => {
+          params.data.TransplantProductionTrayType = this.transplantProductionTrayTypes.find(element => {
+            return element.TransplantProductionTrayTypeName == params.newValue;
+          });
+          return true;
+        },
+        sortable: true, 
+        filter: true,
+      },
+      {
+        headerName: 'Cost Per Tray', 
+        field: 'CostPerTray',
         editable: true,
         cellEditor: 'agTextCellEditor',
         valueFormatter: this.gridService.currencyFormatter
@@ -126,13 +145,13 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         filter: true,
       },
       {
-        headerName: 'Delete', field: 'FieldInputCostID', valueGetter: function (params: any) {
-          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.FieldInputCostID, ObjectDisplayName: params.data.FieldInputCostName };
+        headerName: 'Delete', field: 'TransplantProductionInputCostID', valueGetter: function (params: any) {
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.TransplantProductionInputCostID, ObjectDisplayName: params.data.TransplantProductionInputCostID };
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
-            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Field Input?`)) {
-              componentScope.deleteFieldInputCost(field.PrimaryKey)
+            if(confirm(`Are you sure you want to delete this input cost?`)) {
+              componentScope.deleteTransplantProductionInputCost(field.PrimaryKey)
             }
           }
           },
@@ -141,10 +160,10 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     ]
   }
 
-  deleteFieldInputCost(fieldInputCostID: number) {
-    this.deleteFieldInputCostRequest = this.workbookService.deleteFieldInputCost(this.workbookID, fieldInputCostID).subscribe(fieldInputCostDtos => {
-      this.fieldInputCosts = fieldInputCostDtos;
-      this.alertService.pushAlert(new Alert("Successfully deleted Field Input Cost", AlertContext.Success));
+  deleteTransplantProductionInputCost(tpInputCost: number) {
+    this.deleteTransplantProductionInputCostRequest = this.workbookService.deleteTransplantProductionInputCost(this.workbookID, tpInputCost).subscribe(tpInputCostDtos => {
+      this.transplantProductionInputCosts = tpInputCostDtos;
+      this.alertService.pushAlert(new Alert("Successfully deleted Transplant Production Input Cost", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
 
@@ -154,9 +173,9 @@ export class TransplantProductionInputCostsComponent implements OnInit {
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
 
-    this.updateFieldInputCostRequest = this.workbookService.updateFieldInputCost(dtoToPost).subscribe(fieldInputCost => {
+    this.updateTransplantProductionInputCostRequest = this.workbookService.updateTransplantProductionInputCost(dtoToPost).subscribe(tpInputCost => {
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Field Input Cost", AlertContext.Success));
+      this.alertService.pushAlert(new Alert("Successfully updated Transplant Production Input Cost", AlertContext.Success));
     }, error => {
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
@@ -169,20 +188,20 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
-    if (this.addFieldInputCostRequest && this.addFieldInputCostRequest.unsubscribe) {
-      this.addFieldInputCostRequest.unsubscribe();
+    if (this.addTransplantProductionInputCostRequest && this.addTransplantProductionInputCostRequest.unsubscribe) {
+      this.addTransplantProductionInputCostRequest.unsubscribe();
     }
-    if (this.getFieldInputCostsRequest && this.getFieldInputCostsRequest.unsubscribe) {
-      this.getFieldInputCostsRequest.unsubscribe();
+    if (this.getTransplantProductionInputCostsRequest && this.getTransplantProductionInputCostsRequest.unsubscribe) {
+      this.getTransplantProductionInputCostsRequest.unsubscribe();
     }
-    if (this.getFieldUnitTypesRequest && this.getFieldUnitTypesRequest.unsubscribe) {
-      this.getFieldUnitTypesRequest.unsubscribe();
+    if (this.getTransplantProductionInputsRequest && this.getTransplantProductionInputsRequest.unsubscribe) {
+      this.getTransplantProductionInputsRequest.unsubscribe();
     }
-    if (this.updateFieldInputCostRequest && this.updateFieldInputCostRequest.unsubscribe) {
-      this.updateFieldInputCostRequest.unsubscribe();
+    if (this.updateTransplantProductionInputCostRequest && this.updateTransplantProductionInputCostRequest.unsubscribe) {
+      this.updateTransplantProductionInputCostRequest.unsubscribe();
     }
-    if (this.deleteFieldInputCostRequest && this.deleteFieldInputCostRequest.unsubscribe) {
-      this.deleteFieldInputCostRequest.unsubscribe();
+    if (this.deleteTransplantProductionInputCostRequest && this.deleteTransplantProductionInputCostRequest.unsubscribe) {
+      this.deleteTransplantProductionInputCostRequest.unsubscribe();
     }
     this.authenticationService.dispose();
     this.cdr.detach();
@@ -190,10 +209,10 @@ export class TransplantProductionInputCostsComponent implements OnInit {
 
   onSubmit(fieldInputCostForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-    this.addFieldInputCostRequest = this.workbookService.addFieldInputCost(this.model).subscribe(response => {
+    this.addTransplantProductionInputCostRequest = this.workbookService.addTransplantProductionInputCost(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.fieldInputCosts = response;
-      this.alertService.pushAlert(new Alert("Successfully added Field Input Cost.", AlertContext.Success));
+      this.transplantProductionInputCosts = response;
+      this.alertService.pushAlert(new Alert("Successfully added Transplant Production Input Cost.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
       
@@ -204,7 +223,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
   }
 
   resetForm() {
-    this.model = new FieldInputCostCreateDto({WorkbookID: this.workbookID, FieldUnitTypeID: this.model.FieldUnitTypeID});
+    this.model = new TransplantProductionInputCostCreateDto({WorkbookID: this.workbookID});
   }
 
 }
