@@ -37,5 +37,11 @@ namespace OregonTilth.API.Controllers
             return fieldUnitTypes;
         }
 
+        [HttpGet("lookupTable/phases")]
+        public ActionResult<List<PhaseDto>> ListAllPhases()
+        {
+            var phases = Phase.List(_dbContext);
+            return phases;
+        }
     }
 }

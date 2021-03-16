@@ -19,7 +19,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { DecimalPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { LinkRendererComponent } from './shared/components/ag-grid/link-renderer/link-renderer.component';
 import { ButtonRendererComponent } from './shared/components/ag-grid/button-renderer/button-renderer.component';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { FormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -27,7 +27,6 @@ import { ComboSeriesVerticalComponent } from './shared/components/combo-chart/co
 import { FontAwesomeIconLinkRendererComponent } from './shared/components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { LoginCallbackComponent } from './pages/login-callback/login-callback.component';
 import { HelpComponent } from './pages/help/help.component';
-import { SelectDropDownModule } from 'ngx-select-dropdown'
 import { MyDatePickerModule } from 'mydatepicker';
 import { MultiLinkRendererComponent } from './shared/components/ag-grid/multi-link-renderer/multi-link-renderer.component';
 import { CreateUserCallbackComponent } from './pages/create-user-callback/create-user-callback.component';
@@ -40,6 +39,7 @@ import { FieldLaborActivitiesComponent } from './pages/workbooks/forms/field-lab
 import { TransplantProductionLaborActivitiesComponent } from './pages/workbooks/forms/transplant-production-labor-activities/transplant-production-labor-activities.component';
 import { MachineryComponent } from './pages/workbooks/forms/machinery/machinery.component';
 import { FieldLaborByCropComponent } from './pages/workbooks/forms/field-labor-by-crop/field-labor-by-crop.component';
+import { TransplantProductionLaborByCropComponent } from './pages/workbooks/forms/transplant-production-labor-by-crop/transplant-production-labor-by-crop.component';
 import { CropsComponent } from './pages/workbooks/forms/crops/crops.component';
 import { CropUnitsComponent } from './pages/workbooks/forms/crop-units/crop-units.component';
 import { FieldInputCostsComponent } from './pages/workbooks/forms/field-input-costs/field-input-costs.component';
@@ -53,6 +53,7 @@ import { TrainingComponent } from './pages/training/training.component';
 import { environment } from 'src/environments/environment';
 import { AppInsightsService } from './shared/services/app-insights.service';
 import { GlobalErrorHandlerService } from './shared/services/global-error-handler.service';
+import { DecimalEditor } from './shared/components/ag-grid/decimal-editor/decimal-editor.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -83,6 +84,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     MachineryComponent,
     FieldInputCostsComponent,
     FieldLaborByCropComponent,
+    TransplantProductionLaborByCropComponent,
     CropsComponent,
     CropUnitsComponent,
     EditWorkbookComponent,
@@ -90,6 +92,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     FieldDefinitionListComponent,
     FieldDefinitionEditComponent,
     TrainingComponent,
+    DecimalEditor,
   ],
   imports: [
     AppRoutingModule,
@@ -102,8 +105,8 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     FormsModule,
     NgxChartsModule,
     BrowserAnimationsModule,
-    AgGridModule.withComponents([]),
-    SelectDropDownModule,
+    AgGridModule.withComponents([DecimalEditor]),
+    NgMultiSelectDropDownModule.forRoot(),
     MyDatePickerModule,
     CKEditorModule
   ],  

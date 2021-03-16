@@ -13,6 +13,11 @@ namespace OregonTilth.EFModels.Entities
     [Index(nameof(PhaseName), Name = "AK_Phase_PhaseName", IsUnique = true)]
     public partial class Phase
     {
+        public Phase()
+        {
+            TransplantProductionLaborActivityByCrops = new HashSet<TransplantProductionLaborActivityByCrop>();
+        }
+
         [Key]
         public int PhaseID { get; set; }
         [Required]
@@ -21,5 +26,8 @@ namespace OregonTilth.EFModels.Entities
         [Required]
         [StringLength(100)]
         public string PhaseDisplayName { get; set; }
+
+        [InverseProperty(nameof(TransplantProductionLaborActivityByCrop.Phase))]
+        public virtual ICollection<TransplantProductionLaborActivityByCrop> TransplantProductionLaborActivityByCrops { get; set; }
     }
 }
