@@ -41,7 +41,7 @@ export class FieldInputCostsComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
-  public richTextTypeID : number = CustomRichTextType.FieldLaborActivityForm;
+  public richTextTypeID : number = CustomRichTextType.FieldInputCostForm;
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
