@@ -1,6 +1,6 @@
-export class FieldInputByCostCreateDto {
+export class FieldInputCostCreateDto {
     WorkbookID: number;
-    FieldInputByCostName: string;
+    FieldInputCostName: string;
     FieldUnitTypeID: number;
     CostPerFieldUnit: number;
     Notes: string;

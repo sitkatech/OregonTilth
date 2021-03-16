@@ -422,47 +422,47 @@ namespace OregonTilth.API.Controllers
         #region "Field Input Costs Form"
         [HttpPost("workbooks/forms/field-input-costs")]
         [LoggedInUnclassifiedFeature]
-        public ActionResult<IEnumerable<FieldInputByCostDto>> CreateFieldInputByCost([FromBody] FieldInputByCostCreateDto fieldInputByCostCreateDto)
+        public ActionResult<IEnumerable<FieldInputCostDto>> CreateFieldInputCost([FromBody] FieldInputCostCreateDto fieldInputByCostCreateDto)
         {
-            var validationMessages = FieldInputByCost.ValidateCreate(_dbContext, fieldInputByCostCreateDto);
+            var validationMessages = FieldInputCost.ValidateCreate(_dbContext, fieldInputByCostCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var fieldInputByCostDtos = FieldInputByCost.CreateNewFieldInputByCost(_dbContext, fieldInputByCostCreateDto);
+            var fieldInputByCostDtos = FieldInputCost.CreateNewFieldInputCost(_dbContext, fieldInputByCostCreateDto);
             return Ok(fieldInputByCostDtos);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/field-input-costs")]
         [LoggedInUnclassifiedFeature]
-        public ActionResult<IEnumerable<FieldInputByCostDto>> GetFieldInputByCosts([FromRoute] int workbookID)
+        public ActionResult<IEnumerable<FieldInputCostDto>> GetFieldInputCosts([FromRoute] int workbookID)
         {
-            var fieldInputByCosts = FieldInputByCost.GetDtoListByWorkbookID(_dbContext, workbookID);
+            var fieldInputByCosts = FieldInputCost.GetDtoListByWorkbookID(_dbContext, workbookID);
             return Ok(fieldInputByCosts);
         }
 
         [HttpPut("workbooks/forms/field-input-costs")]
         [LoggedInUnclassifiedFeature]
-        public ActionResult<FieldInputByCostDto> UpdateFieldInputByCost([FromBody] FieldInputByCostDto fieldInputByCostDto)
+        public ActionResult<FieldInputCostDto> UpdateFieldInputCost([FromBody] FieldInputCostDto fieldInputByCostDto)
         {
-            var validationMessages = FieldInputByCost.ValidateUpdate(_dbContext, fieldInputByCostDto);
+            var validationMessages = FieldInputCost.ValidateUpdate(_dbContext, fieldInputByCostDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var fieldInputByCostDtos = FieldInputByCost.UpdateFieldInputByCost(_dbContext, fieldInputByCostDto);
+            var fieldInputByCostDtos = FieldInputCost.UpdateFieldInputCost(_dbContext, fieldInputByCostDto);
             return Ok(fieldInputByCostDtos);
         }
 
         [HttpDelete("workbooks/{workbookID}/forms/field-input-costs/{fieldInputByCostID}")]
         [LoggedInUnclassifiedFeature]
-        public ActionResult<IEnumerable<FieldInputByCostDto>> DeleteFieldInputByCost([FromRoute] int workbookID, [FromRoute] int fieldInputByCostID)
+        public ActionResult<IEnumerable<FieldInputCostDto>> DeleteFieldInputCost([FromRoute] int workbookID, [FromRoute] int fieldInputByCostID)
         {
-            var validationMessages = FieldInputByCost.ValidateDelete(_dbContext, fieldInputByCostID);
+            var validationMessages = FieldInputCost.ValidateDelete(_dbContext, fieldInputByCostID);
             validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
 
             if (!ModelState.IsValid)
@@ -470,9 +470,9 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            FieldInputByCost.Delete(_dbContext, fieldInputByCostID);
+            FieldInputCost.Delete(_dbContext, fieldInputByCostID);
 
-            var returnDtos = FieldInputByCost.GetDtoListByWorkbookID(_dbContext, workbookID);
+            var returnDtos = FieldInputCost.GetDtoListByWorkbookID(_dbContext, workbookID);
 
             return Ok(returnDtos);
         }

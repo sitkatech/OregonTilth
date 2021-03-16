@@ -28,8 +28,8 @@
               <div class="row">
                 
                 <div class="form-group col-md-8">
-                  <label class="required">Field Input Cost</label>
-                  <input class="form-control" type="text" name="FieldInputByCostName" [(ngModel)]="model.FieldInputByCostName">
+                  <label class="required">Field Input</label>
+                  <input class="form-control" type="text" name="FieldInputCostName" [(ngModel)]="model.FieldInputCostName">
                 </div>
                 <div class="form-group col-md-4">
                   <label class="required">Field Unit Type</label>
@@ -72,7 +72,7 @@
         
         <div class="row mt-4">
           <div class="col">
-            <ag-grid-angular #fieldInputCostGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="fieldInputByCosts"
+            <ag-grid-angular #fieldInputCostGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="fieldInputCosts"
               [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (cellValueChanged)="onCellValueChanged($event)">
             </ag-grid-angular>
           </div>

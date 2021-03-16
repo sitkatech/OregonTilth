@@ -15,7 +15,7 @@ namespace OregonTilth.EFModels.Entities
     {
         public FieldUnitType()
         {
-            FieldInputByCosts = new HashSet<FieldInputByCost>();
+            FieldInputCosts = new HashSet<FieldInputCost>();
         }
 
         [Key]
@@ -27,7 +27,7 @@ namespace OregonTilth.EFModels.Entities
         [StringLength(100)]
         public string FieldUnitTypeDisplayName { get; set; }
 
-        [InverseProperty(nameof(FieldInputByCost.FieldUnitType))]
-        public virtual ICollection<FieldInputByCost> FieldInputByCosts { get; set; }
+        [InverseProperty(nameof(FieldInputCost.FieldUnitType))]
+        public virtual ICollection<FieldInputCost> FieldInputCosts { get; set; }
     }
 }
