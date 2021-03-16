@@ -46,6 +46,7 @@ export class MachineryComponent implements OnInit {
   private getWorkbookRequest: any;
   private addMachineryRequest: any;
   public model: MachineryCreateDto;
+  public richTextTypeID : number = CustomRichTextType.MachineryCostForm;
 
   public getMachineryRequest: any;
   public machineries: MachineryDto[];
