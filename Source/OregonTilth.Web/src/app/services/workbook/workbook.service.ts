@@ -23,6 +23,8 @@ import { TransplantProductionInputCreateDto } from 'src/app/shared/models/forms/
 import { TransplantProductionInputDto } from 'src/app/shared/models/generated/transplant-production-input-dto';
 import { TransplantProductionTrayTypeCreateDto } from 'src/app/shared/models/forms/transplant-production-tray-types/transplant-production-tray-type-create-dto';
 import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
+import { TransplantProductionInputCostCreateDto } from 'src/app/shared/models/forms/transplant-production-input-costs/transplant-production-input-cost-create-dto';
+import { TransplantProductionInputCostDto } from 'src/app/shared/models/generated/transplant-production-input-cost-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -267,4 +269,25 @@ export class WorkbookService {
         return this.apiService.deleteToApi(route);
     }
 
+
+    // TP Input Cost Form
+    addTransplantProductionInputCost(transplantProductionInputCostCreateDto: TransplantProductionInputCostCreateDto): Observable<TransplantProductionInputCostDto[]> {
+        let route = `/workbooks/${transplantProductionInputCostCreateDto.WorkbookID}/forms/transplant-production-input-costs`;
+        return this.apiService.postToApi(route, transplantProductionInputCostCreateDto);
+    }
+
+    getTransplantProductionInputCosts(workbookID: number): Observable<TransplantProductionInputCostDto[]> {
+        let route = `workbooks/${workbookID}/forms/transplant-production-input-costs`;
+        return this.apiService.getFromApi(route);
+    }
+
+    updateTransplantProductionInputCost(transplantProductionInputCostDto: TransplantProductionInputCostDto): Observable<TransplantProductionInputCostDto> {
+        let route = `/workbooks/${transplantProductionInputCostDto.Workbook.WorkbookID}/forms/transplant-production-input-costs`;
+        return this.apiService.putToApi(route, transplantProductionInputCostDto);
+    }
+
+    deleteTransplantProductionInputCost(workbookID:number, transplantProductionInputCostID: number): Observable<TransplantProductionInputCostDto[]> {
+        let route = `workbooks/${workbookID}/forms/transplant-production-input-costs/${transplantProductionInputCostID}`;
+        return this.apiService.deleteToApi(route);
+    }
 }
