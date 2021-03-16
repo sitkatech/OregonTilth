@@ -19,6 +19,8 @@ import { FieldInputByCostDto } from 'src/app/shared/models/generated/field-input
 import { FieldInputByCostCreateDto } from 'src/app/shared/models/forms/field-input-by-cost/field-input-by-cost-create-dto';
 import { TransplantProductionLaborByCropCreateDto } from 'src/app/shared/models/forms/transplant-production-labor-by-crop/transplant-production-labor-by-crop-create-dto';
 import { TransplantProductionLaborActivityByCropDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-by-crop-dto';
+import { TransplantProductionInputCreateDto } from 'src/app/shared/models/forms/transplant-production-inputs/transplant-production-input-create-dto';
+import { TransplantProductionInputDto } from 'src/app/shared/models/generated/transplant-production-input-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -221,6 +223,25 @@ export class WorkbookService {
         return this.apiService.deleteToApi(route);
     }
 
+    // Transplant Production Inputs Form
+    addTransplantProductionInput(fieldInputByCostCreateDto: TransplantProductionInputCreateDto): Observable<TransplantProductionInputDto[]> {
+        let route = `/workbooks/${fieldInputByCostCreateDto.WorkbookID}/forms/transplant-production-inputs`;
+        return this.apiService.postToApi(route, fieldInputByCostCreateDto);
+    }
 
+    getTransplantProductionInputs(workbookID: number): Observable<TransplantProductionInputDto[]> {
+        let route = `workbooks/${workbookID}/forms/transplant-production-inputs`;
+        return this.apiService.getFromApi(route);
+    }
+
+    updateTransplantProductionInput(transplantProductionInput: TransplantProductionInputDto): Observable<TransplantProductionInputDto> {
+        let route = `/workbooks/${transplantProductionInput.Workbook.WorkbookID}/forms/transplant-production-inputs`;
+        return this.apiService.putToApi(route, transplantProductionInput);
+    }
+
+    deleteTransplantProductionInput(workbookID:number, transplantProductionInputID: number): Observable<TransplantProductionInputDto[]> {
+        let route = `workbooks/${workbookID}/forms/transplant-production-inputs/${transplantProductionInputID}`;
+        return this.apiService.deleteToApi(route);
+    }
 
 }
