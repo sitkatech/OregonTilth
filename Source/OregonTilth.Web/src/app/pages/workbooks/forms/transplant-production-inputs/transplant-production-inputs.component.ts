@@ -9,16 +9,10 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-labor-activity-dto';
-import { FieldLaborActivityCreateDto } from 'src/app/shared/models/forms/field-labor-activities/field-labor-activity-create-dto';
-import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/field-labor-activity-category-dto';
-import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
-import { TransplantProductionLaborActivityCreateDto } from 'src/app/shared/models/forms/transplant-production-labor-activities/transplant-production-labor-activity-create-dto';
-import { TransplantProductionLaborActivityDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-dto';
-import { TransplantProductionInputCreateDto } from 'src/app/shared/models/forms/transplant-production-inputs/transplant-production-labor-activity-create-dto';
 import { TransplantProductionInputDto } from 'src/app/shared/models/generated/transplant-production-input-dto';
+import { TransplantProductionInputCreateDto } from 'src/app/shared/models/forms/transplant-production-inputs/transplant-production-input-create-dto';
 
 @Component({
   selector: 'transplant-production-inputs',
