@@ -12,6 +12,11 @@ namespace OregonTilth.EFModels.Entities
     [Index(nameof(TransplantProductionTrayTypeName), nameof(WorkbookID), Name = "AK_TransplantProductionTrayType_TransplantProductionTrayTypeName_WorkbookID", IsUnique = true)]
     public partial class TransplantProductionTrayType
     {
+        public TransplantProductionTrayType()
+        {
+            TransplantProductionInputCosts = new HashSet<TransplantProductionInputCost>();
+        }
+
         [Key]
         public int TransplantProductionTrayTypeID { get; set; }
         public int WorkbookID { get; set; }
@@ -22,5 +27,7 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("TransplantProductionTrayTypes")]
         public virtual Workbook Workbook { get; set; }
+        [InverseProperty(nameof(TransplantProductionInputCost.TransplantProductionTrayType))]
+        public virtual ICollection<TransplantProductionInputCost> TransplantProductionInputCosts { get; set; }
     }
 }
