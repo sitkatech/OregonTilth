@@ -15,17 +15,17 @@ namespace OregonTilth.EFModels.Entities
                 .Select(x => TransplantProductionInputExtensionMethods.AsDto(x)).AsEnumerable();
         }
 
-        public static List<ErrorMessage> ValidateCreate(OregonTilthDbContext dbContext, TransplantProductionInputCreateDto transplantProductionLaborActivityCreateDto)
+        public static List<ErrorMessage> ValidateCreate(OregonTilthDbContext dbContext, TransplantProductionInputCreateDto transplantProductionInputCreateDto)
         {
             var result = new List<ErrorMessage>();
 
-            var userTransplantProductionInputsForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionLaborActivityCreateDto.WorkbookID).ToList();
-            if (userTransplantProductionInputsForWorkbook.Any(x => x.TransplantProductionInputName.ToLower() == transplantProductionLaborActivityCreateDto.TransplantProductionInputName.ToLower()))
+            var userTransplantProductionInputsForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionInputCreateDto.WorkbookID).ToList();
+            if (userTransplantProductionInputsForWorkbook.Any(x => x.TransplantProductionInputName.ToLower() == transplantProductionInputCreateDto.TransplantProductionInputName.ToLower()))
             {
                 result.Add(new ErrorMessage() { Type = "Transplant Production Input Name", Message = "Transplant Production Input Names must be unique within this workbook." });
             }
 
-            if (string.IsNullOrEmpty(transplantProductionLaborActivityCreateDto.TransplantProductionInputName))
+            if (string.IsNullOrEmpty(transplantProductionInputCreateDto.TransplantProductionInputName))
             {
                 result.Add(new ErrorMessage() { Type = "Transplant Production Input Name", Message = "Transplant Production Inputs must have a name." });
             }
@@ -33,18 +33,18 @@ namespace OregonTilth.EFModels.Entities
             return result;
         }
 
-        public static List<ErrorMessage> ValidateUpdate(OregonTilthDbContext dbContext, TransplantProductionInputDto transplantProductionLaborActivityDto)
+        public static List<ErrorMessage> ValidateUpdate(OregonTilthDbContext dbContext, TransplantProductionInputDto transplantProductionInputDto)
         {
             var result = new List<ErrorMessage>();
 
-            var userTransplantProductionInputsForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionLaborActivityDto.Workbook.WorkbookID).ToList();
-            if (userTransplantProductionInputsForWorkbook.Any(x => x.TransplantProductionInputName.ToLower() == transplantProductionLaborActivityDto.TransplantProductionInputName.ToLower()
-                                                                            && transplantProductionLaborActivityDto.TransplantProductionInputID != x.TransplantProductionInputID))
+            var userTransplantProductionInputsForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionInputDto.Workbook.WorkbookID).ToList();
+            if (userTransplantProductionInputsForWorkbook.Any(x => x.TransplantProductionInputName.ToLower() == transplantProductionInputDto.TransplantProductionInputName.ToLower()
+                                                                            && transplantProductionInputDto.TransplantProductionInputID != x.TransplantProductionInputID))
             {
                 result.Add(new ErrorMessage() { Type = "Transplant Production Input Name", Message = "Transplant Production Input Names must be unique within this workbook." });
             }
 
-            if (string.IsNullOrEmpty(transplantProductionLaborActivityDto.TransplantProductionInputName))
+            if (string.IsNullOrEmpty(transplantProductionInputDto.TransplantProductionInputName))
             {
                 result.Add(new ErrorMessage() { Type = "Transplant Production Input Name", Message = "Transplant Production Inputs must have a name." });
             }
@@ -93,12 +93,12 @@ namespace OregonTilth.EFModels.Entities
             return GetDtoListByWorkbookID(dbContext, transplantProductionLaborActivityCreateDto.WorkbookID);
         }
 
-        public static TransplantProductionInputDto UpdateTransplantProductionInput(OregonTilthDbContext dbContext, TransplantProductionInputDto transplantProductionLaborActivityDto)
+        public static TransplantProductionInputDto UpdateTransplantProductionInput(OregonTilthDbContext dbContext, TransplantProductionInputDto transplantProductionInputDto)
         {
             var transplantProductionLaborActivity = dbContext.TransplantProductionInputs
-                .Single(x => x.TransplantProductionInputID == transplantProductionLaborActivityDto.TransplantProductionInputID);
+                .Single(x => x.TransplantProductionInputID == transplantProductionInputDto.TransplantProductionInputID);
 
-            transplantProductionLaborActivity.TransplantProductionInputName = transplantProductionLaborActivityDto.TransplantProductionInputName;
+            transplantProductionLaborActivity.TransplantProductionInputName = transplantProductionInputDto.TransplantProductionInputName;
 
             dbContext.SaveChanges();
             dbContext.Entry(transplantProductionLaborActivity).Reload();
