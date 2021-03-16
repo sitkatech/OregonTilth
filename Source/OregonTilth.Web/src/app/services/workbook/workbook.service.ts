@@ -21,6 +21,8 @@ import { TransplantProductionLaborByCropCreateDto } from 'src/app/shared/models/
 import { TransplantProductionLaborActivityByCropDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-by-crop-dto';
 import { TransplantProductionInputCreateDto } from 'src/app/shared/models/forms/transplant-production-inputs/transplant-production-input-create-dto';
 import { TransplantProductionInputDto } from 'src/app/shared/models/generated/transplant-production-input-dto';
+import { TransplantProductionTrayTypeCreateDto } from 'src/app/shared/models/forms/transplant-production-tray-types/transplant-production-tray-type-create-dto';
+import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -224,9 +226,9 @@ export class WorkbookService {
     }
 
     // Transplant Production Inputs Form
-    addTransplantProductionInput(fieldInputByCostCreateDto: TransplantProductionInputCreateDto): Observable<TransplantProductionInputDto[]> {
-        let route = `/workbooks/${fieldInputByCostCreateDto.WorkbookID}/forms/transplant-production-inputs`;
-        return this.apiService.postToApi(route, fieldInputByCostCreateDto);
+    addTransplantProductionInput(transplantProductionInputCreateDto: TransplantProductionInputCreateDto): Observable<TransplantProductionInputDto[]> {
+        let route = `/workbooks/${transplantProductionInputCreateDto.WorkbookID}/forms/transplant-production-inputs`;
+        return this.apiService.postToApi(route, transplantProductionInputCreateDto);
     }
 
     getTransplantProductionInputs(workbookID: number): Observable<TransplantProductionInputDto[]> {
@@ -241,6 +243,27 @@ export class WorkbookService {
 
     deleteTransplantProductionInput(workbookID:number, transplantProductionInputID: number): Observable<TransplantProductionInputDto[]> {
         let route = `workbooks/${workbookID}/forms/transplant-production-inputs/${transplantProductionInputID}`;
+        return this.apiService.deleteToApi(route);
+    }
+
+    // Transplant Production Tray Types Form
+    addTransplantProductionTrayType(transplantProductionTrayTypeCreateDto: TransplantProductionTrayTypeCreateDto): Observable<TransplantProductionTrayTypeDto[]> {
+        let route = `/workbooks/${transplantProductionTrayTypeCreateDto.WorkbookID}/forms/transplant-production-tray-types`;
+        return this.apiService.postToApi(route, transplantProductionTrayTypeCreateDto);
+    }
+
+    getTransplantProductionTrayTypes(workbookID: number): Observable<TransplantProductionTrayTypeDto[]> {
+        let route = `workbooks/${workbookID}/forms/transplant-production-tray-types`;
+        return this.apiService.getFromApi(route);
+    }
+
+    updateTransplantProductionTrayType(transplantProductionTrayTypeDto: TransplantProductionTrayTypeDto): Observable<TransplantProductionTrayTypeDto> {
+        let route = `/workbooks/${transplantProductionTrayTypeDto.Workbook.WorkbookID}/forms/transplant-production-tray-types`;
+        return this.apiService.putToApi(route, transplantProductionTrayTypeDto);
+    }
+
+    deleteTransplantProductionTrayType(workbookID:number, transplantProductionTrayTypeID: number): Observable<TransplantProductionTrayTypeDto[]> {
+        let route = `workbooks/${workbookID}/forms/transplant-production-tray-types/${transplantProductionTrayTypeID}`;
         return this.apiService.deleteToApi(route);
     }
 

@@ -30,6 +30,7 @@ import { TransplantProductionLaborActivitiesComponent } from './pages/workbooks/
 import { FieldInputCostsComponent } from './pages/workbooks/forms/field-input-costs/field-input-costs.component';
 import { TransplantProductionLaborByCropComponent } from './pages/workbooks/forms/transplant-production-labor-by-crop/transplant-production-labor-by-crop.component';
 import { TransplantProductionInputsComponent } from './pages/workbooks/forms/transplant-production-inputs/transplant-production-inputs.component';
+import { TransplantProductionTrayTypesComponent } from './pages/workbooks/forms/transplant-production-tray-types/transplant-production-tray-types.component';
 
 const routes: Routes = [
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -51,6 +52,7 @@ const routes: Routes = [
   { path: "workbooks/:id/forms/field-labor-activities", component: FieldLaborActivitiesComponent},
   { path: "workbooks/:id/forms/transplant-production-labor-activities", component: TransplantProductionLaborActivitiesComponent},
   { path: "workbooks/:id/forms/transplant-production-inputs", component: TransplantProductionInputsComponent},
+  { path: "workbooks/:id/forms/transplant-production-tray-types", component: TransplantProductionTrayTypesComponent},
   { path: "workbooks/:id/forms/machinery", component: MachineryComponent},
   { path: "workbooks/:id/forms/field-labor-by-crop", component: FieldLaborByCropComponent},
   { path: "workbooks/:id/forms/transplant-production-labor-by-crop", component: TransplantProductionLaborByCropComponent},
