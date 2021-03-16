@@ -55,6 +55,7 @@ import { AppInsightsService } from './shared/services/app-insights.service';
 import { GlobalErrorHandlerService } from './shared/services/global-error-handler.service';
 import { DecimalEditor } from './shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { TransplantProductionInputsComponent } from './pages/workbooks/forms/transplant-production-inputs/transplant-production-inputs.component';
+import { TransplantProductionTrayTypesComponent } from './pages/workbooks/forms/transplant-production-tray-types/transplant-production-tray-types.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -87,6 +88,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     FieldLaborByCropComponent,
     TransplantProductionLaborByCropComponent,
     TransplantProductionInputsComponent,
+    TransplantProductionTrayTypesComponent,
     CropsComponent,
     CropUnitsComponent,
     EditWorkbookComponent,
