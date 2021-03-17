@@ -22,6 +22,9 @@ namespace OregonTilth.EFModels.Entities
         [StringLength(8000)]
         public string Notes { get; set; }
 
+        [ForeignKey(nameof(FieldStandardTimeID))]
+        [InverseProperty("TimeStudies")]
+        public virtual FieldStandardTime FieldStandardTime { get; set; }
         [ForeignKey(nameof(TimeStudyTypeID))]
         [InverseProperty("TimeStudies")]
         public virtual TimeStudyType TimeStudyType { get; set; }

@@ -25,6 +25,7 @@ import { TransplantProductionTrayTypeCreateDto } from 'src/app/shared/models/for
 import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
 import { TransplantProductionInputCostCreateDto } from 'src/app/shared/models/forms/transplant-production-input-costs/transplant-production-input-cost-create-dto';
 import { TransplantProductionInputCostDto } from 'src/app/shared/models/generated/transplant-production-input-cost-dto';
+import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-summary-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -289,5 +290,11 @@ export class WorkbookService {
     deleteTransplantProductionInputCost(workbookID:number, transplantProductionInputCostID: number): Observable<TransplantProductionInputCostDto[]> {
         let route = `workbooks/${workbookID}/forms/transplant-production-input-costs/${transplantProductionInputCostID}`;
         return this.apiService.deleteToApi(route);
+    }
+
+    // Field Standard Times
+    getFieldStandardTimes(workbookID: number): Observable<FieldStandardTimeSummaryDto[]> {
+        let route = `workbooks/${workbookID}/forms/field-standard-times`;
+        return this.apiService.getFromApi(route);
     }
 }

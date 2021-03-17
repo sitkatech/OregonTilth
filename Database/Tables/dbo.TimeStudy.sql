@@ -17,6 +17,11 @@ CREATE TABLE [dbo].[TimeStudy](
 ) ON [PRIMARY]
 
 GO
+ALTER TABLE [dbo].[TimeStudy]  WITH CHECK ADD  CONSTRAINT [FK_TimeStudy_FieldStandardTime_FieldStandardTimeID] FOREIGN KEY([FieldStandardTimeID])
+REFERENCES [dbo].[FieldStandardTime] ([FieldStandardTimeID])
+GO
+ALTER TABLE [dbo].[TimeStudy] CHECK CONSTRAINT [FK_TimeStudy_FieldStandardTime_FieldStandardTimeID]
+GO
 ALTER TABLE [dbo].[TimeStudy]  WITH CHECK ADD  CONSTRAINT [FK_TimeStudy_TimeStudyType_TimeStudyTypeID] FOREIGN KEY([TimeStudyTypeID])
 REFERENCES [dbo].[TimeStudyType] ([TimeStudyTypeID])
 GO

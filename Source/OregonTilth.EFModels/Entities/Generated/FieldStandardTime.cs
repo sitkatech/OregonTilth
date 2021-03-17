@@ -11,6 +11,11 @@ namespace OregonTilth.EFModels.Entities
     [Table("FieldStandardTime")]
     public partial class FieldStandardTime
     {
+        public FieldStandardTime()
+        {
+            TimeStudies = new HashSet<TimeStudy>();
+        }
+
         [Key]
         public int FieldStandardTimeID { get; set; }
         public int WorkbookID { get; set; }
@@ -18,7 +23,7 @@ namespace OregonTilth.EFModels.Entities
         public int LaborTypeID { get; set; }
         public int MachineryID { get; set; }
         public int FieldUnitTypeID { get; set; }
-        [Column(TypeName = "decimal(18, 0)")]
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal? StandardTimePerUnit { get; set; }
 
         [ForeignKey(nameof(FieldLaborActivityID))]
@@ -36,5 +41,7 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("FieldStandardTimes")]
         public virtual Workbook Workbook { get; set; }
+        [InverseProperty(nameof(TimeStudy.FieldStandardTime))]
+        public virtual ICollection<TimeStudy> TimeStudies { get; set; }
     }
 }

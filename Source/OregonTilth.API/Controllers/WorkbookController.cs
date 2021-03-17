@@ -797,5 +797,19 @@ namespace OregonTilth.API.Controllers
             return Ok(returnDtos);
         }
         #endregion "Transplant Production Input Costs Form"
+
+        #region "Field Standard Times"
+        
+
+        [HttpGet("workbooks/{workbookID}/forms/field-standard-times")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> GetFieldStandardTimes([FromRoute] int workbookID)
+        {
+            var fieldStandardTimes = FieldStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldStandardTimes);
+        }
+
+        
+        #endregion "Field Standard Times"
     }
 }

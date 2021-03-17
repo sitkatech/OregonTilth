@@ -1,0 +1,31 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item" aria-current="page">
+        <a routerLink="/workbooks">Workbooks</a>
+      </li>
+      <li *ngIf="workbook" class="breadcrumb-item" aria-current="page">
+        <a routerLink="/workbooks/{{workbook.WorkbookID}}">{{workbook.WorkbookName}}</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Field Standard Times</li>
+  </ol>
+</nav>
+
+<div class="container">
+  <div class="row mb-2">
+    <div class="col-sm-2">
+      <side-nav [workbook]="workbook"  *ngIf="workbook"></side-nav>
+    </div>
+    <div class="col-sm-10">
+        <app-alert-display></app-alert-display>
+        <h1>Field Standard Times</h1>
+        <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+        <div class="row mt-4">
+          <div class="col">
+            <ag-grid-angular #fieldLaborActivitiesGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="fieldLaborActivities"
+              [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (cellValueChanged)="onCellValueChanged($event)">
+            </ag-grid-angular>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

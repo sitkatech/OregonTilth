@@ -57,6 +57,7 @@ import { DecimalEditor } from './shared/components/ag-grid/decimal-editor/decima
 import { TransplantProductionInputsComponent } from './pages/workbooks/forms/transplant-production-inputs/transplant-production-inputs.component';
 import { TransplantProductionTrayTypesComponent } from './pages/workbooks/forms/transplant-production-tray-types/transplant-production-tray-types.component';
 import { TransplantProductionInputCostsComponent } from './pages/workbooks/forms/transplant-production-input-costs/transplant-production-input-costs.component';
+import { FieldStandardTimesComponent } from './pages/workbooks/forms/field-standard-times/field-standard-times.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -91,6 +92,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     TransplantProductionLaborByCropComponent,
     TransplantProductionInputsComponent,
     TransplantProductionTrayTypesComponent,
+    FieldStandardTimesComponent,
     CropsComponent,
     CropUnitsComponent,
     EditWorkbookComponent,
