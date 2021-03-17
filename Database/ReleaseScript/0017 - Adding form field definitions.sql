@@ -1,6 +1,5 @@
-MERGE INTO dbo.FieldDefinitionType AS Target
-USING (VALUES
-(1, 'Name', 'Name'),
+insert into dbo.FieldDefinitionType (FieldDefinitionTypeID, FieldDefinitionTypeName, FieldDefinitionTypeDisplayName)
+values 
 (2, 'FieldLaborActivityForm', 'Field Labor Activities'),
 (3, 'MachineryCostForm', 'Machinery Costs'),
 (4, 'FieldStandardTimesForm', 'Field Standard Times'),
@@ -24,15 +23,7 @@ USING (VALUES
 (22, 'InSeason', 'In-Season'),
 (23, 'PostSeason', 'Post-Season'),
 (24, 'Results', 'Results')
-)
-AS Source (FieldDefinitionTypeID, FieldDefinitionTypeName, FieldDefinitionTypeDisplayName)
-ON Target.FieldDefinitionTypeID = Source.FieldDefinitionTypeID
-WHEN MATCHED THEN
-UPDATE SET
-	FieldDefinitionTypeName = Source.FieldDefinitionTypeName,
-	FieldDefinitionTypeDisplayName = Source.FieldDefinitionTypeDisplayName
-WHEN NOT MATCHED BY TARGET THEN
-	INSERT (FieldDefinitionTypeID, FieldDefinitionTypeName, FieldDefinitionTypeDisplayName)
-	VALUES (FieldDefinitionTypeID, FieldDefinitionTypeName, FieldDefinitionTypeDisplayName)
-WHEN NOT MATCHED BY SOURCE THEN
-	DELETE;
+
+insert into dbo.FieldDefinition (FieldDefinitionTypeID, FieldDefinitionValue)
+select FieldDefinitionTypeID, 'Default definition for ' + FieldDefinitionTypeDisplayName
+from dbo.FieldDefinitionType

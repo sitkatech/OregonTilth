@@ -7,6 +7,9 @@
         .navbar-nav {
             .nav-link {
                 padding:.25em 0;
+                &.active {
+                    font-weight:700;
+                }
             }
         }
         h4 {
