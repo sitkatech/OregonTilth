@@ -7,7 +7,7 @@ CREATE TABLE [dbo].[FieldInputByCrop](
 	[WorkbookID] [int] NOT NULL,
 	[CropID] [int] NOT NULL,
 	[FieldInputByCostID] [int] NOT NULL,
-	[Occurrences] [decimal](18, 4) NOT NULL,
+	[Occurrences] [decimal](18, 4) NULL,
  CONSTRAINT [PK_FieldInputByCrop_FieldInputByCropID] PRIMARY KEY CLUSTERED 
 (
 	[FieldInputByCropID] ASC
