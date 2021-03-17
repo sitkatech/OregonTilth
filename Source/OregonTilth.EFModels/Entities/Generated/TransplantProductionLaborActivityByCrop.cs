@@ -19,7 +19,7 @@ namespace OregonTilth.EFModels.Entities
         public int TransplantProductionLaborActivityID { get; set; }
         public int? PhaseID { get; set; }
         [Column(TypeName = "decimal(18, 4)")]
-        public decimal? Occurrances { get; set; }
+        public decimal? Occurrences { get; set; }
 
         [ForeignKey(nameof(CropID))]
         [InverseProperty("TransplantProductionLaborActivityByCrops")]

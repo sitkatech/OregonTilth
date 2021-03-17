@@ -18,7 +18,7 @@ namespace OregonTilth.EFModels.Entities
                 Crop = fieldLaborByCrop.Crop.AsDto(),
                 FieldLaborActivity = fieldLaborByCrop.FieldLaborActivity.AsDto(),
                 LaborType = fieldLaborByCrop.LaborType.AsDto(),
-                Occurrances = fieldLaborByCrop.Occurrances
+                Occurrences = fieldLaborByCrop.Occurrences
             };
             DoCustomMappings(fieldLaborByCrop, fieldLaborByCropDto);
             return fieldLaborByCropDto;

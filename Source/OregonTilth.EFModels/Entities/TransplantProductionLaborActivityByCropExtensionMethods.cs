@@ -14,7 +14,7 @@ namespace OregonTilth.EFModels.Entities
                 TransplantProductionLaborActivity = tpLaborByCrop.TransplantProductionLaborActivity.AsSummaryDto(),
                 Crop = tpLaborByCrop.Crop.AsSummaryDto(),
                 Phase = tpLaborByCrop.Phase.AsDto(),
-                Occurrances = tpLaborByCrop.Occurrances
+                Occurrences = tpLaborByCrop.Occurrences
             };
 
 

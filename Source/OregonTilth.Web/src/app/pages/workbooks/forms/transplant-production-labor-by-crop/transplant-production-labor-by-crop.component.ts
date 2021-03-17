@@ -170,8 +170,8 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         filter: true,
       },
       {
-        headerName: 'Occurrances', 
-        field: 'Occurrances',
+        headerName: 'Occurrences', 
+        field: 'Occurrences',
         editable: true,
         cellEditorFramework: DecimalEditor,
         sortable: true, 
