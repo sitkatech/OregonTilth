@@ -14,5 +14,9 @@
             font-weight:700;
         }
     }
-    
+    .nav-links-disabled {
+        .nav-link {
+            pointer-events: none;
+        }
+    }
 }

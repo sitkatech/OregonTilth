@@ -28,6 +28,15 @@ export class SideNavComponent implements OnInit {
         });
     }
 
+    getWorkbookID() {
+        return this.workbook ? this.workbook.WorkbookID : -1;
+    }
+
+    navLinksDisabled() {
+        if(this.workbook) return false;
+        return true;
+    }
+
   ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();
     this.authenticationService.dispose();
