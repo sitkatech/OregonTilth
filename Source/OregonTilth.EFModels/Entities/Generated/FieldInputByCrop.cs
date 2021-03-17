@@ -17,7 +17,7 @@ namespace OregonTilth.EFModels.Entities
         public int CropID { get; set; }
         public int FieldInputByCostID { get; set; }
         [Column(TypeName = "decimal(18, 4)")]
-        public decimal Occurances { get; set; }
+        public decimal Occurrences { get; set; }
 
         [ForeignKey(nameof(CropID))]
         [InverseProperty("FieldInputByCrops")]

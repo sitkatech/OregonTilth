@@ -11,7 +11,7 @@ export class FieldInputByCropDto {
 	Workbook : WorkbookDto
 	Crop : CropDto
 	FieldInputByCost : FieldInputCostDto
-	Occurances : number
+	Occurrences : number
 
     constructor(obj?: any) {
         Object.assign(this, obj);

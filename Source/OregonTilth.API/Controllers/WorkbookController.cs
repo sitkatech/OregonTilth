@@ -160,7 +160,6 @@ namespace OregonTilth.API.Controllers
 
         #endregion "Field Labor Activities Form"
 
-
         #region "Machinery Form"
         [HttpPost("workbooks/{workbookID}/forms/machinery")]
         [LoggedInUnclassifiedFeature]
@@ -738,5 +737,68 @@ namespace OregonTilth.API.Controllers
         }
 
         #endregion "Transplant Production Tray Types Form"
+
+        #region Field Input By Crop Form
+        [HttpPost("workbooks/{workbookID}/forms/field-input-by-crop")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<FieldInputByCropDto>> CreateFieldInputByCrop([FromBody] FieldInputByCropCreateDto fieldInputByCropCreateDto)
+        {
+            var validationMessages = FieldInputByCrop.ValidateCreate(_dbContext, fieldInputByCropCreateDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var fieldInputByCropDtos = FieldInputByCrop.CreateBulk(_dbContext, fieldInputByCropCreateDto);
+            return Ok(fieldInputByCropDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/field-input-by-crop")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<FieldInputByCropDto>> GetFieldInputByCrops([FromRoute] int workbookID)
+        {
+            var fieldInputByCrops = FieldInputByCrop.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldInputByCrops);
+        }
+
+        [HttpPut("workbooks/{workbookID}/forms/field-input-by-crop")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<FieldInputByCropDto> UpdateFieldInputByCrop([FromBody] FieldInputByCropDto fieldInputByCropDto)
+        {
+            var validationMessages = FieldInputByCrop.ValidateUpdate(_dbContext, fieldInputByCropDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var fieldInputByCropDtos = FieldInputByCrop.UpdateFieldInputByCrop(_dbContext, fieldInputByCropDto);
+            return Ok(fieldInputByCropDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/field-input-by-crop/{fieldInputByCropID}")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<FieldInputByCropDto>> DeleteFieldInputByCrop([FromRoute] int workbookID, [FromRoute] int fieldInputByCropID)
+        {
+            var validationMessages = FieldInputByCrop.ValidateDelete(_dbContext, fieldInputByCropID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            FieldInputByCrop.Delete(_dbContext, fieldInputByCropID);
+
+            var returnDtos = FieldInputByCrop.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+        #endregion
     }
 }
