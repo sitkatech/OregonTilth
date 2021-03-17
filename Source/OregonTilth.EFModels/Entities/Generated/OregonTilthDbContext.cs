@@ -39,6 +39,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<TpOrDsType> TpOrDsTypes { get; set; }
         public virtual DbSet<TransplantProductionInput> TransplantProductionInputs { get; set; }
+        public virtual DbSet<TransplantProductionInputCost> TransplantProductionInputCosts { get; set; }
         public virtual DbSet<TransplantProductionLaborActivity> TransplantProductionLaborActivities { get; set; }
         public virtual DbSet<TransplantProductionLaborActivityByCrop> TransplantProductionLaborActivityByCrops { get; set; }
         public virtual DbSet<TransplantProductionTrayType> TransplantProductionTrayTypes { get; set; }
@@ -312,6 +313,27 @@ namespace OregonTilth.EFModels.Entities
 
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.TransplantProductionInputs)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<TransplantProductionInputCost>(entity =>
+            {
+                entity.Property(e => e.Notes).IsUnicode(false);
+
+                entity.HasOne(d => d.TransplantProductionInput)
+                    .WithMany(p => p.TransplantProductionInputCosts)
+                    .HasForeignKey(d => d.TransplantProductionInputID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.TransplantProductionTrayType)
+                    .WithMany(p => p.TransplantProductionInputCosts)
+                    .HasForeignKey(d => d.TransplantProductionTrayTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TransplantProductionTrayTypeCost_TransplantProductionTrayType_TransplantProductionTrayTypeID");
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TransplantProductionInputCosts)
                     .HasForeignKey(d => d.WorkbookID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });

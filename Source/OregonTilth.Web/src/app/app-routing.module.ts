@@ -31,6 +31,7 @@ import { FieldInputCostsComponent } from './pages/workbooks/forms/field-input-co
 import { TransplantProductionLaborByCropComponent } from './pages/workbooks/forms/transplant-production-labor-by-crop/transplant-production-labor-by-crop.component';
 import { TransplantProductionInputsComponent } from './pages/workbooks/forms/transplant-production-inputs/transplant-production-inputs.component';
 import { TransplantProductionTrayTypesComponent } from './pages/workbooks/forms/transplant-production-tray-types/transplant-production-tray-types.component';
+import { TransplantProductionInputCostsComponent } from './pages/workbooks/forms/transplant-production-input-costs/transplant-production-input-costs.component';
 import { FieldInputByCropComponent } from './pages/workbooks/forms/field-input-by-crop/field-input-by-crop.component';
 
 const routes: Routes = [
@@ -61,6 +62,7 @@ const routes: Routes = [
   { path: "workbooks/:id/forms/crops", component: CropsComponent},
   { path: "workbooks/:id/forms/crop-units", component: CropUnitsComponent},
   { path: "workbooks/:id/forms/field-input-costs", component: FieldInputCostsComponent},
+  { path: "workbooks/:id/forms/transplant-production-input-costs", component: TransplantProductionInputCostsComponent},
   { path: "workbooks/:id", component: WorkbookDetailComponent},
   { path: "login-callback", component: LoginCallbackComponent },
   { path: "create-user-callback", component: CreateUserCallbackComponent },

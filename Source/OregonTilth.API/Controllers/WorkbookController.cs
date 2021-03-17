@@ -738,6 +738,65 @@ namespace OregonTilth.API.Controllers
 
         #endregion "Transplant Production Tray Types Form"
 
+        #region "Transplant Production Input Costs Form"
+        [HttpPost("workbooks/{workbookID}/forms/transplant-production-input-costs")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> CreateTransplantProductionInputCost([FromBody] TransplantProductionInputCostCreateDto transplantProductionInputCostCreateDto)
+        {
+            var validationMessages = TransplantProductionInputCost.ValidateCreate(_dbContext, transplantProductionInputCostCreateDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transplantProductionInputCostDtos = TransplantProductionInputCost.CreateNewTransplantProductionInputCost(_dbContext, transplantProductionInputCostCreateDto);
+            return Ok(transplantProductionInputCostDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/transplant-production-input-costs")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> GetTransplantProductionInputCosts([FromRoute] int workbookID)
+        {
+            var transplantProductionInputCosts = TransplantProductionInputCost.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(transplantProductionInputCosts);
+        }
+
+        [HttpPut("workbooks/{workbookID}/forms/transplant-production-input-costs")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<TransplantProductionInputCostDto> UpdateTransplantProductionInputCost([FromBody] TransplantProductionInputCostDto transplantProductionInputCostDto)
+        {
+            var validationMessages = TransplantProductionInputCost.ValidateUpdate(_dbContext, transplantProductionInputCostDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transplantProductionInputCostDtos = TransplantProductionInputCost.UpdateTransplantProductionInputCost(_dbContext, transplantProductionInputCostDto);
+            return Ok(transplantProductionInputCostDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/transplant-production-input-costs/{transplantProductionInputCostID}")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> DeleteTransplantProductionInputCost([FromRoute] int workbookID, [FromRoute] int transplantProductionInputCostID)
+        {
+            var validationMessages = TransplantProductionInputCost.ValidateDelete(_dbContext, transplantProductionInputCostID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            TransplantProductionInputCost.Delete(_dbContext, transplantProductionInputCostID);
+
+            var returnDtos = TransplantProductionInputCost.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+        #endregion "Transplant Production Input Costs Form"
+
         #region Field Input By Crop Form
         [HttpPost("workbooks/{workbookID}/forms/field-input-by-crop")]
         [LoggedInUnclassifiedFeature]
