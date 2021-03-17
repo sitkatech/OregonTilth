@@ -6,7 +6,7 @@
         <li *ngIf="workbook" class="breadcrumb-item active" aria-current="page">{{workbook.WorkbookName}}</li>
     </ol>
 </nav>
-<div class="container-fluid" style="position:relative;">
+<div class="container-fluid">
     <div class="row mb-2">
       <side-nav [workbook]="workbook" *ngIf="workbook" class="col-lg-2"></side-nav>
       <div class="col-lg-8">
