@@ -13,7 +13,7 @@ export class TransplantProductionLaborActivityByCropDto {
 	Crop : CropDto
 	TransplantProductionLaborActivity : TransplantProductionLaborActivityDto
 	Phase : PhaseDto
-	Occurrances : number
+	Occurrences : number
 
     constructor(obj?: any) {
         Object.assign(this, obj);

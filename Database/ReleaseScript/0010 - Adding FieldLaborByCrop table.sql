@@ -5,7 +5,7 @@ CREATE TABLE dbo.FieldLaborByCrop(
     CropID int NOT NULL CONSTRAINT FK_FieldLaborByCrop_Crop_CropID FOREIGN KEY REFERENCES dbo.Crop (CropID),
     FieldLaborActivityID int not null CONSTRAINT FK_FieldLaborByCrop_FieldLaborActivity_FieldLaborActivityID FOREIGN KEY REFERENCES dbo.FieldLaborActivity (FieldLaborActivityID),
     LaborTypeID int not null CONSTRAINT FK_FieldLaborByCrop_LaborType_LaborTypeID FOREIGN KEY REFERENCES dbo.LaborType (LaborTypeID),
-    Occurrances decimal(18,4) not null CONSTRAINT CK_FieldLaborByCrop_Occurrances_Greater_Than_Zero CHECK (Occurrances > 0)
+    Occurrences decimal(18,4) not null CONSTRAINT CK_FieldLaborByCrop_Occurrences_Greater_Than_Zero CHECK (Occurrences > 0)
 )
 
 -- only 1 unique per crop/field labor activity/labor type

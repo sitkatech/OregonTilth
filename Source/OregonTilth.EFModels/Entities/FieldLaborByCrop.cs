@@ -29,9 +29,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Field Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, Field Labor Activity, and Labor Type." });
             }
 
-            if (Math.Round(fieldLaborByCropCreateDto.Occurrances, 4) <= 0)
+            if (Math.Round(fieldLaborByCropCreateDto.Occurrences, 4) <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Occurrances", Message = "Occurrances cannot be less than zero." });
+                result.Add(new ErrorMessage() { Type = "Occurrences", Message = "Occurrences cannot be less than zero." });
             }
 
             return result;
@@ -51,9 +51,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Field Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, Field Labor Activity, and Labor Type." });
             }
 
-            if (Math.Round(fieldLaborByCropDto.Occurrances, 4) <= 0)
+            if (Math.Round(fieldLaborByCropDto.Occurrences, 4) <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Occurrances", Message = "Occurrances must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Occurrences", Message = "Occurrences must be greater than 0." });
             }
             
             return result;
@@ -95,7 +95,7 @@ namespace OregonTilth.EFModels.Entities
                 CropID = fieldLaborByCropCreateDto.CropID,
                 FieldLaborActivityID = fieldLaborByCropCreateDto.FieldLaborActivityID,
                 LaborTypeID = fieldLaborByCropCreateDto.LaborTypeID,
-                Occurrances = fieldLaborByCropCreateDto.Occurrances
+                Occurrences = fieldLaborByCropCreateDto.Occurrences
             };
 
             dbContext.FieldLaborByCrops.Add(fieldLaborByCrop);
@@ -115,7 +115,7 @@ namespace OregonTilth.EFModels.Entities
             fieldLaborByCrop.CropID = fieldLaborByCropDto.Crop.CropID;
             fieldLaborByCrop.FieldLaborActivityID = fieldLaborByCropDto.FieldLaborActivity.FieldLaborActivityID;
             fieldLaborByCrop.LaborTypeID = fieldLaborByCropDto.LaborType.LaborTypeID;
-            fieldLaborByCrop.Occurrances = fieldLaborByCropDto.Occurrances;
+            fieldLaborByCrop.Occurrences = fieldLaborByCropDto.Occurrences;
 
             dbContext.SaveChanges();
             dbContext.Entry(fieldLaborByCrop).Reload();

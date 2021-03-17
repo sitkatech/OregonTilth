@@ -8,7 +8,7 @@ CREATE TABLE [dbo].[FieldLaborByCrop](
 	[CropID] [int] NOT NULL,
 	[FieldLaborActivityID] [int] NOT NULL,
 	[LaborTypeID] [int] NOT NULL,
-	[Occurrances] [decimal](18, 4) NOT NULL,
+	[Occurrences] [decimal](18, 4) NOT NULL,
  CONSTRAINT [PK_FieldLaborByCrop_FieldLaborByCropID] PRIMARY KEY CLUSTERED 
 (
 	[FieldLaborByCropID] ASC
@@ -43,6 +43,6 @@ REFERENCES [dbo].[Workbook] ([WorkbookID])
 GO
 ALTER TABLE [dbo].[FieldLaborByCrop] CHECK CONSTRAINT [FK_FieldLaborByCrop_Workbook_WorkbookID]
 GO
-ALTER TABLE [dbo].[FieldLaborByCrop]  WITH CHECK ADD  CONSTRAINT [CK_FieldLaborByCrop_Occurrances_Greater_Than_Zero] CHECK  (([Occurrances]>(0)))
+ALTER TABLE [dbo].[FieldLaborByCrop]  WITH CHECK ADD  CONSTRAINT [CK_FieldLaborByCrop_Occurrences_Greater_Than_Zero] CHECK  (([Occurrences]>(0)))
 GO
-ALTER TABLE [dbo].[FieldLaborByCrop] CHECK CONSTRAINT [CK_FieldLaborByCrop_Occurrances_Greater_Than_Zero]
+ALTER TABLE [dbo].[FieldLaborByCrop] CHECK CONSTRAINT [CK_FieldLaborByCrop_Occurrences_Greater_Than_Zero]

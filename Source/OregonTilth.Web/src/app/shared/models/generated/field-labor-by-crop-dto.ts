@@ -13,7 +13,7 @@ export class FieldLaborByCropDto {
 	Crop : CropDto
 	FieldLaborActivity : FieldLaborActivityDto
 	LaborType : LaborTypeDto
-	Occurrances : number
+	Occurrences : number
 
     constructor(obj?: any) {
         Object.assign(this, obj);

@@ -14,6 +14,6 @@ namespace OregonTilth.Models.DataTransferObjects
         public CropDto Crop { get; set; }
         public TransplantProductionLaborActivityDto TransplantProductionLaborActivity { get; set; }
         public PhaseDto Phase { get; set; }
-        public decimal? Occurrances { get; set; }
+        public decimal? Occurrences { get; set; }
     }
 }

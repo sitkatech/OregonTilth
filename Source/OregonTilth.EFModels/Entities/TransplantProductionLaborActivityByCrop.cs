@@ -37,10 +37,10 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "TP Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, TP Labor Activity, and Labor Type." });
             }
 
-            if (transplantProductionLaborActivityByCropDto.Occurrances != null 
-                && Math.Round((decimal) transplantProductionLaborActivityByCropDto.Occurrances, 4) <= 0)
+            if (transplantProductionLaborActivityByCropDto.Occurrences != null 
+                && Math.Round((decimal) transplantProductionLaborActivityByCropDto.Occurrences, 4) <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Occurrances", Message = "Occurrances must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Occurrences", Message = "Occurrences must be greater than 0." });
             }
 
             return result;
@@ -117,7 +117,7 @@ namespace OregonTilth.EFModels.Entities
             fieldLaborByCrop.CropID = transplantProductionLaborActivityByCropDto.Crop.CropID;
             fieldLaborByCrop.TransplantProductionLaborActivityID = transplantProductionLaborActivityByCropDto.TransplantProductionLaborActivity.TransplantProductionLaborActivityID;
             fieldLaborByCrop.PhaseID = transplantProductionLaborActivityByCropDto.Phase.PhaseID;
-            fieldLaborByCrop.Occurrances = transplantProductionLaborActivityByCropDto.Occurrances;
+            fieldLaborByCrop.Occurrences = transplantProductionLaborActivityByCropDto.Occurrences;
 
             dbContext.SaveChanges();
             dbContext.Entry(fieldLaborByCrop).Reload();
