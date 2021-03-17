@@ -1,9 +1,9 @@
-//import { TransplantProductionLaborActivityDto } from "../../generated/transplant-production-labor-activity-dto";
+import { FieldInputCostDto } from "../../generated/field-input-cost-dto";
 
 export class FieldInputByCropCreateDto {
     WorkbookID: number;
     CropID: number;
-    //TransplantProductionLaborActivities: TransplantProductionLaborActivityDto[];
+    FieldInputCosts: FieldInputCostDto[];
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

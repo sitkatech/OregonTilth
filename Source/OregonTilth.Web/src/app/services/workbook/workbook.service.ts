@@ -23,6 +23,8 @@ import { TransplantProductionInputCreateDto } from 'src/app/shared/models/forms/
 import { TransplantProductionInputDto } from 'src/app/shared/models/generated/transplant-production-input-dto';
 import { TransplantProductionTrayTypeCreateDto } from 'src/app/shared/models/forms/transplant-production-tray-types/transplant-production-tray-type-create-dto';
 import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
+import { FieldInputByCropDto } from 'src/app/shared/models/generated/field-input-by-crop-dto';
+import { FieldInputByCropCreateDto } from 'src/app/shared/models/forms/field-input-by-crop/field-input-by-crop-create-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -264,6 +266,27 @@ export class WorkbookService {
 
     deleteTransplantProductionTrayType(workbookID:number, transplantProductionTrayTypeID: number): Observable<TransplantProductionTrayTypeDto[]> {
         let route = `workbooks/${workbookID}/forms/transplant-production-tray-types/${transplantProductionTrayTypeID}`;
+        return this.apiService.deleteToApi(route);
+    }
+
+    // Field Input By Crop Form
+    addFieldInputByCrop(fieldInputByCropCreateDto: FieldInputByCropCreateDto): Observable<FieldInputByCropDto[]> {
+        let route = `/workbooks/${fieldInputByCropCreateDto.WorkbookID}/forms/field-input-by-crop`;
+        return this.apiService.postToApi(route, fieldInputByCropCreateDto);
+    }
+
+    getFieldInputByCrops(workbookID: number): Observable<FieldInputByCropDto[]> {
+        let route = `workbooks/${workbookID}/forms/field-input-by-crop`;
+        return this.apiService.getFromApi(route);
+    }
+
+    updateFieldInputByCrop(fieldInputByCrop: FieldInputByCropDto): Observable<FieldInputByCropDto> {
+        let route = `/workbooks/${fieldInputByCrop.Workbook.WorkbookID}/forms/field-input-by-crop`;
+        return this.apiService.putToApi(route, fieldInputByCrop);
+    }
+
+    deleteFieldInputByCrop(workbookID:number, fieldInputByCropID: number): Observable<FieldInputByCropDto[]> {
+        let route = `workbooks/${workbookID}/forms/field-input-by-crop/${fieldInputByCropID}`;
         return this.apiService.deleteToApi(route);
     }
 
