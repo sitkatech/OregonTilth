@@ -123,7 +123,7 @@ export class WorkbooksComponent implements OnInit {
           cellRendererParams: { 
             clicked: function(field: any) {
               workbookComponentScope.router.navigateByUrl(`/workbooks/${field.PrimaryKey}/edit`).then(x => {
-                this.alertService.pushAlert(new Alert("Successfully created Workbook.", AlertContext.Success));
+                
               });
             }
            },
