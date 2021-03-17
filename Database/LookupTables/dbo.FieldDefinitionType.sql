@@ -19,7 +19,11 @@ USING (VALUES
 (17, 'TPInfoForm', 'Transplant Production Info'),
 (18, 'GeneralFarmInfoForm', 'General Farm Info'),
 (19, 'CropSpecificInfoForm', 'Crop Specific Info'),
-(20, 'CropYieldInfoForm', 'Crop Yield Info')
+(20, 'CropYieldInfoForm', 'Crop Yield Info'),
+(21, 'PreSeason', 'Pre-Season'),
+(22, 'InSeason', 'In-Season'),
+(23, 'PostSeason', 'Post-Season'),
+(24, 'Results', 'Results')
 )
 AS Source (FieldDefinitionTypeID, FieldDefinitionTypeName, FieldDefinitionTypeDisplayName)
 ON Target.FieldDefinitionTypeID = Source.FieldDefinitionTypeID

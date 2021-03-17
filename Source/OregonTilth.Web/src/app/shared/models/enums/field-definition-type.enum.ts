@@ -19,4 +19,8 @@ export enum FieldDefinitionTypeEnum {
     GeneralFarmInfoForm = 18,
     CropSpecificInfoForm = 19,
     CropYieldInfoForm = 20,
+    PreSeason = 21,
+    InSeason = 22,
+    PostSeason = 23,
+    Results = 24
 }

@@ -1,7 +1,7 @@
 <nav class="side-nav">
 
     <div class="nav-group mb-3" [class.nav-links-disabled]="navLinksDisabled()">
-        <h4>Pre-Season</h4>
+        <h4>Pre-Season <field-definition [fieldDefinitionType]="'PreSeason'" [labelOverride]="''"></field-definition></h4>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item" routerLinkActive="active">
                 <a class="nav-link" routerLink="/workbooks/{{getWorkbookID()}}/forms/field-labor-activities">
@@ -50,11 +50,11 @@
     </div>
     
     <div class="nav-group mb-3">
-        <h4>In-Season</h4>
+        <h4>In-Season <field-definition [fieldDefinitionType]="'InSeason'" [labelOverride]="''"></field-definition></h4>
     </div>
     
     <div class="nav-group mb-3">
-        <h4>Post-Season</h4>
+        <h4>Post-Season <field-definition [fieldDefinitionType]="'PostSeason'" [labelOverride]="''"></field-definition></h4>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item" routerLinkActive="active">
                 <a class="nav-link" routerLink="/workbooks/{{getWorkbookID()}}/forms/field-labor-by-crop">
@@ -83,6 +83,6 @@
         </ul>
     </div>
     <div class="nav-group mb-3">
-        <h4>Results</h4>
+        <h4>Results <field-definition [fieldDefinitionType]="'Results'" [labelOverride]="''"></field-definition></h4>
     </div>
 </nav>
