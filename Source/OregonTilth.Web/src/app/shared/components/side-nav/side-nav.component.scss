@@ -1,1 +1,22 @@
 @import "~src/scss/_variables.scss";
+
+.side-nav  {
+    position:sticky;
+    top:20px;
+    .nav-group {
+        .navbar-nav {
+            .nav-link {
+                padding:.25em 0;
+            }
+        }
+        h4 {
+            font-size:16px;
+            font-weight:700;
+        }
+    }
+    .nav-links-disabled {
+        .nav-link {
+            pointer-events: none;
+        }
+    }
+}
