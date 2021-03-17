@@ -8,6 +8,6 @@ namespace OregonTilth.Models.DataTransferObjects
         public WorkbookSummaryDto Workbook { get; set; }
         public CropSummaryDto Crop { get; set; }
         public FieldInputCostDto FieldInputCost { get; set; }
-        public decimal? Occurrances { get; set; }
+        public decimal? Occurrences { get; set; }
     }
 }

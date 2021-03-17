@@ -8,6 +8,6 @@ namespace OregonTilth.Models.DataTransferObjects
         [Required] public int CropID { get; set; }
         [Required] public int FieldLaborActivityID { get; set; }
         [Required] public int LaborTypeID { get; set; }
-        [Required] public decimal Occurrances { get; set; }
+        [Required] public decimal Occurrences { get; set; }
     }
 }

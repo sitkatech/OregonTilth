@@ -158,8 +158,8 @@ export class FieldLaborByCropComponent implements OnInit {
         filter: true,
       },
       {
-        headerName: 'Occurrances', 
-        field: 'Occurrances',
+        headerName: 'Occurrences', 
+        field: 'Occurrences',
         editable: true,
         cellEditor: 'agTextCellEditor',
         sortable: true, 
