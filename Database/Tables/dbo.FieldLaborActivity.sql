@@ -7,6 +7,8 @@ CREATE TABLE [dbo].[FieldLaborActivity](
 	[WorkbookID] [int] NOT NULL,
 	[FieldLaborActivityName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[FieldLaborActivityCategoryID] [int] NOT NULL,
+	[LaborTypeCrew] [bit] NOT NULL,
+	[LaborTypeOperator] [bit] NOT NULL,
  CONSTRAINT [PK_FieldLaborActivity_FieldLaborActivityID] PRIMARY KEY CLUSTERED 
 (
 	[FieldLaborActivityID] ASC

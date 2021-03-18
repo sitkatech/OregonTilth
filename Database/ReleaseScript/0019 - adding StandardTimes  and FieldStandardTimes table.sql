@@ -1,4 +1,10 @@
 
+alter table dbo.FieldLaborActivity
+add LaborTypeCrew bit not null,
+LaborTypeOperator bit not null;
+
+go
+
 CREATE TABLE dbo.FieldStandardTime(
 	FieldStandardTimeID int NOT NULL CONSTRAINT PK_FieldStandardTime_FieldStandardTimeID PRIMARY KEY,
 	WorkbookID int NOT NULL CONSTRAINT FK_FieldStandardTime_Workbook_WorkbookID FOREIGN KEY REFERENCES dbo.Workbook (WorkbookID),

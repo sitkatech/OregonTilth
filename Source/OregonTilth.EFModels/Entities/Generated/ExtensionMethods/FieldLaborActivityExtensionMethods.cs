@@ -16,7 +16,9 @@ namespace OregonTilth.EFModels.Entities
                 FieldLaborActivityID = fieldLaborActivity.FieldLaborActivityID,
                 Workbook = fieldLaborActivity.Workbook.AsDto(),
                 FieldLaborActivityName = fieldLaborActivity.FieldLaborActivityName,
-                FieldLaborActivityCategory = fieldLaborActivity.FieldLaborActivityCategory.AsDto()
+                FieldLaborActivityCategory = fieldLaborActivity.FieldLaborActivityCategory.AsDto(),
+                LaborTypeCrew = fieldLaborActivity.LaborTypeCrew,
+                LaborTypeOperator = fieldLaborActivity.LaborTypeOperator
             };
             DoCustomMappings(fieldLaborActivity, fieldLaborActivityDto);
             return fieldLaborActivityDto;
