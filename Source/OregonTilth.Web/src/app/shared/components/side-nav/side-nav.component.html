@@ -71,10 +71,12 @@
     
     <div class="nav-group mb-3">
         <h4>In-Season <field-definition [fieldDefinitionType]="'InSeason'" [labelOverride]="''"></field-definition></h4>
+        <!-- 1c( Field Standard Times Form ), 2c(Harvest and Post Harvest Time Studies Form ), 3c(TP Standard Times Form ) -->
     </div>
     
     <div class="nav-group mb-3">
         <h4>Post-Season <field-definition [fieldDefinitionType]="'PostSeason'" [labelOverride]="''"></field-definition></h4>
+        <!-- all other forms-->
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link"
@@ -83,6 +85,15 @@
                 [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbook }">
                     Field Labor By Crop
                     <field-definition [fieldDefinitionType]="'FieldLaborByCropForm'" [labelOverride]="''"></field-definition>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                [routerLink]="['/workbooks', workbook ? workbook.WorkbookID : -1, 'forms', 'field-input-by-crop']"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbook }">
+                    Field Input By Crop
+                    <field-definition [fieldDefinitionType]="'FieldInputByCropForm'" [labelOverride]="''"></field-definition>
                 </a>
             </li>
             <li class="nav-item">
@@ -116,5 +127,6 @@
     </div>
     <div class="nav-group mb-3">
         <h4>Results <field-definition [fieldDefinitionType]="'Results'" [labelOverride]="''"></field-definition></h4>
+        <!-- dashboards -->
     </div>
 </nav>
