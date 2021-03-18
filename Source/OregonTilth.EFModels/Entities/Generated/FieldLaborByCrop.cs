@@ -19,7 +19,7 @@ namespace OregonTilth.EFModels.Entities
         public int FieldLaborActivityID { get; set; }
         public int LaborTypeID { get; set; }
         [Column(TypeName = "decimal(18, 4)")]
-        public decimal Occurrences { get; set; }
+        public decimal? Occurrences { get; set; }
 
         [ForeignKey(nameof(CropID))]
         [InverseProperty("FieldLaborByCrops")]
