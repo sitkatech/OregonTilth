@@ -1,0 +1,69 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item" aria-current="page">
+        <a routerLink="/workbooks">Workbooks</a>
+      </li>
+      <li *ngIf="workbook" class="breadcrumb-item" aria-current="page">
+        <a routerLink="/workbooks/{{workbook.WorkbookID}}">{{workbook.WorkbookName}}</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Machinery</li>
+  </ol>
+</nav>
+
+<div class="container-fluid">
+  <div class="row mb-2">
+    <side-nav [workbook]="workbook" class="col-lg-2"></side-nav>
+    <div class="col-lg-8">
+        <app-alert-display></app-alert-display>
+        <h1>Machinery</h1>
+        <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+        <div class="card mt-4">
+          <div class="card-header">
+            Add new Machinery
+          </div>
+          <div class="card-body">
+            <form *ngIf=(model) (ngSubmit)="onSubmit(machineryForm)" #machineryForm="ngForm">
+              <div class="row">
+                
+                <div class="form-group col-md-8">
+                  <label class="required">Machinery</label>
+                  <input class="form-control" type="text" name="MachineryName" [(ngModel)]="model.MachineryName">
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="required">Hourly Machinery Operating Cost</label>
+                  <input class="form-control" type="number" name="HourlyMachineryOperatingCost" [(ngModel)]="model.StandardMachineryCost">
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-sm">
+                  <i class="fas fa-bolt"></i> Required field
+                </div>
+                <div class="col-sm text-right">
+                  <button type="submit" class="btn btn-fresca" [disabled]="!machineryForm.form.valid || isLoadingSubmit">
+                    <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          
+        </div>
+
+        
+        
+        <div class="row mt-4">
+          <div class="col">
+            <ag-grid-angular #machineryGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="machineries"
+              [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (cellValueChanged)="onCellValueChanged($event)">
+            </ag-grid-angular>
+          </div>
+        </div>
+
+
+
+    </div>
+  </div>
+  
+</div>

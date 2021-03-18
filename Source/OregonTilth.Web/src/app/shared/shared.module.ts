@@ -9,15 +9,17 @@ import { SubscriptionInsufficientComponent } from './pages/subscription-insuffic
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { RouterModule } from '@angular/router';
 import { LinkRendererComponent } from './components/ag-grid/link-renderer/link-renderer.component';
+import { ButtonRendererComponent } from './components/ag-grid/button-renderer/button-renderer.component';
 import { FontAwesomeIconLinkRendererComponent } from './components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { MultiLinkRendererComponent } from './components/ag-grid/multi-link-renderer/multi-link-renderer.component';
-import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { CustomRichTextComponent } from './components/custom-rich-text/custom-rich-text.component'
+import { SideNavComponent } from './components/side-nav/side-nav.component'
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FieldDefinitionComponent } from './components/field-definition/field-definition.component';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AlertDisplayComponent } from './components/alert-display/alert-display.component';
 import { FieldDefinitionGridHeaderComponent } from './components/field-definition-grid-header/field-definition-grid-header.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
     declarations: [
@@ -27,9 +29,11 @@ import { FieldDefinitionGridHeaderComponent } from './components/field-definitio
         UnauthenticatedComponent,
         SubscriptionInsufficientComponent,
         LinkRendererComponent,
+        ButtonRendererComponent,
         FontAwesomeIconLinkRendererComponent,
         MultiLinkRendererComponent,
         CustomRichTextComponent,
+        SideNavComponent,
         FieldDefinitionComponent,
         FieldDefinitionGridHeaderComponent
     ],
@@ -39,7 +43,7 @@ import { FieldDefinitionGridHeaderComponent } from './components/field-definitio
         HttpClientModule,
         NgProgressModule,
         RouterModule,
-        SelectDropDownModule,
+        NgMultiSelectDropDownModule.forRoot(),
         CKEditorModule,
         NgbModule
     ],
@@ -50,6 +54,7 @@ import { FieldDefinitionGridHeaderComponent } from './components/field-definitio
         NotFoundComponent,
         HeaderNavComponent,
         CustomRichTextComponent,
+        SideNavComponent,
         FieldDefinitionComponent,
         FieldDefinitionGridHeaderComponent
     ],

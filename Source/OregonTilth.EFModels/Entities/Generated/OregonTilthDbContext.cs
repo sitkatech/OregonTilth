@@ -17,14 +17,32 @@ namespace OregonTilth.EFModels.Entities
         {
         }
 
+        public virtual DbSet<Crop> Crops { get; set; }
+        public virtual DbSet<CropUnit> CropUnits { get; set; }
         public virtual DbSet<CustomRichText> CustomRichTexts { get; set; }
         public virtual DbSet<CustomRichTextType> CustomRichTextTypes { get; set; }
         public virtual DbSet<DatabaseMigration> DatabaseMigrations { get; set; }
         public virtual DbSet<FieldDefinition> FieldDefinitions { get; set; }
         public virtual DbSet<FieldDefinitionType> FieldDefinitionTypes { get; set; }
+        public virtual DbSet<FieldInputByCrop> FieldInputByCrops { get; set; }
+        public virtual DbSet<FieldInputCost> FieldInputCosts { get; set; }
+        public virtual DbSet<FieldLaborActivity> FieldLaborActivities { get; set; }
+        public virtual DbSet<FieldLaborActivityCategory> FieldLaborActivityCategories { get; set; }
+        public virtual DbSet<FieldLaborByCrop> FieldLaborByCrops { get; set; }
+        public virtual DbSet<FieldUnitType> FieldUnitTypes { get; set; }
         public virtual DbSet<FileResource> FileResources { get; set; }
         public virtual DbSet<FileResourceMimeType> FileResourceMimeTypes { get; set; }
+        public virtual DbSet<HarvestType> HarvestTypes { get; set; }
+        public virtual DbSet<LaborType> LaborTypes { get; set; }
+        public virtual DbSet<Machinery> Machineries { get; set; }
+        public virtual DbSet<Phase> Phases { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<TpOrDsType> TpOrDsTypes { get; set; }
+        public virtual DbSet<TransplantProductionInput> TransplantProductionInputs { get; set; }
+        public virtual DbSet<TransplantProductionInputCost> TransplantProductionInputCosts { get; set; }
+        public virtual DbSet<TransplantProductionLaborActivity> TransplantProductionLaborActivities { get; set; }
+        public virtual DbSet<TransplantProductionLaborActivityByCrop> TransplantProductionLaborActivityByCrops { get; set; }
+        public virtual DbSet<TransplantProductionTrayType> TransplantProductionTrayTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Workbook> Workbooks { get; set; }
 
@@ -40,6 +58,26 @@ namespace OregonTilth.EFModels.Entities
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<Crop>(entity =>
+            {
+                entity.Property(e => e.CropName).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.Crops)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<CropUnit>(entity =>
+            {
+                entity.Property(e => e.CropUnitName).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.CropUnits)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
 
             modelBuilder.Entity<CustomRichText>(entity =>
             {
@@ -87,6 +125,97 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.FieldDefinitionTypeName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<FieldInputByCrop>(entity =>
+            {
+                entity.HasOne(d => d.Crop)
+                    .WithMany(p => p.FieldInputByCrops)
+                    .HasForeignKey(d => d.CropID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.FieldInputCost)
+                    .WithMany(p => p.FieldInputByCrops)
+                    .HasForeignKey(d => d.FieldInputCostID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.FieldInputByCrops)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<FieldInputCost>(entity =>
+            {
+                entity.Property(e => e.FieldInputCostName).IsUnicode(false);
+
+                entity.Property(e => e.Notes).IsUnicode(false);
+
+                entity.HasOne(d => d.FieldUnitType)
+                    .WithMany(p => p.FieldInputCosts)
+                    .HasForeignKey(d => d.FieldUnitTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.FieldInputCosts)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<FieldLaborActivity>(entity =>
+            {
+                entity.Property(e => e.FieldLaborActivityName).IsUnicode(false);
+
+                entity.HasOne(d => d.FieldLaborActivityCategory)
+                    .WithMany(p => p.FieldLaborActivities)
+                    .HasForeignKey(d => d.FieldLaborActivityCategoryID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.FieldLaborActivities)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<FieldLaborActivityCategory>(entity =>
+            {
+                entity.Property(e => e.FieldLaborActivityCategoryID).ValueGeneratedNever();
+
+                entity.Property(e => e.FieldLaborActivityCategoryDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.FieldLaborActivityCategoryName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<FieldLaborByCrop>(entity =>
+            {
+                entity.HasOne(d => d.Crop)
+                    .WithMany(p => p.FieldLaborByCrops)
+                    .HasForeignKey(d => d.CropID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.FieldLaborActivity)
+                    .WithMany(p => p.FieldLaborByCrops)
+                    .HasForeignKey(d => d.FieldLaborActivityID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.LaborType)
+                    .WithMany(p => p.FieldLaborByCrops)
+                    .HasForeignKey(d => d.LaborTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.FieldLaborByCrops)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<FieldUnitType>(entity =>
+            {
+                entity.Property(e => e.FieldUnitTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.FieldUnitTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.FieldUnitTypeName).IsUnicode(false);
+            });
+
             modelBuilder.Entity<FileResource>(entity =>
             {
                 entity.Property(e => e.OriginalBaseFilename).IsUnicode(false);
@@ -120,6 +249,43 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.FileResourceMimeTypeName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<HarvestType>(entity =>
+            {
+                entity.Property(e => e.HarvestTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.HarvestTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.HarvestTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<LaborType>(entity =>
+            {
+                entity.Property(e => e.LaborTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.LaborTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.LaborTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Machinery>(entity =>
+            {
+                entity.Property(e => e.MachineryName).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.Machineries)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<Phase>(entity =>
+            {
+                entity.Property(e => e.PhaseID).ValueGeneratedNever();
+
+                entity.Property(e => e.PhaseDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.PhaseName).IsUnicode(false);
+            });
+
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.Property(e => e.RoleID).ValueGeneratedNever();
@@ -129,6 +295,84 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.RoleDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.RoleName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<TpOrDsType>(entity =>
+            {
+                entity.Property(e => e.TpOrDsTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.TpOrDsTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.TpOrDsTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<TransplantProductionInput>(entity =>
+            {
+                entity.Property(e => e.TransplantProductionInputName).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TransplantProductionInputs)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<TransplantProductionInputCost>(entity =>
+            {
+                entity.Property(e => e.Notes).IsUnicode(false);
+
+                entity.HasOne(d => d.TransplantProductionInput)
+                    .WithMany(p => p.TransplantProductionInputCosts)
+                    .HasForeignKey(d => d.TransplantProductionInputID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.TransplantProductionTrayType)
+                    .WithMany(p => p.TransplantProductionInputCosts)
+                    .HasForeignKey(d => d.TransplantProductionTrayTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TransplantProductionTrayTypeCost_TransplantProductionTrayType_TransplantProductionTrayTypeID");
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TransplantProductionInputCosts)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<TransplantProductionLaborActivity>(entity =>
+            {
+                entity.Property(e => e.TransplantProductionLaborActivityName).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TransplantProductionLaborActivities)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<TransplantProductionLaborActivityByCrop>(entity =>
+            {
+                entity.HasOne(d => d.Crop)
+                    .WithMany(p => p.TransplantProductionLaborActivityByCrops)
+                    .HasForeignKey(d => d.CropID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.TransplantProductionLaborActivity)
+                    .WithMany(p => p.TransplantProductionLaborActivityByCrops)
+                    .HasForeignKey(d => d.TransplantProductionLaborActivityID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TransplantProductionLaborActivityByCrops)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<TransplantProductionTrayType>(entity =>
+            {
+                entity.Property(e => e.TransplantProductionTrayTypeName).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TransplantProductionTrayTypes)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<User>(entity =>
