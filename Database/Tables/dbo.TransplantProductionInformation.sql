@@ -49,3 +49,7 @@ GO
 ALTER TABLE [dbo].[TransplantProductionInformation]  WITH CHECK ADD  CONSTRAINT [CK_TransplantProductionInformation_CostPerSeed_Required_When_Seeding] CHECK  (([CostPerSeed] IS NOT NULL AND [PhaseID]=(1)))
 GO
 ALTER TABLE [dbo].[TransplantProductionInformation] CHECK CONSTRAINT [CK_TransplantProductionInformation_CostPerSeed_Required_When_Seeding]
+GO
+ALTER TABLE [dbo].[TransplantProductionInformation]  WITH CHECK ADD  CONSTRAINT [CK_TransplantProductionInformation_UsageRate_In_Valid_Range] CHECK  (([UsageRate]>=(0) AND [UsageRate]<=(100)))
+GO
+ALTER TABLE [dbo].[TransplantProductionInformation] CHECK CONSTRAINT [CK_TransplantProductionInformation_UsageRate_In_Valid_Range]

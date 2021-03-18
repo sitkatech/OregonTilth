@@ -31,6 +31,13 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Transplant Production Information", Message = "Transplant Production Information must be unique per Crop, Phase, and Tray Type." });
             }
 
+            // usage rate between 0 - 100
+            if (transplantProductionInformationCreateDto.UsageRate < 0 ||
+                transplantProductionInformationCreateDto.UsageRate > 100)
+            {
+                result.Add(new ErrorMessage() { Type = "Usage Rate", Message = "Usage Rate must be a percentage between 0 and 100." });
+            }
+
             return result;
         }
 
@@ -49,6 +56,15 @@ namespace OregonTilth.EFModels.Entities
             {
                 result.Add(new ErrorMessage() { Type = "Transplant Production Information", Message = "Transplant Production Information must be unique per Crop, Phase, and Tray Type." });
             }
+
+            // usage rate between 0 - 100
+            if (transplantProductionInformationDto.UsageRate < 0 ||
+                transplantProductionInformationDto.UsageRate > 100)
+            {
+                result.Add(new ErrorMessage() { Type = "Usage Rate", Message = "Usage Rate must be a percentage between 0 and 100." });
+            }
+
+
 
             return result;
         }

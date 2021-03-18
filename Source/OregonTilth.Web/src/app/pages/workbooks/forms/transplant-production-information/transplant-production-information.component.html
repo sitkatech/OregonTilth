@@ -27,15 +27,30 @@
               <div class="row">
                 <div class="form-group col-md-4">
                   <label class="required">Crop</label>
-                  <input class="form-control" type="text" name="CropID" [(ngModel)]="model.CropID">
+                  <select name="CropID" class="form-control" [(ngModel)]="model.CropID" required>
+                    <option value=""></option>
+                    <option *ngFor="let option of cropDtos" [value]="option.CropID">
+                      {{option.CropName}}
+                    </option>
+                  </select>
                 </div>
                 <div class="form-group col-md-4">
                   <label class="required">Phase</label>
-                  <input class="form-control" type="text" name="PhaseID" [(ngModel)]="model.PhaseID">
+                  <select name="PhaseID" class="form-control" [(ngModel)]="model.PhaseID" required>
+                    <option value=""></option>
+                    <option *ngFor="let option of phaseDtos" [value]="option.PhaseID">
+                      {{option.PhaseDisplayName}}
+                    </option>
+                  </select>
                 </div>
                 <div class="form-group col-md-4">
                   <label class="required">Tray Type</label>
-                  <input class="form-control" type="text" name="TransplantProductionTrayTypeID" [(ngModel)]="model.TransplantProductionTrayTypeID">
+                  <select name="TransplantProductionTrayTypeID" class="form-control" [(ngModel)]="model.TransplantProductionTrayTypeID" required>
+                    <option value=""></option>
+                    <option *ngFor="let option of tpTrayTypeDtos" [value]="option.TransplantProductionTrayTypeID">
+                      {{option.TransplantProductionTrayTypeName}}
+                    </option>
+                  </select>
                 </div>
               </div>
 
