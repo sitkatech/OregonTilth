@@ -6,7 +6,7 @@ CREATE TABLE [dbo].[FieldInputByCrop](
 	[FieldInputByCropID] [int] IDENTITY(1,1) NOT NULL,
 	[WorkbookID] [int] NOT NULL,
 	[CropID] [int] NOT NULL,
-	[FieldInputByCostID] [int] NOT NULL,
+	[FieldInputCostID] [int] NOT NULL,
 	[Occurrences] [decimal](18, 4) NULL,
  CONSTRAINT [PK_FieldInputByCrop_FieldInputByCropID] PRIMARY KEY CLUSTERED 
 (
@@ -20,7 +20,7 @@ REFERENCES [dbo].[Crop] ([CropID])
 GO
 ALTER TABLE [dbo].[FieldInputByCrop] CHECK CONSTRAINT [FK_FieldInputByCrop_Crop_CropID]
 GO
-ALTER TABLE [dbo].[FieldInputByCrop]  WITH CHECK ADD  CONSTRAINT [FK_FieldInputByCrop_FieldInputCost_FieldInputCostID] FOREIGN KEY([FieldInputByCostID])
+ALTER TABLE [dbo].[FieldInputByCrop]  WITH CHECK ADD  CONSTRAINT [FK_FieldInputByCrop_FieldInputCost_FieldInputCostID] FOREIGN KEY([FieldInputCostID])
 REFERENCES [dbo].[FieldInputCost] ([FieldInputCostID])
 GO
 ALTER TABLE [dbo].[FieldInputByCrop] CHECK CONSTRAINT [FK_FieldInputByCrop_FieldInputCost_FieldInputCostID]

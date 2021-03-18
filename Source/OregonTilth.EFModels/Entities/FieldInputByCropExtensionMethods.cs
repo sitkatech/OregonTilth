@@ -11,9 +11,8 @@ namespace OregonTilth.EFModels.Entities
             {
                 FieldInputByCropID = tpLaborByCrop.FieldInputByCropID,
                 Workbook = tpLaborByCrop.Workbook.AsSummaryDto(),
-                //FieldInput = tpLaborByCrop.FieldInput.AsSummaryDto(),
+                FieldInputCost = tpLaborByCrop.FieldInputCost.AsSummaryDto(),
                 Crop = tpLaborByCrop.Crop.AsSummaryDto(),
-                //Phase = tpLaborByCrop.Phase.AsDto(),
                 Occurrences = tpLaborByCrop.Occurrences
             };
 

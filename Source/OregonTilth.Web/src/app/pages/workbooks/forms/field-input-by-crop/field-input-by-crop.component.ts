@@ -35,7 +35,7 @@ export class FieldInputByCropComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
-  public richTextTypeID : number = CustomRichTextType.TPLaborByCropForm;
+  public richTextTypeID : number = CustomRichTextType.FieldInputByCropForm;
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
@@ -174,7 +174,7 @@ export class FieldInputByCropComponent implements OnInit {
   deleteFieldInputByCrop(fieldInputByCropID: number) {
     this.deleteFieldInputByCropRequest = this.workbookService.deleteFieldInputByCrop(this.workbookID, fieldInputByCropID).subscribe(fieldInputByCropDtos => {
       this.fieldInputByCropDtos = fieldInputByCropDtos;
-      this.alertService.pushAlert(new Alert("Successfully deleted Transplant Production Labor By Crop", AlertContext.Success));
+      this.alertService.pushAlert(new Alert("Successfully deleted Field Input By Crop", AlertContext.Success));
       this.cdr.detectChanges();
       this.gridApi.redrawRows();
     }, error => {
@@ -188,7 +188,7 @@ export class FieldInputByCropComponent implements OnInit {
     this.updateFieldInputByCropRequest = this.workbookService.updateFieldInputByCrop(dtoToPost).subscribe(fieldInputByCrop => {
       data.node.setData(fieldInputByCrop);
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Transplant Production Labor By Crop", AlertContext.Success));
+      this.alertService.pushAlert(new Alert("Successfully updated Field Input By Crop", AlertContext.Success));
     }, error => {
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();

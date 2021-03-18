@@ -27,15 +27,14 @@ namespace OregonTilth.EFModels.Entities
         {
             var result = new List<ErrorMessage>();
 
-            //var userFieldInputByCropsForWorkbook = GetDtoListByWorkbookID(dbContext, fieldInputByCropDto.Workbook.WorkbookID).ToList();
-            //if (userFieldInputByCropsForWorkbook.Any(x => x.Workbook.WorkbookID == fieldInputByCropDto.Workbook.WorkbookID
-            //                                              && x.Crop.CropID == fieldInputByCropDto.Crop.CropID
-            //                                              && x.FieldInput.FieldInputID == fieldInputByCropDto.FieldInput.FieldInputID
-            //                                              && x.Phase.PhaseID == fieldInputByCropDto.Phase.PhaseID
-            //                                              && x.FieldInputByCropID != fieldInputByCropDto.FieldInputByCropID))
-            //{
-            //    result.Add(new ErrorMessage() { Type = "TP Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, TP Labor Activity, and Labor Type." });
-            //}
+            var userFieldInputByCropsForWorkbook = GetDtoListByWorkbookID(dbContext, fieldInputByCropDto.Workbook.WorkbookID).ToList();
+            if (userFieldInputByCropsForWorkbook.Any(x => x.Workbook.WorkbookID == fieldInputByCropDto.Workbook.WorkbookID
+                                                          && x.Crop.CropID == fieldInputByCropDto.Crop.CropID
+                                                          && x.FieldInputCost.FieldInputCostID == fieldInputByCropDto.FieldInputCost.FieldInputCostID
+                                                          && x.FieldInputByCropID != fieldInputByCropDto.FieldInputByCropID))
+            {
+                result.Add(new ErrorMessage() { Type = "Field Input By Crop", Message = "Cannot have more than one entry per Workbook, Crop, and Field Input Cost." });
+            }
 
             if (fieldInputByCropDto.Occurrences != null 
                 && Math.Round((decimal) fieldInputByCropDto.Occurrences, 4) <= 0)
@@ -63,6 +62,7 @@ namespace OregonTilth.EFModels.Entities
             return dbContext.FieldInputByCrops
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .Include(x => x.Crop)
+                .Include(x => x.FieldInputCost)
                 .AsNoTracking();
         }
 
@@ -76,30 +76,27 @@ namespace OregonTilth.EFModels.Entities
         {
 
             // we need to check for existing records and only add the ones that do not exist
-            var currentTpLaborByCrops = dbContext.FieldInputByCrops
+            var currentFieldInputByCrops = dbContext.FieldInputByCrops
                 .Where(x => x.WorkbookID == fieldInputByCropCreateDto.WorkbookID)
-                .Include(x => x.FieldInputByCost)
+                .Include(x => x.FieldInputCost)
                 .AsNoTracking();
 
-            //foreach (var fieldInputDto in fieldInputByCropCreateDto.FieldInputCostID)
-            //{
-            //    if (!currentTpLaborByCrops.Any(x =>
-            //        x.FieldInputID ==
-            //        fieldInputDto.FieldInputID
-            //        && x.CropID == fieldInputByCropCreateDto.CropID
-            //        && x.PhaseID == fieldInputByCropCreateDto.PhaseID))
-            //    {
-            //        var tpLaborByCrop = new FieldInputByCrop
-            //        {
-            //            WorkbookID = fieldInputByCropCreateDto.WorkbookID,
-            //            CropID = fieldInputByCropCreateDto.CropID,
-            //            FieldInputID = fieldInputDto.FieldInputID,
-            //            PhaseID = fieldInputByCropCreateDto.PhaseID,
-            //        };
-            //        dbContext.FieldInputByCrops.Add(tpLaborByCrop);
-            //    }
-            //}
-            
+            foreach (var fieldInputCostDto in fieldInputByCropCreateDto.FieldInputCosts)
+            {
+                if (!currentFieldInputByCrops.Any(x =>
+                    x.FieldInputCostID == fieldInputCostDto.FieldInputCostID
+                    && x.CropID == fieldInputByCropCreateDto.CropID))
+                {
+                    var fieldInputByCrop = new FieldInputByCrop
+                    {
+                        WorkbookID = fieldInputByCropCreateDto.WorkbookID,
+                        CropID = fieldInputByCropCreateDto.CropID,
+                        FieldInputCostID = fieldInputCostDto.FieldInputCostID
+                    };
+                    dbContext.FieldInputByCrops.Add(fieldInputByCrop);
+                }
+            }
+
             dbContext.SaveChanges();
 
             return GetDtoListByWorkbookID(dbContext, fieldInputByCropCreateDto.WorkbookID);
@@ -113,7 +110,7 @@ namespace OregonTilth.EFModels.Entities
 
 
             fieldInputByCrop.CropID = fieldInputByCropDto.Crop.CropID;
-            fieldInputByCrop.FieldInputByCostID = fieldInputByCropDto.FieldInputByCost.FieldInputCostID;
+            fieldInputByCrop.FieldInputCostID = fieldInputByCropDto.FieldInputCost.FieldInputCostID;
             fieldInputByCrop.Occurrences = fieldInputByCropDto.Occurrences;
 
             dbContext.SaveChanges();

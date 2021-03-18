@@ -15,16 +15,16 @@ namespace OregonTilth.EFModels.Entities
         public int FieldInputByCropID { get; set; }
         public int WorkbookID { get; set; }
         public int CropID { get; set; }
-        public int FieldInputByCostID { get; set; }
+        public int FieldInputCostID { get; set; }
         [Column(TypeName = "decimal(18, 4)")]
         public decimal? Occurrences { get; set; }
 
         [ForeignKey(nameof(CropID))]
         [InverseProperty("FieldInputByCrops")]
         public virtual Crop Crop { get; set; }
-        [ForeignKey(nameof(FieldInputByCostID))]
-        [InverseProperty(nameof(FieldInputCost.FieldInputByCrops))]
-        public virtual FieldInputCost FieldInputByCost { get; set; }
+        [ForeignKey(nameof(FieldInputCostID))]
+        [InverseProperty("FieldInputByCrops")]
+        public virtual FieldInputCost FieldInputCost { get; set; }
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("FieldInputByCrops")]
         public virtual Workbook Workbook { get; set; }

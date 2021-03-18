@@ -16,7 +16,7 @@ namespace OregonTilth.EFModels.Entities
                 FieldInputByCropID = fieldInputByCrop.FieldInputByCropID,
                 Workbook = fieldInputByCrop.Workbook.AsDto(),
                 Crop = fieldInputByCrop.Crop.AsDto(),
-                FieldInputByCost = fieldInputByCrop.FieldInputByCost.AsDto(),
+                FieldInputCost = fieldInputByCrop.FieldInputCost.AsDto(),
                 Occurrences = fieldInputByCrop.Occurrences
             };
             DoCustomMappings(fieldInputByCrop, fieldInputByCropDto);

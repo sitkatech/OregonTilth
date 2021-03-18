@@ -34,7 +34,7 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("FieldInputCosts")]
         public virtual Workbook Workbook { get; set; }
-        [InverseProperty(nameof(FieldInputByCrop.FieldInputByCost))]
+        [InverseProperty(nameof(FieldInputByCrop.FieldInputCost))]
         public virtual ICollection<FieldInputByCrop> FieldInputByCrops { get; set; }
     }
 }

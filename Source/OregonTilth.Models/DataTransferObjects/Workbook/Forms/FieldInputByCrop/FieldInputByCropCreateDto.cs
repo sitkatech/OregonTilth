@@ -7,8 +7,7 @@ namespace OregonTilth.Models.DataTransferObjects
     {
         [Required] public int WorkbookID { get; set; }
         [Required] public int CropID { get; set; }
-        [Required] public int FieldInputCostID { get; set; }
-        public decimal Occurrences { get; set; }
+        [Required] public List<FieldInputCostDto> FieldInputCosts { get; set; }
 
     }
 }

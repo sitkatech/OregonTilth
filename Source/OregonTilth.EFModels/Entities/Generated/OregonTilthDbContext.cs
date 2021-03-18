@@ -132,11 +132,10 @@ namespace OregonTilth.EFModels.Entities
                     .HasForeignKey(d => d.CropID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.FieldInputByCost)
+                entity.HasOne(d => d.FieldInputCost)
                     .WithMany(p => p.FieldInputByCrops)
-                    .HasForeignKey(d => d.FieldInputByCostID)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_FieldInputByCrop_FieldInputCost_FieldInputCostID");
+                    .HasForeignKey(d => d.FieldInputCostID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.FieldInputByCrops)

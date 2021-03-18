@@ -10,7 +10,7 @@ export class FieldInputByCropDto {
 	FieldInputByCropID : number
 	Workbook : WorkbookDto
 	Crop : CropDto
-	FieldInputByCost : FieldInputCostDto
+	FieldInputCost : FieldInputCostDto
 	Occurrences : number
 
     constructor(obj?: any) {
