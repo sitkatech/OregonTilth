@@ -21,6 +21,7 @@ namespace OregonTilth.EFModels.Entities
             FieldLaborActivities = new HashSet<FieldLaborActivity>();
             FieldLaborByCrops = new HashSet<FieldLaborByCrop>();
             Machineries = new HashSet<Machinery>();
+            TransplantProductionInformations = new HashSet<TransplantProductionInformation>();
             TransplantProductionInputCosts = new HashSet<TransplantProductionInputCost>();
             TransplantProductionInputs = new HashSet<TransplantProductionInput>();
             TransplantProductionLaborActivities = new HashSet<TransplantProductionLaborActivity>();
@@ -54,6 +55,8 @@ namespace OregonTilth.EFModels.Entities
         public virtual ICollection<FieldLaborByCrop> FieldLaborByCrops { get; set; }
         [InverseProperty(nameof(Machinery.Workbook))]
         public virtual ICollection<Machinery> Machineries { get; set; }
+        [InverseProperty(nameof(TransplantProductionInformation.Workbook))]
+        public virtual ICollection<TransplantProductionInformation> TransplantProductionInformations { get; set; }
         [InverseProperty(nameof(TransplantProductionInputCost.Workbook))]
         public virtual ICollection<TransplantProductionInputCost> TransplantProductionInputCosts { get; set; }
         [InverseProperty(nameof(TransplantProductionInput.Workbook))]
