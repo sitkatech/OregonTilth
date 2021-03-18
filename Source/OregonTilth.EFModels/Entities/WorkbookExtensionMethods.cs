@@ -11,6 +11,9 @@ namespace OregonTilth.EFModels.Entities
             {
                 WorkbookID = workbook.WorkbookID,
                 WorkbookName = workbook.WorkbookName,
+                AverageHourlyWage = workbook.AverageHourlyWage,
+                StandardUnitOfSpaceLength = workbook.StandardUnitOfSpaceLength,
+                StandardUnitOfSpaceWidth = workbook.StandardUnitOfSpaceWidth
             };
         }
     }
