@@ -11,6 +11,11 @@ namespace OregonTilth.EFModels.Entities
     [Table("FieldInputCost")]
     public partial class FieldInputCost
     {
+        public FieldInputCost()
+        {
+            FieldInputByCrops = new HashSet<FieldInputByCrop>();
+        }
+
         [Key]
         public int FieldInputCostID { get; set; }
         public int WorkbookID { get; set; }
@@ -29,5 +34,7 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("FieldInputCosts")]
         public virtual Workbook Workbook { get; set; }
+        [InverseProperty(nameof(FieldInputByCrop.FieldInputCost))]
+        public virtual ICollection<FieldInputByCrop> FieldInputByCrops { get; set; }
     }
 }

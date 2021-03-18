@@ -32,6 +32,7 @@ import { TransplantProductionLaborByCropComponent } from './pages/workbooks/form
 import { TransplantProductionInputsComponent } from './pages/workbooks/forms/transplant-production-inputs/transplant-production-inputs.component';
 import { TransplantProductionTrayTypesComponent } from './pages/workbooks/forms/transplant-production-tray-types/transplant-production-tray-types.component';
 import { TransplantProductionInputCostsComponent } from './pages/workbooks/forms/transplant-production-input-costs/transplant-production-input-costs.component';
+import { FieldInputByCropComponent } from './pages/workbooks/forms/field-input-by-crop/field-input-by-crop.component';
 import { FieldStandardTimesComponent } from './pages/workbooks/forms/field-standard-times/field-standard-times.component';
 
 const routes: Routes = [
@@ -45,9 +46,7 @@ const routes: Routes = [
   { path: "", component: HomeIndexComponent},
   { path: "disclaimer", component: DisclaimerComponent },
   { path: "disclaimer/:forced", component: DisclaimerComponent },
-  { path: "help", component: HelpComponent },
-  { path: "training", component: TrainingComponent},
-  { path: "platform-overview", component: AboutComponent},
+  { path: "about", component: AboutComponent},
   { path: "workbooks", component: WorkbooksComponent},
   { path: "workbooks/new", component: NewWorkbookComponent},
   { path: "workbooks/:id/edit", component: EditWorkbookComponent},
@@ -58,6 +57,7 @@ const routes: Routes = [
   { path: "workbooks/:id/forms/machinery", component: MachineryComponent},
   { path: "workbooks/:id/forms/field-labor-by-crop", component: FieldLaborByCropComponent},
   { path: "workbooks/:id/forms/transplant-production-labor-by-crop", component: TransplantProductionLaborByCropComponent},
+  { path: "workbooks/:id/forms/field-input-by-crop", component: FieldInputByCropComponent},
   { path: "workbooks/:id/forms/crops", component: CropsComponent},
   { path: "workbooks/:id/forms/crop-units", component: CropUnitsComponent},
   { path: "workbooks/:id/forms/field-input-costs", component: FieldInputCostsComponent},

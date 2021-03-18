@@ -25,6 +25,8 @@ import { TransplantProductionTrayTypeCreateDto } from 'src/app/shared/models/for
 import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
 import { TransplantProductionInputCostCreateDto } from 'src/app/shared/models/forms/transplant-production-input-costs/transplant-production-input-cost-create-dto';
 import { TransplantProductionInputCostDto } from 'src/app/shared/models/generated/transplant-production-input-cost-dto';
+import { FieldInputByCropDto } from 'src/app/shared/models/generated/field-input-by-crop-dto';
+import { FieldInputByCropCreateDto } from 'src/app/shared/models/forms/field-input-by-crop/field-input-by-crop-create-dto';
 import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-summary-dto';
 
 @Injectable({
@@ -291,6 +293,27 @@ export class WorkbookService {
         let route = `workbooks/${workbookID}/forms/transplant-production-input-costs/${transplantProductionInputCostID}`;
         return this.apiService.deleteToApi(route);
     }
+    // Field Input By Crop Form
+    addFieldInputByCrop(fieldInputByCropCreateDto: FieldInputByCropCreateDto): Observable<FieldInputByCropDto[]> {
+        let route = `/workbooks/${fieldInputByCropCreateDto.WorkbookID}/forms/field-input-by-crop`;
+        return this.apiService.postToApi(route, fieldInputByCropCreateDto);
+    }
+
+    getFieldInputByCrops(workbookID: number): Observable<FieldInputByCropDto[]> {
+        let route = `workbooks/${workbookID}/forms/field-input-by-crop`;
+        return this.apiService.getFromApi(route);
+    }
+
+    updateFieldInputByCrop(fieldInputByCrop: FieldInputByCropDto): Observable<FieldInputByCropDto> {
+        let route = `/workbooks/${fieldInputByCrop.Workbook.WorkbookID}/forms/field-input-by-crop`;
+        return this.apiService.putToApi(route, fieldInputByCrop);
+    }
+
+    deleteFieldInputByCrop(workbookID:number, fieldInputByCropID: number): Observable<FieldInputByCropDto[]> {
+        let route = `workbooks/${workbookID}/forms/field-input-by-crop/${fieldInputByCropID}`;
+        return this.apiService.deleteToApi(route);
+    }
+
 
     // Field Standard Times
     getFieldStandardTimes(workbookID: number): Observable<FieldStandardTimeSummaryDto[]> {

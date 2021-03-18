@@ -1,4 +1,4 @@
-<nav aria-label="breadcrumb" *ngIf="workbook">
+<nav aria-label="breadcrumb">
   <ol class="breadcrumb">
       <li class="breadcrumb-item" aria-current="page">
         <a routerLink="/workbooks">Workbooks</a>
@@ -10,12 +10,10 @@
   </ol>
 </nav>
 
-<div class="container">
+<div class="container-fluid">
   <div class="row mb-2">
-    <div class="col-sm-2">
-      <side-nav [workbook]="workbook" *ngIf="workbook"></side-nav>
-    </div>
-    <div class="col-sm-10">
+    <side-nav [workbook]="workbook" class="col-lg-2"></side-nav>
+    <div class="col-lg-8">
         <app-alert-display></app-alert-display>
         <h1>Field Labor By Crop</h1>
         <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
@@ -38,12 +36,12 @@
                 </div>
                 <div class="form-group col-md-3">
                   <label class="required">Field Labor Activity</label>
-                  <select name="FieldLaborActivityID" class="form-control" [(ngModel)]="model.FieldLaborActivityID" required>
-                    <option value=""></option>
-                    <option *ngFor="let option of fieldLaborActivityDtos" [value]="option.FieldLaborActivityID">
-                      {{option.FieldLaborActivityName}}
-                    </option>
-                  </select>
+                  <ng-multiselect-dropdown
+                    [settings]="dropdownSettings"
+                    [data]="fieldLaborActivityDtos"
+                    [(ngModel)]="model.FieldLaborActivities"
+                    [ngModelOptions]="{standalone: true}">
+                  </ng-multiselect-dropdown>
                 </div>
                 <div class="form-group col-md-3">
                   <label class="required">Labor Type</label>
@@ -54,10 +52,10 @@
                     </option>
                   </select>
                 </div>
-                <div class="form-group col-md-3">
-                  <label class="required">Occurrances</label>
-                  <input type="number" name="Occurrances" class="form-control" [(ngModel)]="model.Occurrances" required>
-                </div>
+                <!-- <div class="form-group col-md-3">
+                  <label class="required">Occurrences</label>
+                  <input type="number" name="Occurrences" class="form-control" [(ngModel)]="model.Occurrences" required>
+                </div> -->
 
               </div>
               
@@ -68,7 +66,7 @@
                 <div class="col-sm text-right">
                   <button type="submit" class="btn btn-fresca" [disabled]="!fieldLaborActivityForm.form.valid || isLoadingSubmit">
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
-                    Submit
+                    Add <span *ngIf="model.FieldLaborActivities && model.FieldLaborActivities.length > 0">({{model.FieldLaborActivities.length}})</span>
                   </button>
                 </div>
               </div>

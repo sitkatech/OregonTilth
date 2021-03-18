@@ -24,6 +24,7 @@ import { FieldLaborByCropCreateDto } from 'src/app/shared/models/forms/field-lab
 import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor-by-crop-dto';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { LaborTypeDto } from 'src/app/shared/models/generated/labor-type-dto';
+import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 
 @Component({
   selector: 'field-labor-by-crop',
@@ -68,6 +69,7 @@ export class FieldLaborByCropComponent implements OnInit {
   private deleteFieldLaborByCropRequest: any;
 
   public columnDefs: ColDef[];
+  public dropdownSettings = {};
  
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -90,6 +92,16 @@ export class FieldLaborByCropComponent implements OnInit {
           this.defineColumnDefs();
           this.cdr.markForCheck();
       });
+
+      this.dropdownSettings = {
+        singleSelection: false,
+        idField: 'FieldLaborActivityID',
+        textField: 'FieldLaborActivityName',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 10,
+        allowSearchFilter: true
+      };
 
     });
   }
@@ -130,7 +142,7 @@ export class FieldLaborByCropComponent implements OnInit {
           });
           return true;
         },
-        cellEditor: 'agPopupSelectCellEditor',
+        cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.fieldLaborActivityDtos.map(x => x.FieldLaborActivityName)
         },
@@ -150,7 +162,7 @@ export class FieldLaborByCropComponent implements OnInit {
           });
           return true;
         },
-        cellEditor: 'agPopupSelectCellEditor',
+        cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.laborTypeDtos.map(x => x.LaborTypeName)
         },
@@ -158,12 +170,18 @@ export class FieldLaborByCropComponent implements OnInit {
         filter: true,
       },
       {
-        headerName: 'Occurrances', 
-        field: 'Occurrances',
+        headerName: 'Occurrences', 
+        field: 'Occurrences',
         editable: true,
-        cellEditor: 'agTextCellEditor',
+        cellEditorFramework: DecimalEditor,
         sortable: true, 
         filter: true,
+        cellStyle: params => {
+          if (params.value) {
+              return { backgroundColor: '#ccf5cc'};
+          } 
+          return {backgroundColor: '#ffdfd6'};
+        }
       },
       {
         headerName: 'Delete', valueGetter: function (params: any) {

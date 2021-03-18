@@ -18,21 +18,7 @@ namespace OregonTilth.EFModels.Entities
         {
             var result = new List<ErrorMessage>();
 
-            var userFieldLaborByCropsForWorkbook = GetDtoListByWorkbookID(dbContext, fieldLaborByCropCreateDto.WorkbookID).ToList();
-            
-            // unique per workbook, crop, activity, labor type
-            if (userFieldLaborByCropsForWorkbook.Any(x => x.Workbook.WorkbookID == fieldLaborByCropCreateDto.WorkbookID 
-                                                          && x.Crop.CropID == fieldLaborByCropCreateDto.CropID 
-                                                          && x.FieldLaborActivity.FieldLaborActivityID == fieldLaborByCropCreateDto.FieldLaborActivityID
-                                                          && x.LaborType.LaborTypeID == fieldLaborByCropCreateDto.LaborTypeID))
-            {
-                result.Add(new ErrorMessage() { Type = "Field Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, Field Labor Activity, and Labor Type." });
-            }
-
-            if (Math.Round(fieldLaborByCropCreateDto.Occurrances, 4) <= 0)
-            {
-                result.Add(new ErrorMessage() { Type = "Occurrances", Message = "Occurrances cannot be less than zero." });
-            }
+            // doing bulk inserts here now
 
             return result;
         }
@@ -51,9 +37,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Field Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, Field Labor Activity, and Labor Type." });
             }
 
-            if (Math.Round(fieldLaborByCropDto.Occurrances, 4) <= 0)
+            if (fieldLaborByCropDto.Occurrences != null && Math.Round((decimal)fieldLaborByCropDto.Occurrences, 4) <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Occurrances", Message = "Occurrances must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Occurrences", Message = "Occurrences must be greater than 0." });
             }
             
             return result;
@@ -89,18 +75,33 @@ namespace OregonTilth.EFModels.Entities
 
         public static IQueryable<FieldLaborByCropSummaryDto> CreateNewFieldLaborByCrop(OregonTilthDbContext dbContext, FieldLaborByCropCreateDto fieldLaborByCropCreateDto)
         {
-            var fieldLaborByCrop = new FieldLaborByCrop
-            {
-                WorkbookID = fieldLaborByCropCreateDto.WorkbookID,
-                CropID = fieldLaborByCropCreateDto.CropID,
-                FieldLaborActivityID = fieldLaborByCropCreateDto.FieldLaborActivityID,
-                LaborTypeID = fieldLaborByCropCreateDto.LaborTypeID,
-                Occurrances = fieldLaborByCropCreateDto.Occurrances
-            };
 
-            dbContext.FieldLaborByCrops.Add(fieldLaborByCrop);
+            // we need to check for existing records and only add the ones that do not exist
+            var currentFieldLaborByCrops = dbContext.FieldLaborByCrops
+                .Where(x => x.WorkbookID == fieldLaborByCropCreateDto.WorkbookID)
+                .Include(x => x.FieldLaborActivity)
+                .AsNoTracking();
+
+            foreach (var fieldLaborActivityDto in fieldLaborByCropCreateDto.FieldLaborActivities)
+            {
+                if (!currentFieldLaborByCrops.Any(x =>
+                    x.FieldLaborActivityID ==
+                    fieldLaborActivityDto.FieldLaborActivityID
+                    && x.CropID == fieldLaborByCropCreateDto.CropID
+                    && x.LaborTypeID == fieldLaborByCropCreateDto.LaborTypeID))
+                {
+                    var fieldLaborByCrop = new FieldLaborByCrop()
+                    {
+                        WorkbookID = fieldLaborByCropCreateDto.WorkbookID,
+                        CropID = fieldLaborByCropCreateDto.CropID,
+                        FieldLaborActivityID = fieldLaborActivityDto.FieldLaborActivityID,
+                        LaborTypeID = fieldLaborByCropCreateDto.LaborTypeID,
+                    };
+                    dbContext.FieldLaborByCrops.Add(fieldLaborByCrop);
+                }
+            }
+           
             dbContext.SaveChanges();
-            dbContext.Entry(fieldLaborByCrop).Reload();
 
             return GetDtoListByWorkbookID(dbContext, fieldLaborByCropCreateDto.WorkbookID);
         }
@@ -115,7 +116,7 @@ namespace OregonTilth.EFModels.Entities
             fieldLaborByCrop.CropID = fieldLaborByCropDto.Crop.CropID;
             fieldLaborByCrop.FieldLaborActivityID = fieldLaborByCropDto.FieldLaborActivity.FieldLaborActivityID;
             fieldLaborByCrop.LaborTypeID = fieldLaborByCropDto.LaborType.LaborTypeID;
-            fieldLaborByCrop.Occurrances = fieldLaborByCropDto.Occurrances;
+            fieldLaborByCrop.Occurrences = fieldLaborByCropDto.Occurrences;
 
             dbContext.SaveChanges();
             dbContext.Entry(fieldLaborByCrop).Reload();

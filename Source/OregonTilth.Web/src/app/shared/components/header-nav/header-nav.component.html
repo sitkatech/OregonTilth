@@ -11,15 +11,20 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item" routerLinkActive="active" *ngIf="isAuthenticated()">
+            <li class="nav-item" routerLinkActive="active" *ngIf="!isUnassignedOrDisabled()">
                 <a routerLink="/workbooks" class="nav-link">
                     My Workbooks
+                </a>
+            </li>
+            <li class="nav-item" routerLinkActive="active" *ngIf="isAuthenticated()">
+                <a routerLink="/about" class="nav-link">
+                    About
                 </a>
             </li>
             <li class="nav-item dropdown" routerLinkActive="active" *ngIf="isAdministrator()">
                 <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
-                    Manage
+                    Admin
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a routerLink="/users" class="dropdown-item">
@@ -27,23 +32,6 @@
                     </a>
                     <a routerLink="/labels-and-definitions" class="dropdown-item">
                         Labels and Definitions
-                    </a>
-                </div>
-            </li>
-            <li class="nav-item dropdown" routerLinkActive="active">
-                <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Learn More
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a routerLink="/platform-overview" class="dropdown-item">
-                        Platform Overview
-                    </a>
-                    <a routerLink="/training" class="dropdown-item">
-                        Training
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a routerLink="/disclaimer/false" class="dropdown-item">
-                        Disclaimer
                     </a>
                 </div>
             </li>
