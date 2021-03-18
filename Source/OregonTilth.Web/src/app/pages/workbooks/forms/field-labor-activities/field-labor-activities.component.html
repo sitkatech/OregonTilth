@@ -25,7 +25,7 @@
             <form *ngIf=(model) (ngSubmit)="onSubmit(fieldLaborActivityForm)" #fieldLaborActivityForm="ngForm">
               <div class="row">
                 
-                <div class="form-group col-md-8">
+                <div class="form-group col-md-4">
                   <label class="required">Field Labor Activity</label>
                   <input class="form-control" type="text" name="FieldLaborActivityName" [(ngModel)]="model.FieldLaborActivityName">
                 </div>
@@ -37,6 +37,31 @@
                       {{category.FieldLaborActivityCategoryDisplayName}}
                     </option>
                   </select>
+                </div>
+                <div class="form-group col-md-3">
+                  <fieldset>
+                    <legend class="required">Labor Type</legend>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="labor-type-checkbox-wrapper">
+                          <label for="LaborTypeCrew">
+                            <span>Crew</span>
+                            <input type="checkbox" id="LaborTypeCrew" class="labor-type-checkbox" name="LaborTypeCrew" [(ngModel)]="model.LaborTypeCrew">
+                          </label>
+                        </div>
+                        
+                      </div>
+                      <div class="col-md-6">
+                        <div class="labor-type-checkbox-wrapper">
+                          <label for="LaborTypeOperator">
+                            <span>Operator</span>
+                            <input type="checkbox" id="LaborTypeOperator" class="labor-type-checkbox" name="LaborTypeOperator" [(ngModel)]="model.LaborTypeOperator">
+                          </label>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </fieldset>
                 </div>
               </div>
               
