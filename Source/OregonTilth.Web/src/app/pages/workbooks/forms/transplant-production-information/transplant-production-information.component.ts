@@ -97,9 +97,12 @@ export class TransplantProductionInformationComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: 'Crop', 
-        field: 'Crop.CropName',
+        field: 'Crop',
         editable: true,
         cellEditor: 'agTextCellEditor',
+        valueGetter: params => {
+          params.data.Crop.CropName;
+        },
         sortable: true, 
         filter: true
       },

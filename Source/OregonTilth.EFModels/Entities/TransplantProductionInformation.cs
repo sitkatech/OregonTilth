@@ -85,9 +85,9 @@ namespace OregonTilth.EFModels.Entities
         {
             return dbContext.TransplantProductionInformations
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
-                .Include(x => x.Crop)
+                .Include(x => x.Crop).ThenInclude(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .Include(x => x.Phase)
-                .Include(x => x.TransplantProductionTrayType)
+                .Include(x => x.TransplantProductionTrayType).ThenInclude(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .AsNoTracking();
         }
 
@@ -99,16 +99,34 @@ namespace OregonTilth.EFModels.Entities
 
         public static IQueryable<TransplantProductionInformationDto> CreateNewTransplantProductionInformation(OregonTilthDbContext dbContext, TransplantProductionInformationCreateDto transplantProductionInformationCreateDto, UserDto userDto)
         {
-            // todo: create
-            //var transplantProductionInformation = new TransplantProductionInformation
-            //{
-            //    TransplantProductionInformationName = transplantProductionInformationCreateDto.TransplantProductionInformationName,
-            //    WorkbookID = transplantProductionInformationCreateDto.WorkbookID
-            //};
 
-            //dbContext.TransplantProductionInformations.Add(transplantProductionInformation);
-            //dbContext.SaveChanges();
-            //dbContext.Entry(transplantProductionInformation).Reload();
+            var transplantProductionInformation = new TransplantProductionInformation()
+            {
+                WorkbookID = transplantProductionInformationCreateDto.WorkbookID,
+                CropID = transplantProductionInformationCreateDto.CropID,
+                PhaseID = transplantProductionInformationCreateDto.PhaseID,
+                TransplantProductionTrayTypeID = transplantProductionInformationCreateDto.TransplantProductionTrayTypeID,
+                SeedsPerTray = transplantProductionInformationCreateDto.SeedsPerTray,
+                UsageRate = transplantProductionInformationCreateDto.UsageRate
+            };
+            dbContext.TransplantProductionInformations.Add(transplantProductionInformation);
+
+            // If they select "Potting up" as the phase, we need to also create a "Seeding Phase" entry with the same information
+            if (transplantProductionInformationCreateDto.PhaseID == (int) PhaseEnum.PottingUp)
+            {
+                var seedingTransplantProductionInformation = new TransplantProductionInformation()
+                {
+                    WorkbookID = transplantProductionInformationCreateDto.WorkbookID,
+                    CropID = transplantProductionInformationCreateDto.CropID,
+                    PhaseID = (int) PhaseEnum.Seeding,
+                    TransplantProductionTrayTypeID = transplantProductionInformationCreateDto.TransplantProductionTrayTypeID,
+                    SeedsPerTray = transplantProductionInformationCreateDto.SeedsPerTray,
+                    UsageRate = transplantProductionInformationCreateDto.UsageRate
+                };
+                dbContext.TransplantProductionInformations.Add(seedingTransplantProductionInformation);
+            }
+
+            dbContext.SaveChanges();
 
             return GetDtoListByWorkbookID(dbContext, transplantProductionInformationCreateDto.WorkbookID);
         }

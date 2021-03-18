@@ -11,4 +11,10 @@ namespace OregonTilth.EFModels.Entities
             return dbContext.Phases.Select(x => PhaseExtensionMethods.AsDto(x)).ToList();
         }
     }
+
+    public enum PhaseEnum
+    {
+        Seeding = 1,
+        PottingUp = 2
+    }
 }
