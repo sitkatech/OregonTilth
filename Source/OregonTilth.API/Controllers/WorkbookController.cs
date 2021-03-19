@@ -859,5 +859,71 @@ namespace OregonTilth.API.Controllers
             return Ok(returnDtos);
         }
         #endregion
+
+        #region "Transplant Production Information Form"
+        [HttpPost("workbooks/{workbookID}/forms/transplant-production-information")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionInformationDto>> CreateTransplantProductionInformation([FromBody] TransplantProductionInformationCreateDto tpInfoCreateDto)
+        {
+            var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+
+            var validationMessages = TransplantProductionInformation.ValidateCreate(_dbContext, tpInfoCreateDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var tpInfoDtos = TransplantProductionInformation.CreateNewTransplantProductionInformation(_dbContext, tpInfoCreateDto, userDto);
+            return Ok(tpInfoDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/transplant-production-information")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionInformationDto>> GetTransplantProductionInformations([FromRoute] int workbookID)
+        {
+            var tpInfoDtos = TransplantProductionInformation.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(tpInfoDtos);
+        }
+
+        [HttpPut("workbooks/{workbookID}/forms/transplant-production-information")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionInformationDto> UpdateTransplantProductionInformation([FromBody] TransplantProductionInformationDto tpInfoDto)
+        {
+            var validationMessages = TransplantProductionInformation.ValidateUpdate(_dbContext, tpInfoDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var tpInfoDtos = TransplantProductionInformation.UpdateTransplantProductionInformation(_dbContext, tpInfoDto);
+            return Ok(tpInfoDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/transplant-production-information/{transplantProductionInformationID}")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionInformationDto>> DeleteTransplantProductionInformation([FromRoute] int workbookID, [FromRoute] int transplantProductionInformationID)
+        {
+            var validationMessages = TransplantProductionInformation.ValidateDelete(_dbContext, transplantProductionInformationID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            TransplantProductionInformation.Delete(_dbContext, transplantProductionInformationID);
+
+            var returnDtos = TransplantProductionInformation.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+
+        #endregion "Transplant Production Information Form"
     }
 }

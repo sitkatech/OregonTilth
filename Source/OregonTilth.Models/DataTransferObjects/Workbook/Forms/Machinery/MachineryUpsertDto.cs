@@ -9,7 +9,6 @@ namespace OregonTilth.Models.DataTransferObjects
         public string MachineryName { get; set; }
         [Required]
         public decimal StandardMachineryCost { get; set; }
-
         [Required] 
         public int WorkbookID { get; set; }
     }
