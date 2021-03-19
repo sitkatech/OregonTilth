@@ -58,6 +58,8 @@ import { TransplantProductionInputsComponent } from './pages/workbooks/forms/tra
 import { TransplantProductionTrayTypesComponent } from './pages/workbooks/forms/transplant-production-tray-types/transplant-production-tray-types.component';
 import { TransplantProductionInputCostsComponent } from './pages/workbooks/forms/transplant-production-input-costs/transplant-production-input-costs.component';
 import { FieldInputByCropComponent } from './pages/workbooks/forms/field-input-by-crop/field-input-by-crop.component';
+import { TransplantProductionInformationComponent } from './pages/workbooks/forms/transplant-production-information/transplant-production-information.component';
+import { IntegerEditor } from './shared/components/ag-grid/integer-editor/integer-editor.component';
 import { FieldStandardTimesComponent } from './pages/workbooks/forms/field-standard-times/field-standard-times.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
@@ -93,6 +95,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     TransplantProductionLaborByCropComponent,
     TransplantProductionInputsComponent,
     TransplantProductionTrayTypesComponent,
+    TransplantProductionInformationComponent,
     FieldStandardTimesComponent,
     CropsComponent,
     CropUnitsComponent,
@@ -102,6 +105,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     FieldDefinitionEditComponent,
     TrainingComponent,
     DecimalEditor,
+    IntegerEditor,
     FieldInputByCropComponent,
   ],
   imports: [
@@ -115,7 +119,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     FormsModule,
     NgxChartsModule,
     BrowserAnimationsModule,
-    AgGridModule.withComponents([DecimalEditor]),
+    AgGridModule.withComponents([DecimalEditor, IntegerEditor]),
     NgMultiSelectDropDownModule.forRoot(),
     MyDatePickerModule,
     CKEditorModule
