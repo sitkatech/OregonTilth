@@ -156,6 +156,26 @@ namespace OregonTilth.EFModels.Entities
         {
             var result = new List<ErrorMessage>();
             // todo: do not allow deletion of an entry with the phase of "Seeding" if there is a "Potting Up" row with the same combination
+
+            var tpInfoToValidateDeletion = dbContext
+                .TransplantProductionInformations
+                .FirstOrDefault(x => x.TransplantProductionInformationID == transplantProductionInformationID);
+
+
+            if (tpInfoToValidateDeletion.PhaseID == (int) PhaseEnum.Seeding)
+            {
+                var currentEntries = GetTransplantProductionInformationImpl(dbContext).Where(x => x.WorkbookID == tpInfoToValidateDeletion.WorkbookID);
+
+                if (currentEntries.Any(x =>
+                    x.Crop.CropID == tpInfoToValidateDeletion.CropID && x.Phase.PhaseID == (int)PhaseEnum.PottingUp))
+                {
+                    result.Add(new ErrorMessage() { Type = "Phase", Message = "Cannot delete an entry with the \"Seeding\" phase when there is an entry for the same crop with the \"Potting Up\" phase." });
+                }
+            }
+
+            
+
+
             return result;
         }
 
