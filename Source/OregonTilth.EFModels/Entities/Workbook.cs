@@ -99,17 +99,17 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Workbook Name", Message = "Workbooks must have a name." });
             }
 
-            if (workbookDto.AverageHourlyWage.HasValue && workbookDto.AverageHourlyWage.Value > 0)
+            if (workbookDto.AverageHourlyWage.HasValue && workbookDto.AverageHourlyWage.Value < 0)
             {
                 result.Add(new ErrorMessage() { Type = "Average Hourly Wage", Message = "Average Hourly Wage must be greater than 0." });
             }
 
-            if (workbookDto.StandardUnitOfSpaceLength.HasValue && workbookDto.StandardUnitOfSpaceLength.Value > 0)
+            if (workbookDto.StandardUnitOfSpaceLength.HasValue && workbookDto.StandardUnitOfSpaceLength.Value < 0)
             {
                 result.Add(new ErrorMessage() { Type = "Standard Unit of Space Length", Message = "Standard Unit of Space Length must be greater than 0." });
             }
 
-            if (workbookDto.StandardUnitOfSpaceWidth.HasValue && workbookDto.StandardUnitOfSpaceWidth.Value > 0)
+            if (workbookDto.StandardUnitOfSpaceWidth.HasValue && workbookDto.StandardUnitOfSpaceWidth.Value < 0)
             {
                 result.Add(new ErrorMessage() { Type = "Standard Unit of Space Width", Message = "Standard Unit of Space Width must be greater than 0." });
             }

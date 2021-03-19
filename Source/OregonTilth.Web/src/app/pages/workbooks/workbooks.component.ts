@@ -12,6 +12,7 @@ import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { Router } from '@angular/router';
+import { GridService } from 'src/app/shared/services/grid/grid.service';
 
 @Component({
   selector: 'workbooks',
@@ -25,6 +26,7 @@ export class WorkbooksComponent implements OnInit {
     private datePipe: DatePipe,
     private workbookService: WorkbookService,
     private alertService: AlertService,
+    private gridService: GridService,
     private router: Router) { }
 
   private watchUserChangeSubscription: any;
@@ -66,6 +68,25 @@ export class WorkbooksComponent implements OnInit {
             return 0;
           },
           sortable: true, filter: true, width: 170
+        },
+        {
+          headerName: 'Average Hourly Wage', 
+          cellEditor: 'agTextCellEditor',
+          field: 'AverageHourlyWage',
+          valueFormatter: this.gridService.currencyFormatter,
+          sortable: true, filter: true, width: 160
+        },
+        {
+          headerName: 'Std Unit of Space Length', 
+          cellEditor: 'agTextCellEditor',
+          field: 'StandardUnitOfSpaceLength',
+          sortable: true, filter: true, width: 175
+        },
+        {
+          headerName: 'Std Unit of Space Width', 
+          cellEditor: 'agTextCellEditor',
+          field: 'StandardUnitOfSpaceWidth',
+          sortable: true, filter: true, width: 175
         },
         {
           headerName: 'Create Date', field: 'CreateDate', valueFormatter: function (params) {
