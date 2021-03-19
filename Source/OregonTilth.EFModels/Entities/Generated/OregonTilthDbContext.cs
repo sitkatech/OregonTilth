@@ -49,6 +49,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<TransplantProductionTrayType> TransplantProductionTrayTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Workbook> Workbooks { get; set; }
+        public virtual DbSet<vFieldLaborActivityForTimeStudy> vFieldLaborActivityForTimeStudies { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -167,8 +168,6 @@ namespace OregonTilth.EFModels.Entities
             modelBuilder.Entity<FieldLaborActivity>(entity =>
             {
                 entity.Property(e => e.FieldLaborActivityName).IsUnicode(false);
-
-                entity.Property(e => e.LaborTypeCrew).HasDefaultValueSql("((1))");
 
                 entity.HasOne(d => d.FieldLaborActivityCategory)
                     .WithMany(p => p.FieldLaborActivities)
@@ -486,6 +485,15 @@ namespace OregonTilth.EFModels.Entities
                     .WithMany(p => p.Workbooks)
                     .HasForeignKey(d => d.UserID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<vFieldLaborActivityForTimeStudy>(entity =>
+            {
+                entity.ToView("vFieldLaborActivityForTimeStudy");
+
+                entity.Property(e => e.FieldLaborActivityID).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.FieldLaborActivityName).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

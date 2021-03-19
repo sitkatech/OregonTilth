@@ -25,8 +25,7 @@ namespace OregonTilth.EFModels.Entities
         [StringLength(100)]
         public string FieldLaborActivityName { get; set; }
         public int FieldLaborActivityCategoryID { get; set; }
-        [Required]
-        public bool? LaborTypeCrew { get; set; }
+        public bool LaborTypeCrew { get; set; }
         public bool LaborTypeOperator { get; set; }
 
         [ForeignKey(nameof(FieldLaborActivityCategoryID))]
