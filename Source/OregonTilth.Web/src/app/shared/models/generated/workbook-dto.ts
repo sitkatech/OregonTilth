@@ -9,6 +9,9 @@ export class WorkbookDto {
 	User : UserDto
 	CreateDate : Date
 	WorkbookName : string
+	AverageHourlyWage : number
+	StandardUnitOfSpaceLength : number
+	StandardUnitOfSpaceWidth : number
 
     constructor(obj?: any) {
         Object.assign(this, obj);

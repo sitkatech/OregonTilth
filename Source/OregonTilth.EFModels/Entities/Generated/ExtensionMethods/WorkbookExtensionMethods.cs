@@ -16,7 +16,10 @@ namespace OregonTilth.EFModels.Entities
                 WorkbookID = workbook.WorkbookID,
                 User = workbook.User.AsDto(),
                 CreateDate = workbook.CreateDate,
-                WorkbookName = workbook.WorkbookName
+                WorkbookName = workbook.WorkbookName,
+                AverageHourlyWage = workbook.AverageHourlyWage,
+                StandardUnitOfSpaceLength = workbook.StandardUnitOfSpaceLength,
+                StandardUnitOfSpaceWidth = workbook.StandardUnitOfSpaceWidth
             };
             DoCustomMappings(workbook, workbookDto);
             return workbookDto;
