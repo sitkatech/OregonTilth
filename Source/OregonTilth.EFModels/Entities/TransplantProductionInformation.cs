@@ -111,8 +111,11 @@ namespace OregonTilth.EFModels.Entities
             };
             dbContext.TransplantProductionInformations.Add(transplantProductionInformation);
 
-            // If they select "Potting up" as the phase, we need to also create a "Seeding Phase" entry with the same information
-            if (transplantProductionInformationCreateDto.PhaseID == (int) PhaseEnum.PottingUp)
+            // If they select "Potting up" as the phase, we need to also create a "Seeding Phase" entry with the same information if it doesn't exist
+            var currentEntries = GetTransplantProductionInformationImpl(dbContext).Where(x => x.WorkbookID == transplantProductionInformationCreateDto.WorkbookID);
+
+            if (transplantProductionInformationCreateDto.PhaseID == (int) PhaseEnum.PottingUp 
+                && !currentEntries.Any(x => x.CropID == transplantProductionInformationCreateDto.CropID && x.PhaseID == (int)PhaseEnum.Seeding))
             {
                 var seedingTransplantProductionInformation = new TransplantProductionInformation()
                 {

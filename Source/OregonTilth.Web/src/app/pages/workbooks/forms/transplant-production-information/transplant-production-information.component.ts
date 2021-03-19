@@ -184,12 +184,12 @@ export class TransplantProductionInformationComponent implements OnInit {
         cellEditorFramework: IntegerEditor,
         sortable: true, 
         filter: true,
-        // cellStyle: params => {
-        //   if (params.value) {
-        //       return { backgroundColor: '#ccf5cc'};
-        //   } 
-        //   return {backgroundColor: '#ffdfd6'};
-        // }
+        cellStyle: params => {
+          if (params.value) {
+              return { backgroundColor: '#ccf5cc'};
+          } 
+          return {backgroundColor: '#ffdfd6'};
+        }
       },
       {
         headerName: 'Usage Rate', 
@@ -205,12 +205,30 @@ export class TransplantProductionInformationComponent implements OnInit {
       {
         headerName: 'Cost Per Seed', 
         field: 'CostPerSeed',
-        editable: true,
+        editable: params => {
+          if(params.data.Phase.PhaseID == PhaseEnum.PottingUp) {
+            return false;
+          }
+          return true;
+        },
         cellEditorFramework: DecimalEditor,
         sortable: true, 
         filter: true,
         valueFormatter: params => {
+          if(params.data.Phase.PhaseID == PhaseEnum.PottingUp) {
+            return 'N/A';
+          }
+
           return params.value ? '$' + params.value : '';
+        },
+        cellStyle: params => {
+          if (params.data.Phase.PhaseID == PhaseEnum.Seeding && !params.value) {
+              return { backgroundColor: '#ffdfd6' };
+          }
+          if(params.data.Phase.PhaseID == PhaseEnum.PottingUp) {
+            return { backgroundColor: '#ddd' };
+          }
+          return {backgroundColor: '#ccf5cc'};
         }
       },
       {
@@ -222,7 +240,8 @@ export class TransplantProductionInformationComponent implements OnInit {
         filter: true,
         valueFormatter: params => {
           return params.value ? '$' + params.value : '';
-        }
+        },
+        width:250
       },
       {
         headerName: 'Delete', field: 'TransplantProductionInformationID', valueGetter: function (params: any) {
