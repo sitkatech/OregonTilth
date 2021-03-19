@@ -1,7 +1,7 @@
 
 alter table dbo.FieldLaborActivity
-add LaborTypeCrew bit not null,
-LaborTypeOperator bit not null,
+add LaborTypeCrew bit not null DEFAULT 1,
+LaborTypeOperator bit not null DEFAULT 0,
 CONSTRAINT CK_FieldLaborActivity_At_Least_One_Labor_Type_Checked CHECK (LaborTypeCrew = 1 or LaborTypeOperator = 1);
 
 go

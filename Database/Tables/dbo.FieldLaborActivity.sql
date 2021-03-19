@@ -21,6 +21,10 @@ CREATE TABLE [dbo].[FieldLaborActivity](
 ) ON [PRIMARY]
 
 GO
+ALTER TABLE [dbo].[FieldLaborActivity] ADD  DEFAULT ((1)) FOR [LaborTypeCrew]
+GO
+ALTER TABLE [dbo].[FieldLaborActivity] ADD  DEFAULT ((0)) FOR [LaborTypeOperator]
+GO
 ALTER TABLE [dbo].[FieldLaborActivity]  WITH CHECK ADD  CONSTRAINT [FK_FieldLaborActivity_FieldLaborActivityCategory_FieldLaborActivityCategoryID] FOREIGN KEY([FieldLaborActivityCategoryID])
 REFERENCES [dbo].[FieldLaborActivityCategory] ([FieldLaborActivityCategoryID])
 GO

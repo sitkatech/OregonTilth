@@ -168,6 +168,8 @@ namespace OregonTilth.EFModels.Entities
             {
                 entity.Property(e => e.FieldLaborActivityName).IsUnicode(false);
 
+                entity.Property(e => e.LaborTypeCrew).HasDefaultValueSql("((1))");
+
                 entity.HasOne(d => d.FieldLaborActivityCategory)
                     .WithMany(p => p.FieldLaborActivities)
                     .HasForeignKey(d => d.FieldLaborActivityCategoryID)
