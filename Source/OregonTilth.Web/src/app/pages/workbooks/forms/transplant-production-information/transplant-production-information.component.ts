@@ -23,6 +23,7 @@ import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { IntegerEditor } from 'src/app/shared/components/ag-grid/integer-editor/integer-editor.component';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
+import { PhaseEnum } from 'src/app/shared/models/enums/phase.enum';
 
 @Component({
   selector: 'transplant-production-information',
@@ -56,6 +57,7 @@ export class TransplantProductionInformationComponent implements OnInit {
   private updateTpInfoRequest: any;
   private deleteTpInfoRequest: any;
 
+  public pottingUpPhaseID: PhaseEnum.PottingUp;
 
   private getCropsRequest: any;
   public cropDtos: CropDto[];
@@ -80,7 +82,7 @@ export class TransplantProductionInformationComponent implements OnInit {
       this.getCropsRequest = this.workbookService.getCrops(this.workbookID);
       this.getPhasesRequest = this.lookupTablesService.getPhases();
       this.getTrayTypesRequest = this.workbookService.getTransplantProductionTrayTypes(this.workbookID);
-
+      
 
       forkJoin([this.getWorkbookRequest, this.getTpInfoDtosRequest, this.getCropsRequest, this.getPhasesRequest, this.getTrayTypesRequest]).subscribe(([workbook, tpInfoDtos, cropDtos, phaseDtos, trayTypeDtos]: [WorkbookDto, TransplantProductionInformationDto[], CropDto[], PhaseDto[], TransplantProductionTrayTypeDto[]] ) => {
           this.workbook = workbook;
@@ -93,6 +95,10 @@ export class TransplantProductionInformationComponent implements OnInit {
       });
 
     });
+  }
+
+  displayPottingUpMessage() {
+    return this.model.PhaseID == PhaseEnum.PottingUp;
   }
 
   onGridReady(params: any) {
@@ -219,8 +225,8 @@ export class TransplantProductionInformationComponent implements OnInit {
         }
       },
       {
-        headerName: 'Delete', field: 'CropID', valueGetter: function (params: any) {
-          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.CropID, ObjectDisplayName: params.data.CropName };
+        headerName: 'Delete', field: 'TransplantProductionInformationID', valueGetter: function (params: any) {
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.TransplantProductionInformationID, ObjectDisplayName: params.data.TransplantProductionInformationID };
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {

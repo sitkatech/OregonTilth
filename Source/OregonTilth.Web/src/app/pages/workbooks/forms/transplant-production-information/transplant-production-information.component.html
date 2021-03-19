@@ -23,7 +23,13 @@
           </div>
           <div class="card-body">
             <form *ngIf=(model) (ngSubmit)="onSubmit(cropForm)" #cropForm="ngForm">
-
+              <div class="row" *ngIf="displayPottingUpMessage()">
+                <div class="col-md-12">
+                  <div class="alert alert-info">
+                    <p>When "Potting Up" phase is selected, a entry with "Seeding" phase will also be created.</p>
+                  </div>
+                </div>
+              </div>
               <div class="row">
                 <div class="form-group col-md-4">
                   <label class="required">Crop</label>
