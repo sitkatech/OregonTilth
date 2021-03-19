@@ -936,6 +936,14 @@ namespace OregonTilth.API.Controllers
             return Ok(fieldStandardTimes);
         }
 
+
+        [HttpGet("workbooks/{workbookID}/forms/field-standard-times/time-studies")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<vFieldLaborActivityForTimeStudyDto>> GetFieldStandardTimesForTimeStudies([FromRoute] int workbookID)
+        {
+            var fieldStandardTimesForTimeStudies = vFieldLaborActivityForTimeStudy.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldStandardTimesForTimeStudies);
+        }
         #endregion "Field Standard Times"
     }
 

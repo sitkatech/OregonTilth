@@ -10,24 +10,32 @@ namespace OregonTilth.EFModels.Entities
     {
         public static IEnumerable<FieldStandardTimeSummaryDto> GetFieldStandardTimeSummaryDtos(OregonTilthDbContext dbContext)
         {
-            var fieldLaborActivities = dbContext.FieldLaborActivities
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role).ToList();
+            var fieldStandardTimes = dbContext.FieldStandardTimes
+                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.FieldLaborActivity)
+                .Include(x => x.FieldUnitType)
+                .Include(x => x.Machinery)
+                .Include(x => x.LaborType)
+                .ToList();
 
-            var fieldStandardTimes = dbContext.FieldStandardTimes.ToList();
 
 
             var fieldStandardTimeSummaryDtos = new List<FieldStandardTimeSummaryDto>();
 
-            foreach (var fieldLaborActivity in fieldLaborActivities)
+            foreach (var fieldStandardTime in fieldStandardTimes)
             {
-                var fieldStandardTime = fieldStandardTimes.FirstOrDefault(x =>
-                    x.FieldLaborActivityID == fieldLaborActivity.FieldLaborActivityID);
-
+                
                 fieldStandardTimeSummaryDtos.Add(new FieldStandardTimeSummaryDto()
                 {
-                    WorkbookID = fieldLaborActivity.WorkbookID,
-                    FieldLaborActivity = fieldLaborActivity.AsSummaryDto(),
                     FieldStandardTimeID = fieldStandardTime?.FieldStandardTimeID,
+                    WorkbookID = fieldStandardTime.WorkbookID,
+                    FieldLaborActivity = fieldStandardTime.FieldLaborActivity.AsSummaryDto(),
+                    LaborType = fieldStandardTime.LaborType.AsDto(),
+                    Machinery = fieldStandardTime.Machinery.AsSummaryDto(),
+                    FieldUnitType = fieldStandardTime.FieldUnitType.AsDto(),
+                    // todo: something for this
+                    AverageMinutesPerFieldUnit = 0,
+                    StandardMinutesPerFieldUnit = fieldStandardTime.StandardTimePerUnit,
                     TimeStudies = fieldStandardTime?.TimeStudies.Select(x => x.AsDto())
 
                 });

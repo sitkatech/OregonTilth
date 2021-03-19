@@ -18,6 +18,11 @@ import { CropCreateDto } from 'src/app/shared/models/forms/crops/crop-create-dto
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-labor-activity-dto';
 import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-summary-dto';
+import { vFieldLaborActivityForTimeStudyDto } from 'src/app/shared/models/forms/field-standard-times/vFieldLaborActivityForTimeStudyDto';
+import { LaborTypeDto } from 'src/app/shared/models/generated/labor-type-dto';
+import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
+import { MachineryDto } from 'src/app/shared/models/generated/machinery-dto';
+import { FieldUnitTypeDto } from 'src/app/shared/models/generated/field-unit-type-dto';
 
 @Component({
   selector: 'field-standard-times',
@@ -29,6 +34,7 @@ export class FieldStandardTimesComponent implements OnInit {
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
+    private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
     private route: ActivatedRoute) { }
 
@@ -47,6 +53,18 @@ export class FieldStandardTimesComponent implements OnInit {
   public getFieldStandardTimesRequest: any;
   public fieldStandardTimes: FieldStandardTimeSummaryDto[];
 
+  public getvFieldLaborActivitiesForTimeStudiesRequest: any;
+  public vFieldLaborActivitiesForTimeStudyDtos: vFieldLaborActivityForTimeStudyDto[];
+
+  public getLaborTypesRequest: any;
+  public laborTypes: LaborTypeDto[];
+
+  public getMachineryRequest: any;
+  public machinery: MachineryDto[];
+
+  public getFieldUnitsRequest: any;
+  public fieldUnits: FieldUnitTypeDto[];
+
   public columnDefs: ColDef[];
  
   ngOnInit() {
@@ -57,11 +75,46 @@ export class FieldStandardTimesComponent implements OnInit {
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
       this.getFieldLaborActivitiesRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
       this.getFieldStandardTimesRequest = this.workbookService.getFieldStandardTimes(this.workbookID);
+      this.getvFieldLaborActivitiesForTimeStudiesRequest = this.workbookService.getFieldLaborActivitiesForTimeStudies(this.workbookID);
+      this.getLaborTypesRequest = this.lookupTablesService.getLaborTypes();
+      this.getMachineryRequest = this.workbookService.getMachinery(this.workbookID);
+      this.getFieldUnitsRequest = this.lookupTablesService.getFieldUnitTypes();
 
-      forkJoin([this.getWorkbookRequest, this.getFieldLaborActivitiesRequest, this.getFieldStandardTimesRequest]).subscribe(([workbook, fieldLaborActivities, fieldStandardTimes]: [WorkbookDto, FieldLaborActivityDto[], FieldStandardTimeSummaryDto[]] ) => {
+      forkJoin(
+        [
+          this.getWorkbookRequest, 
+          this.getFieldLaborActivitiesRequest, 
+          this.getFieldStandardTimesRequest, 
+          this.getvFieldLaborActivitiesForTimeStudiesRequest, 
+          this.getLaborTypesRequest,
+          this.getMachineryRequest,
+          this.getFieldUnitsRequest
+        ]).subscribe((
+          [
+            workbook, 
+            fieldLaborActivities, 
+            fieldStandardTimes, 
+            vFieldLaborActivityForTimeStudyDtos, 
+            laborTypeDtos,
+            machineryDtos,
+            fieldUnitDtos
+          ]: 
+          [
+            WorkbookDto, 
+            FieldLaborActivityDto[], 
+            FieldStandardTimeSummaryDto[], 
+            vFieldLaborActivityForTimeStudyDto[], 
+            LaborTypeDto[],
+            MachineryDto[],
+            FieldUnitTypeDto[]
+          ] ) => {
           this.workbook = workbook;
           this.fieldLaborActivities = fieldLaborActivities;
           this.fieldStandardTimes = fieldStandardTimes;
+          this.vFieldLaborActivitiesForTimeStudyDtos = vFieldLaborActivityForTimeStudyDtos;
+          this.laborTypes = laborTypeDtos;
+          this.machinery = machineryDtos;
+          this.fieldUnits = fieldUnitDtos;
           this.defineColumnDefs();
           this.cdr.markForCheck();
       });
@@ -74,11 +127,57 @@ export class FieldStandardTimesComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: 'Field Labor Activity', 
-        field: 'FieldLaborActivityName',
-        // editable: true,
-        // cellEditor: 'agPopupTextCellEditor',
+        field: 'FieldLaborActivityID',
+        valueFormatter: params => {
+          var fla = this.fieldLaborActivities.find(element => {
+            return element.FieldLaborActivityID == params.value;
+          });
+          return fla.FieldLaborActivityName;
+        },
         sortable: true, 
         filter: true
+      },
+      {
+        headerName: 'Labor Type', 
+        field: 'LaborTypeID',
+        valueFormatter: params => {
+          var fla = this.laborTypes.find(element => {
+            return element.LaborTypeID == params.value;
+          });
+          return fla.LaborTypeDisplayName;
+        },
+        sortable: true, 
+        filter: true
+      },
+      {
+        headerName: 'Machinery', 
+        editable: true,
+        valueFormatter: function (params) {
+          if(!componentScope.fieldStandardTimes) {
+            return '';
+          }
+          var stardardTime = componentScope.fieldStandardTimes.find(element => {
+            return element.FieldLaborActivity.FieldLaborActivityID == params.data.FieldLaborActivityID && element.LaborType.LaborTypeID == params.data.LaborTypeID;
+          })
+          var machinery = componentScope.machinery.find(element => {
+            return element.MachineryID == stardardTime.Machinery.MachineryID;
+          })
+          if(machinery) {
+            return machinery.MachineryName;
+          }
+
+          return '';
+        },
+        // valueSetter: params => {
+        //   params.data.FieldLaborActivity = this.fieldLaborActivityDtos.find(element => {
+        //     return element.FieldLaborActivityName == params.newValue;
+        //   });
+        //   return true;
+        // },
+        // cellEditor: 'agSelectCellEditor',
+        // cellEditorParams: {
+        //   values: this.fieldLaborActivityDtos.map(x => x.FieldLaborActivityName)
+        // },
       },
       {
         headerName: '',  
@@ -95,14 +194,14 @@ export class FieldStandardTimesComponent implements OnInit {
           },
         width: 100, autoHeight:true
       },
-      {
-        headerName: 'Time Studies', 
-        field: 'FieldLaborActivityName',
-        // editable: true,
-        // cellEditor: 'agPopupTextCellEditor',
-        sortable: true, 
-        filter: true
-      },
+      // {
+      //   headerName: 'Time Studies', 
+      //   field: 'FieldLaborActivityName',
+      //   // editable: true,
+      //   // cellEditor: 'agPopupTextCellEditor',
+      //   sortable: true, 
+      //   filter: true
+      // },
     ]
   }
 
@@ -138,6 +237,18 @@ export class FieldStandardTimesComponent implements OnInit {
     
     if (this.getFieldLaborActivitiesRequest && this.getFieldLaborActivitiesRequest.unsubscribe) {
       this.getFieldLaborActivitiesRequest.unsubscribe();
+    }
+    if (this.getvFieldLaborActivitiesForTimeStudiesRequest && this.getvFieldLaborActivitiesForTimeStudiesRequest.unsubscribe) {
+      this.getvFieldLaborActivitiesForTimeStudiesRequest.unsubscribe();
+    }
+    if (this.getFieldStandardTimesRequest && this.getFieldStandardTimesRequest.unsubscribe) {
+      this.getFieldStandardTimesRequest.unsubscribe();
+    }
+    if (this.getMachineryRequest && this.getMachineryRequest.unsubscribe) {
+      this.getMachineryRequest.unsubscribe();
+    }
+    if (this.getFieldUnitsRequest && this.getFieldUnitsRequest.unsubscribe) {
+      this.getFieldUnitsRequest.unsubscribe();
     }
     
     this.authenticationService.dispose();
