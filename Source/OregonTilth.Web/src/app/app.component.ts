@@ -91,4 +91,12 @@ export class AppComponent {
     setAppFavicon(){
         this._document.getElementById('appFavicon').setAttribute('href', "assets/main/favicons/" + environment.faviconFilename);
      }
+
+    public leadOrganizationHomeUrl(): string{
+        return environment.leadOrganizationHomeUrl;
+    }
+
+    public leadOrganizationLogoSrc(): string{
+        return `assets/main/logos/${environment.leadOrganizationLogoFilename}`;
+    }
 }
