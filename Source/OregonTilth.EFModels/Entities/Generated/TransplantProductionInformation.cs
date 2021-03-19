@@ -21,7 +21,7 @@ namespace OregonTilth.EFModels.Entities
         public int SeedsPerTray { get; set; }
         [Column(TypeName = "decimal(5, 2)")]
         public decimal UsageRate { get; set; }
-        [Column(TypeName = "decimal(18, 4)")]
+        [Column(TypeName = "money")]
         public decimal? CostPerSeed { get; set; }
         [Column(TypeName = "money")]
         public decimal? CropSpecificInputCostsPerTray { get; set; }

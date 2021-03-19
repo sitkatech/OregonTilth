@@ -10,7 +10,7 @@ CREATE TABLE [dbo].[TransplantProductionInformation](
 	[TransplantProductionTrayTypeID] [int] NOT NULL,
 	[SeedsPerTray] [int] NOT NULL,
 	[UsageRate] [decimal](5, 2) NOT NULL,
-	[CostPerSeed] [decimal](18, 4) NULL,
+	[CostPerSeed] [money] NULL,
 	[CropSpecificInputCostsPerTray] [money] NULL,
  CONSTRAINT [PK_TransplantProductionInformation_TransplantProductionInformationID] PRIMARY KEY CLUSTERED 
 (

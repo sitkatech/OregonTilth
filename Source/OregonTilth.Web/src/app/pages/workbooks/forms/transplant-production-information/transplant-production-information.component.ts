@@ -21,6 +21,8 @@ import { TransplantProductionInformationDto } from 'src/app/shared/models/genera
 import { PhaseDto } from 'src/app/shared/models/generated/phase-dto';
 import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
+import { IntegerEditor } from 'src/app/shared/components/ag-grid/integer-editor/integer-editor.component';
+import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 
 @Component({
   selector: 'transplant-production-information',
@@ -36,10 +38,11 @@ export class TransplantProductionInformationComponent implements OnInit {
     private alertService: AlertService,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
-  public richTextTypeID : number = CustomRichTextType.CropsForm;
+  public richTextTypeID : number = CustomRichTextType.TPInfoForm;
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
@@ -92,6 +95,10 @@ export class TransplantProductionInformationComponent implements OnInit {
     });
   }
 
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+  }
+
   defineColumnDefs() {
     var componentScope = this;
     this.columnDefs = [
@@ -99,12 +106,117 @@ export class TransplantProductionInformationComponent implements OnInit {
         headerName: 'Crop', 
         field: 'Crop',
         editable: true,
-        cellEditor: 'agTextCellEditor',
+        valueFormatter: function (params) {
+          return params.value.CropName;
+        },
+        valueSetter: params => {
+          params.data.Crop = this.cropDtos.find(element => {
+            return element.CropName == params.newValue;
+          });
+          return true;
+        },
         valueGetter: params => {
-          params.data.Crop.CropName;
+          return params.data.Crop.CropName;
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: this.cropDtos.map(x => x.CropName)
         },
         sortable: true, 
-        filter: true
+        filter: true,
+      },
+      {
+        headerName: 'Phase', 
+        field: 'Phase',
+        editable: true,
+        valueFormatter: function (params) {
+          return params.value.PhaseDisplayName;
+        },
+        valueSetter: params => {
+          params.data.Phase = this.phaseDtos.find(element => {
+            return element.PhaseDisplayName == params.newValue;
+          });
+          return true;
+        },
+        valueGetter: params => {
+          return params.data.Phase.PhaseDisplayName;
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: this.phaseDtos.map(x => x.PhaseDisplayName)
+        },
+        sortable: true, 
+        filter: true,
+      },
+      {
+        headerName: 'Tray Type', 
+        field: 'TransplantProductionTrayType',
+        editable: true,
+        valueFormatter: function (params) {
+          return params.value.TransplantProductionTrayTypeName;
+        },
+        valueSetter: params => {
+          params.data.TransplantProductionTrayType = this.tpTrayTypeDtos.find(element => {
+            return element.TransplantProductionTrayTypeName == params.newValue;
+          });
+          return true;
+        },
+        valueGetter: params => {
+          return params.data.TransplantProductionTrayType.TransplantProductionTrayTypeName;
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: this.tpTrayTypeDtos.map(x => x.TransplantProductionTrayTypeName)
+        },
+        sortable: true, 
+        filter: true,
+      },
+      {
+        headerName: 'Seeds Per Tray', 
+        field: 'SeedsPerTray',
+        editable: true,
+        cellEditorFramework: IntegerEditor,
+        sortable: true, 
+        filter: true,
+        // cellStyle: params => {
+        //   if (params.value) {
+        //       return { backgroundColor: '#ccf5cc'};
+        //   } 
+        //   return {backgroundColor: '#ffdfd6'};
+        // }
+      },
+      {
+        headerName: 'Usage Rate', 
+        field: 'UsageRate',
+        editable: true,
+        cellEditorFramework: DecimalEditor,
+        sortable: true, 
+        filter: true,
+        valueFormatter: params => {
+          return params.value + '%';
+        }
+      },
+      {
+        headerName: 'Cost Per Seed', 
+        field: 'CostPerSeed',
+        editable: true,
+        cellEditorFramework: DecimalEditor,
+        sortable: true, 
+        filter: true,
+        valueFormatter: params => {
+          return params.value ? '$' + params.value : '';
+        }
+      },
+      {
+        headerName: 'Crop Specific Input Costs per Tray', 
+        field: 'CropSpecificInputCostsPerTray',
+        editable: true,
+        cellEditorFramework: DecimalEditor,
+        sortable: true, 
+        filter: true,
+        valueFormatter: params => {
+          return params.value ? '$' + params.value : '';
+        }
       },
       {
         headerName: 'Delete', field: 'CropID', valueGetter: function (params: any) {
@@ -112,14 +224,15 @@ export class TransplantProductionInformationComponent implements OnInit {
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
-            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Crop?`)) {
+            if(confirm(`Are you sure you want to delete this record?`)) {
               componentScope.deleteTransplantProductionInformation(field.PrimaryKey)
             }
           }
           },
         sortable: true, filter: true, width: 100, autoHeight:true
       },
-    ]
+    ];
+    this.gridApi.sizeColumnsToFit();
   }
 
   deleteTransplantProductionInformation(tpInfoID: number) {

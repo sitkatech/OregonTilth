@@ -8,7 +8,7 @@ create table dbo.TransplantProductionInformation(
     TransplantProductionTrayTypeID int not null constraint FK_TransplantProductionInformation_TransplantProductionTrayType_TransplantProductionTrayTypeID foreign key references dbo.TransplantProductionTrayType(TransplantProductionTrayTypeID),
     SeedsPerTray int not null,
     UsageRate decimal(5,2) not null CONSTRAINT CK_TransplantProductionInformation_UsageRate_In_Valid_Range CHECK (UsageRate >= 0 and UsageRate <= 100),
-    CostPerSeed decimal(18,4) null,
+    CostPerSeed money null,
     CropSpecificInputCostsPerTray money null,
     --CONSTRAINT CK_TransplantProductionInformation_CostPerSeed_Required_When_Seeding CHECK (CostPerSeed is not null and PhaseID = 1)
 );
