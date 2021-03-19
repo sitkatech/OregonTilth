@@ -38,6 +38,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<Phase> Phases { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<TpOrDsType> TpOrDsTypes { get; set; }
+        public virtual DbSet<TransplantProductionInformation> TransplantProductionInformations { get; set; }
         public virtual DbSet<TransplantProductionInput> TransplantProductionInputs { get; set; }
         public virtual DbSet<TransplantProductionInputCost> TransplantProductionInputCosts { get; set; }
         public virtual DbSet<TransplantProductionLaborActivity> TransplantProductionLaborActivities { get; set; }
@@ -304,6 +305,29 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.TpOrDsTypeDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.TpOrDsTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<TransplantProductionInformation>(entity =>
+            {
+                entity.HasOne(d => d.Crop)
+                    .WithMany(p => p.TransplantProductionInformations)
+                    .HasForeignKey(d => d.CropID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Phase)
+                    .WithMany(p => p.TransplantProductionInformations)
+                    .HasForeignKey(d => d.PhaseID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.TransplantProductionTrayType)
+                    .WithMany(p => p.TransplantProductionInformations)
+                    .HasForeignKey(d => d.TransplantProductionTrayTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TransplantProductionInformations)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<TransplantProductionInput>(entity =>

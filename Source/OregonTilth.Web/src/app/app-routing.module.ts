@@ -33,6 +33,7 @@ import { TransplantProductionInputsComponent } from './pages/workbooks/forms/tra
 import { TransplantProductionTrayTypesComponent } from './pages/workbooks/forms/transplant-production-tray-types/transplant-production-tray-types.component';
 import { TransplantProductionInputCostsComponent } from './pages/workbooks/forms/transplant-production-input-costs/transplant-production-input-costs.component';
 import { FieldInputByCropComponent } from './pages/workbooks/forms/field-input-by-crop/field-input-by-crop.component';
+import { TransplantProductionInformationComponent } from './pages/workbooks/forms/transplant-production-information/transplant-production-information.component';
 
 const routes: Routes = [
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -61,6 +62,7 @@ const routes: Routes = [
   { path: "workbooks/:id/forms/crop-units", component: CropUnitsComponent},
   { path: "workbooks/:id/forms/field-input-costs", component: FieldInputCostsComponent},
   { path: "workbooks/:id/forms/transplant-production-input-costs", component: TransplantProductionInputCostsComponent},
+  { path: "workbooks/:id/forms/transplant-production-information", component: TransplantProductionInformationComponent},
   { path: "workbooks/:id", component: WorkbookDetailComponent},
   { path: "login-callback", component: LoginCallbackComponent },
   { path: "create-user-callback", component: CreateUserCallbackComponent },
