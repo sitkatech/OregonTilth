@@ -74,19 +74,22 @@ export class WorkbooksComponent implements OnInit {
           cellEditor: 'agTextCellEditor',
           field: 'AverageHourlyWage',
           valueFormatter: this.gridService.currencyFormatter,
-          sortable: true, filter: true, width: 160
+          sortable: true, filter: true, width: 160,
+          cellClass: 'not-editable'
         },
         {
           headerName: 'Std Unit of Space Length', 
           cellEditor: 'agTextCellEditor',
           field: 'StandardUnitOfSpaceLength',
-          sortable: true, filter: true, width: 175
+          sortable: true, filter: true, width: 175,
+          cellClass: 'not-editable'
         },
         {
           headerName: 'Std Unit of Space Width', 
           cellEditor: 'agTextCellEditor',
           field: 'StandardUnitOfSpaceWidth',
-          sortable: true, filter: true, width: 175
+          sortable: true, filter: true, width: 175,
+          cellClass: 'not-editable'
         },
         {
           headerName: 'Create Date', field: 'CreateDate', valueFormatter: function (params) {
@@ -122,7 +125,8 @@ export class WorkbooksComponent implements OnInit {
             }
             return 0;
           },
-          sortable: true, filter: 'agDateColumnFilter', width: 145
+          sortable: true, filter: 'agDateColumnFilter', width: 145,
+          cellClass: 'not-editable'
         },
         {
           headerName: 'Delete', field: 'WorkbookID', valueGetter: function (params: any) {
