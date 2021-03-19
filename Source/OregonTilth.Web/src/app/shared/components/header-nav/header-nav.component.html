@@ -14,12 +14,12 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item" routerLinkActive="active" *ngIf="!isAuthenticated()">
+            <li class="nav-item" routerLinkActive="active" *ngIf="isAuthenticated()">
                 <a routerLink="/workbooks" class="nav-link">
                     My Workbooks
                 </a>
             </li>
-            <li class="nav-item" routerLinkActive="active" *ngIf="isAuthenticated()">
+            <li class="nav-item" routerLinkActive="active">
                 <a routerLink="/about" class="nav-link">
                     About
                 </a>
