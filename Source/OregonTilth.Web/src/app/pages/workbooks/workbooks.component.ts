@@ -13,6 +13,7 @@ import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { Router } from '@angular/router';
 import { GridService } from 'src/app/shared/services/grid/grid.service';
+import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 
 @Component({
   selector: 'workbooks',
@@ -70,7 +71,7 @@ export class WorkbooksComponent implements OnInit {
           sortable: true, filter: true, width: 170
         },
         {
-          headerName: 'Average Hourly Wage', 
+          headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionType: 'AverageHourlyWage'},
           cellEditor: 'agTextCellEditor',
           field: 'AverageHourlyWage',
           valueFormatter: this.gridService.currencyFormatter,
