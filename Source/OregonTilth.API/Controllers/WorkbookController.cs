@@ -925,5 +925,68 @@ namespace OregonTilth.API.Controllers
         }
 
         #endregion "Transplant Production Information Form"
+
+        #region Crop Specific Information Form
+        [HttpPost("workbooks/{workbookID}/forms/crop-specific-info")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<CropSpecificInfoDto>> CreateCropSpecificInfo([FromBody] CropSpecificInfoCreateDto cropSpecificInfoCreateDto)
+        {
+            var validationMessages = CropSpecificInfo.ValidateCreate(_dbContext, cropSpecificInfoCreateDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var cropSpecificInfoDtos = CropSpecificInfo.Create(_dbContext, cropSpecificInfoCreateDto);
+            return Ok(cropSpecificInfoDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/crop-specific-info")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<CropSpecificInfoDto>> GetCropSpecificInfos([FromRoute] int workbookID)
+        {
+            var cropSpecificInfos = CropSpecificInfo.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(cropSpecificInfos);
+        }
+
+        [HttpPut("workbooks/{workbookID}/forms/crop-specific-info")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<CropSpecificInfoDto> UpdateCropSpecificInfo([FromBody] CropSpecificInfoDto cropSpecificInfoDto)
+        {
+            var validationMessages = CropSpecificInfo.ValidateUpdate(_dbContext, cropSpecificInfoDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var cropSpecificInfoDtos = CropSpecificInfo.UpdateCropSpecificInfo(_dbContext, cropSpecificInfoDto);
+            return Ok(cropSpecificInfoDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/crop-specific-info/{cropSpecificInfoID}")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<CropSpecificInfoDto>> DeleteCropSpecificInfo([FromRoute] int workbookID, [FromRoute] int cropSpecificInfoID)
+        {
+            var validationMessages = CropSpecificInfo.ValidateDelete(_dbContext, cropSpecificInfoID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            CropSpecificInfo.Delete(_dbContext, cropSpecificInfoID);
+
+            var returnDtos = CropSpecificInfo.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+        #endregion
     }
 }
