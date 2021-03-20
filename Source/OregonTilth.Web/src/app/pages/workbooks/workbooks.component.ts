@@ -79,17 +79,17 @@ export class WorkbooksComponent implements OnInit {
           cellClass: 'not-editable'
         },
         {
-          headerName: 'Std Unit of Space Length', 
+          headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionType: 'StandardUnitOfSpaceLength'}, 
           cellEditor: 'agTextCellEditor',
           field: 'StandardUnitOfSpaceLength',
-          sortable: true, filter: true, width: 175,
+          sortable: true, filter: true, width: 200,
           cellClass: 'not-editable'
         },
         {
-          headerName: 'Std Unit of Space Width', 
+          headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionType: 'StandardUnitOfSpaceWidth'}, 
           cellEditor: 'agTextCellEditor',
           field: 'StandardUnitOfSpaceWidth',
-          sortable: true, filter: true, width: 175,
+          sortable: true, filter: true, width: 200,
           cellClass: 'not-editable'
         },
         {
