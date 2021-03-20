@@ -18,6 +18,7 @@ namespace OregonTilth.EFModels.Entities
         }
 
         public virtual DbSet<Crop> Crops { get; set; }
+        public virtual DbSet<CropSpecificInfo> CropSpecificInfos { get; set; }
         public virtual DbSet<CropUnit> CropUnits { get; set; }
         public virtual DbSet<CustomRichText> CustomRichTexts { get; set; }
         public virtual DbSet<CustomRichTextType> CustomRichTextTypes { get; set; }
@@ -66,6 +67,25 @@ namespace OregonTilth.EFModels.Entities
 
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.Crops)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<CropSpecificInfo>(entity =>
+            {
+                entity.HasOne(d => d.Crop)
+                    .WithMany(p => p.CropSpecificInfos)
+                    .HasForeignKey(d => d.CropID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.TpOrDsType)
+                    .WithMany(p => p.CropSpecificInfos)
+                    .HasForeignKey(d => d.TpOrDsTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CropSpecificInfo_TpOrDsType");
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.CropSpecificInfos)
                     .HasForeignKey(d => d.WorkbookID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });

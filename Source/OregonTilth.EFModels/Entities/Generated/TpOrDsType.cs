@@ -13,6 +13,11 @@ namespace OregonTilth.EFModels.Entities
     [Index(nameof(TpOrDsTypeName), Name = "AK_TpOrDsType_TpOrDsTypeName", IsUnique = true)]
     public partial class TpOrDsType
     {
+        public TpOrDsType()
+        {
+            CropSpecificInfos = new HashSet<CropSpecificInfo>();
+        }
+
         [Key]
         public int TpOrDsTypeID { get; set; }
         [Required]
@@ -21,5 +26,8 @@ namespace OregonTilth.EFModels.Entities
         [Required]
         [StringLength(100)]
         public string TpOrDsTypeDisplayName { get; set; }
+
+        [InverseProperty(nameof(CropSpecificInfo.TpOrDsType))]
+        public virtual ICollection<CropSpecificInfo> CropSpecificInfos { get; set; }
     }
 }
