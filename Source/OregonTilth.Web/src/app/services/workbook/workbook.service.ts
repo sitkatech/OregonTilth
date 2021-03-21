@@ -31,6 +31,8 @@ import { TransplantProductionInformationCreateDto } from 'src/app/shared/models/
 import { TransplantProductionInformationDto } from 'src/app/shared/models/generated/transplant-production-information-dto';
 import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-summary-dto';
 import { vFieldLaborActivityForTimeStudyDto } from 'src/app/shared/models/forms/field-standard-times/vFieldLaborActivityForTimeStudyDto';
+import { FieldStandardTimeDto } from 'src/app/shared/models/generated/field-standard-time-dto';
+import { FieldStandardTimeCreateDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-create-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -348,5 +350,10 @@ export class WorkbookService {
     getFieldLaborActivitiesForTimeStudies(workbookID: number): Observable<vFieldLaborActivityForTimeStudyDto[]> {
         let route = `workbooks/${workbookID}/forms/field-standard-times/time-studies`;
         return this.apiService.getFromApi(route);
+    }
+
+    initializeFieldTimeStudy(fieldStandardTimeCreateDto: FieldStandardTimeCreateDto) : Observable<FieldStandardTimeSummaryDto> {
+        let route = `workbooks/${fieldStandardTimeCreateDto.WorkbookID}/forms/field-standard-times/initialize`;
+        return this.apiService.postToApi(route, fieldStandardTimeCreateDto);
     }
 }

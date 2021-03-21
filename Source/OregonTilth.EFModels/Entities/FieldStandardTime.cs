@@ -18,52 +18,60 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.LaborType)
                 .ToList();
 
-
-
             var fieldStandardTimeSummaryDtos = new List<FieldStandardTimeSummaryDto>();
 
             foreach (var fieldStandardTime in fieldStandardTimes)
             {
-                
-                fieldStandardTimeSummaryDtos.Add(new FieldStandardTimeSummaryDto()
-                {
-                    FieldStandardTimeID = fieldStandardTime?.FieldStandardTimeID,
-                    WorkbookID = fieldStandardTime.WorkbookID,
-                    FieldLaborActivity = fieldStandardTime.FieldLaborActivity.AsSummaryDto(),
-                    LaborType = fieldStandardTime.LaborType.AsDto(),
-                    Machinery = fieldStandardTime.Machinery.AsSummaryDto(),
-                    FieldUnitType = fieldStandardTime.FieldUnitType.AsDto(),
-                    // todo: something for this
-                    AverageMinutesPerFieldUnit = 0,
-                    StandardMinutesPerFieldUnit = fieldStandardTime.StandardTimePerUnit,
-                    TimeStudies = fieldStandardTime?.TimeStudies.Select(x => x.AsDto())
+                fieldStandardTimeSummaryDtos.Add(fieldStandardTime.AsSummaryDto());
+            }
+            return fieldStandardTimeSummaryDtos;
+        }
 
-                });
+        public static FieldStandardTimeSummaryDto CreateNew(OregonTilthDbContext dbContext, FieldStandardTimeCreateDto createDto)
+        {
+            var newRecord = new FieldStandardTime()
+            {
+                WorkbookID = createDto.WorkbookID,
+                FieldLaborActivityID = createDto.FieldLaborActivityID,
+                LaborTypeID = createDto.LaborTypeID,
+                MachineryID = createDto.MachineryID,
+                FieldUnitTypeID = createDto.FieldUnitTypeID
+            };
+
+            dbContext.FieldStandardTimes.Add(newRecord);
+            dbContext.SaveChanges();
+            dbContext.Entry(newRecord).Reload();
+
+            return GetFieldStandardTimeSummaryDtos(dbContext)
+                .Single(x => x.FieldStandardTimeID == newRecord.FieldStandardTimeID);
+        }
+        public static List<ErrorMessage> ValidateCreate(OregonTilthDbContext dbContext, FieldStandardTimeCreateDto createDto)
+        {
+            var result = new List<ErrorMessage>();
+
+            var currentFieldStandardTimes = GetDtoListByWorkbookID(dbContext, createDto.WorkbookID);
+
+            if (currentFieldStandardTimes.Any(x =>
+                x.FieldLaborActivity.FieldLaborActivityID == createDto.FieldLaborActivityID &&
+                x.LaborType.LaborTypeID == createDto.LaborTypeID))
+            {
+                result.Add(new ErrorMessage() { Type = "Field Standard Time", Message = "A record for this Field Labor Activity and Labor Type has already been initiated." });
             }
 
 
-            
-            return fieldStandardTimeSummaryDtos;
+            //var userFieldLaborActivitiesForWorkbook = GetDtoListByWorkbookID(dbContext, createDto.WorkbookID).ToList();
+            //if (userFieldLaborActivitiesForWorkbook.Any(x => x.FieldLaborActivityName.ToLower() == createDto.FieldLaborActivityName.ToLower()))
+            //{
+            //    result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "Field Labor Activity Names must be unique within this workbook." });
+            //}
 
+            //if (string.IsNullOrEmpty(createDto.FieldLaborActivityName))
+            //{
+            //    result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "Field Labor Activities must have a name." });
+            //}
+
+            return result;
         }
-
-        //public static List<ErrorMessage> ValidateUpsert(OregonTilthDbContext dbContext, FieldLaborActivityUpsertDto fieldLaborActivityUpsertDto)
-        //{
-        //    var result = new List<ErrorMessage>();
-
-        //    var userFieldLaborActivitiesForWorkbook = GetDtoListByWorkbookID(dbContext, fieldLaborActivityUpsertDto.WorkbookID).ToList();
-        //    if (userFieldLaborActivitiesForWorkbook.Any(x => x.FieldLaborActivityName.ToLower() == fieldLaborActivityUpsertDto.FieldLaborActivityName.ToLower()))
-        //    {
-        //        result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "Field Labor Activity Names must be unique within this workbook." });
-        //    }
-
-        //    if (string.IsNullOrEmpty(fieldLaborActivityUpsertDto.FieldLaborActivityName))
-        //    {
-        //        result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "Field Labor Activities must have a name." });
-        //    }
-
-        //    return result;
-        //}
 
         //public static List<ErrorMessage> ValidateUpdate(OregonTilthDbContext dbContext, FieldLaborActivityDto fieldLaborActivityDto)
         //{

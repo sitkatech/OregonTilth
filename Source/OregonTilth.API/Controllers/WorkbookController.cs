@@ -941,8 +941,24 @@ namespace OregonTilth.API.Controllers
         [LoggedInUnclassifiedFeature]
         public ActionResult<IEnumerable<vFieldLaborActivityForTimeStudyDto>> GetFieldStandardTimesForTimeStudies([FromRoute] int workbookID)
         {
-            var fieldStandardTimesForTimeStudies = vFieldLaborActivityForTimeStudy.GetDtoListByWorkbookID(_dbContext, workbookID);
+            var fieldStandardTimesForTimeStudies = vFieldLaborActivityForTimeStudy.GetUninitializedDtoListByWorkbookID(_dbContext, workbookID);
             return Ok(fieldStandardTimesForTimeStudies);
+        }
+
+        [HttpPost("workbooks/{workbookID}/forms/field-standard-times/initialize")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldStandardTimeDto>> InitializeFieldTimeStudy([FromBody] FieldStandardTimeCreateDto createDto)
+        {
+            var validationMessages = FieldStandardTime.ValidateCreate(_dbContext, createDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var returnDto = FieldStandardTime.CreateNew(_dbContext, createDto);
+            return Ok(returnDto);
+            
         }
         #endregion "Field Standard Times"
     }

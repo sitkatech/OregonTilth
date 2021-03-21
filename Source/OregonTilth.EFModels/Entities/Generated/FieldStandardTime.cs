@@ -21,8 +21,8 @@ namespace OregonTilth.EFModels.Entities
         public int WorkbookID { get; set; }
         public int FieldLaborActivityID { get; set; }
         public int LaborTypeID { get; set; }
-        public int MachineryID { get; set; }
-        public int FieldUnitTypeID { get; set; }
+        public int? MachineryID { get; set; }
+        public int? FieldUnitTypeID { get; set; }
         [Column(TypeName = "decimal(18, 4)")]
         public decimal? StandardTimePerUnit { get; set; }
 

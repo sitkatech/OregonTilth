@@ -1,10 +1,11 @@
 ﻿namespace OregonTilth.Models.DataTransferObjects
 {
-    public class vFieldLaborActivityForTimeStudyDto
+    public class FieldStandardTimeCreateDto
     {
         public int WorkbookID { get; set; }
         public int FieldLaborActivityID { get; set; }
         public int LaborTypeID { get; set; }
-        public int? FieldStandardTimeID { get; set; }
+        public int? MachineryID { get; set; }
+        public int? FieldUnitTypeID { get; set; }
     }
 }

@@ -17,5 +17,8 @@ namespace OregonTilth.EFModels.Entities
         [StringLength(100)]
         public string FieldLaborActivityName { get; set; }
         public int? LaborTypeID { get; set; }
+        [StringLength(8)]
+        public string LaborTypeDisplayName { get; set; }
+        public int? FieldStandardTimeID { get; set; }
     }
 }

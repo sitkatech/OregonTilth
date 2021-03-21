@@ -3,12 +3,12 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[FieldStandardTime](
-	[FieldStandardTimeID] [int] NOT NULL,
+	[FieldStandardTimeID] [int] IDENTITY(1,1) NOT NULL,
 	[WorkbookID] [int] NOT NULL,
 	[FieldLaborActivityID] [int] NOT NULL,
 	[LaborTypeID] [int] NOT NULL,
-	[MachineryID] [int] NOT NULL,
-	[FieldUnitTypeID] [int] NOT NULL,
+	[MachineryID] [int] NULL,
+	[FieldUnitTypeID] [int] NULL,
 	[StandardTimePerUnit] [decimal](18, 4) NULL,
  CONSTRAINT [PK_FieldStandardTime_FieldStandardTimeID] PRIMARY KEY CLUSTERED 
 (
@@ -42,6 +42,6 @@ REFERENCES [dbo].[Workbook] ([WorkbookID])
 GO
 ALTER TABLE [dbo].[FieldStandardTime] CHECK CONSTRAINT [FK_FieldStandardTime_Workbook_WorkbookID]
 GO
-ALTER TABLE [dbo].[FieldStandardTime]  WITH CHECK ADD  CONSTRAINT [CK_MachineryRequiredWhenLaborTypeIsOperator] CHECK  (([LaborTypeID]=(2) AND [MachineryID] IS NOT NULL))
+ALTER TABLE [dbo].[FieldStandardTime]  WITH CHECK ADD  CONSTRAINT [CK_MachineryRequiredWhenLaborTypeIsOperator] CHECK  (([LaborTypeID]=(2) AND [MachineryID] IS NOT NULL OR [MachineryID] IS NULL))
 GO
 ALTER TABLE [dbo].[FieldStandardTime] CHECK CONSTRAINT [CK_MachineryRequiredWhenLaborTypeIsOperator]

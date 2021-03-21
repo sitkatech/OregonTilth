@@ -17,8 +17,8 @@ namespace OregonTilth.EFModels.Entities
                 Workbook = fieldStandardTime.Workbook.AsDto(),
                 FieldLaborActivity = fieldStandardTime.FieldLaborActivity.AsDto(),
                 LaborType = fieldStandardTime.LaborType.AsDto(),
-                Machinery = fieldStandardTime.Machinery.AsDto(),
-                FieldUnitType = fieldStandardTime.FieldUnitType.AsDto(),
+                Machinery = fieldStandardTime.Machinery?.AsDto(),
+                FieldUnitType = fieldStandardTime.FieldUnitType?.AsDto(),
                 StandardTimePerUnit = fieldStandardTime.StandardTimePerUnit
             };
             DoCustomMappings(fieldStandardTime, fieldStandardTimeDto);

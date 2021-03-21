@@ -23,6 +23,8 @@ import { LaborTypeDto } from 'src/app/shared/models/generated/labor-type-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { MachineryDto } from 'src/app/shared/models/generated/machinery-dto';
 import { FieldUnitTypeDto } from 'src/app/shared/models/generated/field-unit-type-dto';
+import { FieldStandardTimeCreateDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-create-dto';
+import { LaborTypeEnum } from 'src/app/shared/models/enums/labor-type.enum';
 
 @Component({
   selector: 'field-standard-times',
@@ -38,6 +40,7 @@ export class FieldStandardTimesComponent implements OnInit {
     private alertService: AlertService,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
@@ -46,6 +49,7 @@ export class FieldStandardTimesComponent implements OnInit {
   private workbookID: number;
   private getWorkbookRequest: any;
 
+  public model: FieldStandardTimeCreateDto;
 
   public getFieldLaborActivitiesRequest: any;
   public fieldLaborActivities: FieldLaborActivityDto[];
@@ -66,6 +70,10 @@ export class FieldStandardTimesComponent implements OnInit {
   public fieldUnits: FieldUnitTypeDto[];
 
   public columnDefs: ColDef[];
+
+  public createDtos: FieldStandardTimeCreateDto[];
+
+  public initializeTimeStudyRequest: any;
  
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -115,11 +123,49 @@ export class FieldStandardTimesComponent implements OnInit {
           this.laborTypes = laborTypeDtos;
           this.machinery = machineryDtos;
           this.fieldUnits = fieldUnitDtos;
+
+          this.createDtos = vFieldLaborActivityForTimeStudyDtos.map(element =>  {
+              return new FieldStandardTimeCreateDto({
+                WorkbookID: this.workbookID, 
+                FieldLaborActivityID: element.FieldLaborActivityID,
+                FieldLaborActivity: this.fieldLaborActivities.find(x => {
+                  return x.FieldLaborActivityID == element.FieldLaborActivityID;
+                }),
+                LaborTypeID: element.LaborTypeID,
+                LaborType: this.laborTypes.find(x => {
+                  return x.LaborTypeID == element.LaborTypeID;
+                }),
+              })
+          });
+
+          
           this.defineColumnDefs();
           this.cdr.markForCheck();
       });
+      this.model = new FieldStandardTimeCreateDto({WorkbookID: this.workbookID});
 
     });
+  }
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+  }
+
+  machineryDisabled(laborTypeID: number) {
+    return laborTypeID == LaborTypeEnum.Crew;
+  }
+  startButtonDisabled(fieldStandardTimeCreateDto: FieldStandardTimeCreateDto) {
+    if(!fieldStandardTimeCreateDto.FieldUnitTypeID || fieldStandardTimeCreateDto.FieldUnitTypeID == -1){
+      return true;
+    }
+
+    if(fieldStandardTimeCreateDto.LaborTypeID == LaborTypeEnum.Operator 
+      && (!fieldStandardTimeCreateDto.MachineryID || fieldStandardTimeCreateDto.MachineryID == -1)) {
+      return true;
+    }
+
+    return false;
+
   }
 
   defineColumnDefs() {
@@ -127,57 +173,28 @@ export class FieldStandardTimesComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: 'Field Labor Activity', 
-        field: 'FieldLaborActivityID',
-        valueFormatter: params => {
-          var fla = this.fieldLaborActivities.find(element => {
-            return element.FieldLaborActivityID == params.value;
-          });
-          return fla.FieldLaborActivityName;
-        },
+        field: 'FieldLaborActivity.FieldLaborActivityName',
+        
         sortable: true, 
         filter: true
       },
       {
         headerName: 'Labor Type', 
-        field: 'LaborTypeID',
-        valueFormatter: params => {
-          var fla = this.laborTypes.find(element => {
-            return element.LaborTypeID == params.value;
-          });
-          return fla.LaborTypeDisplayName;
-        },
+        field: 'LaborType.LaborTypeDisplayName',
         sortable: true, 
         filter: true
       },
       {
         headerName: 'Machinery', 
-        editable: true,
-        valueFormatter: function (params) {
-          if(!componentScope.fieldStandardTimes) {
-            return '';
-          }
-          var stardardTime = componentScope.fieldStandardTimes.find(element => {
-            return element.FieldLaborActivity.FieldLaborActivityID == params.data.FieldLaborActivityID && element.LaborType.LaborTypeID == params.data.LaborTypeID;
-          })
-          var machinery = componentScope.machinery.find(element => {
-            return element.MachineryID == stardardTime.Machinery.MachineryID;
-          })
-          if(machinery) {
-            return machinery.MachineryName;
-          }
-
-          return '';
-        },
-        // valueSetter: params => {
-        //   params.data.FieldLaborActivity = this.fieldLaborActivityDtos.find(element => {
-        //     return element.FieldLaborActivityName == params.newValue;
-        //   });
-        //   return true;
-        // },
-        // cellEditor: 'agSelectCellEditor',
-        // cellEditorParams: {
-        //   values: this.fieldLaborActivityDtos.map(x => x.FieldLaborActivityName)
-        // },
+        field: 'Machinery.MachineryName',
+        sortable: true, 
+        filter: true
+      },
+      {
+        headerName: 'Field Unit', 
+        field: 'FieldUnitType.FieldUnitTypeDisplayName',
+        sortable: true, 
+        filter: true
       },
       {
         headerName: '',  
@@ -186,10 +203,10 @@ export class FieldStandardTimesComponent implements OnInit {
         }, 
         cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
-          clicked: function(field: any) {
-            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Crop?`)) {
-              componentScope.deleteCrop(field.PrimaryKey)
-            }
+          clicked: function(field: any, data: any) {
+          
+            // componentScope.initializeTimeStudy(data.FieldLaborActivityID, data.LaborTypeID)
+            
           }
           },
         width: 100, autoHeight:true
@@ -204,15 +221,26 @@ export class FieldStandardTimesComponent implements OnInit {
       // },
     ]
   }
+  
 
-  deleteCrop(cropID: number) {
-    // this.deleteCropRequest = this.workbookService.deleteCrop(this.workbookID, cropID).subscribe(cropDtos => {
-    //   this.fieldLaborActivities = cropDtos;
-    //   this.alertService.pushAlert(new Alert("Successfully deleted Crop", AlertContext.Success));
-    //   this.cdr.detectChanges();
-    // }, error => {
+  initializeTimeStudy(createDto: FieldStandardTimeCreateDto) {
 
-    // })
+    this.initializeTimeStudyRequest = this.workbookService.initializeFieldTimeStudy(createDto).subscribe(fieldStandardTimeDto => {
+        var transactionRows = this.gridApi.applyTransaction({add: [fieldStandardTimeDto]});
+        this.gridApi.flashCells({ rowNodes: transactionRows.add });
+        var createDtoIndexToRemove = this.createDtos.findIndex(x => {
+          return x.LaborTypeID == createDto.LaborTypeID && x.FieldLaborActivityID == createDto.FieldLaborActivityID;
+        });
+        
+        
+        this.createDtos.splice(createDtoIndexToRemove, 1);
+        this.cdr.detectChanges();
+        this.alertService.pushAlert(new Alert("Successfully added", AlertContext.Success));
+        
+      }, error => {
+  
+      });
+    
   }
 
   onCellValueChanged(data: any) {
@@ -229,6 +257,7 @@ export class FieldStandardTimesComponent implements OnInit {
 
   }
 
+  
   ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
@@ -256,7 +285,6 @@ export class FieldStandardTimesComponent implements OnInit {
   }
 
   
-
 
 
 }

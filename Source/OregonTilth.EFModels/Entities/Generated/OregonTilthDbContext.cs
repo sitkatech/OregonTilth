@@ -214,26 +214,14 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<FieldStandardTime>(entity =>
             {
-                entity.Property(e => e.FieldStandardTimeID).ValueGeneratedNever();
-
                 entity.HasOne(d => d.FieldLaborActivity)
                     .WithMany(p => p.FieldStandardTimes)
                     .HasForeignKey(d => d.FieldLaborActivityID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.FieldUnitType)
-                    .WithMany(p => p.FieldStandardTimes)
-                    .HasForeignKey(d => d.FieldUnitTypeID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
                 entity.HasOne(d => d.LaborType)
                     .WithMany(p => p.FieldStandardTimes)
                     .HasForeignKey(d => d.LaborTypeID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
-                entity.HasOne(d => d.Machinery)
-                    .WithMany(p => p.FieldStandardTimes)
-                    .HasForeignKey(d => d.MachineryID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Workbook)
@@ -491,9 +479,9 @@ namespace OregonTilth.EFModels.Entities
             {
                 entity.ToView("vFieldLaborActivityForTimeStudy");
 
-                entity.Property(e => e.FieldLaborActivityID).ValueGeneratedOnAdd();
-
                 entity.Property(e => e.FieldLaborActivityName).IsUnicode(false);
+
+                entity.Property(e => e.LaborTypeDisplayName).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

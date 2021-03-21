@@ -7,7 +7,14 @@ namespace OregonTilth.EFModels.Entities
 {
     public partial class vFieldLaborActivityForTimeStudy
     {
-       
+
+        public static IQueryable<vFieldLaborActivityForTimeStudyDto> GetUninitializedDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
+        {
+            var vFieldLaborActivitiesForTimeStudy = GetListImpl(dbContext)
+                .Where(x => x.WorkbookID == workbookID && x.FieldStandardTimeID == null);
+            return vFieldLaborActivitiesForTimeStudy.Select(x => x.AsDto());
+        }
+
         public static IQueryable<vFieldLaborActivityForTimeStudyDto> GetDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
         {
             var vFieldLaborActivitiesForTimeStudy = GetListImpl(dbContext).Where(x => x.WorkbookID == workbookID);
