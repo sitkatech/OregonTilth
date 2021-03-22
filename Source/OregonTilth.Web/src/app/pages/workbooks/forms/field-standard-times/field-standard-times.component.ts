@@ -1,10 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
-import { UserService } from 'src/app/services/user/user.service';
-import { DatePipe, DecimalPipe } from '@angular/common';
 import { WorkbookService } from 'src/app/services/workbook/workbook.service';
 import { WorkbookDto } from 'src/app/shared/models/generated/workbook-dto';
 import { ColDef } from 'ag-grid-community';
@@ -14,8 +11,6 @@ import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
-import { CropCreateDto } from 'src/app/shared/models/forms/crops/crop-create-dto';
-import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-labor-activity-dto';
 import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-summary-dto';
 import { vFieldLaborActivityForTimeStudyDto } from 'src/app/shared/models/forms/field-standard-times/vFieldLaborActivityForTimeStudyDto';
@@ -25,6 +20,11 @@ import { MachineryDto } from 'src/app/shared/models/generated/machinery-dto';
 import { FieldUnitTypeDto } from 'src/app/shared/models/generated/field-unit-type-dto';
 import { FieldStandardTimeCreateDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-create-dto';
 import { LaborTypeEnum } from 'src/app/shared/models/enums/labor-type.enum';
+import { TimeStudyCellRendererComponent } from 'src/app/shared/components/ag-grid/time-study-cell-renderer/time-study-cell-renderer.component';
+import { TimeStudyDto } from 'src/app/shared/models/generated/time-study-dto';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { FormControl, FormGroup, Validators,FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { TimeStudyModal } from 'src/app/shared/components/ag-grid/time-study-modal/time-study-modal.component';
 
 @Component({
   selector: 'field-standard-times',
@@ -33,12 +33,18 @@ import { LaborTypeEnum } from 'src/app/shared/models/enums/labor-type.enum';
 })
 export class FieldStandardTimesComponent implements OnInit {
 
+
+  @ViewChild('upsertAllocationPlan') upsertEntity: any;
+  @ViewChild('timeStudyModal') timeStudyModalEntity: any;
+
+
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private modalService: NgbModal) { }
 
   private gridApi: any;
   private watchUserChangeSubscription: any;
@@ -75,6 +81,9 @@ export class FieldStandardTimesComponent implements OnInit {
 
   public initializeTimeStudyRequest: any;
  
+  public modalReference: NgbModalRef;
+  public closeResult: string;
+  
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -119,6 +128,7 @@ export class FieldStandardTimesComponent implements OnInit {
           this.workbook = workbook;
           this.fieldLaborActivities = fieldLaborActivities;
           this.fieldStandardTimes = fieldStandardTimes;
+
           this.vFieldLaborActivitiesForTimeStudyDtos = vFieldLaborActivityForTimeStudyDtos;
           this.laborTypes = laborTypeDtos;
           this.machinery = machineryDtos;
@@ -167,6 +177,16 @@ export class FieldStandardTimesComponent implements OnInit {
     return false;
 
   }
+  public launchModal(modalContent: any, modalTitle: string, timeStudies: TimeStudyDto[]) {
+    this.modalReference = this.modalService.open(modalContent, { size:'xl', windowClass : "time-studies-modal", ariaLabelledBy: modalTitle, backdrop: 'static', keyboard: false });
+    this.modalReference.componentInstance.timeStudies = timeStudies;
+    this.modalReference.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed`;
+    });
+  }
+
 
   defineColumnDefs() {
     var componentScope = this;
@@ -174,7 +194,6 @@ export class FieldStandardTimesComponent implements OnInit {
       {
         headerName: 'Field Labor Activity', 
         field: 'FieldLaborActivity.FieldLaborActivityName',
-        
         sortable: true, 
         filter: true
       },
@@ -196,30 +215,26 @@ export class FieldStandardTimesComponent implements OnInit {
         sortable: true, 
         filter: true
       },
+           
       {
-        headerName: '',  
+        headerName: 'Time Studies', 
         valueGetter: function (params: any) {
-          return { ButtonText: 'Start', CssClasses: "btn btn-success btn-sm", PrimaryKey: params.data.FieldLaborActivityID, ObjectDisplayName: params.data.FieldLaborActivityName };
+          return { TimeStudies: params.data.TimeStudies };
         }, 
-        cellRendererFramework: ButtonRendererComponent,
+        cellRendererFramework: TimeStudyCellRendererComponent,
         cellRendererParams: { 
-          clicked: function(field: any, data: any) {
-          
-            // componentScope.initializeTimeStudy(data.FieldLaborActivityID, data.LaborTypeID)
-            
+          clicked: function(timeStudies: any, data: any) {
+            componentScope.launchModal(TimeStudyModal, 'Test', timeStudies.TimeStudies);
           }
-          },
-        width: 100, autoHeight:true
+        },
+        sortable: false, 
+        filter: true,
+        autoHeight:true,
+        resizable: true
       },
-      // {
-      //   headerName: 'Time Studies', 
-      //   field: 'FieldLaborActivityName',
-      //   // editable: true,
-      //   // cellEditor: 'agPopupTextCellEditor',
-      //   sortable: true, 
-      //   filter: true
-      // },
     ]
+
+  
   }
   
 
