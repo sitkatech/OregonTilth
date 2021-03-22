@@ -25,7 +25,7 @@ namespace OregonTilth.EFModels.Entities
         }
 
 
-        public static List<TimeStudyDto> Upsert(OregonTilthDbContext dbContext, TimeStudiesUpsertDto timeStudiesUpsertDto)
+        public static void Upsert(OregonTilthDbContext dbContext, TimeStudiesUpsertDto timeStudiesUpsertDto)
         {
 
             var existingListTimeStudies = dbContext.TimeStudies.Where(x =>
@@ -71,8 +71,6 @@ namespace OregonTilth.EFModels.Entities
             }
             
             dbContext.SaveChanges();
-
-            return new List<TimeStudyDto>();
         }
     }
 }

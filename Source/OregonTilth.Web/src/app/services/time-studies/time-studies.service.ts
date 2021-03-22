@@ -42,36 +42,9 @@ import { TimeStudyDto } from 'src/app/shared/models/generated/time-study-dto';
 export class TimeStudiesService {
     constructor(private apiService: ApiService) { }
 
-    // getWorkbooks(currentUser: UserDetailedDto): Observable<WorkbookDto[]> {
-    //     let route = `/workbooks`;
-    //     return this.apiService.getFromApi(route);
-    // }
-
-    // getWorkbook(workbookID: number): Observable<WorkbookDto> {
-    //     let route = `/workbooks/${workbookID}`;
-    //     return this.apiService.getFromApi(route);
-    // }
-
-    // createWorkbook(createWorkbookDto: WorkbookDto): Observable<WorkbookDto> {
-    //     let route = `/workbooks/`;
-    //     return this.apiService.postToApi(route, createWorkbookDto);
-    // }
-
-    // editWorkbook(workbookDto: WorkbookDto): Observable<WorkbookDto> {
-    //     let route = `/workbooks/${workbookDto.WorkbookID}`;
-    //     return this.apiService.putToApi(route, workbookDto);
-    // }
-
-    // deleteWorkbook(workbookID: number): Observable<WorkbookDto> {
-    //     let route = `/workbooks/${workbookID}`;
-    //     return this.apiService.deleteToApi(route);
-    // }
-
-    
-    upsertTimeStudies(timeStudiesUpsertDto: TimeStudiesUpsertDto): Observable<TimeStudyDto[]> {
+    upsertTimeStudies(timeStudiesUpsertDto: TimeStudiesUpsertDto): Observable<FieldStandardTimeSummaryDto> {
         let route = `/workbooks/${timeStudiesUpsertDto.WorkbookID}/time-studies`;
         return this.apiService.putToApi(route, timeStudiesUpsertDto);
     }
-
 
 }

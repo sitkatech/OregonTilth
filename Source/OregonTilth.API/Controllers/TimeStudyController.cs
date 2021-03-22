@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OregonTilth.API.Services;
@@ -21,7 +22,7 @@ namespace OregonTilth.API.Controllers
         [HttpPut("workbooks/{workbookID}/time-studies")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<WorkbookDto> EditWorkbook([FromBody] TimeStudiesUpsertDto timeStudiesUpsertDto)
+        public ActionResult<FieldStandardTimeSummaryDto> EditWorkbook([FromBody] TimeStudiesUpsertDto timeStudiesUpsertDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
 
@@ -32,10 +33,11 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var timeStudies = TimeStudy.Upsert(_dbContext, timeStudiesUpsertDto);
+            TimeStudy.Upsert(_dbContext, timeStudiesUpsertDto);
 
-            var workbook = Workbook.GetByWorkbookID(_dbContext, timeStudiesUpsertDto.WorkbookID);
-            return Ok(workbook);
+            var fieldStandardTimeSummaryDtos = FieldStandardTime.GetDtoListByWorkbookID(_dbContext, timeStudiesUpsertDto.WorkbookID);
+            
+            return Ok(fieldStandardTimeSummaryDtos.Single(x => x.FieldStandardTimeID == timeStudiesUpsertDto.FieldStandardTimeID));
         }
 
     }

@@ -43,8 +43,8 @@ export class TimeStudyModal implements OnInit {
   onSubmit(timeStudiesForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
 
-    this.submitTimeStudiesRequest = this.timeStudiesService.upsertTimeStudies(this.model).subscribe(results => {
-
+    this.submitTimeStudiesRequest = this.timeStudiesService.upsertTimeStudies(this.model).subscribe(result => {
+      this.activeModal.close(result);
     }, error => {
 
     });

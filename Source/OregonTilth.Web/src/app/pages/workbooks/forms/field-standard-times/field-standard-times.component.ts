@@ -86,7 +86,9 @@ export class FieldStandardTimesComponent implements OnInit {
   public closeResult: string;
 
   public updateFieldStandardTimeRequest: any;
-
+  getRowNodeId(data)  {
+    return data.FieldStandardTimeID.toString();
+  }
   
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -315,6 +317,10 @@ export class FieldStandardTimesComponent implements OnInit {
     this.modalReference = this.modalService.open(modalContent, { size:'xl', windowClass : "time-studies-modal", ariaLabelledBy: modalTitle, backdrop: 'static', keyboard: false });
     this.modalReference.componentInstance.fieldStandardTime = fieldStandardTime;
     this.modalReference.result.then((result) => {
+      if(result.FieldStandardTimeID) {
+        var rowNode = this.gridApi.getRowNode(result.FieldStandardTimeID);
+        rowNode.setData(result);
+      }
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed`;
