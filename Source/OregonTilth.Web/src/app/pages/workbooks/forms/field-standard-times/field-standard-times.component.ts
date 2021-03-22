@@ -25,6 +25,7 @@ import { TimeStudyDto } from 'src/app/shared/models/generated/time-study-dto';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup, Validators,FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { TimeStudyModal } from 'src/app/shared/components/ag-grid/time-study-modal/time-study-modal.component';
+import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 
 @Component({
   selector: 'field-standard-times',
@@ -83,6 +84,9 @@ export class FieldStandardTimesComponent implements OnInit {
  
   public modalReference: NgbModalRef;
   public closeResult: string;
+
+  public updateFieldStandardTimeRequest: any;
+
   
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -201,20 +205,87 @@ export class FieldStandardTimesComponent implements OnInit {
       },
       {
         headerName: 'Machinery', 
-        field: 'Machinery.MachineryName',
+        field: 'Machinery',
+        editable:true,
+        valueFormatter: function (params) {
+          return params.value ? params.value.MachineryName : 'N/A';
+        },
+        valueSetter: params => {
+          params.data.Machinery = this.machinery.find(element => {
+            return element.MachineryName == params.newValue;
+          });
+          return true;
+        },
+        valueGetter: params => {
+          return params.data.Machinery ? params.data.Machinery.MachineryName : 'N/A';
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: this.machinery.map(x => x.MachineryName)
+        },
         sortable: true, 
         filter: true,
         resizable: true,
         width:150
       },
+      
       {
         headerName: 'Field Unit', 
-        field: 'FieldUnitType.FieldUnitTypeDisplayName',
+        field: 'FieldUnitType',
+        editable:true,
+        valueFormatter: function (params) {
+          return params.value.FieldUnitTypeDisplayName;
+        },
+        valueSetter: params => {
+          params.data.FieldUnitType = this.fieldUnits.find(element => {
+            return element.FieldUnitTypeDisplayName == params.newValue;
+          });
+          return true;
+        },
+        valueGetter: params => {
+          return params.data.FieldUnitType.FieldUnitTypeDisplayName;
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: this.fieldUnits.map(x => x.FieldUnitTypeDisplayName)
+        },
+        sortable: true, 
+        resizable: true,
+        filter: true,
+        width:100,
+      },
+      {
+        headerName: 'Avg Min Per Field Unit', 
+        valueGetter: function(params:any) {
+          if(params.data.TimeStudies.length > 0) {
+            var minutes = params.data.TimeStudies.map(x => x.Duration).reduce((x,y) => x + y, 0);
+            var totalUnits = params.data.TimeStudies.map(x => x.Units).reduce((x,y) => x + y, 0);
+            return (minutes / totalUnits).toFixed(4);
+          }
+          return 'N/A';
+        },
         sortable: true, 
         resizable: true,
         filter: true
       },
-           
+      {
+        headerName: 'Standard Time', 
+        field:'StandardTimePerUnit',
+        valueGetter: function(params:any) {
+          return params.data.StandardTimePerUnit
+        },
+        editable: true,
+        cellEditorFramework: DecimalEditor,
+        sortable: true, 
+        filter: true,
+        cellStyle: params => {
+          if (params.value) {
+              return { backgroundColor: '#ccf5cc'};
+          } 
+          return {backgroundColor: '#ffdfd6'};
+        },
+        width:150
+      },
       {
         headerName: 'Time Study Progress', 
         field: 'TimeStudies',
@@ -233,20 +304,7 @@ export class FieldStandardTimesComponent implements OnInit {
         resizable: false,
         width:300
       },
-      {
-        headerName: 'Average Minutes Per Field Unit', 
-        valueGetter: function(params:any) {
-          if(params.data.TimeStudies.length > 0) {
-            var minutes = params.data.TimeStudies.map(x => x.Duration).reduce((x,y) => x + y, 0);
-            var totalUnits = params.data.TimeStudies.map(x => x.Units).reduce((x,y) => x + y, 0);
-            return minutes / totalUnits;
-          }
-          return 'N/A';
-        },
-        sortable: true, 
-        resizable: true,
-        filter: true
-      },
+      
     ]
 
   
@@ -280,9 +338,9 @@ export class FieldStandardTimesComponent implements OnInit {
   }
 
   onCellValueChanged(data: any) {
-    // var dtoToPost = data.data;
+    var dtoToPost = data.data;
 
-    // this.updateCropRequest = this.workbookService.updateCrop(dtoToPost).subscribe(crop => {
+    // this.updateFieldStandardTimeRequest = this.workbookService.updateCrop(dtoToPost).subscribe(crop => {
     //   data.node.setData(crop);
     //   this.isLoadingSubmit = false;
     //   this.alertService.pushAlert(new Alert("Successfully updated Crop.", AlertContext.Success));
