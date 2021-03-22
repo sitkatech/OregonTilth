@@ -233,6 +233,20 @@ export class FieldStandardTimesComponent implements OnInit {
         resizable: false,
         width:300
       },
+      {
+        headerName: 'Average Minutes Per Field Unit', 
+        valueGetter: function(params:any) {
+          if(params.data.TimeStudies.length > 0) {
+            var minutes = params.data.TimeStudies.map(x => x.Duration).reduce((x,y) => x + y, 0);
+            var totalUnits = params.data.TimeStudies.map(x => x.Units).reduce((x,y) => x + y, 0);
+            return minutes / totalUnits;
+          }
+          return 'N/A';
+        },
+        sortable: true, 
+        resizable: true,
+        filter: true
+      },
     ]
 
   
