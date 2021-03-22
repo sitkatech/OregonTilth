@@ -232,10 +232,8 @@ export class FieldStandardTimesComponent implements OnInit {
           return x.LaborTypeID == createDto.LaborTypeID && x.FieldLaborActivityID == createDto.FieldLaborActivityID;
         });
         
-        
         this.createDtos.splice(createDtoIndexToRemove, 1);
         this.cdr.detectChanges();
-        this.alertService.pushAlert(new Alert("Successfully added", AlertContext.Success));
         
       }, error => {
   
