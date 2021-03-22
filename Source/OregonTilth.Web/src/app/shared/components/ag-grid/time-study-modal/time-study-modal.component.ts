@@ -18,6 +18,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TimeStudyDto } from 'src/app/shared/models/generated/time-study-dto';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TimeStudiesUpsertDto } from 'src/app/shared/models/forms/time-studies/time-studies-upsert-dto';
+import { TimeStudiesService } from 'src/app/services/time-studies/time-studies.service';
+import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-summary-dto';
 
 @Component({
   selector: 'time-study-modal',
@@ -25,25 +27,36 @@ import { TimeStudiesUpsertDto } from 'src/app/shared/models/forms/time-studies/t
   styleUrls: ['./time-study-modal.component.scss']
 })
 export class TimeStudyModal implements OnInit {
-  @Input() timeStudies: TimeStudyDto[];
+  @Input() fieldStandardTime: FieldStandardTimeSummaryDto;
+
   constructor(private cdr: ChangeDetectorRef, 
-    public activeModal: NgbActiveModal) { }
+    public activeModal: NgbActiveModal,
+    private timeStudiesService: TimeStudiesService) { }
 
   private currentUser: UserDetailedDto;
   public model: TimeStudiesUpsertDto;
   public isLoadingSubmit: boolean = false;
 
-  
+  private submitTimeStudiesRequest: any;
+
 
   onSubmit(timeStudiesForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
+    console.log('submitting');
+
+    this.submitTimeStudiesRequest = this.timeStudiesService.upsertTimeStudies(this.model).subscribe(results => {
+
+    }, error => {
+
+    });
+
+
 
   }
 
   ngOnInit() {
-
-    this.model = new TimeStudiesUpsertDto({TimeStudies: this.timeStudies})
-    
+debugger;
+    this.model = new TimeStudiesUpsertDto({TimeStudies: this.fieldStandardTime.TimeStudies})
   }
 
   addTimeStudy() {
@@ -62,6 +75,10 @@ export class TimeStudyModal implements OnInit {
 
   ngOnDestroy() {
     
+    if(this.submitTimeStudiesRequest && this.submitTimeStudiesRequest.subscribe) {
+      this.submitTimeStudiesRequest.unsubscribe();
+    }
+
     this.cdr.detach();
   }
 

@@ -177,15 +177,7 @@ export class FieldStandardTimesComponent implements OnInit {
     return false;
 
   }
-  public launchModal(modalContent: any, modalTitle: string, timeStudies: TimeStudyDto[]) {
-    this.modalReference = this.modalService.open(modalContent, { size:'xl', windowClass : "time-studies-modal", ariaLabelledBy: modalTitle, backdrop: 'static', keyboard: false });
-    this.modalReference.componentInstance.timeStudies = timeStudies;
-    this.modalReference.result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed`;
-    });
-  }
+  
 
 
   defineColumnDefs() {
@@ -219,12 +211,12 @@ export class FieldStandardTimesComponent implements OnInit {
       {
         headerName: 'Time Studies', 
         valueGetter: function (params: any) {
-          return { TimeStudies: params.data.TimeStudies };
+          return { FieldStandardTime: params.data };
         }, 
         cellRendererFramework: TimeStudyCellRendererComponent,
         cellRendererParams: { 
-          clicked: function(timeStudies: any, data: any) {
-            componentScope.launchModal(TimeStudyModal, 'Test', timeStudies.TimeStudies);
+          clicked: function(data: any) {
+            componentScope.launchModal(TimeStudyModal, 'Field Time Studies', data.FieldStandardTime);
           }
         },
         sortable: false, 
@@ -236,7 +228,15 @@ export class FieldStandardTimesComponent implements OnInit {
 
   
   }
-  
+  public launchModal(modalContent: any, modalTitle: string, fieldStandardTime: FieldStandardTimeSummaryDto) {
+    this.modalReference = this.modalService.open(modalContent, { size:'xl', windowClass : "time-studies-modal", ariaLabelledBy: modalTitle, backdrop: 'static', keyboard: false });
+    this.modalReference.componentInstance.fieldStandardTime = fieldStandardTime;
+    this.modalReference.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed`;
+    });
+  }
 
   initializeTimeStudy(createDto: FieldStandardTimeCreateDto) {
 

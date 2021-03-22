@@ -33,7 +33,7 @@
           </div>
           <div class="col-md-1">
             <label>Delete</label>
-            <button class="btn btn-danger" (click)="removeTimeStudyAtIndex(i)"><i class="fa fa-trash"></i></button>
+            <button class="btn btn-danger" (click)="removeTimeStudyAtIndex(i)" type="button"><i class="fa fa-trash"></i></button>
           </div>
         </div>
       </div>
@@ -41,7 +41,7 @@
     
     <div class="row mt-5">
       <div class="col-md-12">
-        <button class="btn btn-secondary float-right" (click)="addTimeStudy()">+ Add Time Study</button>
+        <button class="btn btn-secondary float-right" (click)="addTimeStudy()" type="button">+ Add Time Study</button>
       </div>
     </div>
     
@@ -52,7 +52,7 @@
   
   </div>
   <div class="modal-footer w-100">
-        <button type="submit" class="btn btn-splash btn-sm" [disabled]="">
+        <button type="submit" class="btn btn-primary btn-sm" [disabled]="">
             <span *ngIf="" class="fa fa-spinner loading-spinner"></span>
             Submit</button>
         <button type="button" class="btn btn-secondary btn-sm" (click)="activeModal.close('Cancel click')"

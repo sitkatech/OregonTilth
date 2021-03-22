@@ -11,9 +11,10 @@ export class TimeStudyCellRendererComponent implements AgRendererComponent {
   params: any;    
 
   agInit(params: any): void {
+
     if(params.value === null)
     {
-      params = { value: { TimeStudies: []}}
+      params = { value: { FieldStandardTime: null } }
     }
     else
     {
@@ -21,7 +22,7 @@ export class TimeStudyCellRendererComponent implements AgRendererComponent {
     }
   }
   btnClickedHandler() {
-    this.params.clicked(this.params.value, this.params.data);
+    this.params.clicked(this.params.value);
   }
 
   refresh(params: any): boolean {
