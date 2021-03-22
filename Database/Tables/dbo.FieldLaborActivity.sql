@@ -21,10 +21,6 @@ CREATE TABLE [dbo].[FieldLaborActivity](
 ) ON [PRIMARY]
 
 GO
-ALTER TABLE [dbo].[FieldLaborActivity] ADD  DEFAULT ((0)) FOR [LaborTypeCrew]
-GO
-ALTER TABLE [dbo].[FieldLaborActivity] ADD  DEFAULT ((0)) FOR [LaborTypeOperator]
-GO
 ALTER TABLE [dbo].[FieldLaborActivity]  WITH CHECK ADD  CONSTRAINT [FK_FieldLaborActivity_FieldLaborActivityCategory_FieldLaborActivityCategoryID] FOREIGN KEY([FieldLaborActivityCategoryID])
 REFERENCES [dbo].[FieldLaborActivityCategory] ([FieldLaborActivityCategoryID])
 GO
@@ -34,3 +30,7 @@ ALTER TABLE [dbo].[FieldLaborActivity]  WITH CHECK ADD  CONSTRAINT [FK_FieldLabo
 REFERENCES [dbo].[Workbook] ([WorkbookID])
 GO
 ALTER TABLE [dbo].[FieldLaborActivity] CHECK CONSTRAINT [FK_FieldLaborActivity_Workbook_WorkbookID]
+GO
+ALTER TABLE [dbo].[FieldLaborActivity]  WITH CHECK ADD  CONSTRAINT [CK_FieldLaborActivity_At_Least_One_Labor_Type_Checked] CHECK  (([LaborTypeCrew]=(1) OR [LaborTypeOperator]=(1)))
+GO
+ALTER TABLE [dbo].[FieldLaborActivity] CHECK CONSTRAINT [CK_FieldLaborActivity_At_Least_One_Labor_Type_Checked]
