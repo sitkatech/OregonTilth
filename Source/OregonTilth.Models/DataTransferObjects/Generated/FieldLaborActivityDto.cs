@@ -13,5 +13,7 @@ namespace OregonTilth.Models.DataTransferObjects
         public WorkbookDto Workbook { get; set; }
         public string FieldLaborActivityName { get; set; }
         public FieldLaborActivityCategoryDto FieldLaborActivityCategory { get; set; }
+        public bool LaborTypeCrew { get; set; }
+        public bool LaborTypeOperator { get; set; }
     }
 }

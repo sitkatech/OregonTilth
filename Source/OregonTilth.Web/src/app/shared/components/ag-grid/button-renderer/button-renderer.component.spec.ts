@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ButtonRendererComponent } from './button-renderer.component';
 
-describe('LandOwnerRendererComponent', () => {
+describe('ButtonRendererComponent', () => {
   let component: ButtonRendererComponent;
   let fixture: ComponentFixture<ButtonRendererComponent>;
 
@@ -14,7 +14,7 @@ describe('LandOwnerRendererComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LinkRendereButtonRendererComponentrComponent);
+    fixture = TestBed.createComponent(ButtonRendererComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

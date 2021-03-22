@@ -925,5 +925,62 @@ namespace OregonTilth.API.Controllers
         }
 
         #endregion "Transplant Production Information Form"
+
+        #region "Field Standard Times"
+
+        [HttpGet("workbooks/{workbookID}/forms/field-standard-times")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> GetFieldStandardTimes([FromRoute] int workbookID)
+        {
+            var fieldStandardTimes = FieldStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldStandardTimes);
+        }
+
+
+        [HttpGet("workbooks/{workbookID}/forms/field-standard-times/time-studies")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<vFieldLaborActivityForTimeStudyDto>> GetFieldStandardTimesForTimeStudies([FromRoute] int workbookID)
+        {
+            var fieldStandardTimesForTimeStudies = vFieldLaborActivityForTimeStudy.GetUninitializedDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldStandardTimesForTimeStudies);
+        }
+
+        [HttpPost("workbooks/{workbookID}/forms/field-standard-times/initialize")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldStandardTimeDto>> InitializeFieldTimeStudy([FromBody] FieldStandardTimeCreateDto createDto)
+        {
+            var validationMessages = FieldStandardTime.ValidateCreate(_dbContext, createDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var returnDto = FieldStandardTime.CreateNew(_dbContext, createDto);
+            return Ok(returnDto);
+            
+        }
+
+
+        [HttpPut("workbooks/{workbookID}/forms/field-standard-times/{fieldStandardTimeID}")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionInformationDto> UpdateFieldStandardTime([FromBody] FieldStandardTimeDto fieldStandardTimeDto)
+        {
+            var validationMessages = FieldStandardTime.ValidateUpdate(_dbContext, fieldStandardTimeDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var fieldStandardTimeSummaryDto = FieldStandardTime.UpdateFieldStandardTime(_dbContext, fieldStandardTimeDto);
+            return Ok(fieldStandardTimeSummaryDto);
+        }
+
+        #endregion "Field Standard Times"
     }
+
+
 }
+

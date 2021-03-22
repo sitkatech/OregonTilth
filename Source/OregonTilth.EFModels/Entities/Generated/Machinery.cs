@@ -11,6 +11,11 @@ namespace OregonTilth.EFModels.Entities
     [Table("Machinery")]
     public partial class Machinery
     {
+        public Machinery()
+        {
+            FieldStandardTimes = new HashSet<FieldStandardTime>();
+        }
+
         [Key]
         public int MachineryID { get; set; }
         public int WorkbookID { get; set; }
@@ -23,5 +28,7 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("Machineries")]
         public virtual Workbook Workbook { get; set; }
+        [InverseProperty(nameof(FieldStandardTime.Machinery))]
+        public virtual ICollection<FieldStandardTime> FieldStandardTimes { get; set; }
     }
 }

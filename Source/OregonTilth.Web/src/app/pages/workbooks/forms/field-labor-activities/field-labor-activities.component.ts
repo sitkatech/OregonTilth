@@ -85,7 +85,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
         headerName: 'Field Labor Activity', 
         field: 'FieldLaborActivityName',
         editable: true,
-        cellEditor: 'agPopupTextCellEditor',
+        cellEditor: 'agTextCellEditor',
         sortable: true, 
         filter: true,
       },
@@ -93,7 +93,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
         headerName: 'Field Labor Category', 
         field: 'FieldLaborActivityCategory',
         editable: true,
-        cellEditor: 'agPopupSelectCellEditor',
+        cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.fieldLaborActivityCategories.map(x => x.FieldLaborActivityCategoryDisplayName)
         },
@@ -105,6 +105,54 @@ export class FieldLaborActivitiesComponent implements OnInit {
             return element.FieldLaborActivityCategoryDisplayName == params.newValue;
           });
           return true;
+        },
+        sortable: true, 
+        filter: true,
+      },
+      {
+        headerName: 'Crew', 
+        field: 'LaborTypeCrew',
+        editable: true,
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['Yes', 'No']
+        },
+        valueFormatter: function (params) {
+          if(params.value == "Yes" || params.value == true) {
+            return "Yes";
+          } 
+          return "No";
+        },
+        valueSetter: params => {
+          params.data.LaborTypeCrew = params.newValue == "Yes" ? true : false;
+          return true;
+        },
+        valueGetter: params => {
+          return params.data.LaborTypeCrew;
+        },
+        sortable: true, 
+        filter: true,
+      },
+      {
+        headerName: 'Operator', 
+        field: 'LaborTypeOperator',
+        editable: true,
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['Yes', 'No']
+        },
+        valueFormatter: function (params) {
+          if(params.value == "Yes" || params.value == true) {
+            return "Yes";
+          } 
+          return "No";
+        },
+        valueSetter: params => {
+          params.data.LaborTypeOperator = params.newValue == "Yes" ? true : false;
+          return true;
+        },
+        valueGetter: params => {
+          return params.data.LaborTypeOperator;
         },
         sortable: true, 
         filter: true,

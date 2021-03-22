@@ -29,6 +29,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<FieldLaborActivity> FieldLaborActivities { get; set; }
         public virtual DbSet<FieldLaborActivityCategory> FieldLaborActivityCategories { get; set; }
         public virtual DbSet<FieldLaborByCrop> FieldLaborByCrops { get; set; }
+        public virtual DbSet<FieldStandardTime> FieldStandardTimes { get; set; }
         public virtual DbSet<FieldUnitType> FieldUnitTypes { get; set; }
         public virtual DbSet<FileResource> FileResources { get; set; }
         public virtual DbSet<FileResourceMimeType> FileResourceMimeTypes { get; set; }
@@ -37,6 +38,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<Machinery> Machineries { get; set; }
         public virtual DbSet<Phase> Phases { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<TimeStudy> TimeStudies { get; set; }
         public virtual DbSet<TpOrDsType> TpOrDsTypes { get; set; }
         public virtual DbSet<TransplantProductionInformation> TransplantProductionInformations { get; set; }
         public virtual DbSet<TransplantProductionInput> TransplantProductionInputs { get; set; }
@@ -46,6 +48,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<TransplantProductionTrayType> TransplantProductionTrayTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Workbook> Workbooks { get; set; }
+        public virtual DbSet<vFieldLaborActivityForTimeStudy> vFieldLaborActivityForTimeStudies { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -208,6 +211,24 @@ namespace OregonTilth.EFModels.Entities
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
+            modelBuilder.Entity<FieldStandardTime>(entity =>
+            {
+                entity.HasOne(d => d.FieldLaborActivity)
+                    .WithMany(p => p.FieldStandardTimes)
+                    .HasForeignKey(d => d.FieldLaborActivityID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.LaborType)
+                    .WithMany(p => p.FieldStandardTimes)
+                    .HasForeignKey(d => d.LaborTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.FieldStandardTimes)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
             modelBuilder.Entity<FieldUnitType>(entity =>
             {
                 entity.Property(e => e.FieldUnitTypeID).ValueGeneratedNever();
@@ -296,6 +317,16 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.RoleDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.RoleName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<TimeStudy>(entity =>
+            {
+                entity.Property(e => e.Notes).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TimeStudies)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<TpOrDsType>(entity =>
@@ -427,6 +458,15 @@ namespace OregonTilth.EFModels.Entities
                     .WithMany(p => p.Workbooks)
                     .HasForeignKey(d => d.UserID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<vFieldLaborActivityForTimeStudy>(entity =>
+            {
+                entity.ToView("vFieldLaborActivityForTimeStudy");
+
+                entity.Property(e => e.FieldLaborActivityName).IsUnicode(false);
+
+                entity.Property(e => e.LaborTypeDisplayName).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);
