@@ -32,10 +32,6 @@ namespace OregonTilth.EFModels.Entities
                 x.WorkbookID == timeStudiesUpsertDto.WorkbookID && x.FieldStandardTimeID ==
                 timeStudiesUpsertDto.FieldStandardTimeID).ToList();
 
-           
-
-            
-
             var timeStudiesUpdated = timeStudiesUpsertDto.TimeStudies
                 .Select(x =>
                 {
@@ -49,10 +45,10 @@ namespace OregonTilth.EFModels.Entities
                             WorkbookID = x.WorkbookID,
                             FieldStandardTimeID = x.FieldStandardTimeID,
                             Notes = x.Notes,
-                            Units = x.Units
+                            Units = x.Units,
+                            Duration = x.Duration
                         };
                         dbContext.TimeStudies.Add(timeStudy);
-                        
                     }
                     else
                     {
@@ -61,13 +57,11 @@ namespace OregonTilth.EFModels.Entities
                         timeStudy.Duration = x.Duration;
                     }
 
+                    dbContext.SaveChanges();
                     dbContext.Entry(timeStudy).Reload();
                     return timeStudy;
                 }).ToList();
 
-
-            dbContext.SaveChanges();
-            
             // delete the ones that aren't present anymore
             var timeStudiesToDelete = existingListTimeStudies.Where(x =>
                 !timeStudiesUpdated.Select(y => y.TimeStudyID).Contains(x.TimeStudyID));
@@ -75,14 +69,10 @@ namespace OregonTilth.EFModels.Entities
             {
                 dbContext.TimeStudies.Remove(timeStudy);
             }
-
-
-
+            
             dbContext.SaveChanges();
 
             return new List<TimeStudyDto>();
-
-
         }
     }
 }

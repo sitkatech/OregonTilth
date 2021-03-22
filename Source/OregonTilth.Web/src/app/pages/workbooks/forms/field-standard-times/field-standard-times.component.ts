@@ -187,31 +187,39 @@ export class FieldStandardTimesComponent implements OnInit {
         headerName: 'Field Labor Activity', 
         field: 'FieldLaborActivity.FieldLaborActivityName',
         sortable: true, 
-        filter: true
+        filter: true,
+        resizable: true,
+        width:150
       },
       {
         headerName: 'Labor Type', 
         field: 'LaborType.LaborTypeDisplayName',
         sortable: true, 
-        filter: true
+        filter: true,
+        resizable: true,
+        width:150
       },
       {
         headerName: 'Machinery', 
         field: 'Machinery.MachineryName',
         sortable: true, 
-        filter: true
+        filter: true,
+        resizable: true,
+        width:150
       },
       {
         headerName: 'Field Unit', 
         field: 'FieldUnitType.FieldUnitTypeDisplayName',
         sortable: true, 
+        resizable: true,
         filter: true
       },
            
       {
-        headerName: 'Time Studies', 
+        headerName: 'Time Study Progress', 
+        field: 'TimeStudies',
         valueGetter: function (params: any) {
-          return { FieldStandardTime: params.data };
+          return { FieldStandardTime: params.data, count: params.data.TimeStudies.length };
         }, 
         cellRendererFramework: TimeStudyCellRendererComponent,
         cellRendererParams: { 
@@ -222,7 +230,8 @@ export class FieldStandardTimesComponent implements OnInit {
         sortable: false, 
         filter: true,
         autoHeight:true,
-        resizable: true
+        resizable: false,
+        width:300
       },
     ]
 
