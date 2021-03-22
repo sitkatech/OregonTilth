@@ -29,6 +29,7 @@ import { FieldInputByCropDto } from 'src/app/shared/models/generated/field-input
 import { FieldInputByCropCreateDto } from 'src/app/shared/models/forms/field-input-by-crop/field-input-by-crop-create-dto';
 import { TransplantProductionInformationCreateDto } from 'src/app/shared/models/forms/transplant-production-information/transplant-production-information-create-dto';
 import { TransplantProductionInformationDto } from 'src/app/shared/models/generated/transplant-production-information-dto';
+import { CropSpecificInfoDto } from 'src/app/shared/models/generated/crop-specific-info-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -333,6 +334,28 @@ export class WorkbookService {
 
     deleteTransplantProductionInformation(workbookID:number, tpInfoID: number): Observable<TransplantProductionInformationDto[]> {
         let route = `workbooks/${workbookID}/forms/transplant-production-information/${tpInfoID}`;
+        return this.apiService.deleteToApi(route);
+    }
+
+
+    // Crop Specific Info form
+    addCropSpecificInfo(cropSpecificInfoCreateDto: CropSpecificInfoCreateDto): Observable<CropSpecificInfoDto[]> {
+        let route = `/workbooks/${cropSpecificInfoCreateDto.WorkbookID}/forms/crop-specific-info`;
+        return this.apiService.postToApi(route, cropSpecificInfoCreateDto);
+    }
+
+    getCropSpecificInfos(workbookID: number): Observable<CropSpecificInfoDto[]> {
+        let route = `workbooks/${workbookID}/forms/crop-specific-info`;
+        return this.apiService.getFromApi(route);
+    }
+
+    updateCropSpecificInfo(cropSpecificInfo: CropSpecificInfoDto): Observable<CropSpecificInfoDto> {
+        let route = `/workbooks/${cropSpecificInfo.Workbook.WorkbookID}/forms/crop-specific-info`;
+        return this.apiService.putToApi(route, cropSpecificInfo);
+    }
+
+    deleteCropSpecificInfo(workbookID:number, cropSpecificInfoID: number): Observable<CropSpecificInfoDto[]> {
+        let route = `workbooks/${workbookID}/forms/crop-specific-info/${cropSpecificInfoID}`;
         return this.apiService.deleteToApi(route);
     }
 
