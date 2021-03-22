@@ -39,7 +39,6 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<Phase> Phases { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<TimeStudy> TimeStudies { get; set; }
-        public virtual DbSet<TimeStudyType> TimeStudyTypes { get; set; }
         public virtual DbSet<TpOrDsType> TpOrDsTypes { get; set; }
         public virtual DbSet<TransplantProductionInformation> TransplantProductionInformations { get; set; }
         public virtual DbSet<TransplantProductionInput> TransplantProductionInputs { get; set; }
@@ -328,15 +327,6 @@ namespace OregonTilth.EFModels.Entities
                     .WithMany(p => p.TimeStudies)
                     .HasForeignKey(d => d.WorkbookID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
-            });
-
-            modelBuilder.Entity<TimeStudyType>(entity =>
-            {
-                entity.Property(e => e.TimeStudyTypeID).ValueGeneratedNever();
-
-                entity.Property(e => e.TimeStudyTypeDisplayName).IsUnicode(false);
-
-                entity.Property(e => e.TimeStudyTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<TpOrDsType>(entity =>
