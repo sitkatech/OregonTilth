@@ -17,19 +17,18 @@
         <div class="row">
           <div class="col-md-1 text-center">
             <h5>#{{i + 1}}</h5>
-            
           </div>
           <div class="col-md-3">
             <label for="">Total Minutes</label>
-            <input name="Duration" class="form-control" type="number" [(ngModel)]="timeStudy.Duration" />
+            <input name="Duration_{{i}}" class="form-control" type="number" [(ngModel)]="timeStudy.Duration" />
           </div>
           <div class="col-md-3">
             <label for="">Total Units</label>
-            <input name="Units" class="form-control" type="number" [(ngModel)]="timeStudy.Units" />
+            <input name="Units_{{i}}" class="form-control" type="number" [(ngModel)]="timeStudy.Units" />
           </div>
           <div class="col-md-4">
             <label for="">Notes</label>
-            <input name="Notes" class="form-control" type="text" [(ngModel)]="timeStudy.Notes" />
+            <input name="Notes_{{i}}" class="form-control" type="text" [(ngModel)]="timeStudy.Notes" />
           </div>
           <div class="col-md-1">
             <label>Delete</label>

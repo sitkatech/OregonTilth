@@ -69,7 +69,7 @@ export class TimeStudiesService {
 
     
     upsertTimeStudies(timeStudiesUpsertDto: TimeStudiesUpsertDto): Observable<TimeStudyDto[]> {
-        let route = `/workbooks/${timeStudiesUpsertDto.FieldStandardTime.WorkbookID}/time-studies`;
+        let route = `/workbooks/${timeStudiesUpsertDto.WorkbookID}/time-studies`;
         return this.apiService.putToApi(route, timeStudiesUpsertDto);
     }
 

@@ -59,14 +59,14 @@ values
 CREATE TABLE dbo.TimeStudy(
     TimeStudyID int IDENTITY(1,1) NOT NULL CONSTRAINT PK_TimeStudy_TimeStudyID PRIMARY KEY,
     WorkbookID int NOT NULL CONSTRAINT FK_TimeStudy_Workbook_WorkbookID FOREIGN KEY REFERENCES dbo.Workbook (WorkbookID),
-    TimeStudyTypeID int NOT NULL CONSTRAINT FK_TimeStudy_TimeStudyType_TimeStudyTypeID FOREIGN KEY REFERENCES dbo.TimeStudyType (TimeStudyTypeID),
+    --TimeStudyTypeID int NOT NULL CONSTRAINT FK_TimeStudy_TimeStudyType_TimeStudyTypeID FOREIGN KEY REFERENCES dbo.TimeStudyType (TimeStudyTypeID),
     FieldStandardTimeID int null CONSTRAINT FK_TimeStudy_FieldStandardTime_FieldStandardTimeID FOREIGN KEY REFERENCES dbo.FieldStandardTime (FieldStandardTimeID),
     Duration int not null,
     Units decimal not null,
     Notes varchar(8000) null,
-    CONSTRAINT CK_TimeStudyType_Requires_FK_Checks CHECK (
-        (TimeStudyTypeID = 1 and FieldStandardTimeID is not null)
-    )
+    --CONSTRAINT CK_TimeStudyType_Requires_FK_Checks CHECK (
+    --    (TimeStudyTypeID = 1 and FieldStandardTimeID is not null)
+    --)
 )
 
 

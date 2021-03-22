@@ -324,11 +324,6 @@ namespace OregonTilth.EFModels.Entities
             {
                 entity.Property(e => e.Notes).IsUnicode(false);
 
-                entity.HasOne(d => d.TimeStudyType)
-                    .WithMany(p => p.TimeStudies)
-                    .HasForeignKey(d => d.TimeStudyTypeID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.TimeStudies)
                     .HasForeignKey(d => d.WorkbookID)

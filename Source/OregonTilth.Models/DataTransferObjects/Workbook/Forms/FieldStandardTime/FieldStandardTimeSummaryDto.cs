@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+
 using System.Collections.Generic;
 
 namespace OregonTilth.Models.DataTransferObjects
@@ -11,7 +12,7 @@ namespace OregonTilth.Models.DataTransferObjects
         public LaborTypeDto LaborType { get; set; }
         public MachinerySummaryDto Machinery { get; set; }
         public FieldUnitTypeDto FieldUnitType { get; set; }
-        public IEnumerable<TimeStudyDto> TimeStudies { get; set; }
+        public IEnumerable<TimeStudySummaryDto> TimeStudies { get; set; }
         
         
         

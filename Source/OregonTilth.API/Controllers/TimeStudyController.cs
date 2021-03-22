@@ -32,7 +32,9 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var workbook = Workbook.GetByWorkbookID(_dbContext, timeStudiesUpsertDto.FieldStandardTime.WorkbookID);
+            var timeStudies = TimeStudy.Upsert(_dbContext, timeStudiesUpsertDto);
+
+            var workbook = Workbook.GetByWorkbookID(_dbContext, timeStudiesUpsertDto.WorkbookID);
             return Ok(workbook);
         }
 

@@ -11,7 +11,6 @@ namespace OregonTilth.Models.DataTransferObjects
     {
         public int TimeStudyID { get; set; }
         public WorkbookDto Workbook { get; set; }
-        public TimeStudyTypeDto TimeStudyType { get; set; }
         public FieldStandardTimeDto FieldStandardTime { get; set; }
         public int Duration { get; set; }
         public decimal Units { get; set; }

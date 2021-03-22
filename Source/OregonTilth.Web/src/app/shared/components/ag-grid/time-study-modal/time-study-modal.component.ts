@@ -17,7 +17,7 @@ import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TimeStudyDto } from 'src/app/shared/models/generated/time-study-dto';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TimeStudiesUpsertDto } from 'src/app/shared/models/forms/time-studies/time-studies-upsert-dto';
+import { TimeStudiesUpsertDto, TimeStudyUpsertDto } from 'src/app/shared/models/forms/time-studies/time-studies-upsert-dto';
 import { TimeStudiesService } from 'src/app/services/time-studies/time-studies.service';
 import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-summary-dto';
 
@@ -42,7 +42,6 @@ export class TimeStudyModal implements OnInit {
 
   onSubmit(timeStudiesForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-    console.log('submitting');
 
     this.submitTimeStudiesRequest = this.timeStudiesService.upsertTimeStudies(this.model).subscribe(results => {
 
@@ -50,20 +49,51 @@ export class TimeStudyModal implements OnInit {
 
     });
 
-
-
   }
 
   ngOnInit() {
-debugger;
-    this.model = new TimeStudiesUpsertDto({TimeStudies: this.fieldStandardTime.TimeStudies})
+
+    this.model = this.createModelFromFieldStandardTime(this.fieldStandardTime);
+    console.log(this.model);
+
   }
+
+  createModelFromFieldStandardTime(fieldStandardTime: FieldStandardTimeSummaryDto) {
+    var model = new TimeStudiesUpsertDto();
+    model.FieldStandardTimeID = fieldStandardTime.FieldStandardTimeID;
+    model.WorkbookID = fieldStandardTime.WorkbookID;
+    model.TimeStudies = fieldStandardTime.TimeStudies.map(timeStudy => {
+      var timeStudyUpsertDto = new TimeStudyUpsertDto();
+      timeStudyUpsertDto.FieldStandardTimeID = timeStudy.FieldStandardTimeID;
+      timeStudyUpsertDto.Notes = timeStudy.Notes;
+      timeStudyUpsertDto.Duration = timeStudy.Duration;
+      timeStudyUpsertDto.Units = timeStudy.Units;
+      timeStudyUpsertDto.WorkbookID = timeStudy.WorkbookID;
+      timeStudyUpsertDto.TimeStudyID = timeStudy.TimeStudyID;
+
+      return timeStudyUpsertDto;
+    });
+    
+
+
+    return model;
+  }
+
 
   addTimeStudy() {
     
+    var timeStudyUpsertDto = new TimeStudyUpsertDto();
+      timeStudyUpsertDto.FieldStandardTimeID = this.fieldStandardTime.FieldStandardTimeID;
+      timeStudyUpsertDto.Notes = '';
+      timeStudyUpsertDto.Duration = 0;
+      timeStudyUpsertDto.Units = 0;
+      timeStudyUpsertDto.WorkbookID = this.fieldStandardTime.WorkbookID;
+      timeStudyUpsertDto.TimeStudyID = -1;
 
-    this.model.TimeStudies.push(new TimeStudyDto({WorkbookID: 1, FieldLaborActivityID: 1, LaborTypeID: 1}))
+    this.model.TimeStudies.push(timeStudyUpsertDto);
 
+    this.cdr.detectChanges();
+    console.log( this.model);
   }
 
   removeTimeStudyAtIndex(index:number) {
@@ -83,3 +113,4 @@ debugger;
   }
 
 }
+

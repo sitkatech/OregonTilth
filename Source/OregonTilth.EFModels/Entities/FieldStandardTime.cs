@@ -16,6 +16,7 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.FieldUnitType)
                 .Include(x => x.Machinery)
                 .Include(x => x.LaborType)
+                .Include(x => x.TimeStudies)
                 .ToList();
 
             var fieldStandardTimeSummaryDtos = new List<FieldStandardTimeSummaryDto>();

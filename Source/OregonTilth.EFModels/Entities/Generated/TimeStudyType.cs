@@ -13,11 +13,6 @@ namespace OregonTilth.EFModels.Entities
     [Index(nameof(TimeStudyTypeName), Name = "AK_TimeStudyType_TimeStudyTypeName", IsUnique = true)]
     public partial class TimeStudyType
     {
-        public TimeStudyType()
-        {
-            TimeStudies = new HashSet<TimeStudy>();
-        }
-
         [Key]
         public int TimeStudyTypeID { get; set; }
         [Required]
@@ -26,8 +21,5 @@ namespace OregonTilth.EFModels.Entities
         [Required]
         [StringLength(100)]
         public string TimeStudyTypeDisplayName { get; set; }
-
-        [InverseProperty(nameof(TimeStudy.TimeStudyType))]
-        public virtual ICollection<TimeStudy> TimeStudies { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
@@ -18,7 +19,7 @@ namespace OregonTilth.EFModels.Entities
                 // todo: something for this
                 AverageMinutesPerFieldUnit = 0,
                 StandardMinutesPerFieldUnit = fieldStandardTime.StandardTimePerUnit,
-                TimeStudies = fieldStandardTime?.TimeStudies.Select(x => TimeStudyExtensionMethods.AsDto(x))
+                TimeStudies = fieldStandardTime?.TimeStudies.Select(x => x.AsSummaryDto())
             };
         }
     }

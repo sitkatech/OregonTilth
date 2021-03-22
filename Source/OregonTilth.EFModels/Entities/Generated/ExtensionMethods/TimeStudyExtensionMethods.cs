@@ -15,7 +15,6 @@ namespace OregonTilth.EFModels.Entities
             {
                 TimeStudyID = timeStudy.TimeStudyID,
                 Workbook = timeStudy.Workbook.AsDto(),
-                TimeStudyType = timeStudy.TimeStudyType.AsDto(),
                 FieldStandardTime = timeStudy.FieldStandardTime?.AsDto(),
                 Duration = timeStudy.Duration,
                 Units = timeStudy.Units,

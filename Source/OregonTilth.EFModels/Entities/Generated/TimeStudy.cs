@@ -14,7 +14,6 @@ namespace OregonTilth.EFModels.Entities
         [Key]
         public int TimeStudyID { get; set; }
         public int WorkbookID { get; set; }
-        public int TimeStudyTypeID { get; set; }
         public int? FieldStandardTimeID { get; set; }
         public int Duration { get; set; }
         [Column(TypeName = "decimal(18, 0)")]
@@ -25,9 +24,6 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(FieldStandardTimeID))]
         [InverseProperty("TimeStudies")]
         public virtual FieldStandardTime FieldStandardTime { get; set; }
-        [ForeignKey(nameof(TimeStudyTypeID))]
-        [InverseProperty("TimeStudies")]
-        public virtual TimeStudyType TimeStudyType { get; set; }
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("TimeStudies")]
         public virtual Workbook Workbook { get; set; }

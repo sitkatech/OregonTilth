@@ -5,7 +5,6 @@ GO
 CREATE TABLE [dbo].[TimeStudy](
 	[TimeStudyID] [int] IDENTITY(1,1) NOT NULL,
 	[WorkbookID] [int] NOT NULL,
-	[TimeStudyTypeID] [int] NOT NULL,
 	[FieldStandardTimeID] [int] NULL,
 	[Duration] [int] NOT NULL,
 	[Units] [decimal](18, 0) NOT NULL,
@@ -22,16 +21,7 @@ REFERENCES [dbo].[FieldStandardTime] ([FieldStandardTimeID])
 GO
 ALTER TABLE [dbo].[TimeStudy] CHECK CONSTRAINT [FK_TimeStudy_FieldStandardTime_FieldStandardTimeID]
 GO
-ALTER TABLE [dbo].[TimeStudy]  WITH CHECK ADD  CONSTRAINT [FK_TimeStudy_TimeStudyType_TimeStudyTypeID] FOREIGN KEY([TimeStudyTypeID])
-REFERENCES [dbo].[TimeStudyType] ([TimeStudyTypeID])
-GO
-ALTER TABLE [dbo].[TimeStudy] CHECK CONSTRAINT [FK_TimeStudy_TimeStudyType_TimeStudyTypeID]
-GO
 ALTER TABLE [dbo].[TimeStudy]  WITH CHECK ADD  CONSTRAINT [FK_TimeStudy_Workbook_WorkbookID] FOREIGN KEY([WorkbookID])
 REFERENCES [dbo].[Workbook] ([WorkbookID])
 GO
 ALTER TABLE [dbo].[TimeStudy] CHECK CONSTRAINT [FK_TimeStudy_Workbook_WorkbookID]
-GO
-ALTER TABLE [dbo].[TimeStudy]  WITH CHECK ADD  CONSTRAINT [CK_TimeStudyType_Requires_FK_Checks] CHECK  (([TimeStudyTypeID]=(1) AND [FieldStandardTimeID] IS NOT NULL))
-GO
-ALTER TABLE [dbo].[TimeStudy] CHECK CONSTRAINT [CK_TimeStudyType_Requires_FK_Checks]
