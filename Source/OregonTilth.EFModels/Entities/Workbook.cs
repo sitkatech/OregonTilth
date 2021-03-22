@@ -27,7 +27,10 @@ namespace OregonTilth.EFModels.Entities
             {
                 WorkbookName = workbookToCreate.WorkbookName,
                 CreateDate = DateTime.UtcNow,
-                UserID = createUserID
+                UserID = createUserID,
+                AverageHourlyWage = workbookToCreate.AverageHourlyWage,
+                StandardUnitOfSpaceLength = workbookToCreate.StandardUnitOfSpaceLength,
+                StandardUnitOfSpaceWidth = workbookToCreate.StandardUnitOfSpaceWidth
             };
 
             dbContext.Workbooks.Add(workbook);
@@ -45,6 +48,9 @@ namespace OregonTilth.EFModels.Entities
                 .Single(x => x.WorkbookID == workbookToEdit.WorkbookID);
 
             workbook.WorkbookName = workbookToEdit.WorkbookName;
+            workbook.AverageHourlyWage = workbookToEdit.AverageHourlyWage;
+            workbook.StandardUnitOfSpaceLength = workbookToEdit.StandardUnitOfSpaceLength;
+            workbook.StandardUnitOfSpaceWidth = workbookToEdit.StandardUnitOfSpaceWidth;
 
             dbContext.SaveChanges();
             dbContext.Entry(workbook).Reload();
@@ -91,6 +97,21 @@ namespace OregonTilth.EFModels.Entities
             if (string.IsNullOrEmpty(workbookDto.WorkbookName))
             {
                 result.Add(new ErrorMessage() { Type = "Workbook Name", Message = "Workbooks must have a name." });
+            }
+
+            if (workbookDto.AverageHourlyWage.HasValue && workbookDto.AverageHourlyWage.Value < 0)
+            {
+                result.Add(new ErrorMessage() { Type = "Average Hourly Wage", Message = "Average Hourly Wage must be greater than 0." });
+            }
+
+            if (workbookDto.StandardUnitOfSpaceLength.HasValue && workbookDto.StandardUnitOfSpaceLength.Value < 0)
+            {
+                result.Add(new ErrorMessage() { Type = "Standard Unit of Space Length", Message = "Standard Unit of Space Length must be greater than 0." });
+            }
+
+            if (workbookDto.StandardUnitOfSpaceWidth.HasValue && workbookDto.StandardUnitOfSpaceWidth.Value < 0)
+            {
+                result.Add(new ErrorMessage() { Type = "Standard Unit of Space Width", Message = "Standard Unit of Space Width must be greater than 0." });
             }
 
             return result;

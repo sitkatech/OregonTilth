@@ -23,7 +23,10 @@ USING (VALUES
 (21, 'PreSeason', 'Pre-Season'),
 (22, 'InSeason', 'In-Season'),
 (23, 'PostSeason', 'Post-Season'),
-(24, 'Results', 'Results')
+(24, 'Results', 'Results'),
+(25, 'AverageHourlyWage', 'Average Hourly Wage'),
+(26, 'StandardUnitOfSpaceLength', 'Standard Unit Of Space Length'),
+(27, 'StandardUnitOfSpaceWidth', 'Standard Unit Of Space Width')
 )
 AS Source (FieldDefinitionTypeID, FieldDefinitionTypeName, FieldDefinitionTypeDisplayName)
 ON Target.FieldDefinitionTypeID = Source.FieldDefinitionTypeID

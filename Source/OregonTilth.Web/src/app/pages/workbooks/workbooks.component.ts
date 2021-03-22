@@ -12,6 +12,8 @@ import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { Router } from '@angular/router';
+import { GridService } from 'src/app/shared/services/grid/grid.service';
+import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 
 @Component({
   selector: 'workbooks',
@@ -25,6 +27,7 @@ export class WorkbooksComponent implements OnInit {
     private datePipe: DatePipe,
     private workbookService: WorkbookService,
     private alertService: AlertService,
+    private gridService: GridService,
     private router: Router) { }
 
   private watchUserChangeSubscription: any;
@@ -68,6 +71,28 @@ export class WorkbooksComponent implements OnInit {
           sortable: true, filter: true, width: 170
         },
         {
+          headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionType: 'AverageHourlyWage'},
+          cellEditor: 'agTextCellEditor',
+          field: 'AverageHourlyWage',
+          valueFormatter: this.gridService.currencyFormatter,
+          sortable: true, filter: true, width: 160,
+          cellClass: 'not-editable'
+        },
+        {
+          headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionType: 'StandardUnitOfSpaceLength'}, 
+          cellEditor: 'agTextCellEditor',
+          field: 'StandardUnitOfSpaceLength',
+          sortable: true, filter: true, width: 200,
+          cellClass: 'not-editable'
+        },
+        {
+          headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionType: 'StandardUnitOfSpaceWidth'}, 
+          cellEditor: 'agTextCellEditor',
+          field: 'StandardUnitOfSpaceWidth',
+          sortable: true, filter: true, width: 200,
+          cellClass: 'not-editable'
+        },
+        {
           headerName: 'Create Date', field: 'CreateDate', valueFormatter: function (params) {
             return _datePipe.transform(params.value, "M/d/yyyy")
           },
@@ -101,7 +126,8 @@ export class WorkbooksComponent implements OnInit {
             }
             return 0;
           },
-          sortable: true, filter: 'agDateColumnFilter', width: 145
+          sortable: true, filter: 'agDateColumnFilter', width: 145,
+          cellClass: 'not-editable'
         },
         {
           headerName: 'Delete', field: 'WorkbookID', valueGetter: function (params: any) {
