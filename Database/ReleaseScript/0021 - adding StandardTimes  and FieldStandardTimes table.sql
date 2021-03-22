@@ -1,17 +1,36 @@
 
 alter table dbo.FieldLaborActivity
-add LaborTypeCrew bit not null DEFAULT 0;
+add LaborTypeCrew bit null;
 
-alter table dbo.FieldLaborActivity
-add LaborTypeOperator bit not null DEFAULT 0;
 go
 
-/*
+update dbo.FieldLaborActivity 
+set LaborTypeCrew = 1 
+where LaborTypeCrew is null;
+go
+alter table dbo.FieldLaborActivity
+alter column LaborTypeCrew bit not null;
+go
+
+
+alter table dbo.FieldLaborActivity
+add LaborTypeOperator bit null;
+go
+update dbo.FieldLaborActivity 
+set LaborTypeOperator = 0 
+where LaborTypeOperator is null;
+go
+alter table dbo.FieldLaborActivity
+alter column LaborTypeOperator bit not null;
+
+go
+
+
 alter table dbo.FieldLaborActivity
 add CONSTRAINT CK_FieldLaborActivity_At_Least_One_Labor_Type_Checked CHECK (LaborTypeCrew = 1 or LaborTypeOperator = 1);
 
 go
-*/
+
 CREATE TABLE dbo.FieldStandardTime(
 	FieldStandardTimeID int NOT NULL identity(1,1) CONSTRAINT PK_FieldStandardTime_FieldStandardTimeID PRIMARY KEY,
 	WorkbookID int NOT NULL CONSTRAINT FK_FieldStandardTime_Workbook_WorkbookID FOREIGN KEY REFERENCES dbo.Workbook (WorkbookID),
