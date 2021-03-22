@@ -206,7 +206,9 @@ export class FieldStandardTimesComponent implements OnInit {
       {
         headerName: 'Machinery', 
         field: 'Machinery',
-        editable:true,
+        editable: params => {
+          return params.data.LaborType.LaborTypeID == LaborTypeEnum.Operator;
+        },
         valueFormatter: function (params) {
           return params.value ? params.value.MachineryName : 'N/A';
         },
@@ -339,15 +341,13 @@ export class FieldStandardTimesComponent implements OnInit {
 
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
-
-    // this.updateFieldStandardTimeRequest = this.workbookService.updateCrop(dtoToPost).subscribe(crop => {
-    //   data.node.setData(crop);
-    //   this.isLoadingSubmit = false;
-    //   this.alertService.pushAlert(new Alert("Successfully updated Crop.", AlertContext.Success));
-    // }, error => {
-    //   this.isLoadingSubmit = false;
-    //   this.cdr.detectChanges();
-    // })
+    this.updateFieldStandardTimeRequest = this.workbookService.updateFieldStandardTime(dtoToPost).subscribe(fieldStandardTime => {
+      data.node.setData(fieldStandardTime);
+      this.isLoadingSubmit = false;
+    }, error => {
+      this.isLoadingSubmit = false;
+      this.cdr.detectChanges();
+    })
 
   }
 

@@ -960,6 +960,24 @@ namespace OregonTilth.API.Controllers
             return Ok(returnDto);
             
         }
+
+
+        [HttpPut("workbooks/{workbookID}/forms/field-standard-times/{fieldStandardTimeID}")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionInformationDto> UpdateFieldStandardTime([FromBody] FieldStandardTimeDto fieldStandardTimeDto)
+        {
+            var validationMessages = FieldStandardTime.ValidateUpdate(_dbContext, fieldStandardTimeDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var fieldStandardTimeSummaryDto = FieldStandardTime.UpdateFieldStandardTime(_dbContext, fieldStandardTimeDto);
+            return Ok(fieldStandardTimeSummaryDto);
+        }
+
         #endregion "Field Standard Times"
     }
 

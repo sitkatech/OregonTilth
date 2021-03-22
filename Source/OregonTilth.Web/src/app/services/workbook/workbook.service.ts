@@ -356,4 +356,9 @@ export class WorkbookService {
         let route = `workbooks/${fieldStandardTimeCreateDto.WorkbookID}/forms/field-standard-times/initialize`;
         return this.apiService.postToApi(route, fieldStandardTimeCreateDto);
     }
+
+    updateFieldStandardTime(fieldStandardTimeDto: FieldStandardTimeSummaryDto): Observable<FieldStandardTimeSummaryDto> {
+        let route = `/workbooks/${fieldStandardTimeDto.WorkbookID}/forms/field-standard-times/${fieldStandardTimeDto.FieldStandardTimeID}`;
+        return this.apiService.putToApi(route, fieldStandardTimeDto);
+    }
 }

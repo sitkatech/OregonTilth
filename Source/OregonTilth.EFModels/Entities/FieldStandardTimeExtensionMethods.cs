@@ -18,7 +18,7 @@ namespace OregonTilth.EFModels.Entities
                 FieldUnitType = fieldStandardTime.FieldUnitType?.AsDto(),
                 // todo: something for this
                 AverageMinutesPerFieldUnit = 0,
-                StandardMinutesPerFieldUnit = fieldStandardTime.StandardTimePerUnit,
+                StandardTimePerUnit = fieldStandardTime.StandardTimePerUnit,
                 TimeStudies = fieldStandardTime?.TimeStudies.Select(x => x.AsSummaryDto())
             };
         }

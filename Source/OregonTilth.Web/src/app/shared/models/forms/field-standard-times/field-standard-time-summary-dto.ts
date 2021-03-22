@@ -13,7 +13,7 @@ export class FieldStandardTimeSummaryDto {
     Machinery: MachineryDto;
     FieldUnitType: FieldUnitTypeDto;
     AverageMinutesPerFieldUnit: number;
-    StandardMinutesPerFieldUnit: number;
+    StandardTimePerUnit: number;
     TimeStudies: TimeStudySummaryDto[];
     constructor(obj?: any) {
         Object.assign(this, obj);

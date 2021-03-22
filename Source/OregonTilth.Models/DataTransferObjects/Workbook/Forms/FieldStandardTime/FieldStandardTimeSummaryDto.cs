@@ -17,6 +17,6 @@ namespace OregonTilth.Models.DataTransferObjects
         
         
         public decimal AverageMinutesPerFieldUnit { get; set; }
-        public decimal? StandardMinutesPerFieldUnit { get; set; }
+        public decimal? StandardTimePerUnit { get; set; }
     }
 }
