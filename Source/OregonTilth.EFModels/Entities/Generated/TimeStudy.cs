@@ -21,6 +21,7 @@ namespace OregonTilth.EFModels.Entities
         [StringLength(8000)]
         public string Notes { get; set; }
         public int? HarvestPostHarvestStandardTimeID { get; set; }
+        public int? TransplantProductionStandardTimeID { get; set; }
 
         [ForeignKey(nameof(FieldStandardTimeID))]
         [InverseProperty("TimeStudies")]
@@ -28,6 +29,9 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(HarvestPostHarvestStandardTimeID))]
         [InverseProperty("TimeStudies")]
         public virtual HarvestPostHarvestStandardTime HarvestPostHarvestStandardTime { get; set; }
+        [ForeignKey(nameof(TransplantProductionStandardTimeID))]
+        [InverseProperty("TimeStudies")]
+        public virtual TransplantProductionStandardTime TransplantProductionStandardTime { get; set; }
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("TimeStudies")]
         public virtual Workbook Workbook { get; set; }

@@ -19,7 +19,8 @@ namespace OregonTilth.EFModels.Entities
                 Duration = timeStudy.Duration,
                 Units = timeStudy.Units,
                 Notes = timeStudy.Notes,
-                HarvestPostHarvestStandardTime = timeStudy.HarvestPostHarvestStandardTime?.AsDto()
+                HarvestPostHarvestStandardTime = timeStudy.HarvestPostHarvestStandardTime?.AsDto(),
+                TransplantProductionStandardTime = timeStudy.TransplantProductionStandardTime?.AsDto()
             };
             DoCustomMappings(timeStudy, timeStudyDto);
             return timeStudyDto;

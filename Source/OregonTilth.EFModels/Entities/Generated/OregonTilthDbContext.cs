@@ -46,6 +46,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<TransplantProductionInputCost> TransplantProductionInputCosts { get; set; }
         public virtual DbSet<TransplantProductionLaborActivity> TransplantProductionLaborActivities { get; set; }
         public virtual DbSet<TransplantProductionLaborActivityByCrop> TransplantProductionLaborActivityByCrops { get; set; }
+        public virtual DbSet<TransplantProductionStandardTime> TransplantProductionStandardTimes { get; set; }
         public virtual DbSet<TransplantProductionTrayType> TransplantProductionTrayTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Workbook> Workbooks { get; set; }
@@ -440,6 +441,24 @@ namespace OregonTilth.EFModels.Entities
 
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.TransplantProductionLaborActivityByCrops)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<TransplantProductionStandardTime>(entity =>
+            {
+                entity.HasOne(d => d.TransplantProductionLaborActivity)
+                    .WithMany(p => p.TransplantProductionStandardTimes)
+                    .HasForeignKey(d => d.TransplantProductionLaborActivityID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.TransplantProductionTrayType)
+                    .WithMany(p => p.TransplantProductionStandardTimes)
+                    .HasForeignKey(d => d.TransplantProductionTrayTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TransplantProductionStandardTimes)
                     .HasForeignKey(d => d.WorkbookID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
