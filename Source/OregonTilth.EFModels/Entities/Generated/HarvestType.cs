@@ -13,6 +13,11 @@ namespace OregonTilth.EFModels.Entities
     [Index(nameof(HarvestTypeName), Name = "AK_HarvestType_HarvestTypeName", IsUnique = true)]
     public partial class HarvestType
     {
+        public HarvestType()
+        {
+            HarvestPostHarvestStandardTimes = new HashSet<HarvestPostHarvestStandardTime>();
+        }
+
         [Key]
         public int HarvestTypeID { get; set; }
         [Required]
@@ -21,5 +26,8 @@ namespace OregonTilth.EFModels.Entities
         [Required]
         [StringLength(100)]
         public string HarvestTypeDisplayName { get; set; }
+
+        [InverseProperty(nameof(HarvestPostHarvestStandardTime.HarvestType))]
+        public virtual ICollection<HarvestPostHarvestStandardTime> HarvestPostHarvestStandardTimes { get; set; }
     }
 }
