@@ -115,7 +115,7 @@ namespace OregonTilth.EFModels.Entities
 
             transplantProductionInputCost.TransplantProductionInputID = transplantProductionInputCostDto.TransplantProductionInput.TransplantProductionInputID;
             transplantProductionInputCost.TransplantProductionTrayTypeID = transplantProductionInputCostDto.TransplantProductionTrayType.TransplantProductionTrayTypeID;
-            transplantProductionInputCost.CostPerTray = transplantProductionInputCostDto.CostPerTray != null ? transplantProductionInputCostDto.CostPerTray : 0;
+            transplantProductionInputCost.CostPerTray = transplantProductionInputCostDto.CostPerTray;
             transplantProductionInputCost.Notes = transplantProductionInputCostDto.Notes;
 
             dbContext.SaveChanges();

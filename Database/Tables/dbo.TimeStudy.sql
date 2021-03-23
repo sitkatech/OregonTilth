@@ -9,6 +9,7 @@ CREATE TABLE [dbo].[TimeStudy](
 	[Duration] [int] NOT NULL,
 	[Units] [decimal](18, 0) NOT NULL,
 	[Notes] [varchar](8000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[HarvestPostHarvestStandardTimeID] [int] NULL,
  CONSTRAINT [PK_TimeStudy_TimeStudyID] PRIMARY KEY CLUSTERED 
 (
 	[TimeStudyID] ASC
@@ -21,7 +22,16 @@ REFERENCES [dbo].[FieldStandardTime] ([FieldStandardTimeID])
 GO
 ALTER TABLE [dbo].[TimeStudy] CHECK CONSTRAINT [FK_TimeStudy_FieldStandardTime_FieldStandardTimeID]
 GO
+ALTER TABLE [dbo].[TimeStudy]  WITH CHECK ADD  CONSTRAINT [FK_TimeStudy_HarvestPostHarvestStandardTime_HarvestPostHarvestStandardTimeID] FOREIGN KEY([HarvestPostHarvestStandardTimeID])
+REFERENCES [dbo].[HarvestPostHarvestStandardTime] ([HarvestPostHarvestStandardTimeID])
+GO
+ALTER TABLE [dbo].[TimeStudy] CHECK CONSTRAINT [FK_TimeStudy_HarvestPostHarvestStandardTime_HarvestPostHarvestStandardTimeID]
+GO
 ALTER TABLE [dbo].[TimeStudy]  WITH CHECK ADD  CONSTRAINT [FK_TimeStudy_Workbook_WorkbookID] FOREIGN KEY([WorkbookID])
 REFERENCES [dbo].[Workbook] ([WorkbookID])
 GO
 ALTER TABLE [dbo].[TimeStudy] CHECK CONSTRAINT [FK_TimeStudy_Workbook_WorkbookID]
+GO
+ALTER TABLE [dbo].[TimeStudy]  WITH CHECK ADD  CONSTRAINT [CK_TimeStudy_Only_One_Entity_Is_Referenced] CHECK  (([FieldStandardTimeID] IS NOT NULL AND [HarvestPostHarvestStandardTimeID] IS NULL OR [HarvestPostHarvestStandardTimeID] IS NOT NULL AND [FieldStandardTimeID] IS NULL))
+GO
+ALTER TABLE [dbo].[TimeStudy] CHECK CONSTRAINT [CK_TimeStudy_Only_One_Entity_Is_Referenced]

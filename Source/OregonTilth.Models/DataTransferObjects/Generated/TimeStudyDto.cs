@@ -15,5 +15,6 @@ namespace OregonTilth.Models.DataTransferObjects
         public int Duration { get; set; }
         public decimal Units { get; set; }
         public string Notes { get; set; }
+        public HarvestPostHarvestStandardTimeDto HarvestPostHarvestStandardTime { get; set; }
     }
 }

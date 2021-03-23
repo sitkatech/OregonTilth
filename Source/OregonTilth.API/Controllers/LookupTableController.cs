@@ -43,5 +43,12 @@ namespace OregonTilth.API.Controllers
             var phases = Phase.List(_dbContext);
             return phases;
         }
+
+        [HttpGet("lookupTable/harvest-types")]
+        public ActionResult<List<HarvestTypeDto>> ListAllHarvestTypes()
+        {
+            var harvestTypes = HarvestType.List(_dbContext);
+            return harvestTypes;
+        }
     }
 }

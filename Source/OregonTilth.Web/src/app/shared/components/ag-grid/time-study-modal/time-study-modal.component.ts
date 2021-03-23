@@ -20,6 +20,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TimeStudiesUpsertDto, TimeStudyUpsertDto } from 'src/app/shared/models/forms/time-studies/time-studies-upsert-dto';
 import { TimeStudiesService } from 'src/app/services/time-studies/time-studies.service';
 import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-summary-dto';
+import { HarvestPostHarvestStandardTimeSummaryDto } from 'src/app/shared/models/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-time-summary-dto';
 
 @Component({
   selector: 'time-study-modal',
@@ -28,6 +29,7 @@ import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-s
 })
 export class TimeStudyModal implements OnInit {
   @Input() fieldStandardTime: FieldStandardTimeSummaryDto;
+  @Input() harvestPostHarvestStandardTime: HarvestPostHarvestStandardTimeSummaryDto;
 
   constructor(private cdr: ChangeDetectorRef, 
     public activeModal: NgbActiveModal,
@@ -43,19 +45,31 @@ export class TimeStudyModal implements OnInit {
   onSubmit(timeStudiesForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
 
-    this.submitTimeStudiesRequest = this.timeStudiesService.upsertTimeStudies(this.model).subscribe(result => {
-      this.activeModal.close(result);
-    }, error => {
+    if(this.fieldStandardTime){
+      this.submitTimeStudiesRequest = this.timeStudiesService.upsertFieldTimeStudies(this.model).subscribe(result => {
+        this.activeModal.close(result);
+      }, error => {
+  
+      });
+    }
 
-    });
-
+    if(this.harvestPostHarvestStandardTime){
+      this.submitTimeStudiesRequest = this.timeStudiesService.upsertHarvestPostHarvestTimeStudies(this.model).subscribe(result => {
+        this.activeModal.close(result);
+      }, error => {
+  
+      });
+    }
   }
 
   ngOnInit() {
+    if(this.fieldStandardTime) {
+      this.model = this.createModelFromFieldStandardTime(this.fieldStandardTime);
+    }
 
-    this.model = this.createModelFromFieldStandardTime(this.fieldStandardTime);
-    console.log(this.model);
-
+    if(this.harvestPostHarvestStandardTime) {
+      this.model = this.createModelFromHarvestPostHarvestStandardTime(this.harvestPostHarvestStandardTime);
+    }
   }
 
   createModelFromFieldStandardTime(fieldStandardTime: FieldStandardTimeSummaryDto) {
@@ -73,27 +87,48 @@ export class TimeStudyModal implements OnInit {
 
       return timeStudyUpsertDto;
     });
-    
-
-
     return model;
   }
 
+  createModelFromHarvestPostHarvestStandardTime(harvestPostHarvestStandardTime: HarvestPostHarvestStandardTimeSummaryDto) {
+    var model = new TimeStudiesUpsertDto();
+    model.HarvestPostHarvestStandardTimeID = harvestPostHarvestStandardTime.HarvestPostHarvestStandardTimeID;
+    model.WorkbookID = harvestPostHarvestStandardTime.WorkbookID;
+    model.TimeStudies = harvestPostHarvestStandardTime.TimeStudies.map(timeStudy => {
+      var timeStudyUpsertDto = new TimeStudyUpsertDto();
+      timeStudyUpsertDto.HarvestPostHarvestStandardTimeID = timeStudy.HarvestPostHarvestStandardTimeID;
+      timeStudyUpsertDto.Notes = timeStudy.Notes;
+      timeStudyUpsertDto.Duration = timeStudy.Duration;
+      timeStudyUpsertDto.Units = timeStudy.Units;
+      timeStudyUpsertDto.WorkbookID = timeStudy.WorkbookID;
+      timeStudyUpsertDto.TimeStudyID = timeStudy.TimeStudyID;
+
+      return timeStudyUpsertDto;
+    });
+    return model;
+  }
 
   addTimeStudy() {
     
     var timeStudyUpsertDto = new TimeStudyUpsertDto();
-      timeStudyUpsertDto.FieldStandardTimeID = this.fieldStandardTime.FieldStandardTimeID;
+
+      if(this.fieldStandardTime) {
+        timeStudyUpsertDto.FieldStandardTimeID = this.fieldStandardTime.FieldStandardTimeID;
+        timeStudyUpsertDto.WorkbookID = this.fieldStandardTime.WorkbookID;
+      }
+      if(this.harvestPostHarvestStandardTime) {
+        timeStudyUpsertDto.HarvestPostHarvestStandardTimeID = this.harvestPostHarvestStandardTime.HarvestPostHarvestStandardTimeID;
+        timeStudyUpsertDto.WorkbookID = this.harvestPostHarvestStandardTime.WorkbookID;
+      }
+
       timeStudyUpsertDto.Notes = '';
       timeStudyUpsertDto.Duration = 0;
       timeStudyUpsertDto.Units = 0;
-      timeStudyUpsertDto.WorkbookID = this.fieldStandardTime.WorkbookID;
       timeStudyUpsertDto.TimeStudyID = -1;
 
     this.model.TimeStudies.push(timeStudyUpsertDto);
 
     this.cdr.detectChanges();
-    console.log( this.model);
   }
 
   removeTimeStudyAtIndex(index:number) {

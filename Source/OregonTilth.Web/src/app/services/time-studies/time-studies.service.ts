@@ -35,6 +35,7 @@ import { FieldStandardTimeDto } from 'src/app/shared/models/generated/field-stan
 import { FieldStandardTimeCreateDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-create-dto';
 import { TimeStudiesUpsertDto } from 'src/app/shared/models/forms/time-studies/time-studies-upsert-dto';
 import { TimeStudyDto } from 'src/app/shared/models/generated/time-study-dto';
+import { HarvestPostHarvestStandardTimeSummaryDto } from 'src/app/shared/models/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-time-summary-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -42,9 +43,13 @@ import { TimeStudyDto } from 'src/app/shared/models/generated/time-study-dto';
 export class TimeStudiesService {
     constructor(private apiService: ApiService) { }
 
-    upsertTimeStudies(timeStudiesUpsertDto: TimeStudiesUpsertDto): Observable<FieldStandardTimeSummaryDto> {
+    upsertFieldTimeStudies(timeStudiesUpsertDto: TimeStudiesUpsertDto): Observable<FieldStandardTimeSummaryDto> {
         let route = `/workbooks/${timeStudiesUpsertDto.WorkbookID}/time-studies`;
         return this.apiService.putToApi(route, timeStudiesUpsertDto);
     }
 
+    upsertHarvestPostHarvestTimeStudies(timeStudiesUpsertDto: TimeStudiesUpsertDto): Observable<HarvestPostHarvestStandardTimeSummaryDto> {
+        let route = `/workbooks/${timeStudiesUpsertDto.WorkbookID}/time-studies`;
+        return this.apiService.putToApi(route, timeStudiesUpsertDto);
+    }
 }

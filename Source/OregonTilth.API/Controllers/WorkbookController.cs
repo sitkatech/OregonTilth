@@ -965,7 +965,7 @@ namespace OregonTilth.API.Controllers
         [HttpPut("workbooks/{workbookID}/forms/field-standard-times/{fieldStandardTimeID}")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<TransplantProductionInformationDto> UpdateFieldStandardTime([FromBody] FieldStandardTimeDto fieldStandardTimeDto)
+        public ActionResult<FieldStandardTimeSummaryDto> UpdateFieldStandardTime([FromBody] FieldStandardTimeDto fieldStandardTimeDto)
         {
             var validationMessages = FieldStandardTime.ValidateUpdate(_dbContext, fieldStandardTimeDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
@@ -979,6 +979,60 @@ namespace OregonTilth.API.Controllers
         }
 
         #endregion "Field Standard Times"
+
+        #region "Harvest Post-Harvest Standard Times"
+
+        [HttpGet("workbooks/{workbookID}/forms/harvest-post-harvest-standard-times")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> GetHarvestPostHarvestStandardTimes([FromRoute] int workbookID)
+        {
+            var harvestPostHarvestStandardTimes = HarvestPostHarvestStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(harvestPostHarvestStandardTimes);
+        }
+
+
+        [HttpGet("workbooks/{workbookID}/forms/harvest-post-harvest-standard-times/time-studies")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<vFieldLaborActivityForTimeStudyDto>> GetHarvestPostHarvestStandardTimesForTimeStudies([FromRoute] int workbookID)
+        {
+            var harvestPostHarvestStandardTimesForTimeStudies = vFieldLaborActivityForTimeStudy.GetUninitializedDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(harvestPostHarvestStandardTimesForTimeStudies);
+        }
+
+        [HttpPost("workbooks/{workbookID}/forms/harvest-post-harvest-standard-times/initialize")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<HarvestPostHarvestStandardTimeDto>> InitializeTimeStudy([FromBody] HarvestPostHarvestStandardTimeCreateDto createDto)
+        {
+            var validationMessages = HarvestPostHarvestStandardTime.ValidateCreate(_dbContext, createDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var returnDto = HarvestPostHarvestStandardTime.CreateNew(_dbContext, createDto);
+            return Ok(returnDto);
+
+        }
+
+
+        [HttpPut("workbooks/{workbookID}/forms/harvest-post-harvest-standard-times/{harvestPostHarvestStandardTimeID}")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionInformationDto> UpdateHarvestPostHarvestStandardTime([FromBody] HarvestPostHarvestStandardTimeDto harvestPostHarvestStandardTimeDto)
+        {
+            var validationMessages = HarvestPostHarvestStandardTime.ValidateUpdate(_dbContext, harvestPostHarvestStandardTimeDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var harvestPostHarvestStandardTimeSummaryDto = HarvestPostHarvestStandardTime.UpdateHarvestPostHarvestStandardTime(_dbContext, harvestPostHarvestStandardTimeDto);
+            return Ok(harvestPostHarvestStandardTimeSummaryDto);
+        }
+
+        #endregion "Harvest Post-Harvest Standard Times"
     }
 
 
