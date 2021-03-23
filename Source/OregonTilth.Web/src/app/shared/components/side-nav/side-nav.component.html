@@ -1,4 +1,18 @@
 <nav class="side-nav">
+    
+    <div class="nav-group mb-3">
+        <h4>Workbook</h4>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link"
+                [routerLink]="['/workbooks', workbook ? workbook.WorkbookID : -1]"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbook }">
+                    Workbook Detail
+                </a>
+            </li>
+        </ul>
+    </div>
 
     <div class="nav-group mb-3" [class.nav-links-disabled]="navLinksDisabled()">
         <h4>Pre-Season <field-definition [fieldDefinitionType]="'PreSeason'" [labelOverride]="''"></field-definition></h4>
