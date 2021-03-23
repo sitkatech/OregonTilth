@@ -56,7 +56,7 @@ namespace OregonTilth.EFModels.Entities
         {
             return dbContext.CropSpecificInfos
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
-                .Include(x => x.Crop)
+                .Include(x => x.TpOrDsType)
                 .AsNoTracking();
         }
 
@@ -73,7 +73,7 @@ namespace OregonTilth.EFModels.Entities
             var cropSpecificInfo = new CropSpecificInfo
             {
                 WorkbookID = cropSpecificInfoCreateDto.WorkbookID,
-                CropID = cropSpecificInfoCreateDto.CropID,
+                //CropID = cropSpecificInfoCreateDto.CropID,
 
             };
             dbContext.CropSpecificInfos.Add(cropSpecificInfo);
@@ -90,7 +90,7 @@ namespace OregonTilth.EFModels.Entities
                 .SingleOrDefault(x => x.CropSpecificInfoID == cropSpecificInfoDto.CropSpecificInfoID);
 
 
-            cropSpecificInfo.CropID = cropSpecificInfoDto.Crop.CropID;
+            //cropSpecificInfo.CropID = cropSpecificInfoDto.Crop.CropID;
 
 
             dbContext.SaveChanges();
