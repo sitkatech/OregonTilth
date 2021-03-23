@@ -36,6 +36,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
@@ -56,6 +57,10 @@ export class FieldLaborActivitiesComponent implements OnInit {
   private deleteFieldLaborActivityRequest: any;
 
   public columnDefs: ColDef[];
+
+  getRowNodeId(data)  {
+    return data.FieldLaborActivityID.toString();
+  }
  
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -76,6 +81,10 @@ export class FieldLaborActivitiesComponent implements OnInit {
       });
 
     });
+  }
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
   }
 
   defineColumnDefs() {
@@ -175,7 +184,8 @@ export class FieldLaborActivitiesComponent implements OnInit {
 
   deleteFieldLaborActivity(fieldLaborActivityID: number) {
     this.deleteFieldLaborActivityRequest = this.workbookService.deleteFieldLaborActivity(this.workbookID, fieldLaborActivityID).subscribe(fieldLaborActivityDtos => {
-      this.fieldLaborActivities = fieldLaborActivityDtos;
+      var rowToRemove = this.gridApi.getRowNode(fieldLaborActivityID.toString());
+      this.gridApi.applyTransaction({remove:[rowToRemove.data]})
       this.alertService.pushAlert(new Alert("Successfully deleted Field Labor Activity", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
@@ -225,7 +235,8 @@ export class FieldLaborActivitiesComponent implements OnInit {
     this.isLoadingSubmit = true;
     this.addFieldLaborActivityRequest = this.workbookService.addFieldLaborActivity(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.fieldLaborActivities = response;
+      var transactionRows = this.gridApi.applyTransaction({add: [response]});
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.alertService.pushAlert(new Alert("Successfully added Field Labor Activity.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
@@ -237,7 +248,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
   }
 
   resetForm() {
-    this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID, FieldLaborActivityCategoryID: this.model.FieldLaborActivityCategoryID});
+    this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID});
   }
 
 }

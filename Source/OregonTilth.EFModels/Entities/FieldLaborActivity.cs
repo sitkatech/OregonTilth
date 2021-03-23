@@ -82,6 +82,8 @@ namespace OregonTilth.EFModels.Entities
             return dbContext.FieldLaborActivities
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .Include(x => x.FieldLaborActivityCategory)
+                .Include(x => x.FieldStandardTimes)
+                .Include(x => x.FieldLaborByCrops)
                 .AsNoTracking();
         }
 
@@ -91,7 +93,7 @@ namespace OregonTilth.EFModels.Entities
             return fieldLaborActivity?.AsDto();
         }
 
-        public static IQueryable<FieldLaborActivityDto> CreateNewFieldLaborActivity(OregonTilthDbContext dbContext, FieldLaborActivityUpsertDto fieldLaborActivityUpsertDto, UserDto userDtoUserID)
+        public static FieldLaborActivityDto CreateNewFieldLaborActivity(OregonTilthDbContext dbContext, FieldLaborActivityUpsertDto fieldLaborActivityUpsertDto, UserDto userDtoUserID)
         {
             var fieldLaborActivity = new FieldLaborActivity
             {
@@ -106,7 +108,7 @@ namespace OregonTilth.EFModels.Entities
             dbContext.SaveChanges();
             dbContext.Entry(fieldLaborActivity).Reload();
 
-            return GetDtoListByWorkbookID(dbContext, fieldLaborActivityUpsertDto.WorkbookID);
+            return GetDtoByFieldLaborActivityID(dbContext, fieldLaborActivity.FieldLaborActivityID);
         }
 
         public static FieldLaborActivityDto UpdateFieldLaborActivity(OregonTilthDbContext dbContext, FieldLaborActivityDto fieldLaborActivityDto)
@@ -126,11 +128,22 @@ namespace OregonTilth.EFModels.Entities
             return GetDtoByFieldLaborActivityID(dbContext, fieldLaborActivity.FieldLaborActivityID);
         }
 
-        // todo: validate deletion
         public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int fieldLaborActivityID)
         {
             var result = new List<ErrorMessage>();
-            
+            var existingFieldLaborActivity = GetFieldLaborActivityImpl(dbContext).Single(x => x.FieldLaborActivityID == fieldLaborActivityID);
+
+            if (existingFieldLaborActivity.FieldLaborByCrops.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Field Labor Activity", Message = "Cannot delete a Field Labor Activity that has Field Labor By Crop data." });
+            }
+
+            if (existingFieldLaborActivity.FieldStandardTimes.Any())
+            {
+                // I'm thinking that we might want to cascade delete in the case of Standard Time data because there is no way to currently delete Field Standard Times once initialized
+                result.Add(new ErrorMessage() { Type = "Field Labor Activity", Message = "Cannot delete a Field Labor Activity that has Field Standard Time data." });
+            }
+
             return result;
         }
 
