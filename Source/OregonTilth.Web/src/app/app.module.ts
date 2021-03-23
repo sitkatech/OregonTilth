@@ -64,6 +64,7 @@ import { FieldStandardTimesComponent } from './pages/workbooks/forms/field-stand
 import { TimeStudyCellRendererComponent } from './shared/components/ag-grid/time-study-cell-renderer/time-study-cell-renderer.component';
 import { TimeStudyModal } from './shared/components/ag-grid/time-study-modal/time-study-modal.component';
 import { HarvestPostHarvestStandardTimesComponent } from './pages/workbooks/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-times.component';
+import { TransplantProductionStandardTimesComponent } from './pages/workbooks/forms/transplant-production-standard-times/transplant-production-standard-times.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -101,6 +102,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     TransplantProductionInformationComponent,
     FieldStandardTimesComponent,
     HarvestPostHarvestStandardTimesComponent,
+    TransplantProductionStandardTimesComponent,
     CropsComponent,
     CropUnitsComponent,
     EditWorkbookComponent,
