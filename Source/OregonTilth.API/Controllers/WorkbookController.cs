@@ -421,7 +421,7 @@ namespace OregonTilth.API.Controllers
         #region "Field Input Costs Form"
         [HttpPost("workbooks/forms/field-input-costs")]
         [WorkbookEditFeature]
-        public ActionResult<IEnumerable<FieldInputCostDto>> CreateFieldInputCost([FromBody] FieldInputCostCreateDto fieldInputCostCreateDto)
+        public ActionResult<FieldInputCostDto> CreateFieldInputCost([FromBody] FieldInputCostCreateDto fieldInputCostCreateDto)
         {
             var validationMessages = FieldInputCost.ValidateCreate(_dbContext, fieldInputCostCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
@@ -430,8 +430,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var fieldInputByCostDtos = FieldInputCost.CreateNewFieldInputCost(_dbContext, fieldInputCostCreateDto);
-            return Ok(fieldInputByCostDtos);
+            var fieldInputCostDto = FieldInputCost.CreateNewFieldInputCost(_dbContext, fieldInputCostCreateDto);
+            return Ok(fieldInputCostDto);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/field-input-costs")]
