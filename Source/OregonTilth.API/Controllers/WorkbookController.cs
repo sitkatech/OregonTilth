@@ -421,16 +421,16 @@ namespace OregonTilth.API.Controllers
         #region "Field Input Costs Form"
         [HttpPost("workbooks/forms/field-input-costs")]
         [WorkbookEditFeature]
-        public ActionResult<IEnumerable<FieldInputCostDto>> CreateFieldInputCost([FromBody] FieldInputCostCreateDto fieldInputByCostCreateDto)
+        public ActionResult<IEnumerable<FieldInputCostDto>> CreateFieldInputCost([FromBody] FieldInputCostCreateDto fieldInputCostCreateDto)
         {
-            var validationMessages = FieldInputCost.ValidateCreate(_dbContext, fieldInputByCostCreateDto);
+            var validationMessages = FieldInputCost.ValidateCreate(_dbContext, fieldInputCostCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var fieldInputByCostDtos = FieldInputCost.CreateNewFieldInputCost(_dbContext, fieldInputByCostCreateDto);
+            var fieldInputByCostDtos = FieldInputCost.CreateNewFieldInputCost(_dbContext, fieldInputCostCreateDto);
             return Ok(fieldInputByCostDtos);
         }
 
@@ -801,7 +801,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/field-input-by-crop")]
         [LoggedInUnclassifiedFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<FieldInputByCropDto>> CreateFieldInputByCrop([FromBody] FieldInputByCropCreateDto fieldInputByCropCreateDto)
+        public ActionResult<IEnumerable<FieldInputByCropSummaryDto>> CreateFieldInputByCrop([FromBody] FieldInputByCropCreateDto fieldInputByCropCreateDto)
         {
             var validationMessages = FieldInputByCrop.ValidateCreate(_dbContext, fieldInputByCropCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
@@ -810,8 +810,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var fieldInputByCropDtos = FieldInputByCrop.CreateBulk(_dbContext, fieldInputByCropCreateDto);
-            return Ok(fieldInputByCropDtos);
+            var addedFieldInputByCropDtos = FieldInputByCrop.CreateBulk(_dbContext, fieldInputByCropCreateDto);
+            return Ok(addedFieldInputByCropDtos);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/field-input-by-crop")]

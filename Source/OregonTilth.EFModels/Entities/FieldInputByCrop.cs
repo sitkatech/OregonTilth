@@ -72,9 +72,9 @@ namespace OregonTilth.EFModels.Entities
             return fieldLaborByCrop?.AsSummaryDto();
         }
 
-        public static IQueryable<FieldInputByCropSummaryDto> CreateBulk(OregonTilthDbContext dbContext, FieldInputByCropCreateDto fieldInputByCropCreateDto)
+        public static List<FieldInputByCropSummaryDto> CreateBulk(OregonTilthDbContext dbContext, FieldInputByCropCreateDto fieldInputByCropCreateDto)
         {
-
+            var addedFieldInputCostIDs = new List<int>();
             // we need to check for existing records and only add the ones that do not exist
             var currentFieldInputByCrops = dbContext.FieldInputByCrops
                 .Where(x => x.WorkbookID == fieldInputByCropCreateDto.WorkbookID)
@@ -94,12 +94,19 @@ namespace OregonTilth.EFModels.Entities
                         FieldInputCostID = fieldInputCostDto.FieldInputCostID
                     };
                     dbContext.FieldInputByCrops.Add(fieldInputByCrop);
+                    addedFieldInputCostIDs.Add(fieldInputByCrop.FieldInputCostID);
                 }
             }
 
             dbContext.SaveChanges();
 
-            return GetDtoListByWorkbookID(dbContext, fieldInputByCropCreateDto.WorkbookID);
+            var addedFieldInputByCrops = GetFieldInputByCropImpl(dbContext).Where(x => 
+                x.WorkbookID == fieldInputByCropCreateDto.WorkbookID && 
+                x.Crop.CropID == fieldInputByCropCreateDto.CropID &&
+                addedFieldInputCostIDs.Contains(x.FieldInputCost.FieldInputCostID)).Select(x => x.AsSummaryDto()).ToList();
+
+            return addedFieldInputByCrops;
+
         }
 
         public static FieldInputByCropSummaryDto UpdateFieldInputByCrop(OregonTilthDbContext dbContext, FieldInputByCropDto fieldInputByCropDto)
