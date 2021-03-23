@@ -15,6 +15,7 @@ namespace OregonTilth.EFModels.Entities
         public TransplantProductionLaborActivity()
         {
             TransplantProductionLaborActivityByCrops = new HashSet<TransplantProductionLaborActivityByCrop>();
+            TransplantProductionStandardTimes = new HashSet<TransplantProductionStandardTime>();
         }
 
         [Key]
@@ -29,5 +30,7 @@ namespace OregonTilth.EFModels.Entities
         public virtual Workbook Workbook { get; set; }
         [InverseProperty(nameof(TransplantProductionLaborActivityByCrop.TransplantProductionLaborActivity))]
         public virtual ICollection<TransplantProductionLaborActivityByCrop> TransplantProductionLaborActivityByCrops { get; set; }
+        [InverseProperty(nameof(TransplantProductionStandardTime.TransplantProductionLaborActivity))]
+        public virtual ICollection<TransplantProductionStandardTime> TransplantProductionStandardTimes { get; set; }
     }
 }

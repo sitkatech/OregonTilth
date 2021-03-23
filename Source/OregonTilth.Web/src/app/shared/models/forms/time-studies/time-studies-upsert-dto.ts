@@ -6,6 +6,7 @@ export class TimeStudiesUpsertDto {
     WorkbookID: number;
     FieldStandardTimeID: number;
     HarvestPostHarvestStandardTimeID: number;
+    TransplantProductionStandardTimeID: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
@@ -15,6 +16,7 @@ export class TimeStudyUpsertDto {
     TimeStudyID: number;
     FieldStandardTimeID: number;
     HarvestPostHarvestStandardTimeID: number;
+    TransplantProductionStandardTimeID: number;
     Notes: string;
     Units: number;
     Duration: number;
@@ -28,6 +30,7 @@ export class TimeStudySummaryDto {
     TimeStudyID: number;
     FieldStandardTimeID: number;
     HarvestPostHarvestStandardTimeID: number;
+    TransplantProductionStandardTimeID: number;
     Notes: string;
     Units: number;
     Duration: number;

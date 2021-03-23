@@ -109,6 +109,15 @@
                     <field-definition [fieldDefinitionType]="'HarvestPostHarvestStandardTimeForm'" [labelOverride]="''"></field-definition>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                [routerLink]="['/workbooks', workbook ? workbook.WorkbookID : -1, 'forms', 'transplant-production-standard-times']"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbook }">
+                    TP Standard Times
+                    <field-definition [fieldDefinitionType]="'TPStandardTimeForm'" [labelOverride]="''"></field-definition>
+                </a>
+            </li>
         </ul>
     </div>
     

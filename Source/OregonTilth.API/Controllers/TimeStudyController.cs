@@ -46,6 +46,12 @@ namespace OregonTilth.API.Controllers
                     .Single(x => x.HarvestPostHarvestStandardTimeID == timeStudiesUpsertDto.HarvestPostHarvestStandardTimeID);
             }
 
+            if (timeStudiesUpsertDto.TransplantProductionStandardTimeID != null)
+            {
+                returnDto = TransplantProductionStandardTime.GetDtoListByWorkbookID(_dbContext, timeStudiesUpsertDto.WorkbookID)
+                    .Single(x => x.TransplantProductionStandardTimeID == timeStudiesUpsertDto.TransplantProductionStandardTimeID);
+            }
+
             return Ok(returnDto);
         }
 

@@ -989,16 +989,7 @@ namespace OregonTilth.API.Controllers
             var harvestPostHarvestStandardTimes = HarvestPostHarvestStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
             return Ok(harvestPostHarvestStandardTimes);
         }
-
-
-        [HttpGet("workbooks/{workbookID}/forms/harvest-post-harvest-standard-times/time-studies")]
-        [LoggedInUnclassifiedFeature]
-        public ActionResult<IEnumerable<vFieldLaborActivityForTimeStudyDto>> GetHarvestPostHarvestStandardTimesForTimeStudies([FromRoute] int workbookID)
-        {
-            var harvestPostHarvestStandardTimesForTimeStudies = vFieldLaborActivityForTimeStudy.GetUninitializedDtoListByWorkbookID(_dbContext, workbookID);
-            return Ok(harvestPostHarvestStandardTimesForTimeStudies);
-        }
-
+        
         [HttpPost("workbooks/{workbookID}/forms/harvest-post-harvest-standard-times/initialize")]
         [LoggedInUnclassifiedFeature]
         public ActionResult<IEnumerable<HarvestPostHarvestStandardTimeDto>> InitializeTimeStudy([FromBody] HarvestPostHarvestStandardTimeCreateDto createDto)
@@ -1033,6 +1024,54 @@ namespace OregonTilth.API.Controllers
         }
 
         #endregion "Harvest Post-Harvest Standard Times"
+
+        #region "Transplant Production Standard Times"
+
+        [HttpGet("workbooks/{workbookID}/forms/transplant-production-standard-times")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> GetTransplantProductionStandardTimes([FromRoute] int workbookID)
+        {
+            var transplantProductionStandardTimes = TransplantProductionStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(transplantProductionStandardTimes);
+        }
+
+
+      
+
+        [HttpPost("workbooks/{workbookID}/forms/transplant-production-standard-times/initialize")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionStandardTimeDto>> InitializeTimeStudy([FromBody] TransplantProductionStandardTimeCreateDto createDto)
+        {
+            var validationMessages = TransplantProductionStandardTime.ValidateCreate(_dbContext, createDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var returnDto = TransplantProductionStandardTime.CreateNew(_dbContext, createDto);
+            return Ok(returnDto);
+
+        }
+
+
+        [HttpPut("workbooks/{workbookID}/forms/transplant-production-standard-times/{transplantProductionStandardTimeID}")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionInformationDto> UpdateTransplantProductionStandardTime([FromBody] TransplantProductionStandardTimeDto transplantProductionStandardTimeDto)
+        {
+            var validationMessages = TransplantProductionStandardTime.ValidateUpdate(_dbContext, transplantProductionStandardTimeDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transplantProductionStandardTimeSummaryDto = TransplantProductionStandardTime.UpdateTransplantProductionStandardTime(_dbContext, transplantProductionStandardTimeDto);
+            return Ok(transplantProductionStandardTimeSummaryDto);
+        }
+
+        #endregion "Transplant Production Standard Times"
     }
 
 
