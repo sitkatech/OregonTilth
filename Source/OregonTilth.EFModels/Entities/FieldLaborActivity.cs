@@ -91,7 +91,7 @@ namespace OregonTilth.EFModels.Entities
             return fieldLaborActivity?.AsDto();
         }
 
-        public static IQueryable<FieldLaborActivityDto> CreateNewFieldLaborActivity(OregonTilthDbContext dbContext, FieldLaborActivityUpsertDto fieldLaborActivityUpsertDto, UserDto userDtoUserID)
+        public static FieldLaborActivityDto CreateNewFieldLaborActivity(OregonTilthDbContext dbContext, FieldLaborActivityUpsertDto fieldLaborActivityUpsertDto, UserDto userDtoUserID)
         {
             var fieldLaborActivity = new FieldLaborActivity
             {
@@ -106,7 +106,7 @@ namespace OregonTilth.EFModels.Entities
             dbContext.SaveChanges();
             dbContext.Entry(fieldLaborActivity).Reload();
 
-            return GetDtoListByWorkbookID(dbContext, fieldLaborActivityUpsertDto.WorkbookID);
+            return GetDtoByFieldLaborActivityID(dbContext, fieldLaborActivity.FieldLaborActivityID);
         }
 
         public static FieldLaborActivityDto UpdateFieldLaborActivity(OregonTilthDbContext dbContext, FieldLaborActivityDto fieldLaborActivityDto)

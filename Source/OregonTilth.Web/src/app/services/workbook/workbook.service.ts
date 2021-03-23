@@ -66,7 +66,7 @@ export class WorkbookService {
     }
 
     // Field Labor Activity Form
-    addFieldLaborActivity(fieldLaborActivityCreateDto: FieldLaborActivityCreateDto): Observable<FieldLaborActivityDto[]> {
+    addFieldLaborActivity(fieldLaborActivityCreateDto: FieldLaborActivityCreateDto): Observable<FieldLaborActivityDto> {
         let route = `/workbooks/${fieldLaborActivityCreateDto.WorkbookID}/forms/field-labor-activities`;
         return this.apiService.postToApi(route, fieldLaborActivityCreateDto);
     }
