@@ -20,6 +20,7 @@ import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { MachineryCreateDto } from 'src/app/shared/models/forms/machinery/machinery-create-dto';
 import { GridService } from 'src/app/shared/services/grid/grid.service';
+import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 
 @Component({
   selector: 'machinery',
@@ -37,6 +38,7 @@ export class MachineryComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
@@ -88,7 +90,7 @@ export class MachineryComponent implements OnInit {
         headerName: 'Hourly Machinery Operating Cost', 
         field: 'StandardMachineryCost',
         editable: true,
-        cellEditor: 'agPopupTextCellEditor',
+        cellEditorFramework: DecimalEditor,
         valueFormatter: this.gridService.currencyFormatter
       },
       {
@@ -111,7 +113,8 @@ export class MachineryComponent implements OnInit {
 
   deleteMachinery(machineryID: number) {
     this.deleteMachineryRequest = this.workbookService.deleteMachinery(this.workbookID, machineryID).subscribe(machineryDtos => {
-      this.machineries = machineryDtos;
+      var rowToRemove = this.gridApi.getRowNode(machineryID.toString());
+      this.gridApi.applyTransaction({remove:[rowToRemove.data]})
       this.cdr.detectChanges();
     }, error => {
 
@@ -120,8 +123,6 @@ export class MachineryComponent implements OnInit {
 
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
-
-
 
     this.updateMachineryRequest = this.workbookService.updateMachinery(dtoToPost).subscribe(machinery => {
       data.node.setData(machinery);
@@ -161,7 +162,8 @@ export class MachineryComponent implements OnInit {
     this.isLoadingSubmit = true;
     this.addMachineryRequest = this.workbookService.addMachinery(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.machineries = response;
+      var transactionRows = this.gridApi.applyTransaction({add: [response]});
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.alertService.pushAlert(new Alert(`Successfully added Machinery '${this.model.MachineryName}'.`, AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
@@ -176,5 +178,12 @@ export class MachineryComponent implements OnInit {
     this.model = new MachineryCreateDto({WorkbookID: this.workbookID});
   }
 
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+  }
+
+  getRowNodeId(data)  {
+    return data.MachineryID.toString();
+  }
 }
 

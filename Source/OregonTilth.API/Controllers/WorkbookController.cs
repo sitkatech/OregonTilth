@@ -164,7 +164,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/machinery")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<MachineryDto>> CreateMachinery([FromBody] MachineryUpsertDto machineryUpsertDto)
+        public ActionResult<MachineryDto> CreateMachinery([FromBody] MachineryUpsertDto machineryUpsertDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
 
@@ -175,8 +175,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var machineryDtos = Machinery.CreateNewMachinery(_dbContext, machineryUpsertDto, userDto);
-            return Ok(machineryDtos);
+            var machineryDto = Machinery.CreateNewMachinery(_dbContext, machineryUpsertDto, userDto);
+            return Ok(machineryDto);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/machinery")]

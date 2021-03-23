@@ -88,7 +88,7 @@ export class WorkbookService {
 
 
     // Machinery Form
-    addMachinery(machineryCreateDto: MachineryCreateDto): Observable<MachineryDto[]> {
+    addMachinery(machineryCreateDto: MachineryCreateDto): Observable<MachineryDto> {
         let route = `/workbooks/${machineryCreateDto.WorkbookID}/forms/machinery`;
         return this.apiService.postToApi(route, machineryCreateDto);
     }
