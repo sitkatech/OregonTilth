@@ -279,7 +279,7 @@ export class WorkbookService {
 
 
     // TP Input Cost Form
-    addTransplantProductionInputCost(transplantProductionInputCostCreateDto: TransplantProductionInputCostCreateDto): Observable<TransplantProductionInputCostDto[]> {
+    addTransplantProductionInputCost(transplantProductionInputCostCreateDto: TransplantProductionInputCostCreateDto): Observable<TransplantProductionInputCostDto> {
         let route = `/workbooks/${transplantProductionInputCostCreateDto.WorkbookID}/forms/transplant-production-input-costs`;
         return this.apiService.postToApi(route, transplantProductionInputCostCreateDto);
     }

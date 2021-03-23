@@ -88,7 +88,7 @@ namespace OregonTilth.EFModels.Entities
             return tpInputCost?.AsSummaryDto();
         }
 
-        public static IQueryable<TransplantProductionInputCostSummaryDto> CreateNewTransplantProductionInputCost(OregonTilthDbContext dbContext, TransplantProductionInputCostCreateDto tpInputCostCreateDto)
+        public static TransplantProductionInputCostSummaryDto CreateNewTransplantProductionInputCost(OregonTilthDbContext dbContext, TransplantProductionInputCostCreateDto tpInputCostCreateDto)
         {
             var tpInputCost = new TransplantProductionInputCost
             {
@@ -103,7 +103,7 @@ namespace OregonTilth.EFModels.Entities
             dbContext.SaveChanges();
             dbContext.Entry(tpInputCost).Reload();
 
-            return GetDtoListByWorkbookID(dbContext, tpInputCostCreateDto.WorkbookID);
+            return GetDtoListByWorkbookID(dbContext, tpInputCostCreateDto.WorkbookID).ToList().Single(x => x.TransplantProductionInputCostID == tpInputCost.TransplantProductionInputCostID);
         }
 
         public static TransplantProductionInputCostSummaryDto UpdateTransplantProductionInputCost(OregonTilthDbContext dbContext, TransplantProductionInputCostDto transplantProductionInputCostDto)
@@ -115,7 +115,7 @@ namespace OregonTilth.EFModels.Entities
 
             transplantProductionInputCost.TransplantProductionInputID = transplantProductionInputCostDto.TransplantProductionInput.TransplantProductionInputID;
             transplantProductionInputCost.TransplantProductionTrayTypeID = transplantProductionInputCostDto.TransplantProductionTrayType.TransplantProductionTrayTypeID;
-            transplantProductionInputCost.CostPerTray = transplantProductionInputCostDto.CostPerTray;
+            transplantProductionInputCost.CostPerTray = transplantProductionInputCostDto.CostPerTray != null ? transplantProductionInputCostDto.CostPerTray : 0;
             transplantProductionInputCost.Notes = transplantProductionInputCostDto.Notes;
 
             dbContext.SaveChanges();

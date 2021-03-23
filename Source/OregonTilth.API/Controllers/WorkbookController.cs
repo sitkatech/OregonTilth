@@ -741,7 +741,7 @@ namespace OregonTilth.API.Controllers
         #region "Transplant Production Input Costs Form"
         [HttpPost("workbooks/{workbookID}/forms/transplant-production-input-costs")]
         [WorkbookEditFeature]
-        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> CreateTransplantProductionInputCost([FromBody] TransplantProductionInputCostCreateDto transplantProductionInputCostCreateDto)
+        public ActionResult<TransplantProductionInputCostDto> CreateTransplantProductionInputCost([FromBody] TransplantProductionInputCostCreateDto transplantProductionInputCostCreateDto)
         {
             var validationMessages = TransplantProductionInputCost.ValidateCreate(_dbContext, transplantProductionInputCostCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
@@ -750,8 +750,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var transplantProductionInputCostDtos = TransplantProductionInputCost.CreateNewTransplantProductionInputCost(_dbContext, transplantProductionInputCostCreateDto);
-            return Ok(transplantProductionInputCostDtos);
+            var transplantProductionInputCostDto = TransplantProductionInputCost.CreateNewTransplantProductionInputCost(_dbContext, transplantProductionInputCostCreateDto);
+            return Ok(transplantProductionInputCostDto);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/transplant-production-input-costs")]
