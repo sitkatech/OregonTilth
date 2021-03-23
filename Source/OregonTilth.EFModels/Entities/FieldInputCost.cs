@@ -112,9 +112,10 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.FieldUnitType)
                 .Single(x => x.FieldInputCostID == fieldInputByCostDto.FieldInputCostID);
 
-            fieldInputByCost.FieldUnitTypeID = fieldInputByCostDto.FieldInputCostID;
+            fieldInputByCost.FieldUnitTypeID = fieldInputByCostDto.FieldUnitType.FieldUnitTypeID;
             fieldInputByCost.FieldInputCostName = fieldInputByCostDto.FieldInputCostName;
             fieldInputByCost.CostPerFieldUnit = fieldInputByCostDto.CostPerFieldUnit;
+            fieldInputByCost.Notes = fieldInputByCostDto.Notes;
 
             dbContext.SaveChanges();
             dbContext.Entry(fieldInputByCost).Reload();
