@@ -26,15 +26,13 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup, Validators,FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { TimeStudyModal } from 'src/app/shared/components/ag-grid/time-study-modal/time-study-modal.component';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
-import { HarvestPostHarvestStandardTimeCreateDto } from 'src/app/shared/models/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-time-create-dto';
-import { HarvestPostHarvestStandardTimeSummaryDto } from 'src/app/shared/models/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-time-summary-dto';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
 import { HarvestTypeDto } from 'src/app/shared/models/generated/harvest-type-dto';
-import { TransplantProductionStandardTimeCreateDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-create-dto';
-import { TransplantProductionStandardTimeSummaryDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-summary-dto';
 import { TransplantProductionLaborActivityDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-dto';
 import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
+import { TransplantProductionStandardTimeCreateDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-create-dto';
+import { TransplantProductionStandardTimeSummaryDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-summary-dto';
 
 @Component({
   selector: 'transplant-production-standard-times',
@@ -263,13 +261,13 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
     ]
   }
 
-  public launchModal(modalContent: any, modalTitle: string, harvestPostHarvestStandardTime: HarvestPostHarvestStandardTimeSummaryDto) {
+  public launchModal(modalContent: any, modalTitle: string, transplantProductionStandardTime: TransplantProductionStandardTimeSummaryDto) {
     this.modalReference = this.modalService.open(modalContent, { size:'xl', windowClass : "time-studies-modal", ariaLabelledBy: modalTitle, backdrop: 'static', keyboard: false });
-    this.modalReference.componentInstance.harvestPostHarvestStandardTime = harvestPostHarvestStandardTime;
+    this.modalReference.componentInstance.transplantProductionStandardTime = transplantProductionStandardTime;
     this.modalReference.result.then((result) => {
       // debugger;
-      if(result.HarvestPostHarvestStandardTimeID) {
-        var rowNode = this.gridApi.getRowNode(result.HarvestPostHarvestStandardTimeID);
+      if(result.TransplantProductionStandardTimeID) {
+        var rowNode = this.gridApi.getRowNode(result.TransplantProductionStandardTimeID);
         rowNode.setData(result);
       }
       this.closeResult = `Closed with: ${result}`;
@@ -280,7 +278,7 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
 
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
-    this.updateStandardTimeRequest = this.workbookService.updateHarvestPostHarvestStandardTime(dtoToPost).subscribe(standardTime => {
+    this.updateStandardTimeRequest = this.workbookService.updateTransplantProductionStandardTime(dtoToPost).subscribe(standardTime => {
       data.node.setData(standardTime);
       this.gridApi.flashCells({
         rowNodes: [data.node],

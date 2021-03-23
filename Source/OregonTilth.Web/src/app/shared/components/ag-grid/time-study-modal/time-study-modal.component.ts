@@ -21,6 +21,7 @@ import { TimeStudiesUpsertDto, TimeStudyUpsertDto } from 'src/app/shared/models/
 import { TimeStudiesService } from 'src/app/services/time-studies/time-studies.service';
 import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-summary-dto';
 import { HarvestPostHarvestStandardTimeSummaryDto } from 'src/app/shared/models/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-time-summary-dto';
+import { TransplantProductionStandardTimeSummaryDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-summary-dto';
 
 @Component({
   selector: 'time-study-modal',
@@ -30,6 +31,7 @@ import { HarvestPostHarvestStandardTimeSummaryDto } from 'src/app/shared/models/
 export class TimeStudyModal implements OnInit {
   @Input() fieldStandardTime: FieldStandardTimeSummaryDto;
   @Input() harvestPostHarvestStandardTime: HarvestPostHarvestStandardTimeSummaryDto;
+  @Input() transplantProductionStandardTime: TransplantProductionStandardTimeSummaryDto;
 
   constructor(private cdr: ChangeDetectorRef, 
     public activeModal: NgbActiveModal,
@@ -60,6 +62,16 @@ export class TimeStudyModal implements OnInit {
   
       });
     }
+
+    if(this.transplantProductionStandardTime){
+      this.submitTimeStudiesRequest = this.timeStudiesService.upsertTransplantProductionTimeStudies(this.model).subscribe(result => {
+        this.activeModal.close(result);
+      }, error => {
+  
+      });
+    }
+
+
   }
 
   ngOnInit() {
@@ -69,6 +81,10 @@ export class TimeStudyModal implements OnInit {
 
     if(this.harvestPostHarvestStandardTime) {
       this.model = this.createModelFromHarvestPostHarvestStandardTime(this.harvestPostHarvestStandardTime);
+    }
+
+    if(this.transplantProductionStandardTime) {
+      this.model = this.createModelFromTransplantProductionStandardTime(this.transplantProductionStandardTime);
     }
   }
 
@@ -108,6 +124,24 @@ export class TimeStudyModal implements OnInit {
     return model;
   }
 
+  createModelFromTransplantProductionStandardTime(transplantProductionStandardTime: TransplantProductionStandardTimeSummaryDto) {
+    var model = new TimeStudiesUpsertDto();
+    model.TransplantProductionStandardTimeID = transplantProductionStandardTime.TransplantProductionStandardTimeID;
+    model.WorkbookID = transplantProductionStandardTime.WorkbookID;
+    model.TimeStudies = transplantProductionStandardTime.TimeStudies.map(timeStudy => {
+      var timeStudyUpsertDto = new TimeStudyUpsertDto();
+      timeStudyUpsertDto.TransplantProductionStandardTimeID = timeStudy.TransplantProductionStandardTimeID;
+      timeStudyUpsertDto.Notes = timeStudy.Notes;
+      timeStudyUpsertDto.Duration = timeStudy.Duration;
+      timeStudyUpsertDto.Units = timeStudy.Units;
+      timeStudyUpsertDto.WorkbookID = timeStudy.WorkbookID;
+      timeStudyUpsertDto.TimeStudyID = timeStudy.TimeStudyID;
+
+      return timeStudyUpsertDto;
+    });
+    return model;
+  }
+
   addTimeStudy() {
     
     var timeStudyUpsertDto = new TimeStudyUpsertDto();
@@ -119,6 +153,11 @@ export class TimeStudyModal implements OnInit {
       if(this.harvestPostHarvestStandardTime) {
         timeStudyUpsertDto.HarvestPostHarvestStandardTimeID = this.harvestPostHarvestStandardTime.HarvestPostHarvestStandardTimeID;
         timeStudyUpsertDto.WorkbookID = this.harvestPostHarvestStandardTime.WorkbookID;
+      }
+
+      if(this.transplantProductionStandardTime) {
+        timeStudyUpsertDto.TransplantProductionStandardTimeID = this.transplantProductionStandardTime.TransplantProductionStandardTimeID;
+        timeStudyUpsertDto.WorkbookID = this.transplantProductionStandardTime.WorkbookID;
       }
 
       timeStudyUpsertDto.Notes = '';

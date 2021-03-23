@@ -9,5 +9,6 @@ namespace OregonTilth.Models.DataTransferObjects
         public int WorkbookID { get; set; }
         public int? FieldStandardTimeID { get; set; }
         public int? HarvestPostHarvestStandardTimeID { get; set; }
+        public int? TransplantProductionStandardTimeID { get; set; }
     }
 }

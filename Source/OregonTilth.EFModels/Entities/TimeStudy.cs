@@ -46,6 +46,11 @@ namespace OregonTilth.EFModels.Entities
                     .Where(x => x.HarvestPostHarvestStandardTimeID == timeStudiesUpsertDto.HarvestPostHarvestStandardTimeID).ToList();
             }
 
+            if (timeStudiesUpsertDto.TransplantProductionStandardTimeID != null)
+            {
+                existingListTimeStudies = existingListTimeStudies
+                    .Where(x => x.TransplantProductionStandardTimeID == timeStudiesUpsertDto.TransplantProductionStandardTimeID).ToList();
+            }
 
 
             var timeStudiesUpdated = timeStudiesUpsertDto.TimeStudies
@@ -72,6 +77,11 @@ namespace OregonTilth.EFModels.Entities
                         if (timeStudiesUpsertDto.HarvestPostHarvestStandardTimeID != null)
                         {
                             timeStudy.HarvestPostHarvestStandardTimeID = x.HarvestPostHarvestStandardTimeID;
+                        }
+
+                        if (timeStudiesUpsertDto.TransplantProductionStandardTimeID != null)
+                        {
+                            timeStudy.TransplantProductionStandardTimeID = x.TransplantProductionStandardTimeID;
                         }
 
                         dbContext.TimeStudies.Add(timeStudy);
