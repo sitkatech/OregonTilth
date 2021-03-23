@@ -215,7 +215,7 @@ export class WorkbookService {
     }
 
     // Field Input Cost Form
-    addFieldInputCost(fieldInputByCostCreateDto: FieldInputCostCreateDto): Observable<FieldInputCostDto[]> {
+    addFieldInputCost(fieldInputByCostCreateDto: FieldInputCostCreateDto): Observable<FieldInputCostDto> {
         let route = `/workbooks/forms/field-input-costs`;
         return this.apiService.postToApi(route, fieldInputByCostCreateDto);
     }

@@ -21,6 +21,7 @@ import { FieldUnitTypeDto } from 'src/app/shared/models/generated/field-unit-typ
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
+import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 
 @Component({
   selector: 'field-input-costs',
@@ -38,6 +39,7 @@ export class FieldInputCostsComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
@@ -95,7 +97,7 @@ export class FieldInputCostsComponent implements OnInit {
         headerName: 'Field Unit', 
         field: 'FieldUnitType',
         editable: true,
-        cellEditor: 'agPopupSelectCellEditor',
+        cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.fieldUnitTypes.map(x => x.FieldUnitTypeDisplayName)
         },
@@ -115,7 +117,7 @@ export class FieldInputCostsComponent implements OnInit {
         headerName: 'Cost Per Field Unit', 
         field: 'CostPerFieldUnit',
         editable: true,
-        cellEditor: 'agTextCellEditor',
+        cellEditorFramework: DecimalEditor,
         valueFormatter: this.gridService.currencyFormatter
       },
       {
@@ -143,7 +145,8 @@ export class FieldInputCostsComponent implements OnInit {
 
   deleteFieldInputCost(fieldInputCostID: number) {
     this.deleteFieldInputCostRequest = this.workbookService.deleteFieldInputCost(this.workbookID, fieldInputCostID).subscribe(fieldInputCostDtos => {
-      this.fieldInputCosts = fieldInputCostDtos;
+      var rowToRemove = this.gridApi.getRowNode(fieldInputCostID.toString());
+      this.gridApi.applyTransaction({remove:[rowToRemove.data]})
       this.alertService.pushAlert(new Alert("Successfully deleted Field Input Cost", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
@@ -156,6 +159,7 @@ export class FieldInputCostsComponent implements OnInit {
 
     this.updateFieldInputCostRequest = this.workbookService.updateFieldInputCost(dtoToPost).subscribe(fieldInputCost => {
       this.isLoadingSubmit = false;
+      data.node.setData(fieldInputCost);
       this.alertService.pushAlert(new Alert("Successfully updated Field Input Cost", AlertContext.Success));
     }, error => {
       this.isLoadingSubmit = false;
@@ -192,7 +196,9 @@ export class FieldInputCostsComponent implements OnInit {
     this.isLoadingSubmit = true;
     this.addFieldInputCostRequest = this.workbookService.addFieldInputCost(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.fieldInputCosts = response;
+      var transactionRows = this.gridApi.applyTransaction({add: [response]});
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
+      
       this.alertService.pushAlert(new Alert("Successfully added Field Input Cost.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
@@ -205,6 +211,14 @@ export class FieldInputCostsComponent implements OnInit {
 
   resetForm() {
     this.model = new FieldInputCostCreateDto({WorkbookID: this.workbookID, FieldUnitTypeID: this.model.FieldUnitTypeID});
+  }
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+  }
+
+  getRowNodeId(data)  {
+    return data.FieldInputCostID.toString();
   }
 
 }

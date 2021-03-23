@@ -88,22 +88,22 @@ namespace OregonTilth.EFModels.Entities
             return fieldInputByCost?.AsDto();
         }
 
-        public static IQueryable<FieldInputCostDto> CreateNewFieldInputCost(OregonTilthDbContext dbContext, FieldInputCostCreateDto fieldInputByCostCreateDto)
+        public static FieldInputCostDto CreateNewFieldInputCost(OregonTilthDbContext dbContext, FieldInputCostCreateDto fieldInputCostCreateDto)
         {
             var fieldInputByCost = new FieldInputCost
             {
-               FieldInputCostName = fieldInputByCostCreateDto.FieldInputCostName,
-               FieldUnitTypeID = fieldInputByCostCreateDto.FieldUnitTypeID,
-               WorkbookID = fieldInputByCostCreateDto.WorkbookID,
-               CostPerFieldUnit = fieldInputByCostCreateDto.CostPerFieldUnit,
-               Notes = fieldInputByCostCreateDto.Notes
+               FieldInputCostName = fieldInputCostCreateDto.FieldInputCostName,
+               FieldUnitTypeID = fieldInputCostCreateDto.FieldUnitTypeID,
+               WorkbookID = fieldInputCostCreateDto.WorkbookID,
+               CostPerFieldUnit = fieldInputCostCreateDto.CostPerFieldUnit,
+               Notes = fieldInputCostCreateDto.Notes
             };
 
             dbContext.FieldInputCosts.Add(fieldInputByCost);
             dbContext.SaveChanges();
             dbContext.Entry(fieldInputByCost).Reload();
 
-            return GetDtoListByWorkbookID(dbContext, fieldInputByCostCreateDto.WorkbookID);
+            return GetDtoListByWorkbookID(dbContext, fieldInputCostCreateDto.WorkbookID).ToList().Single(x => x.FieldInputCostID == fieldInputByCost.FieldInputCostID);
         }
 
         public static FieldInputCostDto UpdateFieldInputCost(OregonTilthDbContext dbContext, FieldInputCostDto fieldInputByCostDto)
