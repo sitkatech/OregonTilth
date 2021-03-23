@@ -68,7 +68,7 @@ namespace OregonTilth.EFModels.Entities
         {
             return dbContext.TransplantProductionInputs
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
-
+                .Include(x => x.TransplantProductionInputCosts)
                 .AsNoTracking();
         }
 
@@ -106,10 +106,16 @@ namespace OregonTilth.EFModels.Entities
             return GetDtoByTransplantProductionInputID(dbContext, transplantProductionLaborActivity.TransplantProductionInputID);
         }
 
-        // todo: validate deletion
-        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int transplantProductionLaborActivityID)
+        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int tpInputID)
         {
+            var existingRecord = GetTransplantProductionInputImpl(dbContext).Single(x => x.TransplantProductionInputID == tpInputID);
+
             var result = new List<ErrorMessage>();
+
+            if (existingRecord.TransplantProductionInputCosts.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Transplant Production Input", Message = "Cannot delete an input that has Transplant Production Input Cost data." });
+            }
 
             return result;
         }
