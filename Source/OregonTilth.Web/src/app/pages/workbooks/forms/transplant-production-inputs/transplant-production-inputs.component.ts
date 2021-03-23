@@ -28,6 +28,7 @@ export class TransplantProductionInputsComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
@@ -94,7 +95,8 @@ export class TransplantProductionInputsComponent implements OnInit {
 
   deleteTransplantProductionInput(tpInputID: number) {
     this.deleteTransplantProductionInputRequest = this.workbookService.deleteTransplantProductionInput(this.workbookID, tpInputID).subscribe(transplantProductionInputDtos => {
-      this.transplantProductionInputs = transplantProductionInputDtos;
+      var rowToRemove = this.gridApi.getRowNode(tpInputID.toString());
+      this.gridApi.applyTransaction({remove:[rowToRemove.data]})
       this.alertService.pushAlert(new Alert("Successfully deleted Transplant Production Input", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
@@ -142,7 +144,8 @@ export class TransplantProductionInputsComponent implements OnInit {
     this.isLoadingSubmit = true;
     this.addTransplantProductionInputRequest = this.workbookService.addTransplantProductionInput(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.transplantProductionInputs = response;
+      var transactionRows = this.gridApi.applyTransaction({add: [response]});
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.alertService.pushAlert(new Alert("Successfully added Transplant Production Input.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
@@ -155,6 +158,14 @@ export class TransplantProductionInputsComponent implements OnInit {
 
   resetForm() {
     this.model = new TransplantProductionInputCreateDto({WorkbookID: this.workbookID});
+  }
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+  }
+
+  getRowNodeId(data)  {
+    return data.TransplantProductionInputID.toString();
   }
 
 }

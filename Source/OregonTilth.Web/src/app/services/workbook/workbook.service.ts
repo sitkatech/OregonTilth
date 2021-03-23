@@ -236,7 +236,7 @@ export class WorkbookService {
     }
 
     // Transplant Production Inputs Form
-    addTransplantProductionInput(transplantProductionInputCreateDto: TransplantProductionInputCreateDto): Observable<TransplantProductionInputDto[]> {
+    addTransplantProductionInput(transplantProductionInputCreateDto: TransplantProductionInputCreateDto): Observable<TransplantProductionInputDto> {
         let route = `/workbooks/${transplantProductionInputCreateDto.WorkbookID}/forms/transplant-production-inputs`;
         return this.apiService.postToApi(route, transplantProductionInputCreateDto);
     }

@@ -78,19 +78,19 @@ namespace OregonTilth.EFModels.Entities
             return transplantProductionLaborActivity?.AsDto();
         }
 
-        public static IQueryable<TransplantProductionInputDto> CreateNewTransplantProductionInput(OregonTilthDbContext dbContext, TransplantProductionInputCreateDto transplantProductionLaborActivityCreateDto, UserDto userDto)
+        public static TransplantProductionInputDto CreateNewTransplantProductionInput(OregonTilthDbContext dbContext, TransplantProductionInputCreateDto tpInputCreateDto, UserDto userDto)
         {
-            var transplantProductionLaborActivity = new TransplantProductionInput
+            var tpInput = new TransplantProductionInput
             {
-                TransplantProductionInputName = transplantProductionLaborActivityCreateDto.TransplantProductionInputName,
-                WorkbookID = transplantProductionLaborActivityCreateDto.WorkbookID
+                TransplantProductionInputName = tpInputCreateDto.TransplantProductionInputName,
+                WorkbookID = tpInputCreateDto.WorkbookID
             };
 
-            dbContext.TransplantProductionInputs.Add(transplantProductionLaborActivity);
+            dbContext.TransplantProductionInputs.Add(tpInput);
             dbContext.SaveChanges();
-            dbContext.Entry(transplantProductionLaborActivity).Reload();
+            dbContext.Entry(tpInput).Reload();
 
-            return GetDtoListByWorkbookID(dbContext, transplantProductionLaborActivityCreateDto.WorkbookID);
+            return GetDtoListByWorkbookID(dbContext, tpInputCreateDto.WorkbookID).ToList().Single(x => x.TransplantProductionInputID == tpInput.TransplantProductionInputID);
         }
 
         public static TransplantProductionInputDto UpdateTransplantProductionInput(OregonTilthDbContext dbContext, TransplantProductionInputDto transplantProductionInputDto)
