@@ -63,6 +63,7 @@ import { IntegerEditor } from './shared/components/ag-grid/integer-editor/intege
 import { FieldStandardTimesComponent } from './pages/workbooks/forms/field-standard-times/field-standard-times.component';
 import { TimeStudyCellRendererComponent } from './shared/components/ag-grid/time-study-cell-renderer/time-study-cell-renderer.component';
 import { TimeStudyModal } from './shared/components/ag-grid/time-study-modal/time-study-modal.component';
+import { CropSpecificInfoComponent } from './pages/workbooks/forms/crop-specific-info/crop-specific-info.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -109,7 +110,8 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     DecimalEditor,
     IntegerEditor,
     FieldInputByCropComponent,
-    TimeStudyModal
+    TimeStudyModal,
+    CropSpecificInfoComponent
   ],
   imports: [
     AppRoutingModule,

@@ -34,6 +34,7 @@ import { vFieldLaborActivityForTimeStudyDto } from 'src/app/shared/models/forms/
 import { FieldStandardTimeDto } from 'src/app/shared/models/generated/field-standard-time-dto';
 import { FieldStandardTimeCreateDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-create-dto';
 import { CropSpecificInfoDto } from 'src/app/shared/models/generated/crop-specific-info-dto';
+import { CropSpecificInfoCreateDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-create-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -364,8 +365,13 @@ export class WorkbookService {
     }
 
     // Crop Specific Info form
-    addCropSpecificInfo(cropSpecificInfoCreateDto: CropSpecificInfoCreateDto): Observable<CropSpecificInfoDto[]> {
+    /* addCropSpecificInfo(cropSpecificInfoCreateDto: CropSpecificInfoCreateDto): Observable<CropSpecificInfoDto[]> {
         let route = `/workbooks/${cropSpecificInfoCreateDto.WorkbookID}/forms/crop-specific-info`;
+        return this.apiService.postToApi(route, cropSpecificInfoCreateDto);
+    } */
+
+    initializeCropSpecificInfo(cropSpecificInfoCreateDto: CropSpecificInfoCreateDto) : Observable<CropSpecificInfoDto> {
+        let route = `workbooks/${cropSpecificInfoCreateDto.WorkbookID}/forms/crop-specific-info/initialize`;
         return this.apiService.postToApi(route, cropSpecificInfoCreateDto);
     }
 

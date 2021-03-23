@@ -5,6 +5,7 @@ import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/f
 import { LaborTypeDto } from 'src/app/shared/models/generated/labor-type-dto';
 import { FieldUnitTypeDto } from 'src/app/shared/models/generated/field-unit-type-dto';
 import { PhaseDto } from 'src/app/shared/models/generated/phase-dto';
+import { TpOrDsTypeDto } from 'src/app/shared/models/generated/tp-or-ds-type-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -30,6 +31,11 @@ export class LookupTablesService {
     
     getFieldUnitTypes(): Observable<FieldUnitTypeDto[]> {
         let route = `/lookupTable/field-unit-types`;
+        return this.apiService.getFromApi(route);
+    }
+
+    getTpOrDsTypes(): Observable<TpOrDsTypeDto[]> {
+        let route = `/lookupTable/tp-or-ds-types`;
         return this.apiService.getFromApi(route);
     }
 

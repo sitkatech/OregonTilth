@@ -21,6 +21,7 @@ import { FieldUnitTypeDto } from 'src/app/shared/models/generated/field-unit-typ
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
+import { TpOrDsTypeDto } from 'src/app/shared/models/generated/tp-or-ds-type-dto';
 
 @Component({
   selector: 'crop-specific-info',
@@ -48,15 +49,18 @@ export class CropSpecificInfoComponent implements OnInit {
   private getWorkbookRequest: any;
   private addCropSpecificInfoRequest: any;
   public model: CropSpecificInfoCreateDto;
+  public createDtos: CropSpecificInfoCreateDto[];
 
   public getCropSpecificInfosRequest: any;
   public cropSpecificInfos: CropSpecificInfoDto[];
 
-  public fieldUnitTypes: Array<FieldUnitTypeDto>;
-  private getFieldUnitTypesRequest: any;
+  public initializeCropSpecificInfoRequest: any;
 
   private updateCropSpecificInfoRequest: any;
   private deleteCropSpecificInfoRequest: any;
+
+  public tpOrDsTypes: TpOrDsTypeDto[];
+  private getTpOrDsTypesRequest: any;
 
   public columnDefs: ColDef[];
  
@@ -67,12 +71,12 @@ export class CropSpecificInfoComponent implements OnInit {
       this.model = new CropSpecificInfoCreateDto({WorkbookID: this.workbookID});
       
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getFieldUnitTypesRequest = this.lookupTablesService.getFieldUnitTypes();
+      this.getTpOrDsTypesRequest = this.lookupTablesService.getTpOrDsTypes();
       this.getCropSpecificInfosRequest = this.workbookService.getCropSpecificInfos(this.workbookID);
 
-      forkJoin([this.getWorkbookRequest, this.getFieldUnitTypesRequest, this.getCropSpecificInfosRequest]).subscribe(([workbook, fieldUnitTypes, cropSpecificInfos]: [WorkbookDto, FieldUnitTypeDto[], CropSpecificInfoDto[]] ) => {
+      forkJoin([this.getWorkbookRequest, this.getTpOrDsTypesRequest, this.getCropSpecificInfosRequest]).subscribe(([workbook, tpOrDsTypes, cropSpecificInfos]: [WorkbookDto, TpOrDsTypeDto[], CropSpecificInfoDto[]] ) => {
           this.workbook = workbook;
-          this.fieldUnitTypes = fieldUnitTypes;
+          this.tpOrDsTypes = tpOrDsTypes;
           this.cropSpecificInfos = cropSpecificInfos;
           this.defineColumnDefs();
           this.cdr.markForCheck();
@@ -81,13 +85,45 @@ export class CropSpecificInfoComponent implements OnInit {
     });
   }
 
+  startButtonDisabled(cropSpecificInfoCreateDto: CropSpecificInfoCreateDto) {
+    /* if(!fieldStandardTimeCreateDto.FieldUnitTypeID || fieldStandardTimeCreateDto.FieldUnitTypeID == -1){
+      return true;
+    }
+
+    if(fieldStandardTimeCreateDto.LaborTypeID == LaborTypeEnum.Operator 
+      && (!fieldStandardTimeCreateDto.MachineryID || fieldStandardTimeCreateDto.MachineryID == -1)) {
+      return true;
+    } */
+
+    return false;
+
+  }
+
+  initializeCropSpecificInfo(createDto: CropSpecificInfoCreateDto) {
+
+    this.initializeCropSpecificInfoRequest = this.workbookService.initializeCropSpecificInfo(createDto).subscribe(cropSpecificInfoDto => {
+        var transactionRows = this.gridApi.applyTransaction({add: [cropSpecificInfoDto]});
+        this.gridApi.flashCells({ rowNodes: transactionRows.add });
+        var createDtoIndexToRemove = this.createDtos.findIndex(x => {
+          return x.CropID == createDto.CropID;// only one crop specific info for each crop
+        });
+        
+        this.createDtos.splice(createDtoIndexToRemove, 1);
+        this.cdr.detectChanges();
+        
+      }, error => {
+  
+      });
+    
+  }
+
   defineColumnDefs() {
     var componentScope = this;
     this.columnDefs = [
       {
-        headerName: 'Field Input', 
-        field: 'CropSpecificInfoName',
-        editable: true,
+        headerName: 'Crop', 
+        field: 'CropName',
+        editable: false,
         cellEditor: 'agTextCellEditor',
         sortable: true, 
         filter: true,

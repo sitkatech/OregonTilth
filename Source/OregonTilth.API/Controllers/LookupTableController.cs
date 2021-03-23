@@ -43,5 +43,12 @@ namespace OregonTilth.API.Controllers
             var phases = Phase.List(_dbContext);
             return phases;
         }
+
+        [HttpGet("lookupTable/tp-or-ds-types")]
+        public ActionResult<List<FieldUnitTypeDto>> ListAllTpOrDsTypes()
+        {
+            var allTpOrDsTypes = TpOrDsType.List(_dbContext); //FieldUnitType.List(_dbContext);
+            return allTpOrDsTypes;
+        }
     }
 }
