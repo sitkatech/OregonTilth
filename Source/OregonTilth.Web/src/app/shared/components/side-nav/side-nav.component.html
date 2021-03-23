@@ -63,6 +63,7 @@
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbook }">
                 Field Input Cost
+                <field-definition [fieldDefinitionType]="'FieldInputCostForm'" [labelOverride]="''"></field-definition>
                 </a>
             </li>
             
@@ -82,6 +83,7 @@
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbook }">
                     Field Standard Times
+                    <field-definition [fieldDefinitionType]="'FieldStandardTimesForm'" [labelOverride]="''"></field-definition>
                 </a>
             </li>
         </ul>

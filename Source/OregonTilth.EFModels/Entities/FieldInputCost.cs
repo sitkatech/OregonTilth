@@ -74,11 +74,17 @@ namespace OregonTilth.EFModels.Entities
             return fieldInputByCosts.Select(x => x.AsDto());
         }
 
+        public static FieldInputCost GetByID(OregonTilthDbContext dbContext, int fieldInputCostID)
+        {
+            return GetFieldInputCostImpl(dbContext).Single(x => x.FieldInputCostID == fieldInputCostID);
+        }
+
         private static IQueryable<FieldInputCost> GetFieldInputCostImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.FieldInputCosts
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .Include(x => x.FieldUnitType)
+                .Include(x => x.FieldInputByCrops)
                 .AsNoTracking();
         }
 
@@ -123,11 +129,17 @@ namespace OregonTilth.EFModels.Entities
             return GetDtoByFieldInputCostID(dbContext, fieldInputByCost.FieldInputCostID);
         }
 
-        // todo: validate deletion
-        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int fieldInputByCostID)
+        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int fieldInputCostID)
         {
             var result = new List<ErrorMessage>();
-            
+            var fieldInputCost = GetByID(dbContext, fieldInputCostID);
+
+
+            if (fieldInputCost.FieldInputByCrops.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Field Input Cost", Message = "Cannot delete this record because it is used on the Field Input By Crops form." });
+            }
+
             return result;
         }
 
