@@ -87,7 +87,7 @@ namespace OregonTilth.EFModels.Entities
             return machinery?.AsDto();
         }
 
-        public static IQueryable<MachineryDto> CreateNewMachinery(OregonTilthDbContext dbContext, MachineryUpsertDto machineryUpsertDto, UserDto userDtoUserID)
+        public static MachineryDto CreateNewMachinery(OregonTilthDbContext dbContext, MachineryUpsertDto machineryUpsertDto, UserDto userDtoUserID)
         {
             var machinery = new Machinery
             {
@@ -100,7 +100,7 @@ namespace OregonTilth.EFModels.Entities
             dbContext.SaveChanges();
             dbContext.Entry(machinery).Reload();
 
-            return GetDtoListByWorkbookID(dbContext, machineryUpsertDto.WorkbookID);
+            return GetDtoListByWorkbookID(dbContext, machineryUpsertDto.WorkbookID).ToList().Single(x => x.MachineryID == machinery.MachineryID);
         }
 
         public static MachineryDto UpdateMachinery(OregonTilthDbContext dbContext, MachineryDto machineryDto)
@@ -114,7 +114,7 @@ namespace OregonTilth.EFModels.Entities
             dbContext.SaveChanges();
             dbContext.Entry(machinery).Reload();
 
-            return GetDtoByMachineryID(dbContext, machinery.WorkbookID);
+            return GetDtoByMachineryID(dbContext, machinery.MachineryID);
         }
 
         // todo: validate deletion
