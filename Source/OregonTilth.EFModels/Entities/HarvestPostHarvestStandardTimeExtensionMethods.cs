@@ -11,6 +11,7 @@ namespace OregonTilth.EFModels.Entities
             {
                 HarvestPostHarvestStandardTimeID = harvestPostHarvestStandardTime?.HarvestPostHarvestStandardTimeID,
                 WorkbookID = harvestPostHarvestStandardTime.WorkbookID,
+                Workbook = harvestPostHarvestStandardTime.Workbook.AsSummaryDto(),
                 Crop = harvestPostHarvestStandardTime.Crop.AsSummaryDto(),
                 CropUnit = harvestPostHarvestStandardTime.CropUnit.AsDto(),
                 HarvestType = harvestPostHarvestStandardTime.HarvestType.AsDto(),

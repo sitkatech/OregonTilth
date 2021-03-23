@@ -13,11 +13,12 @@ CREATE TABLE [dbo].[HarvestPostHarvestStandardTime](
 (
 	[HarvestPostHarvestStandardTimeID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
- CONSTRAINT [AK_HarvestPostHarvestStandardTime_WorkbookID_CropID_CropUnitID] UNIQUE NONCLUSTERED 
+ CONSTRAINT [AK_HarvestPostHarvestStandardTime_WorkbookID_CropID_CropUnitID_HarvestTypeID] UNIQUE NONCLUSTERED 
 (
 	[WorkbookID] ASC,
 	[CropID] ASC,
-	[CropUnitID] ASC
+	[CropUnitID] ASC,
+	[HarvestTypeID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 

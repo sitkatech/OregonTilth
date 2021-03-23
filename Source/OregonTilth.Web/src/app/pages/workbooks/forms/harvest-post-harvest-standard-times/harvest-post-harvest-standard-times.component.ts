@@ -297,11 +297,9 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         resizable: false,
         width:300
       },
-      
     ]
-
-  
   }
+
   public launchModal(modalContent: any, modalTitle: string, fieldStandardTime: FieldStandardTimeSummaryDto) {
     this.modalReference = this.modalService.open(modalContent, { size:'xl', windowClass : "time-studies-modal", ariaLabelledBy: modalTitle, backdrop: 'static', keyboard: false });
     this.modalReference.componentInstance.fieldStandardTime = fieldStandardTime;
@@ -318,8 +316,12 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
 
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
-    this.updateStandardTimeRequest = this.workbookService.updateFieldStandardTime(dtoToPost).subscribe(fieldStandardTime => {
-      data.node.setData(fieldStandardTime);
+    this.updateStandardTimeRequest = this.workbookService.updateHarvestPostHarvestStandardTime(dtoToPost).subscribe(standardTime => {
+      data.node.setData(standardTime);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
     }, error => {
       this.isLoadingSubmit = false;

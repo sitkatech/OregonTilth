@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace OregonTilth.EFModels.Entities
 {
     [Table("HarvestPostHarvestStandardTime")]
-    [Index(nameof(WorkbookID), nameof(CropID), nameof(CropUnitID), Name = "AK_HarvestPostHarvestStandardTime_WorkbookID_CropID_CropUnitID", IsUnique = true)]
+    [Index(nameof(WorkbookID), nameof(CropID), nameof(CropUnitID), nameof(HarvestTypeID), Name = "AK_HarvestPostHarvestStandardTime_WorkbookID_CropID_CropUnitID_HarvestTypeID", IsUnique = true)]
     public partial class HarvestPostHarvestStandardTime
     {
         public HarvestPostHarvestStandardTime()

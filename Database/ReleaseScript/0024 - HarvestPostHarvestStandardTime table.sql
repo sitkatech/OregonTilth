@@ -7,9 +7,9 @@ CREATE TABLE dbo.HarvestPostHarvestStandardTime(
     StandardTimePerUnit decimal(18,4) null
 )
 
--- only 1 unique per workbook/crop/cropunit
+-- only 1 unique per workbook/crop/cropunit/Harvest Type
 ALTER TABLE dbo.HarvestPostHarvestStandardTime
-  ADD CONSTRAINT AK_HarvestPostHarvestStandardTime_WorkbookID_CropID_CropUnitID UNIQUE(WorkbookID, CropID, CropUnitID);
+  ADD CONSTRAINT AK_HarvestPostHarvestStandardTime_WorkbookID_CropID_CropUnitID_HarvestTypeID UNIQUE(WorkbookID, CropID, CropUnitID, HarvestTypeID);
 
 
 go
