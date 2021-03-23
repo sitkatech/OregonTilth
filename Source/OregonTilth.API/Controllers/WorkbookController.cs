@@ -368,8 +368,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var fieldLaborByCropDtos = FieldLaborByCrop.CreateNewFieldLaborByCrop(_dbContext, fieldLaborByCropCreateDto);
-            return Ok(fieldLaborByCropDtos);
+            var addedFieldLaborByCrops = FieldLaborByCrop.CreateNewFieldLaborByCrop(_dbContext, fieldLaborByCropCreateDto);
+            return Ok(addedFieldLaborByCrops);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/field-labor-by-crop")]
