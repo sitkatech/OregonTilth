@@ -335,8 +335,6 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
-    
-   
     if (this.getHarvestPostHarvestStandardTimesRequest && this.getHarvestPostHarvestStandardTimesRequest.unsubscribe) {
       this.getHarvestPostHarvestStandardTimesRequest.unsubscribe();
     }
@@ -346,7 +344,12 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
     if (this.getCropUnitsRequest && this.getCropUnitsRequest.unsubscribe) {
       this.getCropUnitsRequest.unsubscribe();
     }
-    
+    if (this.getHarvestTypesRequest && this.getHarvestTypesRequest.unsubscribe) {
+      this.getHarvestTypesRequest.unsubscribe();
+    }
+    if (this.initializeStandardTimeRequest && this.initializeStandardTimeRequest.unsubscribe) {
+      this.initializeStandardTimeRequest.unsubscribe();
+    }
     this.authenticationService.dispose();
     this.cdr.detach();
   }
