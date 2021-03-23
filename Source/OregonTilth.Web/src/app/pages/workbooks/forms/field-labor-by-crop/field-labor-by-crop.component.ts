@@ -41,6 +41,7 @@ export class FieldLaborByCropComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
@@ -104,6 +105,10 @@ export class FieldLaborByCropComponent implements OnInit {
       };
 
     });
+  }
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
   }
 
   defineColumnDefs() {
@@ -256,10 +261,17 @@ export class FieldLaborByCropComponent implements OnInit {
 
   onSubmit(fieldLaborActivityForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
+
+
     this.addFieldLaborByCropRequest = this.workbookService.addFieldLaborByCrop(this.model).subscribe(response => {
+      var transactionRows = this.gridApi.applyTransaction({add: response });
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.isLoadingSubmit = false;
-      this.fieldLaborByCropDtos = response;
-      this.alertService.pushAlert(new Alert("Successfully added Field Labor By Crop.", AlertContext.Success));
+      if(response.length > 0){
+        this.alertService.pushAlert(new Alert(`Successfully added ${response.length} Field Labor By Crop(s) for Crop '${response[0].Crop.CropName}'.`, AlertContext.Success));
+      }else{
+        this.alertService.pushAlert(new Alert(`No Field Labor By Crop was added.`, AlertContext.Info));
+      }
       this.resetForm();
       this.cdr.detectChanges();
       
@@ -267,6 +279,7 @@ export class FieldLaborByCropComponent implements OnInit {
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     });
+
   }
 
   resetForm() {

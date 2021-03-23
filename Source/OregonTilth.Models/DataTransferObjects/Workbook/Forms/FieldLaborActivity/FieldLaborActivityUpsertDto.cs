@@ -9,5 +9,7 @@ namespace OregonTilth.Models.DataTransferObjects
         [Required]
         public int FieldLaborActivityCategoryID { get; set; }
         [Required] public int WorkbookID { get; set; }
+        public bool LaborTypeCrew { get; set; }
+        public bool LaborTypeOperator { get; set; }
     }
 }

@@ -29,6 +29,10 @@ import { FieldInputByCropDto } from 'src/app/shared/models/generated/field-input
 import { FieldInputByCropCreateDto } from 'src/app/shared/models/forms/field-input-by-crop/field-input-by-crop-create-dto';
 import { TransplantProductionInformationCreateDto } from 'src/app/shared/models/forms/transplant-production-information/transplant-production-information-create-dto';
 import { TransplantProductionInformationDto } from 'src/app/shared/models/generated/transplant-production-information-dto';
+import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-summary-dto';
+import { vFieldLaborActivityForTimeStudyDto } from 'src/app/shared/models/forms/field-standard-times/vFieldLaborActivityForTimeStudyDto';
+import { FieldStandardTimeDto } from 'src/app/shared/models/generated/field-standard-time-dto';
+import { FieldStandardTimeCreateDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-create-dto';
 import { CropSpecificInfoDto } from 'src/app/shared/models/generated/crop-specific-info-dto';
 
 @Injectable({
@@ -337,6 +341,27 @@ export class WorkbookService {
         return this.apiService.deleteToApi(route);
     }
 
+
+    // Field Standard Times
+    getFieldStandardTimes(workbookID: number): Observable<FieldStandardTimeSummaryDto[]> {
+        let route = `workbooks/${workbookID}/forms/field-standard-times`;
+        return this.apiService.getFromApi(route);
+    }
+
+    getFieldLaborActivitiesForTimeStudies(workbookID: number): Observable<vFieldLaborActivityForTimeStudyDto[]> {
+        let route = `workbooks/${workbookID}/forms/field-standard-times/time-studies`;
+        return this.apiService.getFromApi(route);
+    }
+
+    initializeFieldTimeStudy(fieldStandardTimeCreateDto: FieldStandardTimeCreateDto) : Observable<FieldStandardTimeSummaryDto> {
+        let route = `workbooks/${fieldStandardTimeCreateDto.WorkbookID}/forms/field-standard-times/initialize`;
+        return this.apiService.postToApi(route, fieldStandardTimeCreateDto);
+    }
+
+    updateFieldStandardTime(fieldStandardTimeDto: FieldStandardTimeSummaryDto): Observable<FieldStandardTimeSummaryDto> {
+        let route = `/workbooks/${fieldStandardTimeDto.WorkbookID}/forms/field-standard-times/${fieldStandardTimeDto.FieldStandardTimeID}`;
+        return this.apiService.putToApi(route, fieldStandardTimeDto);
+    }
 
     // Crop Specific Info form
     addCropSpecificInfo(cropSpecificInfoCreateDto: CropSpecificInfoCreateDto): Observable<CropSpecificInfoDto[]> {

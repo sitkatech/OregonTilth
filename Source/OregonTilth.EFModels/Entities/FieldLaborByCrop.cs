@@ -73,9 +73,9 @@ namespace OregonTilth.EFModels.Entities
             return fieldLaborByCrop?.AsSummaryDto();
         }
 
-        public static IQueryable<FieldLaborByCropSummaryDto> CreateNewFieldLaborByCrop(OregonTilthDbContext dbContext, FieldLaborByCropCreateDto fieldLaborByCropCreateDto)
+        public static List<FieldLaborByCropSummaryDto> CreateNewFieldLaborByCrop(OregonTilthDbContext dbContext, FieldLaborByCropCreateDto fieldLaborByCropCreateDto)
         {
-
+            var addedFieldLaborActivities = new List<int>();
             // we need to check for existing records and only add the ones that do not exist
             var currentFieldLaborByCrops = dbContext.FieldLaborByCrops
                 .Where(x => x.WorkbookID == fieldLaborByCropCreateDto.WorkbookID)
@@ -85,8 +85,7 @@ namespace OregonTilth.EFModels.Entities
             foreach (var fieldLaborActivityDto in fieldLaborByCropCreateDto.FieldLaborActivities)
             {
                 if (!currentFieldLaborByCrops.Any(x =>
-                    x.FieldLaborActivityID ==
-                    fieldLaborActivityDto.FieldLaborActivityID
+                    x.FieldLaborActivityID == fieldLaborActivityDto.FieldLaborActivityID
                     && x.CropID == fieldLaborByCropCreateDto.CropID
                     && x.LaborTypeID == fieldLaborByCropCreateDto.LaborTypeID))
                 {
@@ -94,16 +93,22 @@ namespace OregonTilth.EFModels.Entities
                     {
                         WorkbookID = fieldLaborByCropCreateDto.WorkbookID,
                         CropID = fieldLaborByCropCreateDto.CropID,
-                        FieldLaborActivityID = fieldLaborActivityDto.FieldLaborActivityID,
                         LaborTypeID = fieldLaborByCropCreateDto.LaborTypeID,
+                        FieldLaborActivityID = fieldLaborActivityDto.FieldLaborActivityID,
                     };
                     dbContext.FieldLaborByCrops.Add(fieldLaborByCrop);
+                    addedFieldLaborActivities.Add(fieldLaborActivityDto.FieldLaborActivityID);
                 }
             }
            
             dbContext.SaveChanges();
+            var fieldLaborByCrops = GetDtoListByWorkbookID(dbContext, fieldLaborByCropCreateDto.WorkbookID).ToList();
+            var addedFieldLaborByCrops = fieldLaborByCrops.Where(x =>
+                x.Crop.CropID == fieldLaborByCropCreateDto.CropID &&
+                x.LaborType.LaborTypeID == fieldLaborByCropCreateDto.LaborTypeID &&
+                addedFieldLaborActivities.Contains(x.FieldLaborActivity.FieldLaborActivityID)).ToList();
 
-            return GetDtoListByWorkbookID(dbContext, fieldLaborByCropCreateDto.WorkbookID);
+            return addedFieldLaborByCrops;
         }
 
         public static FieldLaborByCropSummaryDto UpdateFieldLaborByCrop(OregonTilthDbContext dbContext, FieldLaborByCropDto fieldLaborByCropDto)

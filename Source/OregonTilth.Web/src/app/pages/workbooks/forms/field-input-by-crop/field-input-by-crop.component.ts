@@ -231,16 +231,16 @@ export class FieldInputByCropComponent implements OnInit {
   onSubmit(fieldInputByCropForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
     this.addFieldInputByCropRequest = this.workbookService.addFieldInputByCrop(this.model).subscribe(response => {
+      var transactionRows = this.gridApi.applyTransaction({add: response });
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.isLoadingSubmit = false;
-      
-      this.fieldInputByCropDtos = response;
-      
-      
-      this.alertService.pushAlert(new Alert("Successfully added record(s).", AlertContext.Success));
+      if(response.length > 0){
+        this.alertService.pushAlert(new Alert(`Successfully added ${response.length} Field Input By Crop(s) for Crop '${response[0].Crop.CropName}'.`, AlertContext.Success));
+      }else{
+        this.alertService.pushAlert(new Alert(`No Field Input By Crop was added.`, AlertContext.Info));
+      }
       this.resetForm();
-
       this.cdr.detectChanges();
-      this.gridApi.redrawRows();
       
     }, error => { 
       this.isLoadingSubmit = false;

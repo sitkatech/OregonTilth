@@ -368,8 +368,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var fieldLaborByCropDtos = FieldLaborByCrop.CreateNewFieldLaborByCrop(_dbContext, fieldLaborByCropCreateDto);
-            return Ok(fieldLaborByCropDtos);
+            var addedFieldLaborByCrops = FieldLaborByCrop.CreateNewFieldLaborByCrop(_dbContext, fieldLaborByCropCreateDto);
+            return Ok(addedFieldLaborByCrops);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/field-labor-by-crop")]
@@ -421,16 +421,16 @@ namespace OregonTilth.API.Controllers
         #region "Field Input Costs Form"
         [HttpPost("workbooks/forms/field-input-costs")]
         [WorkbookEditFeature]
-        public ActionResult<IEnumerable<FieldInputCostDto>> CreateFieldInputCost([FromBody] FieldInputCostCreateDto fieldInputByCostCreateDto)
+        public ActionResult<IEnumerable<FieldInputCostDto>> CreateFieldInputCost([FromBody] FieldInputCostCreateDto fieldInputCostCreateDto)
         {
-            var validationMessages = FieldInputCost.ValidateCreate(_dbContext, fieldInputByCostCreateDto);
+            var validationMessages = FieldInputCost.ValidateCreate(_dbContext, fieldInputCostCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var fieldInputByCostDtos = FieldInputCost.CreateNewFieldInputCost(_dbContext, fieldInputByCostCreateDto);
+            var fieldInputByCostDtos = FieldInputCost.CreateNewFieldInputCost(_dbContext, fieldInputCostCreateDto);
             return Ok(fieldInputByCostDtos);
         }
 
@@ -547,7 +547,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/transplant-production-labor-by-crop")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<TransplantProductionLaborActivityByCropDto>> CreateTransplantProductionLaborActivityByCrop([FromBody] TransplantProductionLaborActivityByCropCreateDto transplantProductionLaborByCropCreateDto)
+        public ActionResult<IEnumerable<TransplantProductionLaborActivityByCropSummaryDto>> CreateTransplantProductionLaborActivityByCrop([FromBody] TransplantProductionLaborActivityByCropCreateDto transplantProductionLaborByCropCreateDto)
         {
             var validationMessages = TransplantProductionLaborActivityByCrop.ValidateCreate(_dbContext, transplantProductionLaborByCropCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
@@ -556,8 +556,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var transplantProductionLaborByCropDtos = TransplantProductionLaborActivityByCrop.CreateBulk(_dbContext, transplantProductionLaborByCropCreateDto);
-            return Ok(transplantProductionLaborByCropDtos);
+            var addedTransplantProductionLaborByCropDtos = TransplantProductionLaborActivityByCrop.CreateBulk(_dbContext, transplantProductionLaborByCropCreateDto);
+            return Ok(addedTransplantProductionLaborByCropDtos);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/transplant-production-labor-by-crop")]
@@ -801,7 +801,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/field-input-by-crop")]
         [LoggedInUnclassifiedFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<FieldInputByCropDto>> CreateFieldInputByCrop([FromBody] FieldInputByCropCreateDto fieldInputByCropCreateDto)
+        public ActionResult<IEnumerable<FieldInputByCropSummaryDto>> CreateFieldInputByCrop([FromBody] FieldInputByCropCreateDto fieldInputByCropCreateDto)
         {
             var validationMessages = FieldInputByCrop.ValidateCreate(_dbContext, fieldInputByCropCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
@@ -810,8 +810,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var fieldInputByCropDtos = FieldInputByCrop.CreateBulk(_dbContext, fieldInputByCropCreateDto);
-            return Ok(fieldInputByCropDtos);
+            var addedFieldInputByCropDtos = FieldInputByCrop.CreateBulk(_dbContext, fieldInputByCropCreateDto);
+            return Ok(addedFieldInputByCropDtos);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/field-input-by-crop")]
@@ -926,6 +926,60 @@ namespace OregonTilth.API.Controllers
 
         #endregion "Transplant Production Information Form"
 
+        #region "Field Standard Times"
+
+        [HttpGet("workbooks/{workbookID}/forms/field-standard-times")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> GetFieldStandardTimes([FromRoute] int workbookID)
+        {
+            var fieldStandardTimes = FieldStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldStandardTimes);
+        }
+
+
+        [HttpGet("workbooks/{workbookID}/forms/field-standard-times/time-studies")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<vFieldLaborActivityForTimeStudyDto>> GetFieldStandardTimesForTimeStudies([FromRoute] int workbookID)
+        {
+            var fieldStandardTimesForTimeStudies = vFieldLaborActivityForTimeStudy.GetUninitializedDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldStandardTimesForTimeStudies);
+        }
+
+        [HttpPost("workbooks/{workbookID}/forms/field-standard-times/initialize")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldStandardTimeDto>> InitializeFieldTimeStudy([FromBody] FieldStandardTimeCreateDto createDto)
+        {
+            var validationMessages = FieldStandardTime.ValidateCreate(_dbContext, createDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var returnDto = FieldStandardTime.CreateNew(_dbContext, createDto);
+            return Ok(returnDto);
+            
+        }
+
+
+        [HttpPut("workbooks/{workbookID}/forms/field-standard-times/{fieldStandardTimeID}")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionInformationDto> UpdateFieldStandardTime([FromBody] FieldStandardTimeDto fieldStandardTimeDto)
+        {
+            var validationMessages = FieldStandardTime.ValidateUpdate(_dbContext, fieldStandardTimeDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var fieldStandardTimeSummaryDto = FieldStandardTime.UpdateFieldStandardTime(_dbContext, fieldStandardTimeDto);
+            return Ok(fieldStandardTimeSummaryDto);
+        }
+
+        #endregion "Field Standard Times"
+
         #region Crop Specific Information Form
         [HttpPost("workbooks/{workbookID}/forms/crop-specific-info")]
         [LoggedInUnclassifiedFeature]
@@ -989,4 +1043,7 @@ namespace OregonTilth.API.Controllers
         }
         #endregion
     }
+
+
 }
+

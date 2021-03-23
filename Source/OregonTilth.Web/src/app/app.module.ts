@@ -21,7 +21,7 @@ import { LinkRendererComponent } from './shared/components/ag-grid/link-renderer
 import { ButtonRendererComponent } from './shared/components/ag-grid/button-renderer/button-renderer.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ComboSeriesVerticalComponent } from './shared/components/combo-chart/combo-series-vertical.component'
 import { FontAwesomeIconLinkRendererComponent } from './shared/components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
@@ -60,6 +60,9 @@ import { TransplantProductionInputCostsComponent } from './pages/workbooks/forms
 import { FieldInputByCropComponent } from './pages/workbooks/forms/field-input-by-crop/field-input-by-crop.component';
 import { TransplantProductionInformationComponent } from './pages/workbooks/forms/transplant-production-information/transplant-production-information.component';
 import { IntegerEditor } from './shared/components/ag-grid/integer-editor/integer-editor.component';
+import { FieldStandardTimesComponent } from './pages/workbooks/forms/field-standard-times/field-standard-times.component';
+import { TimeStudyCellRendererComponent } from './shared/components/ag-grid/time-study-cell-renderer/time-study-cell-renderer.component';
+import { TimeStudyModal } from './shared/components/ag-grid/time-study-modal/time-study-modal.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -95,6 +98,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     TransplantProductionInputsComponent,
     TransplantProductionTrayTypesComponent,
     TransplantProductionInformationComponent,
+    FieldStandardTimesComponent,
     CropsComponent,
     CropUnitsComponent,
     EditWorkbookComponent,
@@ -105,6 +109,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     DecimalEditor,
     IntegerEditor,
     FieldInputByCropComponent,
+    TimeStudyModal
   ],
   imports: [
     AppRoutingModule,
@@ -120,7 +125,8 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     AgGridModule.withComponents([DecimalEditor, IntegerEditor]),
     NgMultiSelectDropDownModule.forRoot(),
     MyDatePickerModule,
-    CKEditorModule
+    CKEditorModule,
+    ReactiveFormsModule
   ],  
   providers: [
     CookieService,
@@ -134,7 +140,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     },
     DecimalPipe, CurrencyPipe, DatePipe
   ],
-  entryComponents: [LinkRendererComponent, FontAwesomeIconLinkRendererComponent, MultiLinkRendererComponent, ButtonRendererComponent],
+  entryComponents: [LinkRendererComponent, FontAwesomeIconLinkRendererComponent, MultiLinkRendererComponent, ButtonRendererComponent, TimeStudyCellRendererComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

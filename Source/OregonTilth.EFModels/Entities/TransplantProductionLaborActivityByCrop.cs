@@ -74,9 +74,9 @@ namespace OregonTilth.EFModels.Entities
             return fieldLaborByCrop?.AsSummaryDto();
         }
 
-        public static IQueryable<TransplantProductionLaborActivityByCropSummaryDto> CreateBulk(OregonTilthDbContext dbContext, TransplantProductionLaborActivityByCropCreateDto transplantProductionLaborByCropCreateDto)
+        public static List<TransplantProductionLaborActivityByCropSummaryDto> CreateBulk(OregonTilthDbContext dbContext, TransplantProductionLaborActivityByCropCreateDto transplantProductionLaborByCropCreateDto)
         {
-
+            var addedTpLaborActivityIDs = new List<int>();
             // we need to check for existing records and only add the ones that do not exist
             var currentTpLaborByCrops = dbContext.TransplantProductionLaborActivityByCrops
                 .Where(x => x.WorkbookID == transplantProductionLaborByCropCreateDto.WorkbookID)
@@ -99,12 +99,18 @@ namespace OregonTilth.EFModels.Entities
                         PhaseID = transplantProductionLaborByCropCreateDto.PhaseID,
                     };
                     dbContext.TransplantProductionLaborActivityByCrops.Add(tpLaborByCrop);
+                    addedTpLaborActivityIDs.Add(tpLaborByCrop.TransplantProductionLaborActivityID);
                 }
             }
             
             dbContext.SaveChanges();
+            var tpLaborActivityByCrops = GetDtoListByWorkbookID(dbContext, transplantProductionLaborByCropCreateDto.WorkbookID).ToList();
+            var addedTpLaborActivityByCrop = tpLaborActivityByCrops.Where(x =>
+                x.Crop.CropID == transplantProductionLaborByCropCreateDto.CropID && 
+                x.Phase.PhaseID == transplantProductionLaborByCropCreateDto.PhaseID &&
+                addedTpLaborActivityIDs.Contains(x.TransplantProductionLaborActivity.TransplantProductionLaborActivityID)).ToList();
 
-            return GetDtoListByWorkbookID(dbContext, transplantProductionLaborByCropCreateDto.WorkbookID);
+            return addedTpLaborActivityByCrop;
         }
 
         public static TransplantProductionLaborActivityByCropSummaryDto UpdateTransplantProductionLaborActivityByCrop(OregonTilthDbContext dbContext, TransplantProductionLaborActivityByCropDto transplantProductionLaborActivityByCropDto)

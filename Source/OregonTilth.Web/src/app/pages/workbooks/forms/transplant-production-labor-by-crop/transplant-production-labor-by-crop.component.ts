@@ -262,16 +262,16 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
   onSubmit(transplantProductionLaborActivityForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
     this.addTransplantProductionLaborByCropRequest = this.workbookService.addTransplantProductionLaborByCrop(this.model).subscribe(response => {
+      var transactionRows = this.gridApi.applyTransaction({add: response });
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.isLoadingSubmit = false;
-      
-      this.transplantProductionLaborByCropDtos = response;
-      
-      
-      this.alertService.pushAlert(new Alert("Successfully added record(s).", AlertContext.Success));
+      if(response.length > 0){
+        this.alertService.pushAlert(new Alert(`Successfully added ${response.length} Transplant Production Labor(s) for Crop '${response[0].Crop.CropName}'.`, AlertContext.Success));
+      }else{
+        this.alertService.pushAlert(new Alert(`No Transplant Production Labor By Crop was added.`, AlertContext.Info));
+      }
       this.resetForm();
-
       this.cdr.detectChanges();
-      this.gridApi.redrawRows();
       
     }, error => { 
       this.isLoadingSubmit = false;
