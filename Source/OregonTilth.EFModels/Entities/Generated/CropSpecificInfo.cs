@@ -18,6 +18,7 @@ namespace OregonTilth.EFModels.Entities
 
         [Key]
         public int CropSpecificInfoID { get; set; }
+        public int WorkbookID { get; set; }
         public int TpOrDsTypeID { get; set; }
         public int? RowsPerStandardWidth { get; set; }
         public int DripTapeRowsPerStandardWidth { get; set; }
@@ -30,6 +31,9 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(TpOrDsTypeID))]
         [InverseProperty("CropSpecificInfos")]
         public virtual TpOrDsType TpOrDsType { get; set; }
+        [ForeignKey(nameof(WorkbookID))]
+        [InverseProperty("CropSpecificInfos")]
+        public virtual Workbook Workbook { get; set; }
         [InverseProperty(nameof(Crop.CropSpecificInfo))]
         public virtual ICollection<Crop> Crops { get; set; }
     }

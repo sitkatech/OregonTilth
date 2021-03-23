@@ -4,6 +4,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[CropSpecificInfo](
 	[CropSpecificInfoID] [int] IDENTITY(1,1) NOT NULL,
+	[WorkbookID] [int] NOT NULL,
 	[TpOrDsTypeID] [int] NOT NULL,
 	[RowsPerStandardWidth] [int] NULL,
 	[DripTapeRowsPerStandardWidth] [int] NOT NULL,
@@ -21,6 +22,11 @@ ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [FK_CropSpecifi
 REFERENCES [dbo].[TpOrDsType] ([TpOrDsTypeID])
 GO
 ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [FK_CropSpecificInfo_TpOrDsType]
+GO
+ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [FK_CropSpecificInfo_Workbook_WorkbookID] FOREIGN KEY([WorkbookID])
+REFERENCES [dbo].[Workbook] ([WorkbookID])
+GO
+ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [FK_CropSpecificInfo_Workbook_WorkbookID]
 GO
 ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CHK_CropSpecificInfo_InRowSpacing_NotNull_If_TPtype_selected] CHECK  (([InRowSpacing] IS NULL OR ([TpOrDsTypeID]=(2) OR [TpOrDsTypeID]=(1))))
 GO

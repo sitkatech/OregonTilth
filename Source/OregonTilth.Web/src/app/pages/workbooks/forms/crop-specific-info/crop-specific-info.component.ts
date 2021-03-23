@@ -38,6 +38,7 @@ export class CropSpecificInfoComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
@@ -131,7 +132,7 @@ export class CropSpecificInfoComponent implements OnInit {
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
-            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Field Input?`)) {
+            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Crop Specific Info?`)) {
               componentScope.deleteCropSpecificInfo(field.PrimaryKey)
             }
           }
@@ -144,7 +145,7 @@ export class CropSpecificInfoComponent implements OnInit {
   deleteCropSpecificInfo(cropSpecificInfoID: number) {
     this.deleteCropSpecificInfoRequest = this.workbookService.deleteCropSpecificInfo(this.workbookID, cropSpecificInfoID).subscribe(cropSpecificInfoDtos => {
       this.cropSpecificInfos = cropSpecificInfoDtos;
-      this.alertService.pushAlert(new Alert("Successfully deleted Field Input Cost", AlertContext.Success));
+      this.alertService.pushAlert(new Alert("Successfully deleted Crop Specific Info", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
 
@@ -156,12 +157,16 @@ export class CropSpecificInfoComponent implements OnInit {
 
     this.updateCropSpecificInfoRequest = this.workbookService.updateCropSpecificInfo(dtoToPost).subscribe(cropSpecificInfo => {
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Field Input Cost", AlertContext.Success));
+      this.alertService.pushAlert(new Alert("Successfully updated Crop Specific Info", AlertContext.Success));
     }, error => {
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })
 
+  }
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
   }
 
   ngOnDestroy() {
@@ -193,7 +198,7 @@ export class CropSpecificInfoComponent implements OnInit {
     this.addCropSpecificInfoRequest = this.workbookService.addCropSpecificInfo(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
       this.cropSpecificInfos = response;
-      this.alertService.pushAlert(new Alert("Successfully added Field Input Cost.", AlertContext.Success));
+      this.alertService.pushAlert(new Alert("Successfully added Crop Specific Info.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
       
@@ -204,7 +209,7 @@ export class CropSpecificInfoComponent implements OnInit {
   }
 
   resetForm() {
-    this.model = new CropSpecificInfoCreateDto({WorkbookID: this.workbookID, FieldUnitTypeID: this.model.FieldUnitTypeID});
+    this.model = new CropSpecificInfoCreateDto({WorkbookID: this.workbookID});
   }
 
 }

@@ -14,6 +14,7 @@ namespace OregonTilth.EFModels.Entities
             var cropSpecificInfoDto = new CropSpecificInfoDto()
             {
                 CropSpecificInfoID = cropSpecificInfo.CropSpecificInfoID,
+                Workbook = cropSpecificInfo.Workbook.AsDto(),
                 TpOrDsType = cropSpecificInfo.TpOrDsType.AsDto(),
                 RowsPerStandardWidth = cropSpecificInfo.RowsPerStandardWidth,
                 DripTapeRowsPerStandardWidth = cropSpecificInfo.DripTapeRowsPerStandardWidth,

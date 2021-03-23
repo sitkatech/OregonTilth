@@ -81,6 +81,11 @@ namespace OregonTilth.EFModels.Entities
                     .HasForeignKey(d => d.TpOrDsTypeID)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CropSpecificInfo_TpOrDsType");
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.CropSpecificInfos)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<CropUnit>(entity =>

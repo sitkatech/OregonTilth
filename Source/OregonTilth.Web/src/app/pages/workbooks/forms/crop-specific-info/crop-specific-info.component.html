@@ -19,49 +19,34 @@
         <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
         <div class="card mt-4">
           <div class="card-header">
-            Add new Crop Specific Info
+            <h4>Crop Specific Info required for:</h4> 
           </div>
           <div class="card-body">
-            <form *ngIf=(model) (ngSubmit)="onSubmit(fieldInputCostForm)" #fieldInputCostForm="ngForm">
-              <div class="row">
-                
-                <div class="form-group col-md-8">
-                  <label class="required">Field Input</label>
-                  <input class="form-control" type="text" name="FieldInputCostName" [(ngModel)]="model.FieldInputCostName">
-                </div>
-                <div class="form-group col-md-4">
-                  <label class="required">Field Unit Type</label>
-                  <select name="FieldUnitTypeID" class="form-control" [(ngModel)]="model.FieldUnitTypeID" required>
-                    <option value=""></option>
-                    <option *ngFor="let category of fieldUnitTypes" [value]="category.FieldUnitTypeID">
-                      {{category.FieldUnitTypeDisplayName}}
-                    </option>
-                  </select>
-                </div>
-                <div class="form-group col-md-8">
-                  <label class="required">Cost Per Field Unit</label>
-                  <input class="form-control" type="number" name="CostPerFieldUnit" [(ngModel)]="model.CostPerFieldUnit">
-                </div>
-              </div>
-              <div class="row">
-                
-                <div class="form-group col-md-8">
-                  <label>Notes</label>
-                  <input class="form-control" type="text" name="Notes" [(ngModel)]="model.Notes">
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm">
-                  <i class="fas fa-bolt"></i> Required field
-                </div>
-                <div class="col-sm text-right">
-                  <button type="submit" class="btn btn-fresca" [disabled]="!fieldInputCostForm.form.valid || isLoadingSubmit">
-                    <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
-                    Submit
-                  </button>
-                </div>
-              </div>
-            </form>
+            <table class="crop-specific-info-required-table">
+              <tbody>
+                <tr *ngFor="let item of createDtos">
+                  <td>{{item.Crop.CropName}}</td>
+                  <td>{{item.LaborType.LaborTypeDisplayName}}</td>
+                  <td>
+                    <select class="form-control" [(ngModel)]="item.MachineryID" [disabled]="machineryDisabled(item.LaborTypeID)">
+                      <option disabled="true" [ngValue]="undefined" [selected]="!item.MachineryID">Select Machinery</option>
+                      <option *ngFor="let option of machinery" [selected]="item.MachineryID == option.MachineryID" [value]="option.MachineryID">{{option.MachineryName}}</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select class="form-control" [(ngModel)]="item.FieldUnitTypeID">
+                      <option disabled="true" [ngValue]="undefined" [selected]="!item.FieldUnitTypeID">Select Field Unit</option>
+                      <option *ngFor="let option of fieldUnits" [value]="option.FieldUnitTypeID">{{option.FieldUnitTypeDisplayName}}</option>
+                    </select>
+                  
+                  </td>
+                  <td>
+                    <button class="btn btn-success" (click)="initializeCropSpecificInfo(item)" [disabled]="startButtonDisabled(item)">Initialize</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
           </div>
           
         </div>
@@ -70,8 +55,8 @@
         
         <div class="row mt-4">
           <div class="col">
-            <ag-grid-angular #fieldInputCostGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="fieldInputCosts"
-              [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (cellValueChanged)="onCellValueChanged($event)">
+            <ag-grid-angular #cropSpecificInfoGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="cropSpecificInfo"
+              [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (cellValueChanged)="onCellValueChanged($event)" (gridReady)="onGridReady($event)" [getRowNodeId]="getRowNodeId">
             </ag-grid-angular>
           </div>
         </div>
