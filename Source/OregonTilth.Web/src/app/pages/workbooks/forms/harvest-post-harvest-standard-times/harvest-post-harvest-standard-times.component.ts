@@ -26,6 +26,11 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup, Validators,FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { TimeStudyModal } from 'src/app/shared/components/ag-grid/time-study-modal/time-study-modal.component';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
+import { HarvestPostHarvestStandardTimeCreateDto } from 'src/app/shared/models/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-time-create-dto';
+import { HarvestPostHarvestStandardTimeSummaryDto } from 'src/app/shared/models/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-time-summary-dto';
+import { CropDto } from 'src/app/shared/models/generated/crop-dto';
+import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
+import { HarvestTypeDto } from 'src/app/shared/models/generated/harvest-type-dto';
 
 @Component({
   selector: 'harvest-post-harvest-standard-times',
@@ -51,44 +56,36 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
-  public richTextTypeID : number = CustomRichTextType.FieldStandardTimesForm;
+  public richTextTypeID : number = CustomRichTextType.HarvestPostHarvestStandardTimesForm;
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
 
-  public model: FieldStandardTimeCreateDto;
+  public model: HarvestPostHarvestStandardTimeCreateDto;
 
-  public getFieldLaborActivitiesRequest: any;
-  public fieldLaborActivities: FieldLaborActivityDto[];
+  public getHarvestPostHarvestStandardTimesRequest: any;
+  public harvestPostHarvestStandardTimes: HarvestPostHarvestStandardTimeSummaryDto[];
 
-  public getFieldStandardTimesRequest: any;
-  public fieldStandardTimes: FieldStandardTimeSummaryDto[];
+  public getCropsRequest: any;
+  public crops: CropDto[];
 
-  public getvFieldLaborActivitiesForTimeStudiesRequest: any;
-  public vFieldLaborActivitiesForTimeStudyDtos: vFieldLaborActivityForTimeStudyDto[];
+  public getCropUnitsRequest: any;
+  public cropUnits: CropUnitDto[];
 
-  public getLaborTypesRequest: any;
-  public laborTypes: LaborTypeDto[];
-
-  public getMachineryRequest: any;
-  public machinery: MachineryDto[];
-
-  public getFieldUnitsRequest: any;
-  public fieldUnits: FieldUnitTypeDto[];
+  public getHarvestTypesRequest: any;
+  public harvestTypes: HarvestTypeDto[];
 
   public columnDefs: ColDef[];
 
-  public createDtos: FieldStandardTimeCreateDto[];
-
-  public initializeTimeStudyRequest: any;
+  public initializeStandardTimeRequest: any;
  
   public modalReference: NgbModalRef;
   public closeResult: string;
 
-  public updateFieldStandardTimeRequest: any;
+  public updateStandardTimeRequest: any;
   
   getRowNodeId(data)  {
-    return data.FieldStandardTimeID.toString();
+    return data.HarvestPostHarvestStandardTimeID.toString();
   }
   
   ngOnInit() {
@@ -97,170 +94,161 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getFieldLaborActivitiesRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
-      this.getFieldStandardTimesRequest = this.workbookService.getFieldStandardTimes(this.workbookID);
-      this.getvFieldLaborActivitiesForTimeStudiesRequest = this.workbookService.getFieldLaborActivitiesForTimeStudies(this.workbookID);
-      this.getLaborTypesRequest = this.lookupTablesService.getLaborTypes();
-      this.getMachineryRequest = this.workbookService.getMachinery(this.workbookID);
-      this.getFieldUnitsRequest = this.lookupTablesService.getFieldUnitTypes();
+      this.getHarvestPostHarvestStandardTimesRequest = this.workbookService.getHarvestPostHarvestStandardTimes(this.workbookID);
+      this.getCropsRequest = this.workbookService.getCrops(this.workbookID);
+      this.getCropUnitsRequest = this.workbookService.getCropUnits(this.workbookID);
+      this.getHarvestTypesRequest = this.lookupTablesService.getHarvestTypes();
 
       forkJoin(
         [
           this.getWorkbookRequest, 
-          this.getFieldLaborActivitiesRequest, 
-          this.getFieldStandardTimesRequest, 
-          this.getvFieldLaborActivitiesForTimeStudiesRequest, 
-          this.getLaborTypesRequest,
-          this.getMachineryRequest,
-          this.getFieldUnitsRequest
+          this.getHarvestPostHarvestStandardTimesRequest, 
+          this.getCropsRequest,
+          this.getCropUnitsRequest,
+          this.getHarvestTypesRequest
         ]).subscribe((
           [
             workbook, 
-            fieldLaborActivities, 
-            fieldStandardTimes, 
-            vFieldLaborActivityForTimeStudyDtos, 
-            laborTypeDtos,
-            machineryDtos,
-            fieldUnitDtos
+            harvestPostHarvestStandardTimeDtos, 
+            cropDtos,
+            cropUnitDtos,
+            harvestTypeDtos
           ]: 
           [
             WorkbookDto, 
-            FieldLaborActivityDto[], 
-            FieldStandardTimeSummaryDto[], 
-            vFieldLaborActivityForTimeStudyDto[], 
-            LaborTypeDto[],
-            MachineryDto[],
-            FieldUnitTypeDto[]
+            HarvestPostHarvestStandardTimeSummaryDto[], 
+            CropDto[],
+            CropUnitDto[],
+            HarvestTypeDto[]
           ] ) => {
           this.workbook = workbook;
-          this.fieldLaborActivities = fieldLaborActivities;
-          this.fieldStandardTimes = fieldStandardTimes;
+          this.harvestPostHarvestStandardTimes = harvestPostHarvestStandardTimeDtos;
 
-          this.vFieldLaborActivitiesForTimeStudyDtos = vFieldLaborActivityForTimeStudyDtos;
-          this.laborTypes = laborTypeDtos;
-          this.machinery = machineryDtos;
-          this.fieldUnits = fieldUnitDtos;
-
-          this.createDtos = vFieldLaborActivityForTimeStudyDtos.map(element =>  {
-              return new FieldStandardTimeCreateDto({
-                WorkbookID: this.workbookID, 
-                FieldLaborActivityID: element.FieldLaborActivityID,
-                FieldLaborActivity: this.fieldLaborActivities.find(x => {
-                  return x.FieldLaborActivityID == element.FieldLaborActivityID;
-                }),
-                LaborTypeID: element.LaborTypeID,
-                LaborType: this.laborTypes.find(x => {
-                  return x.LaborTypeID == element.LaborTypeID;
-                }),
-              })
-          });
+          this.crops = cropDtos;
+          this.cropUnits = cropUnitDtos;
+          this.harvestTypes = harvestTypeDtos;
 
           
           this.defineColumnDefs();
           this.cdr.markForCheck();
       });
-      this.model = new FieldStandardTimeCreateDto({WorkbookID: this.workbookID});
+
+      this.model = new HarvestPostHarvestStandardTimeCreateDto({WorkbookID: this.workbookID});
 
     });
   }
+  onSubmit(fieldLaborActivityForm: HTMLFormElement): void {
+    this.isLoadingSubmit = true;
+
+
+    this.initializeStandardTimeRequest = this.workbookService.initializeHarvestPostHarvestTimeStudy(this.model).subscribe(response => {
+      var transactionRows = this.gridApi.applyTransaction({add: [response] });
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
+      this.isLoadingSubmit = false;
+      
+      this.resetForm();
+      this.cdr.detectChanges();
+      
+    }, error => { 
+      this.isLoadingSubmit = false;
+      this.cdr.detectChanges();
+    });
+
+  }
+
 
   onGridReady(params: any) {
     this.gridApi = params.api;
   }
 
-  machineryDisabled(laborTypeID: number) {
-    return laborTypeID == LaborTypeEnum.Crew;
-  }
-  startButtonDisabled(fieldStandardTimeCreateDto: FieldStandardTimeCreateDto) {
-    if(!fieldStandardTimeCreateDto.FieldUnitTypeID || fieldStandardTimeCreateDto.FieldUnitTypeID == -1){
-      return true;
-    }
-
-    if(fieldStandardTimeCreateDto.LaborTypeID == LaborTypeEnum.Operator 
-      && (!fieldStandardTimeCreateDto.MachineryID || fieldStandardTimeCreateDto.MachineryID == -1)) {
-      return true;
-    }
-
-    return false;
-
-  }
-  
-
-
   defineColumnDefs() {
     var componentScope = this;
     this.columnDefs = [
       {
-        headerName: 'Field Labor Activity', 
-        field: 'FieldLaborActivity.FieldLaborActivityName',
-        sortable: true, 
-        filter: true,
-        resizable: true,
-        width:150
-      },
-      {
-        headerName: 'Labor Type', 
-        field: 'LaborType.LaborTypeDisplayName',
-        sortable: true, 
-        filter: true,
-        resizable: true,
-        width:150
-      },
-      {
-        headerName: 'Machinery', 
-        field: 'Machinery',
-        editable: params => {
-          return params.data.LaborType.LaborTypeID == LaborTypeEnum.Operator;
-        },
+        headerName: 'Crop', 
+        field: 'Crop',
         valueFormatter: function (params) {
-          return params.value ? params.value.MachineryName : 'N/A';
+          return params.value ? params.value.CropName : '';
         },
         valueSetter: params => {
-          params.data.Machinery = this.machinery.find(element => {
-            return element.MachineryName == params.newValue;
+          params.data.Crop = this.crops.find(element => {
+            return element.CropName == params.newValue;
           });
           return true;
         },
         valueGetter: params => {
-          return params.data.Machinery ? params.data.Machinery.MachineryName : 'N/A';
+          return params.data.Crop ? params.data.Crop.CropName : '';
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
-          values: this.machinery.map(x => x.MachineryName)
+          values: this.crops.map(x => x.CropName)
         },
-        sortable: true, 
-        filter: true,
-        resizable: true,
-        width:150
-      },
-      
-      {
-        headerName: 'Field Unit', 
-        field: 'FieldUnitType',
         editable:true,
+        sortable: true, 
+        filter: true,
+        resizable: true,
+        width:150
+      },
+      // {
+      //   headerName: 'Labor Type', 
+      //   field: 'LaborType.LaborTypeDisplayName',
+      //   sortable: true, 
+      //   filter: true,
+      //   resizable: true,
+      //   width:150
+      // },
+      {
+        headerName: 'Crop Unit', 
+        field: 'Crop',
         valueFormatter: function (params) {
-          return params.value.FieldUnitTypeDisplayName;
+          return params.value ? params.value.CropUnitName : '';
         },
         valueSetter: params => {
-          params.data.FieldUnitType = this.fieldUnits.find(element => {
-            return element.FieldUnitTypeDisplayName == params.newValue;
+          params.data.CropUnit = this.cropUnits.find(element => {
+            return element.CropUnitName == params.newValue;
           });
           return true;
         },
         valueGetter: params => {
-          return params.data.FieldUnitType.FieldUnitTypeDisplayName;
+          return params.data.CropUnit ? params.data.CropUnit.CropUnitName : '';
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
-          values: this.fieldUnits.map(x => x.FieldUnitTypeDisplayName)
+          values: this.cropUnits.map(x => x.CropUnitName)
         },
+        editable:true,
         sortable: true, 
-        resizable: true,
         filter: true,
-        width:100,
+        resizable: true,
+        width:150
       },
       {
-        headerName: 'Avg Min Per Field Unit', 
+        headerName: 'Harvest Type', 
+        field: 'HarvestType',
+        valueFormatter: function (params) {
+          return params.value ? params.value.HarvestTypeDisplayName : '';
+        },
+        valueSetter: params => {
+          params.data.HarvestType = this.harvestTypes.find(element => {
+            return element.HarvestTypeDisplayName == params.newValue;
+          });
+          return true;
+        },
+        valueGetter: params => {
+          return params.data.HarvestType ? params.data.HarvestType.HarvestTypeDisplayName : '';
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: this.harvestTypes.map(x => x.HarvestTypeDisplayName)
+        },
+        editable:true,
+        sortable: true, 
+        filter: true,
+        resizable: true,
+        width:150
+      },
+      {
+        headerName: 'Avg Min Per Unit', 
         valueGetter: function(params:any) {
           if(params.data.TimeStudies.length > 0) {
             var minutes = params.data.TimeStudies.map(x => x.Duration).reduce((x,y) => x + y, 0);
@@ -328,27 +316,9 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
     });
   }
 
-  initializeTimeStudy(createDto: FieldStandardTimeCreateDto) {
-
-    this.initializeTimeStudyRequest = this.workbookService.initializeFieldTimeStudy(createDto).subscribe(fieldStandardTimeDto => {
-        var transactionRows = this.gridApi.applyTransaction({add: [fieldStandardTimeDto]});
-        this.gridApi.flashCells({ rowNodes: transactionRows.add });
-        var createDtoIndexToRemove = this.createDtos.findIndex(x => {
-          return x.LaborTypeID == createDto.LaborTypeID && x.FieldLaborActivityID == createDto.FieldLaborActivityID;
-        });
-        
-        this.createDtos.splice(createDtoIndexToRemove, 1);
-        this.cdr.detectChanges();
-        
-      }, error => {
-  
-      });
-    
-  }
-
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
-    this.updateFieldStandardTimeRequest = this.workbookService.updateFieldStandardTime(dtoToPost).subscribe(fieldStandardTime => {
+    this.updateStandardTimeRequest = this.workbookService.updateFieldStandardTime(dtoToPost).subscribe(fieldStandardTime => {
       data.node.setData(fieldStandardTime);
       this.isLoadingSubmit = false;
     }, error => {
@@ -357,7 +327,6 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
     })
 
   }
-
   
   ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();
@@ -365,27 +334,24 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
       this.getWorkbookRequest.unsubscribe();
     }
     
-    if (this.getFieldLaborActivitiesRequest && this.getFieldLaborActivitiesRequest.unsubscribe) {
-      this.getFieldLaborActivitiesRequest.unsubscribe();
+   
+    if (this.getHarvestPostHarvestStandardTimesRequest && this.getHarvestPostHarvestStandardTimesRequest.unsubscribe) {
+      this.getHarvestPostHarvestStandardTimesRequest.unsubscribe();
     }
-    if (this.getvFieldLaborActivitiesForTimeStudiesRequest && this.getvFieldLaborActivitiesForTimeStudiesRequest.unsubscribe) {
-      this.getvFieldLaborActivitiesForTimeStudiesRequest.unsubscribe();
+    if (this.getCropsRequest && this.getCropsRequest.unsubscribe) {
+      this.getCropsRequest.unsubscribe();
     }
-    if (this.getFieldStandardTimesRequest && this.getFieldStandardTimesRequest.unsubscribe) {
-      this.getFieldStandardTimesRequest.unsubscribe();
-    }
-    if (this.getMachineryRequest && this.getMachineryRequest.unsubscribe) {
-      this.getMachineryRequest.unsubscribe();
-    }
-    if (this.getFieldUnitsRequest && this.getFieldUnitsRequest.unsubscribe) {
-      this.getFieldUnitsRequest.unsubscribe();
+    if (this.getCropUnitsRequest && this.getCropUnitsRequest.unsubscribe) {
+      this.getCropUnitsRequest.unsubscribe();
     }
     
     this.authenticationService.dispose();
     this.cdr.detach();
   }
 
-  
+  resetForm() {
+    this.model = new HarvestPostHarvestStandardTimeCreateDto({WorkbookID: this.workbookID});
+  }
 
 
 }

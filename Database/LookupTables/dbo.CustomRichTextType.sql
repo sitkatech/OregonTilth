@@ -27,7 +27,8 @@ USING (VALUES
 (25, 'CropChannelSpecificInfoForm', 'Crop Channel Specific Info Form'),
 (26, 'OverheadCostEstimator', 'Overhead Cost Estimator'),
 (27, 'CropsForm', 'Crops Form'),
-(28, 'CropUnitsForm', 'Crop Units Form')
+(28, 'CropUnitsForm', 'Crop Units Form'),
+(29, 'HarvestPostHarvestStandardTimesForm', 'Harvest Post Harvest Standard Times Form')
 )
 AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID

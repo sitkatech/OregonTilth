@@ -33,6 +33,8 @@ import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-s
 import { vFieldLaborActivityForTimeStudyDto } from 'src/app/shared/models/forms/field-standard-times/vFieldLaborActivityForTimeStudyDto';
 import { FieldStandardTimeDto } from 'src/app/shared/models/generated/field-standard-time-dto';
 import { FieldStandardTimeCreateDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-create-dto';
+import { HarvestPostHarvestStandardTimeSummaryDto } from 'src/app/shared/models/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-time-summary-dto';
+import { HarvestPostHarvestStandardTimeCreateDto } from 'src/app/shared/models/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-time-create-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -360,5 +362,22 @@ export class WorkbookService {
     updateFieldStandardTime(fieldStandardTimeDto: FieldStandardTimeSummaryDto): Observable<FieldStandardTimeSummaryDto> {
         let route = `/workbooks/${fieldStandardTimeDto.WorkbookID}/forms/field-standard-times/${fieldStandardTimeDto.FieldStandardTimeID}`;
         return this.apiService.putToApi(route, fieldStandardTimeDto);
+    }
+
+
+    // Harvest Post-Harvest Standard Times
+    getHarvestPostHarvestStandardTimes(workbookID: number): Observable<HarvestPostHarvestStandardTimeSummaryDto[]> {
+        let route = `workbooks/${workbookID}/forms/harvest-post-harvest-standard-times`;
+        return this.apiService.getFromApi(route);
+    }
+
+    initializeHarvestPostHarvestTimeStudy(harvestPostHarvestStandardTimeCreateDto: HarvestPostHarvestStandardTimeCreateDto) : Observable<HarvestPostHarvestStandardTimeSummaryDto> {
+        let route = `workbooks/${harvestPostHarvestStandardTimeCreateDto.WorkbookID}/forms/harvest-post-harvest-standard-times/initialize`;
+        return this.apiService.postToApi(route, harvestPostHarvestStandardTimeCreateDto);
+    }
+
+    updateHarvestPostHarvestStandardTime(harvestPostHarvestStandardTimeDto: HarvestPostHarvestStandardTimeSummaryDto): Observable<HarvestPostHarvestStandardTimeSummaryDto> {
+        let route = `/workbooks/${harvestPostHarvestStandardTimeDto.WorkbookID}/forms/harvest-post-harvest-standard-times/${harvestPostHarvestStandardTimeDto.HarvestPostHarvestStandardTimeID}`;
+        return this.apiService.putToApi(route, harvestPostHarvestStandardTimeDto);
     }
 }

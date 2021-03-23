@@ -20,10 +20,14 @@ namespace OregonTilth.EFModels.Entities
         public decimal Units { get; set; }
         [StringLength(8000)]
         public string Notes { get; set; }
+        public int? HarvestPostHarvestStandardTimeID { get; set; }
 
         [ForeignKey(nameof(FieldStandardTimeID))]
         [InverseProperty("TimeStudies")]
         public virtual FieldStandardTime FieldStandardTime { get; set; }
+        [ForeignKey(nameof(HarvestPostHarvestStandardTimeID))]
+        [InverseProperty("TimeStudies")]
+        public virtual HarvestPostHarvestStandardTime HarvestPostHarvestStandardTime { get; set; }
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("TimeStudies")]
         public virtual Workbook Workbook { get; set; }
