@@ -15,7 +15,8 @@ namespace OregonTilth.EFModels.Entities
                 Crop = harvestPostHarvestStandardTime.Crop.AsSummaryDto(),
                 CropUnit = harvestPostHarvestStandardTime.CropUnit.AsDto(),
                 HarvestType = harvestPostHarvestStandardTime.HarvestType.AsDto(),
-                TimeStudies = harvestPostHarvestStandardTime?.TimeStudies.Select(x => x.AsSummaryDto())
+                TimeStudies = harvestPostHarvestStandardTime?.TimeStudies.Select(x => x.AsSummaryDto()),
+                StandardTimePerUnit = harvestPostHarvestStandardTime.StandardTimePerUnit
             };
         }
     }

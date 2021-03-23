@@ -32,6 +32,22 @@ namespace OregonTilth.EFModels.Entities
                 x.WorkbookID == timeStudiesUpsertDto.WorkbookID && x.FieldStandardTimeID ==
                 timeStudiesUpsertDto.FieldStandardTimeID).ToList();
 
+
+            // this could be better if we had a TimeStudyType enum or something
+            if (timeStudiesUpsertDto.FieldStandardTimeID != null)
+            {
+                existingListTimeStudies = existingListTimeStudies
+                    .Where(x => x.FieldStandardTimeID == timeStudiesUpsertDto.FieldStandardTimeID).ToList();
+            }
+
+            if (timeStudiesUpsertDto.HarvestPostHarvestStandardTimeID != null)
+            {
+                existingListTimeStudies = existingListTimeStudies
+                    .Where(x => x.HarvestPostHarvestStandardTimeID == timeStudiesUpsertDto.HarvestPostHarvestStandardTimeID).ToList();
+            }
+
+
+
             var timeStudiesUpdated = timeStudiesUpsertDto.TimeStudies
                 .Select(x =>
                 {
@@ -43,11 +59,21 @@ namespace OregonTilth.EFModels.Entities
                         timeStudy = new TimeStudy()
                         {
                             WorkbookID = x.WorkbookID,
-                            FieldStandardTimeID = x.FieldStandardTimeID,
                             Notes = x.Notes,
                             Units = x.Units,
                             Duration = x.Duration
                         };
+
+                        if (timeStudiesUpsertDto.FieldStandardTimeID != null)
+                        {
+                            timeStudy.FieldStandardTimeID = x.FieldStandardTimeID;
+                        }
+
+                        if (timeStudiesUpsertDto.HarvestPostHarvestStandardTimeID != null)
+                        {
+                            timeStudy.HarvestPostHarvestStandardTimeID = x.HarvestPostHarvestStandardTimeID;
+                        }
+
                         dbContext.TimeStudies.Add(timeStudy);
                     }
                     else

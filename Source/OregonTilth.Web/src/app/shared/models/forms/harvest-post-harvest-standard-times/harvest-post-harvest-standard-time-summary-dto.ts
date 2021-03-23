@@ -5,6 +5,7 @@ import { FieldUnitTypeDto } from "../../generated/field-unit-type-dto";
 import { HarvestTypeDto } from "../../generated/harvest-type-dto";
 import { LaborTypeDto } from "../../generated/labor-type-dto";
 import { MachineryDto } from "../../generated/machinery-dto";
+import { TimeStudySummaryDto } from "../time-studies/time-studies-upsert-dto";
 
 export class HarvestPostHarvestStandardTimeSummaryDto {
     HarvestPostHarvestStandardTimeID: number;
@@ -16,6 +17,7 @@ export class HarvestPostHarvestStandardTimeSummaryDto {
     HarvestTypeID: number;
     HarvestType: HarvestTypeDto;
     StandardTimePerUnit: number;
+    TimeStudies: TimeStudySummaryDto[]
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

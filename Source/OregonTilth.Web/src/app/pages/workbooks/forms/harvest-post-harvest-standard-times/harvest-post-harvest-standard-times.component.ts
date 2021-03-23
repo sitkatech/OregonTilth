@@ -189,14 +189,6 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         resizable: true,
         width:150
       },
-      // {
-      //   headerName: 'Labor Type', 
-      //   field: 'LaborType.LaborTypeDisplayName',
-      //   sortable: true, 
-      //   filter: true,
-      //   resizable: true,
-      //   width:150
-      // },
       {
         headerName: 'Crop Unit', 
         field: 'Crop',
@@ -283,12 +275,12 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         headerName: 'Time Study Progress', 
         field: 'TimeStudies',
         valueGetter: function (params: any) {
-          return { FieldStandardTime: params.data, count: params.data.TimeStudies.length };
+          return { HarvestPostHarvestStandardTime: params.data, count: params.data.TimeStudies.length };
         }, 
         cellRendererFramework: TimeStudyCellRendererComponent,
         cellRendererParams: { 
           clicked: function(data: any) {
-            componentScope.launchModal(TimeStudyModal, 'Field Time Studies', data.FieldStandardTime);
+            componentScope.launchModal(TimeStudyModal, 'Harvest Post-Harvest Time Studies', data.HarvestPostHarvestStandardTime);
           }
         },
         sortable: false, 
@@ -300,12 +292,13 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
     ]
   }
 
-  public launchModal(modalContent: any, modalTitle: string, fieldStandardTime: FieldStandardTimeSummaryDto) {
+  public launchModal(modalContent: any, modalTitle: string, harvestPostHarvestStandardTime: HarvestPostHarvestStandardTimeSummaryDto) {
     this.modalReference = this.modalService.open(modalContent, { size:'xl', windowClass : "time-studies-modal", ariaLabelledBy: modalTitle, backdrop: 'static', keyboard: false });
-    this.modalReference.componentInstance.fieldStandardTime = fieldStandardTime;
+    this.modalReference.componentInstance.harvestPostHarvestStandardTime = harvestPostHarvestStandardTime;
     this.modalReference.result.then((result) => {
-      if(result.FieldStandardTimeID) {
-        var rowNode = this.gridApi.getRowNode(result.FieldStandardTimeID);
+      // debugger;
+      if(result.HarvestPostHarvestStandardTimeID) {
+        var rowNode = this.gridApi.getRowNode(result.HarvestPostHarvestStandardTimeID);
         rowNode.setData(result);
       }
       this.closeResult = `Closed with: ${result}`;
