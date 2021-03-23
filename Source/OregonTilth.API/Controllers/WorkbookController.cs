@@ -547,7 +547,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/transplant-production-labor-by-crop")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<TransplantProductionLaborActivityByCropDto>> CreateTransplantProductionLaborActivityByCrop([FromBody] TransplantProductionLaborActivityByCropCreateDto transplantProductionLaborByCropCreateDto)
+        public ActionResult<IEnumerable<TransplantProductionLaborActivityByCropSummaryDto>> CreateTransplantProductionLaborActivityByCrop([FromBody] TransplantProductionLaborActivityByCropCreateDto transplantProductionLaborByCropCreateDto)
         {
             var validationMessages = TransplantProductionLaborActivityByCrop.ValidateCreate(_dbContext, transplantProductionLaborByCropCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
@@ -556,8 +556,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var transplantProductionLaborByCropDtos = TransplantProductionLaborActivityByCrop.CreateBulk(_dbContext, transplantProductionLaborByCropCreateDto);
-            return Ok(transplantProductionLaborByCropDtos);
+            var addedTransplantProductionLaborByCropDtos = TransplantProductionLaborActivityByCrop.CreateBulk(_dbContext, transplantProductionLaborByCropCreateDto);
+            return Ok(addedTransplantProductionLaborByCropDtos);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/transplant-production-labor-by-crop")]
