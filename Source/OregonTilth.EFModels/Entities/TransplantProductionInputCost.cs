@@ -30,9 +30,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Transplant Production Input Cost", Message = "Entries must be unique per Tray Type and Input within a workbook." });
             }
 
-            if (transplantProductionInputCostCreateDto.CostPerTray < 0)
+            if (transplantProductionInputCostCreateDto.CostPerTray <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Cost Per Tray", Message = "Cost per Tray must be greater than or equal to 0." });
+                result.Add(new ErrorMessage() { Type = "Cost Per Tray", Message = "Cost per Tray must be greater than 0." });
             }
 
             return result;
@@ -53,9 +53,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Transplant Production Input Cost", Message = "Entries must be unique per Tray Type and Input within a workbook." });
             }
 
-            if (transplantProductionInputCostDto.CostPerTray < 0)
+            if (transplantProductionInputCostDto.CostPerTray <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Cost Per Field Unit", Message = "Cost per Field Unit must be greater than or equal to 0." });
+                result.Add(new ErrorMessage() { Type = "Cost Per Tray", Message = "Cost per Tray must be greater than 0." });
             }
 
             return result;

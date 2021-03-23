@@ -145,10 +145,11 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         cellEditor: 'agTextCellEditor',
         valueFormatter: this.gridService.currencyFormatter,
         valueSetter: params => {
-          if(!params.newValue) {
-            params.data.CostPerTray = 0;
-          }
+          params.data.CostPerTray = params.newValue;
           return true;
+        },
+        valueGetter: params => {
+          return params.data.CostPerTray;
         },
         sortable: true, 
         filter: true,
@@ -177,9 +178,10 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     ]
   }
 
-  deleteTransplantProductionInputCost(tpInputCost: number) {
-    this.deleteTransplantProductionInputCostRequest = this.workbookService.deleteTransplantProductionInputCost(this.workbookID, tpInputCost).subscribe(tpInputCostDtos => {
-      this.transplantProductionInputCosts = tpInputCostDtos;
+  deleteTransplantProductionInputCost(tpInputCostID: number) {
+    this.deleteTransplantProductionInputCostRequest = this.workbookService.deleteTransplantProductionInputCost(this.workbookID, tpInputCostID).subscribe(tpInputCostDtos => {
+      var rowToRemove = this.gridApi.getRowNode(tpInputCostID.toString());
+      this.gridApi.applyTransaction({remove:[rowToRemove.data]})
       this.alertService.pushAlert(new Alert("Successfully deleted Transplant Production Input Cost", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
