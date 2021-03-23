@@ -4,8 +4,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[CropSpecificInfo](
 	[CropSpecificInfoID] [int] IDENTITY(1,1) NOT NULL,
-	[WorkbookID] [int] NOT NULL,
-	[CropID] [int] NOT NULL,
 	[TpOrDsTypeID] [int] NOT NULL,
 	[RowsPerStandardWidth] [int] NULL,
 	[DripTapeRowsPerStandardWidth] [int] NOT NULL,
@@ -19,22 +17,12 @@ CREATE TABLE [dbo].[CropSpecificInfo](
 ) ON [PRIMARY]
 
 GO
-ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [FK_CropSpecificInfo_Crop_CropID] FOREIGN KEY([CropID])
-REFERENCES [dbo].[Crop] ([CropID])
-GO
-ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [FK_CropSpecificInfo_Crop_CropID]
-GO
 ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [FK_CropSpecificInfo_TpOrDsType] FOREIGN KEY([TpOrDsTypeID])
 REFERENCES [dbo].[TpOrDsType] ([TpOrDsTypeID])
 GO
 ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [FK_CropSpecificInfo_TpOrDsType]
 GO
-ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [FK_CropSpecificInfo_Workbook_WorkbookID] FOREIGN KEY([WorkbookID])
-REFERENCES [dbo].[Workbook] ([WorkbookID])
-GO
-ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [FK_CropSpecificInfo_Workbook_WorkbookID]
-GO
-ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CHK_CropSpecificInfo_InRowSpacing_NotNull_If_TPtype_selected] CHECK  (([InRowSpacing] IS NOT NULL OR [TpOrDsTypeID]=(3)))
+ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CHK_CropSpecificInfo_InRowSpacing_NotNull_If_TPtype_selected] CHECK  (([InRowSpacing] IS NULL OR ([TpOrDsTypeID]=(2) OR [TpOrDsTypeID]=(1))))
 GO
 ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [CHK_CropSpecificInfo_InRowSpacing_NotNull_If_TPtype_selected]
 GO

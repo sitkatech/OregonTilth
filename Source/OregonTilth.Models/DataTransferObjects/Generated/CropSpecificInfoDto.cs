@@ -10,8 +10,6 @@ namespace OregonTilth.Models.DataTransferObjects
     public partial class CropSpecificInfoDto
     {
         public int CropSpecificInfoID { get; set; }
-        public WorkbookDto Workbook { get; set; }
-        public CropDto Crop { get; set; }
         public TpOrDsTypeDto TpOrDsType { get; set; }
         public int? RowsPerStandardWidth { get; set; }
         public int DripTapeRowsPerStandardWidth { get; set; }
