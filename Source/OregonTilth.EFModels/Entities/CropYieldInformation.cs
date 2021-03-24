@@ -7,14 +7,14 @@ namespace OregonTilth.EFModels.Entities
 {
     public partial class CropYieldInformation
     {
-        public static IEnumerable<CropYieldInformationDto> List(OregonTilthDbContext dbContext)
+        public static IEnumerable<CropYieldInformationSummaryDto> List(OregonTilthDbContext dbContext)
         {
             return dbContext.CropYieldInformations
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .Include(x => x.Crop)
                 .Include(x => x.CropUnit)
                 .AsNoTracking()
-                .Select(x => CropYieldInformationExtensionMethods.AsDto(x)).AsEnumerable();
+                .Select(x => CropYieldInformationExtensionMethods.AsSummaryDto(x)).AsEnumerable();
         }
 
         public static List<ErrorMessage> ValidateCreate(OregonTilthDbContext dbContext, CropYieldInformationCreateDto cropYieldInformationCreateDto)
@@ -25,7 +25,7 @@ namespace OregonTilth.EFModels.Entities
 
             // unique by WorkbookID, CropID, CropUnitID
             if (userCropYieldInformationsForWorkbook.Any(x =>
-                x.Workbook.WorkbookID == cropYieldInformationCreateDto.WorkbookID
+                x.WorkbookID == cropYieldInformationCreateDto.WorkbookID
                 && x.Crop.CropID == cropYieldInformationCreateDto.CropID
                 && x.CropUnit.CropUnitID == cropYieldInformationCreateDto.CropUnitID))
             {
@@ -55,14 +55,14 @@ namespace OregonTilth.EFModels.Entities
             return result;
         }
 
-        public static List<ErrorMessage> ValidateUpdate(OregonTilthDbContext dbContext, CropYieldInformationDto cropYieldInformationDto)
+        public static List<ErrorMessage> ValidateUpdate(OregonTilthDbContext dbContext, CropYieldInformationSummaryDto cropYieldInformationDto)
         {
             var result = new List<ErrorMessage>();
 
-            var userCropYieldInformationsForWorkbook = GetDtoListByWorkbookID(dbContext, cropYieldInformationDto.Workbook.WorkbookID).ToList();
+            var userCropYieldInformationsForWorkbook = GetDtoListByWorkbookID(dbContext, cropYieldInformationDto.WorkbookID).ToList();
             // unique by WorkbookID, CropID, PhaseID, TransplantProductionTrayTypeID
             if (userCropYieldInformationsForWorkbook.Any(x =>
-                x.Workbook.WorkbookID == cropYieldInformationDto.Workbook.WorkbookID
+                x.WorkbookID == cropYieldInformationDto.WorkbookID
                 && x.Crop.CropID == cropYieldInformationDto.Crop.CropID
                 && x.CropUnit.CropUnitID == cropYieldInformationDto.CropUnit.CropUnitID
                 && x.CropYieldInformationID != cropYieldInformationDto.CropYieldInformationID))
@@ -94,16 +94,16 @@ namespace OregonTilth.EFModels.Entities
             return result;
         }
 
-        public static IQueryable<CropYieldInformationDto> GetByUserID(OregonTilthDbContext dbContext, int userID)
+        public static IQueryable<CropYieldInformationSummaryDto> GetByUserID(OregonTilthDbContext dbContext, int userID)
         {
             var cropYieldInformations = GetCropYieldInformationImpl(dbContext).Where(x => x.Workbook.UserID == userID);
-            return cropYieldInformations.Select(x => x.AsDto());
+            return cropYieldInformations.Select(x => x.AsSummaryDto());
         }
 
-        public static IQueryable<CropYieldInformationDto> GetDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
+        public static IQueryable<CropYieldInformationSummaryDto> GetDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
         {
             var cropYieldInformations = GetCropYieldInformationImpl(dbContext).Where(x => x.WorkbookID == workbookID);
-            return cropYieldInformations.Select(x => x.AsDto());
+            return cropYieldInformations.Select(x => x.AsSummaryDto());
         }
 
         private static IQueryable<CropYieldInformation> GetCropYieldInformationImpl(OregonTilthDbContext dbContext)
@@ -115,13 +115,13 @@ namespace OregonTilth.EFModels.Entities
                 .AsNoTracking();
         }
 
-        public static CropYieldInformationDto GetDtoByCropYieldInformationID(OregonTilthDbContext dbContext, int cropYieldInformationID)
+        public static CropYieldInformationSummaryDto GetDtoByCropYieldInformationID(OregonTilthDbContext dbContext, int cropYieldInformationID)
         {
             var cropYieldInformation = GetCropYieldInformationImpl(dbContext).SingleOrDefault(x => x.CropYieldInformationID == cropYieldInformationID);
-            return cropYieldInformation?.AsDto();
+            return cropYieldInformation?.AsSummaryDto();
         }
 
-        public static CropYieldInformationDto CreateNewCropYieldInformation(OregonTilthDbContext dbContext, CropYieldInformationCreateDto cropYieldInformationCreateDto)
+        public static CropYieldInformationSummaryDto CreateNewCropYieldInformation(OregonTilthDbContext dbContext, CropYieldInformationCreateDto cropYieldInformationCreateDto)
         {
 
             var cropYieldInformation = new CropYieldInformation()
@@ -139,10 +139,10 @@ namespace OregonTilth.EFModels.Entities
 
             dbContext.SaveChanges();
             dbContext.Entry(cropYieldInformation).Reload();
-            return GetDtoByCropYieldInformationID(dbContext, cropYieldInformation.WorkbookID);
+            return GetDtoByCropYieldInformationID(dbContext, cropYieldInformation.CropYieldInformationID);
         }
 
-        public static CropYieldInformationDto UpdateCropYieldInformation(OregonTilthDbContext dbContext, CropYieldInformationDto cropYieldInformationDto)
+        public static CropYieldInformationSummaryDto UpdateCropYieldInformation(OregonTilthDbContext dbContext, CropYieldInformationSummaryDto cropYieldInformationDto)
         {
 
             var cropYieldInformation = dbContext.CropYieldInformations

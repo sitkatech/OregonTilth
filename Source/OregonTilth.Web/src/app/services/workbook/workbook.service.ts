@@ -413,8 +413,8 @@ export class WorkbookService {
         return this.apiService.getFromApi(route);
     }
 
-    updateCropYieldInformation(updateDto: CropYieldInformationDto): Observable<CropYieldInformationSummaryDto> {
-        let route = `/workbooks/${updateDto.Workbook.WorkbookID}/forms/crop-yield-information`;
+    updateCropYieldInformation(updateDto: CropYieldInformationSummaryDto): Observable<CropYieldInformationSummaryDto> {
+        let route = `/workbooks/${updateDto.WorkbookID}/forms/crop-yield-information`;
         return this.apiService.putToApi(route, updateDto);
     }
 

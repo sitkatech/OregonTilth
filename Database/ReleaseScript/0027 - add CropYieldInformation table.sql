@@ -17,3 +17,13 @@ create table dbo.CropYieldInformation(
 -- only 1 unique per WorkbookID/CropID/CropUnitID
 ALTER TABLE dbo.CropYieldInformation
   ADD CONSTRAINT AK_CropYieldInformation_WorkbookID_CropID_CropUnitID UNIQUE(WorkbookID, CropID, CropUnitID);
+
+
+  update dbo.CustomRichTextType
+  set CustomRichTextTypeName = 'CropYieldInfoForm', CustomRichTextTypeDisplayName= 'Crop Yield Info Form'
+  where CustomRichTextTypeID = 25
+  
+  update dbo.CustomRichText
+  set CustomRichTextContent = '<p>Crop Yield Info Form</p>'
+  where CustomRichTextTypeID = 25
+

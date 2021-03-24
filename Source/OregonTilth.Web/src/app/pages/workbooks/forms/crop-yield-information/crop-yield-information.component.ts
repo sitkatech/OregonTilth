@@ -51,9 +51,9 @@ export class CropYieldInformationComponent implements OnInit {
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
-  private addMachineryRequest: any;
+  
   public model: CropYieldInformationCreateDto;
-  public richTextTypeID : number = CustomRichTextType.MachineryCostForm;
+  public richTextTypeID : number = CustomRichTextType.CropYieldInfoForm;
 
   public getCropYieldInformationDtosRequest: any;
   public cropYieldInformations: CropYieldInformationSummaryDto[];
@@ -64,6 +64,7 @@ export class CropYieldInformationComponent implements OnInit {
   public getCropUnitsRequest: any;
   public cropUnits: CropUnitDto[];
 
+  private addCropYieldInformationRequest: any;
   private updateCropYieldInfoRequest: any;
   private deleteCropYieldInfoRequest: any;
 
@@ -98,27 +99,136 @@ export class CropYieldInformationComponent implements OnInit {
       {
         headerName: 'Crop', 
         field: 'Crop',
+        valueFormatter: function (params) {
+          return params.value ? params.value.CropName : '';
+        },
+        valueSetter: params => {
+          params.data.Crop = this.crops.find(element => {
+            return element.CropName == params.newValue;
+          });
+          return true;
+        },
         valueGetter: params => {
-          return params.data.Crop.CropName;
+          return params.data.Crop ? params.data.Crop.CropName : '';
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: this.crops.map(x => x.CropName)
+        },
+        editable:true,
+        sortable: true, 
+        filter: true,
+        resizable: true,
+        width:150
+      },
+      {
+        headerName: 'Crop Unit', 
+        field: 'Crop',
+        valueFormatter: function (params) {
+          return params.value ? params.value.CropUnitName : '';
+        },
+        valueSetter: params => {
+          params.data.CropUnit = this.cropUnits.find(element => {
+            return element.CropUnitName == params.newValue;
+          });
+          return true;
+        },
+        valueGetter: params => {
+          return params.data.CropUnit ? params.data.CropUnit.CropUnitName : '';
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: this.cropUnits.map(x => x.CropUnitName)
+        },
+        
+        editable:true,
+        sortable: true, 
+        filter: true,
+        resizable: true,
+        width:150
+      },
+      {
+        headerName: 'Harvested Yield Per Standard Unit of Space', 
+        field:'HarvestedYieldPerStandardUnitOfSpace',
+        valueGetter: function(params:any) {
+          return params.data.HarvestedYieldPerStandardUnitOfSpace
         },
         editable: true,
-        cellEditor: 'agPopupTextCellEditor',
+        cellEditorFramework: DecimalEditor,
+        sortable: true, 
+        filter: true,
+        cellStyle: params => {
+          if (params.value) {
+              return { backgroundColor: '#ccf5cc'};
+          } 
+          return {backgroundColor: '#ffdfd6'};
+        },
+        width:150
       },
-      // {
-      //   headerName: 'Hourly Machinery Operating Cost', 
-      //   field: 'StandardMachineryCost',
-      //   editable: true,
-      //   cellEditorFramework: DecimalEditor,
-      //   valueFormatter: this.gridService.currencyFormatter
-      // },
       {
-        headerName: 'Delete', field: 'MachineryID', valueGetter: function (params: any) {
-          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.MachineryID, ObjectDisplayName: params.data.MachineryName };
+        headerName: 'Marketable Yield Per Standard Unit of Space', 
+        field:'MarketableYieldPerStandardUnitOfSpace',
+        valueGetter: function(params:any) {
+          return params.data.MarketableYieldPerStandardUnitOfSpace
+        },
+        editable: true,
+        cellEditorFramework: DecimalEditor,
+        sortable: true, 
+        filter: true,
+        cellStyle: params => {
+          if (params.value) {
+              return { backgroundColor: '#ccf5cc'};
+          } 
+          return {backgroundColor: '#ffdfd6'};
+        },
+        width:150
+      },
+      {
+        headerName: 'Price Per Crop Unit', 
+        field:'PricePerCropUnit',
+        valueFormatter: this.gridService.currencyFormatter,
+        valueGetter: function(params:any) {
+          return params.data.PricePerCropUnit
+        },
+        editable: true,
+        cellEditorFramework: DecimalEditor,
+        sortable: true, 
+        filter: true,
+        cellStyle: params => {
+          if (params.value) {
+              return { backgroundColor: '#ccf5cc'};
+          } 
+          return {backgroundColor: '#ffdfd6'};
+        },
+        width:150
+      },
+      {
+        headerName: 'Packaging Cost Per Crop Unit', 
+        field:'PackagingCostPerCropUnit',
+        valueFormatter: this.gridService.currencyFormatter,
+        valueGetter: function(params:any) {
+          return params.data.PackagingCostPerCropUnit
+        },
+        editable: true,
+        cellEditorFramework: DecimalEditor,
+        sortable: true, 
+        filter: true,
+        cellStyle: params => {
+          if (params.value) {
+              return { backgroundColor: '#ccf5cc'};
+          } 
+          return {backgroundColor: '#ffdfd6'};
+        },
+        width:150
+      },
+      {
+        headerName: 'Delete', field: 'CropYieldInformationID', valueGetter: function (params: any) {
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.CropYieldInformationID, ObjectDisplayName: '' };
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
-            if(confirm(`Are you sure you want to delete the '${field.ObjectDisplayName}' Machinery?`)) {
-              componentScope.deleteMachinery(field.PrimaryKey)
+            if(confirm(`Are you sure you want to delete this record?`)) {
+              componentScope.deleteCropYieldInformation(field.PrimaryKey)
             }
           }
           },
@@ -129,9 +239,9 @@ export class CropYieldInformationComponent implements OnInit {
 
   
 
-  deleteMachinery(machineryID: number) {
-    this.deleteCropYieldInfoRequest = this.workbookService.deleteMachinery(this.workbookID, machineryID).subscribe(machineryDtos => {
-      var rowToRemove = this.gridApi.getRowNode(machineryID.toString());
+  deleteCropYieldInformation(cropYieldInformationID: number) {
+    this.deleteCropYieldInfoRequest = this.workbookService.deleteCropYieldInformation(this.workbookID, cropYieldInformationID).subscribe(response => {
+      var rowToRemove = this.gridApi.getRowNode(cropYieldInformationID.toString());
       this.gridApi.applyTransaction({remove:[rowToRemove.data]})
       this.cdr.detectChanges();
     }, error => {
@@ -142,10 +252,13 @@ export class CropYieldInformationComponent implements OnInit {
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
 
-    this.updateCropYieldInfoRequest = this.workbookService.updateMachinery(dtoToPost).subscribe(machinery => {
-      data.node.setData(machinery);
+    this.updateCropYieldInfoRequest = this.workbookService.updateCropYieldInformation(dtoToPost).subscribe(cropYieldInfoDto => {
+      data.node.setData(cropYieldInfoDto);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert(`Successfully updated Machinery`, AlertContext.Success));
     }, error => {
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
@@ -158,8 +271,8 @@ export class CropYieldInformationComponent implements OnInit {
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
-    if (this.addMachineryRequest && this.addMachineryRequest.unsubscribe) {
-      this.addMachineryRequest.unsubscribe();
+    if (this.addCropYieldInformationRequest && this.addCropYieldInformationRequest.unsubscribe) {
+      this.addCropYieldInformationRequest.unsubscribe();
     }
     if (this.getCropsRequest && this.getCropsRequest.unsubscribe) {
       this.getCropsRequest.unsubscribe();
@@ -175,9 +288,9 @@ export class CropYieldInformationComponent implements OnInit {
     this.cdr.detach();
   }
 
-  onSubmit(machineryForm: HTMLFormElement): void {
+  onSubmit(cropYieldInformationForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-    this.addMachineryRequest = this.workbookService.addCropYieldInformation(this.model).subscribe(response => {
+    this.addCropYieldInformationRequest = this.workbookService.addCropYieldInformation(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
       var transactionRows = this.gridApi.applyTransaction({add: [response]});
       this.gridApi.flashCells({ rowNodes: transactionRows.add });
