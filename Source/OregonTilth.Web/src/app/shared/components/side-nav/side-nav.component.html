@@ -179,6 +179,15 @@
                     <field-definition [fieldDefinitionType]="'TPLaborByCropForm'" [labelOverride]="''"></field-definition>
                 </a>
              </li>
+        <li class="nav-item">
+            <a class="nav-link"
+            [routerLink]="['/workbooks', workbook ? workbook.WorkbookID : -1, 'forms', 'crop-yield-information']"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbook }">
+            Crop Yield Info
+                <field-definition [fieldDefinitionType]="'CropYieldInfoForm'" [labelOverride]="''"></field-definition>
+            </a>
+        </li>
             <li class="nav-item">
                 <a class="nav-link"
                 [routerLink]="['/workbooks', workbook ? workbook.WorkbookID : -1, 'forms', 'crop-specific-info']"

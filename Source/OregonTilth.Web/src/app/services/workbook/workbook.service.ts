@@ -37,6 +37,9 @@ import { HarvestPostHarvestStandardTimeSummaryDto } from 'src/app/shared/models/
 import { HarvestPostHarvestStandardTimeCreateDto } from 'src/app/shared/models/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-time-create-dto';
 import { TransplantProductionStandardTimeSummaryDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-summary-dto';
 import { TransplantProductionStandardTimeCreateDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-create-dto';
+import { CropYieldInformationCreateDto } from 'src/app/shared/models/forms/crop-yield-information/crop-yield-information-create-dto';
+import { CropYieldInformationDto } from 'src/app/shared/models/generated/crop-yield-information-dto';
+import { CropYieldInformationSummaryDto } from 'src/app/shared/models/forms/crop-yield-information/crop-yield-information-summary-dto';
 import { CropSpecificInfoDto } from 'src/app/shared/models/generated/crop-specific-info-dto';
 import { CropSpecificInfoCreateDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-create-dto';
 
@@ -400,6 +403,28 @@ export class WorkbookService {
         let route = `/workbooks/${transplantProductionStandardTimeDto.WorkbookID}/forms/transplant-production-standard-times/${transplantProductionStandardTimeDto.TransplantProductionStandardTimeID}`;
         return this.apiService.putToApi(route, transplantProductionStandardTimeDto);
     }
+
+    // Crop Yield Information
+    addCropYieldInformation(createDto: CropYieldInformationCreateDto): Observable<CropYieldInformationSummaryDto> {
+        let route = `/workbooks/${createDto.WorkbookID}/forms/crop-yield-information`;
+        return this.apiService.postToApi(route, createDto);
+    }
+
+    getCropYieldInformation(workbookID: number): Observable<CropYieldInformationSummaryDto[]> {
+        let route = `workbooks/${workbookID}/forms/crop-yield-information`;
+        return this.apiService.getFromApi(route);
+    }
+
+    updateCropYieldInformation(updateDto: CropYieldInformationSummaryDto): Observable<CropYieldInformationSummaryDto> {
+        let route = `/workbooks/${updateDto.WorkbookID}/forms/crop-yield-information`;
+        return this.apiService.putToApi(route, updateDto);
+    }
+
+    deleteCropYieldInformation(workbookID:number, cropYieldInformationID: number): Observable<CropYieldInformationSummaryDto[]> {
+        let route = `workbooks/${workbookID}/forms/crop-yield-information/${cropYieldInformationID}`;
+        return this.apiService.deleteToApi(route);
+    }
+
 
     // Crop Specific Info form
     /* addCropSpecificInfo(cropSpecificInfoCreateDto: CropSpecificInfoCreateDto): Observable<CropSpecificInfoDto[]> {
