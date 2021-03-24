@@ -19,16 +19,16 @@
         <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
         <div class="card mt-4">
           <div class="card-header">
-            Crop Specific Info required for:
+            Crop Specific Info required for {{cropDtosRequired.length}} crops:
           </div>
           <div class="card-body">
-            <form *ngIf=(model) (ngSubmit)="onSubmit(cropSpecificInfoForm)" #cropSpecificInfoForm="ngForm">
+            <form *ngIf="cropDtosRequired.length > 0" (ngSubmit)="onSubmit(cropSpecificInfoForm)" #cropSpecificInfoForm="ngForm">
               <div class="row">
                 <div class="col-md-3">
                   <label>Crop</label>
                   <select class="form-control" [(ngModel)]="model.CropID" name="CropID">
                     <option disabled="true" [ngValue]="undefined" [selected]="!model.CropID">Select Crop</option>
-                    <option *ngFor="let option of cropsRequired()" [selected]="model.CropID == option.CropID" [value]="option.CropID">{{option.CropName}}</option>
+                    <option *ngFor="let option of cropDtosRequired" [selected]="model.CropID == option.CropID" [value]="option.CropID">{{option.CropName}}</option>
                   </select>
                 </div>
                 <div class="col-md-3">
@@ -71,53 +71,12 @@
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                     Submit
                   </button>
-                  
                 </div>
               </div>
             </form>
-
-            <!-- <table class="crop-specific-info-required-table">
-              <tbody>
-                <tr *ngFor="let item of createDtos">
-                  <td>{{item.Crop.CropName}}</td>
-                  <td>
-                    <select class="form-control" [(ngModel)]="item.TpOrDsTypeID">
-                      <option disabled="true" [ngValue]="undefined" [selected]="!item.TpOrDsTypeID">Select Tp Type or DS</option>
-                      <option *ngFor="let option of tpOrDsTypes" [selected]="item.TpOrDsTypeID == option.TpOrDsTypeID" [value]="option.TpOrDsTypeID">{{option.TpOrDsTypeDisplayName}}</option>
-                    </select>
-                  </td>
-                  <td>
-                    <label>Rows Per Standard Width</label>
-                    <input class="form-control" type="number" name="RowsPerStandardWidth" [(ngModel)]="item.RowsPerStandardWidth">                  
-                  </td>
-                  <td>
-                    <label>Drip Tape Rows Per Standard Width</label>
-                    <input class="form-control" type="number" name="DripTapeRowsPerStandardWidth" [(ngModel)]="item.DripTapeRowsPerStandardWidth">                  
-                  </td>
-                  <td>
-                    <label>In Row Spacing</label>
-                    <input class="form-control" type="number" name="InRowSpacing" [(ngModel)]="item.InRowSpacing">                  
-                  </td>
-                  <td>
-                    <label>Seed Cost Per Standard Unit Of Space</label>
-                    <input class="form-control" type="number" name="SeedCostPerStandardUnitOfSpace" [(ngModel)]="item.SeedCostPerStandardUnitOfSpace">                  
-                  </td>
-                  <td>
-                    <label>Transplant Production Cost Outsourced</label>
-                    <input class="form-control" type="number" name="TransplantProductionCostOutsourced" [(ngModel)]="item.TransplantProductionCostOutsourced">                  
-                  </td>
-                  <td>
-                    <button class="btn btn-success" (click)="initializeCropSpecificInfo(item)" [disabled]="startButtonDisabled(item)">Initialize</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table> -->
-
+            <p *ngIf="!cropDtosRequired || cropDtosRequired.length == 0">You have entered information for all of the crops required but you can still edit the records in the table below.</p>
           </div>
-          
         </div>
-
-        
         
         <div class="row mt-4">
           <div class="col">
@@ -126,8 +85,6 @@
             </ag-grid-angular>
           </div>
         </div>
-
-
 
     </div>
   </div>

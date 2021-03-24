@@ -8,65 +8,78 @@ namespace OregonTilth.EFModels.Entities
 {
     public partial class CropSpecificInfo
     {
-        public static IEnumerable<CropSpecificInfoDto> List(OregonTilthDbContext dbContext)
+        public static IEnumerable<CropSpecificInfoSummaryDto> List(OregonTilthDbContext dbContext)
         {
-            return GetCropSpecificInfoImpl(dbContext).Select(x => CropSpecificInfoExtensionMethods.AsDto(x))
+            return GetCropSpecificInfoImpl(dbContext).Select(x => CropSpecificInfoExtensionMethods.AsSummaryDto(x))
                 .AsEnumerable();
         }
 
-        public static List<ErrorMessage> ValidateCreate(OregonTilthDbContext dbContext, CropSpecificInfoCreateDto transplantProductionLaborByCropCreateDto)
+        public static List<ErrorMessage> ValidateCreate(OregonTilthDbContext dbContext, CropSpecificInfoCreateDto cropSpecificInfoCreateDto)
         {
             var result = new List<ErrorMessage>();
 
-            // very loose (non-existent even) validation here. It's mostly handled on the create event to create n number of rows based on what they are etering in bulk
+            if (cropSpecificInfoCreateDto.InRowSpacing == null 
+                && (cropSpecificInfoCreateDto.TpOrDsTypeID == (int) TpOrDsTypeEnum.TransplantFarmProduced 
+                    || cropSpecificInfoCreateDto.TpOrDsTypeID == (int) TpOrDsTypeEnum.TransplantOutsourced))
+            {
+                result.Add(new ErrorMessage() { Type = "In Row Spacing", Message = "In Row Spacing is required when a Transplant Type is selected." });
+            }
 
-            return result;
-        }
-
-        public static List<ErrorMessage> ValidateUpdate(OregonTilthDbContext dbContext, CropSpecificInfoDto cropSpecificInfoDto)
-        {
-            var result = new List<ErrorMessage>();
-
-            //var userCropSpecificInfosForWorkbook = GetDtoListByWorkbookID(dbContext, cropSpecificInfoDto.Workbook.WorkbookID).ToList();
-            //if (userCropSpecificInfosForWorkbook.Any(x => x.Workbook.WorkbookID == cropSpecificInfoDto.Workbook.WorkbookID
-            //                                              && x.Crop.CropID == cropSpecificInfoDto.Crop.CropID
-            //                                              && x.FieldInputCost.FieldInputCostID == cropSpecificInfoDto.FieldInputCost.FieldInputCostID
-            //                                              && x.CropSpecificInfoID != cropSpecificInfoDto.CropSpecificInfoID))
-            //{
-            //    result.Add(new ErrorMessage() { Type = "Field Input By Crop", Message = "Cannot have more than one entry per Workbook, Crop, and Field Input Cost." });
-            //}
+            if (cropSpecificInfoCreateDto.TransplantProductionCostOutsourced == null
+                && cropSpecificInfoCreateDto.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantOutsourced)
+            {
+                result.Add(new ErrorMessage() { Type = "Transplant Production Cost Outsourced", Message = "Transplant Production Cost Outsourced is required when a Transplant Type is outsourced." });
+            }
 
 
             return result;
         }
 
-        public static IQueryable<CropSpecificInfoDto> GetByUserID(OregonTilthDbContext dbContext, int userID)
+        public static List<ErrorMessage> ValidateUpdate(OregonTilthDbContext dbContext, CropSpecificInfoSummaryDto cropSpecificInfoDto)
         {
-            var fieldLaborByCrops = GetCropSpecificInfoImpl(dbContext).Where(x => x.Workbook.UserID == userID);
-            return fieldLaborByCrops.Select(x => x.AsDto());
+            var result = new List<ErrorMessage>();
+
+            if (cropSpecificInfoDto.InRowSpacing == null
+                && (cropSpecificInfoDto.TpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantFarmProduced
+                    || cropSpecificInfoDto.TpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantOutsourced))
+            {
+                result.Add(new ErrorMessage() { Type = "In Row Spacing", Message = "In Row Spacing is required when a Transplant Type is selected." });
+            }
+
+            if (cropSpecificInfoDto.TransplantProductionCostOutsourced == null
+                && cropSpecificInfoDto.TpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantOutsourced)
+            {
+                result.Add(new ErrorMessage() { Type = "Transplant Production Cost Outsourced", Message = "Transplant Production Cost Outsourced is required when a Transplant Type is outsourced." });
+            }
+
+
+            return result;
         }
 
-        public static IQueryable<CropSpecificInfoDto> GetDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
+        
+
+        public static IQueryable<CropSpecificInfoSummaryDto> GetDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
         {
             var cropSpecificInfos = GetCropSpecificInfoImpl(dbContext).Where(x => x.WorkbookID == workbookID);
-            return cropSpecificInfos.Select(x => x.AsDto());
+            return cropSpecificInfos.Select(x => x.AsSummaryDto());
         }
 
         private static IQueryable<CropSpecificInfo> GetCropSpecificInfoImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.CropSpecificInfos
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Crop)
                 .Include(x => x.TpOrDsType)
                 .AsNoTracking();
         }
 
-        public static CropSpecificInfoDto GetDtoByID(OregonTilthDbContext dbContext, int cropSpecificInfoID)
+        public static CropSpecificInfoSummaryDto GetDtoByID(OregonTilthDbContext dbContext, int cropSpecificInfoID)
         {
             var cropSpecificInfo = GetCropSpecificInfoImpl(dbContext).SingleOrDefault(x => x.CropSpecificInfoID == cropSpecificInfoID);
-            return cropSpecificInfo?.AsDto();
+            return cropSpecificInfo?.AsSummaryDto();
         }
 
-        public static IQueryable<CropSpecificInfoDto> Create(OregonTilthDbContext dbContext, CropSpecificInfoCreateDto cropSpecificInfoCreateDto)
+        public static CropSpecificInfoSummaryDto Create(OregonTilthDbContext dbContext, CropSpecificInfoCreateDto cropSpecificInfoCreateDto)
         {
 
             var cropSpecificInfo = new CropSpecificInfo
@@ -83,18 +96,26 @@ namespace OregonTilth.EFModels.Entities
             dbContext.CropSpecificInfos.Add(cropSpecificInfo);
 
             dbContext.SaveChanges();
+            dbContext.Entry(cropSpecificInfo).Reload();
 
-            return GetDtoListByWorkbookID(dbContext, cropSpecificInfoCreateDto.WorkbookID);
+            return GetDtoByID(dbContext, cropSpecificInfo.CropSpecificInfoID);
         }
 
-        public static CropSpecificInfoDto UpdateCropSpecificInfo(OregonTilthDbContext dbContext, CropSpecificInfoDto cropSpecificInfoDto)
+        public static CropSpecificInfoSummaryDto UpdateCropSpecificInfo(OregonTilthDbContext dbContext, CropSpecificInfoSummaryDto cropSpecificInfoDto)
         {
 
             var cropSpecificInfo = dbContext.CropSpecificInfos
-                .SingleOrDefault(x => x.CropSpecificInfoID == cropSpecificInfoDto.CropSpecificInfoID);
+                .Single(x => x.CropSpecificInfoID == cropSpecificInfoDto.CropSpecificInfoID);
 
 
-            //cropSpecificInfo.CropID = cropSpecificInfoDto.Crop.CropID;
+            cropSpecificInfo.CropID = cropSpecificInfoDto.Crop.CropID;
+            cropSpecificInfo.TpOrDsTypeID = cropSpecificInfoDto.TpOrDsType.TpOrDsTypeID;
+            cropSpecificInfo.RowsPerStandardWidth = cropSpecificInfoDto.RowsPerStandardWidth;
+            cropSpecificInfo.DripTapeRowsPerStandardWidth = cropSpecificInfoDto.DripTapeRowsPerStandardWidth;
+            cropSpecificInfo.InRowSpacing = cropSpecificInfoDto.InRowSpacing;
+            cropSpecificInfo.SeedCostPerStandardUnitOfSpace = cropSpecificInfoDto.SeedCostPerStandardUnitOfSpace;
+            cropSpecificInfo.TransplantProductionCostOutsourced =
+                cropSpecificInfoDto.TransplantProductionCostOutsourced;
 
 
             dbContext.SaveChanges();

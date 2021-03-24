@@ -11,4 +11,11 @@ namespace OregonTilth.EFModels.Entities
             return dbContext.TpOrDsTypes.Select(x => TpOrDsTypeExtensionMethods.AsDto(x)).ToList();
         }
     }
+
+    public enum TpOrDsTypeEnum
+    {
+        TransplantFarmProduced = 1,
+        TransplantOutsourced = 2,
+        DirectSeeded = 3,
+    }
 }

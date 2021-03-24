@@ -25,6 +25,7 @@ import { TpOrDsTypeDto } from 'src/app/shared/models/generated/tp-or-ds-type-dto
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { PhaseEnum } from 'src/app/shared/models/enums/phase.enum';
 import { TpOrDsTypeEnum } from 'src/app/shared/models/enums/tp-or-ds-type.enum';
+import { CropSpecificInfoSummaryDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-summary-dto';
 
 @Component({
   selector: 'crop-specific-info',
@@ -54,7 +55,7 @@ export class CropSpecificInfoComponent implements OnInit {
   public model: CropSpecificInfoCreateDto;
   
   public getCropSpecificInfosRequest: any;
-  public cropSpecificInfos: CropSpecificInfoDto[];
+  public cropSpecificInfos: CropSpecificInfoSummaryDto[];
 
   public getCropsRequest: any;
   public createDtos: CropSpecificInfoCreateDto[];
@@ -70,6 +71,8 @@ export class CropSpecificInfoComponent implements OnInit {
   public crops: CropDto[];
 
   public columnDefs: ColDef[];
+
+  public cropDtosRequired: CropDto[] = [];
  
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -82,12 +85,12 @@ export class CropSpecificInfoComponent implements OnInit {
       this.getCropSpecificInfosRequest = this.workbookService.getCropSpecificInfos(this.workbookID);
       this.getCropsRequest = this.workbookService.getCrops(this.workbookID);
 
-      forkJoin([this.getWorkbookRequest, this.getTpOrDsTypesRequest, this.getCropSpecificInfosRequest, this.getCropsRequest]).subscribe(([workbook, tpOrDsTypes, cropSpecificInfos, cropDtos]: [WorkbookDto, TpOrDsTypeDto[], CropSpecificInfoDto[], CropDto[]] ) => {
+      forkJoin([this.getWorkbookRequest, this.getTpOrDsTypesRequest, this.getCropSpecificInfosRequest, this.getCropsRequest]).subscribe(([workbook, tpOrDsTypes, cropSpecificInfos, cropDtos]: [WorkbookDto, TpOrDsTypeDto[], CropSpecificInfoSummaryDto[], CropDto[]] ) => {
           this.workbook = workbook;
           this.tpOrDsTypes = tpOrDsTypes;
           this.cropSpecificInfos = cropSpecificInfos;
           this.crops = cropDtos;
-
+          this.refreshCropsRequired();
           this.defineColumnDefs();
           this.cdr.markForCheck();
       });
@@ -95,25 +98,28 @@ export class CropSpecificInfoComponent implements OnInit {
     });
   }
 
-  cropsRequired() {
-    if(this.crops) {
+  refreshCropsRequired() {
+    if(this.crops && this.cropSpecificInfos) {
       var cropsIDsAlreadyAdded = this.cropSpecificInfos.map(x => {
         return x.Crop.CropID;
       })
 
-      var requiredCrops = this.crops.map(crop => {
-        if(!cropsIDsAlreadyAdded.includes(crop.CropID)){
-          return crop;
-        }
+      var requiredCrops = this.crops.filter(crop => {
+        return !cropsIDsAlreadyAdded.includes(crop.CropID);
+
+        
       })
-      return requiredCrops;
+      this.cropDtosRequired = requiredCrops;
     }
   }
+
+
 
   onSubmit(cropSpecificInfoForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
     this.addCropSpecificInfoRequest = this.workbookService.initializeCropSpecificInfo(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
+      this.cropSpecificInfos.push(response);
       var transactionRows = this.gridApi.applyTransaction({add: [response]});
       this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.resetForm();
@@ -156,6 +162,7 @@ export class CropSpecificInfoComponent implements OnInit {
   initializeCropSpecificInfo(createDto: CropSpecificInfoCreateDto) {
 
     this.initializeCropSpecificInfoRequest = this.workbookService.initializeCropSpecificInfo(createDto).subscribe(cropSpecificInfoDto => {
+      this.cropSpecificInfos.push(cropSpecificInfoDto)
         var transactionRows = this.gridApi.applyTransaction({add: [cropSpecificInfoDto]});
         this.gridApi.flashCells({ rowNodes: transactionRows.add });
         var createDtoIndexToRemove = this.createDtos.findIndex(x => {
@@ -234,7 +241,7 @@ export class CropSpecificInfoComponent implements OnInit {
 
   deleteCropSpecificInfo(cropSpecificInfoID: number) {
     this.deleteCropSpecificInfoRequest = this.workbookService.deleteCropSpecificInfo(this.workbookID, cropSpecificInfoID).subscribe(cropSpecificInfoDtos => {
-      this.cropSpecificInfos = cropSpecificInfoDtos;
+      //this.cropSpecificInfos = cropSpecificInfoDtos;
       this.alertService.pushAlert(new Alert("Successfully deleted Crop Specific Info", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
@@ -283,23 +290,11 @@ export class CropSpecificInfoComponent implements OnInit {
     this.cdr.detach();
   }
 
-/*   onSubmit(cropSpecificInfoForm: HTMLFormElement): void {
-    this.isLoadingSubmit = true;
-    this.addCropSpecificInfoRequest = this.workbookService.addCropSpecificInfo(this.model).subscribe(response => {
-      this.isLoadingSubmit = false;
-      this.cropSpecificInfos = response;
-      this.alertService.pushAlert(new Alert("Successfully added Crop Specific Info.", AlertContext.Success));
-      this.resetForm();
-      this.cdr.detectChanges();
-      
-    }, error => { 
-      this.isLoadingSubmit = false;
-      this.cdr.detectChanges();
-    });
-  } */
+
 
   resetForm() {
     this.model = new CropSpecificInfoCreateDto({WorkbookID: this.workbookID});
+    this.refreshCropsRequired();
   }
 
 }

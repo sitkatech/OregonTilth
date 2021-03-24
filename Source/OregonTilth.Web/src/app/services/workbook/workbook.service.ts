@@ -42,6 +42,7 @@ import { CropYieldInformationDto } from 'src/app/shared/models/generated/crop-yi
 import { CropYieldInformationSummaryDto } from 'src/app/shared/models/forms/crop-yield-information/crop-yield-information-summary-dto';
 import { CropSpecificInfoDto } from 'src/app/shared/models/generated/crop-specific-info-dto';
 import { CropSpecificInfoCreateDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-create-dto';
+import { CropSpecificInfoSummaryDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-summary-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -432,22 +433,22 @@ export class WorkbookService {
         return this.apiService.postToApi(route, cropSpecificInfoCreateDto);
     } */
 
-    initializeCropSpecificInfo(cropSpecificInfoCreateDto: CropSpecificInfoCreateDto) : Observable<CropSpecificInfoDto> {
+    initializeCropSpecificInfo(cropSpecificInfoCreateDto: CropSpecificInfoCreateDto) : Observable<CropSpecificInfoSummaryDto> {
         let route = `workbooks/${cropSpecificInfoCreateDto.WorkbookID}/forms/crop-specific-info/initialize`;
         return this.apiService.postToApi(route, cropSpecificInfoCreateDto);
     }
 
-    getCropSpecificInfos(workbookID: number): Observable<CropSpecificInfoDto[]> {
+    getCropSpecificInfos(workbookID: number): Observable<CropSpecificInfoSummaryDto[]> {
         let route = `workbooks/${workbookID}/forms/crop-specific-info`;
         return this.apiService.getFromApi(route);
     }
 
-    updateCropSpecificInfo(cropSpecificInfo: CropSpecificInfoDto): Observable<CropSpecificInfoDto> {
-        let route = `/workbooks/${cropSpecificInfo.Workbook.WorkbookID}/forms/crop-specific-info`;
+    updateCropSpecificInfo(cropSpecificInfo: CropSpecificInfoSummaryDto): Observable<CropSpecificInfoSummaryDto> {
+        let route = `/workbooks/${cropSpecificInfo.WorkbookID}/forms/crop-specific-info`;
         return this.apiService.putToApi(route, cropSpecificInfo);
     }
 
-    deleteCropSpecificInfo(workbookID:number, cropSpecificInfoID: number): Observable<CropSpecificInfoDto[]> {
+    deleteCropSpecificInfo(workbookID:number, cropSpecificInfoID: number): Observable<CropSpecificInfoSummaryDto[]> {
         let route = `workbooks/${workbookID}/forms/crop-specific-info/${cropSpecificInfoID}`;
         return this.apiService.deleteToApi(route);
     }

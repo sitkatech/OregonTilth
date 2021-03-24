@@ -1189,7 +1189,7 @@ namespace OregonTilth.API.Controllers
         [HttpPut("workbooks/{workbookID}/forms/crop-specific-info")]
         [LoggedInUnclassifiedFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<CropSpecificInfoDto> UpdateCropSpecificInfo([FromBody] CropSpecificInfoDto cropSpecificInfoDto)
+        public ActionResult<CropSpecificInfoDto> UpdateCropSpecificInfo([FromBody] CropSpecificInfoSummaryDto cropSpecificInfoDto)
         {
             var validationMessages = CropSpecificInfo.ValidateUpdate(_dbContext, cropSpecificInfoDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
