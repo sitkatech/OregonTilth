@@ -67,6 +67,7 @@ import { HarvestPostHarvestStandardTimesComponent } from './pages/workbooks/form
 import { TransplantProductionStandardTimesComponent } from './pages/workbooks/forms/transplant-production-standard-times/transplant-production-standard-times.component';
 import { CropYieldInformationComponent } from './pages/workbooks/forms/crop-yield-information/crop-yield-information.component';
 import { CropSpecificInfoComponent } from './pages/workbooks/forms/crop-specific-info/crop-specific-info.component';
+import { CropCropUnitComponent } from './pages/workbooks/results/crop-crop-unit/crop-crop-unit.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -108,6 +109,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     CropYieldInformationComponent,
     CropsComponent,
     CropUnitsComponent,
+    CropCropUnitComponent,
     EditWorkbookComponent,
     DisclaimerComponent,
     FieldDefinitionListComponent,
