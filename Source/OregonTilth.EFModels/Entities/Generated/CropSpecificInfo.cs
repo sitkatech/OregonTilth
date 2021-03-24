@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace OregonTilth.EFModels.Entities
 {
     [Table("CropSpecificInfo")]
+    [Index(nameof(WorkbookID), nameof(CropID), Name = "AK_CropSpecificInfo_WorkbookID_CropID", IsUnique = true)]
     public partial class CropSpecificInfo
     {
         [Key]
