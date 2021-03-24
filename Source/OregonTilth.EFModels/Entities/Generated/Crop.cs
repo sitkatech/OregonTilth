@@ -14,6 +14,7 @@ namespace OregonTilth.EFModels.Entities
     {
         public Crop()
         {
+            CropYieldInformations = new HashSet<CropYieldInformation>();
             FieldInputByCrops = new HashSet<FieldInputByCrop>();
             FieldLaborByCrops = new HashSet<FieldLaborByCrop>();
             HarvestPostHarvestStandardTimes = new HashSet<HarvestPostHarvestStandardTime>();
@@ -31,6 +32,8 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("Crops")]
         public virtual Workbook Workbook { get; set; }
+        [InverseProperty(nameof(CropYieldInformation.Crop))]
+        public virtual ICollection<CropYieldInformation> CropYieldInformations { get; set; }
         [InverseProperty(nameof(FieldInputByCrop.Crop))]
         public virtual ICollection<FieldInputByCrop> FieldInputByCrops { get; set; }
         [InverseProperty(nameof(FieldLaborByCrop.Crop))]
