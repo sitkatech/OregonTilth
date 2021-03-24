@@ -21,7 +21,7 @@ namespace OregonTilth.EFModels.Entities
         public decimal HarvestedYieldPerStandardUnitOfSpace { get; set; }
         [Column(TypeName = "decimal(18, 4)")]
         public decimal MarketableYieldPerStandardUnitOfSpace { get; set; }
-        [Column(TypeName = "decimal(18, 4)")]
+        [Column(TypeName = "money")]
         public decimal PackagingCostPerCropUnit { get; set; }
         [Column(TypeName = "money")]
         public decimal PricePerCropUnit { get; set; }

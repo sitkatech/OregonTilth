@@ -1072,6 +1072,54 @@ namespace OregonTilth.API.Controllers
         }
 
         #endregion "Transplant Production Standard Times"
+
+        #region "Crop Yield Information"
+
+        [HttpGet("workbooks/{workbookID}/forms/crop-yield-information")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<CropYieldInformationDto>> GetCropYieldInformations([FromRoute] int workbookID)
+        {
+            var cropYieldInformations = CropYieldInformation.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(cropYieldInformations);
+        }
+
+
+
+
+        [HttpPost("workbooks/{workbookID}/forms/crop-yield-information")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<CropYieldInformationDto>> CreateCropYieldInformation([FromBody] CropYieldInformationCreateDto createDto)
+        {
+            var validationMessages = CropYieldInformation.ValidateCreate(_dbContext, createDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var returnDto = CropYieldInformation.CreateNewCropYieldInformation(_dbContext, createDto);
+            return Ok(returnDto);
+
+        }
+
+
+        [HttpPut("workbooks/{workbookID}/forms/crop-yield-information/{cropYieldInformationID}")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionInformationDto> UpdateCropYieldInformation([FromBody] CropYieldInformationDto cropYieldInformationDto)
+        {
+            var validationMessages = CropYieldInformation.ValidateUpdate(_dbContext, cropYieldInformationDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var cropYieldInformationSummaryDto = CropYieldInformation.UpdateCropYieldInformation(_dbContext, cropYieldInformationDto);
+            return Ok(cropYieldInformationSummaryDto);
+        }
+
+        #endregion "Crop Yield Information"
     }
 
 

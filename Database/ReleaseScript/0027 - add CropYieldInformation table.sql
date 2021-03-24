@@ -8,7 +8,7 @@ create table dbo.CropYieldInformation(
     
     HarvestedYieldPerStandardUnitOfSpace decimal(18,4) not null,
     MarketableYieldPerStandardUnitOfSpace decimal(18,4) not null,
-    PackagingCostPerCropUnit decimal(18,4) not null,
+    PackagingCostPerCropUnit money not null,
     PricePerCropUnit money not null,
 );
 

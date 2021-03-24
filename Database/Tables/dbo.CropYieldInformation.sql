@@ -9,7 +9,7 @@ CREATE TABLE [dbo].[CropYieldInformation](
 	[CropUnitID] [int] NOT NULL,
 	[HarvestedYieldPerStandardUnitOfSpace] [decimal](18, 4) NOT NULL,
 	[MarketableYieldPerStandardUnitOfSpace] [decimal](18, 4) NOT NULL,
-	[PackagingCostPerCropUnit] [decimal](18, 4) NOT NULL,
+	[PackagingCostPerCropUnit] [money] NOT NULL,
 	[PricePerCropUnit] [money] NOT NULL,
  CONSTRAINT [PK_CropYieldInformation_CropYieldInformationID] PRIMARY KEY CLUSTERED 
 (
