@@ -50,5 +50,12 @@ namespace OregonTilth.API.Controllers
             var harvestTypes = HarvestType.List(_dbContext);
             return harvestTypes;
         }
+
+        [HttpGet("lookupTable/tp-or-ds-types")]
+        public ActionResult<List<TpOrDsTypeDto>> ListAllTpOrDsTypes()
+        {
+            var allTpOrDsTypes = TpOrDsType.List(_dbContext); //FieldUnitType.List(_dbContext);
+            return allTpOrDsTypes;
+        }
     }
 }

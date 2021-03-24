@@ -169,16 +169,16 @@
                     TP Info
                     <field-definition [fieldDefinitionType]="'TPInfoForm'" [labelOverride]="''"></field-definition>
                 </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link"
-            [routerLink]="['/workbooks', workbook ? workbook.WorkbookID : -1, 'forms', 'transplant-production-labor-by-crop']"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbook }">
-            TP Labor By Crop
-                <field-definition [fieldDefinitionType]="'TPLaborByCropForm'" [labelOverride]="''"></field-definition>
-            </a>
-        </li>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                [routerLink]="['/workbooks', workbook ? workbook.WorkbookID : -1, 'forms', 'transplant-production-labor-by-crop']"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbook }">
+                TP Labor By Crop
+                    <field-definition [fieldDefinitionType]="'TPLaborByCropForm'" [labelOverride]="''"></field-definition>
+                </a>
+             </li>
         <li class="nav-item">
             <a class="nav-link"
             [routerLink]="['/workbooks', workbook ? workbook.WorkbookID : -1, 'forms', 'crop-yield-information']"
@@ -188,7 +188,16 @@
                 <field-definition [fieldDefinitionType]="'CropYieldInfoForm'" [labelOverride]="''"></field-definition>
             </a>
         </li>
-    </ul>
+            <li class="nav-item">
+                <a class="nav-link"
+                [routerLink]="['/workbooks', workbook ? workbook.WorkbookID : -1, 'forms', 'crop-specific-info']"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbook }">
+                    Crop Specific Info
+                    <field-definition [fieldDefinitionType]="'CropSpecificInfoForm'" [labelOverride]="''"></field-definition>
+                </a>
+            </li>
+        </ul>
     </div>
     <div class="nav-group mb-3">
         <h4>Results <field-definition [fieldDefinitionType]="'Results'" [labelOverride]="''"></field-definition></h4>
