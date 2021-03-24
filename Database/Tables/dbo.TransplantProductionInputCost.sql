@@ -36,3 +36,7 @@ ALTER TABLE [dbo].[TransplantProductionInputCost]  WITH CHECK ADD  CONSTRAINT [F
 REFERENCES [dbo].[TransplantProductionTrayType] ([TransplantProductionTrayTypeID])
 GO
 ALTER TABLE [dbo].[TransplantProductionInputCost] CHECK CONSTRAINT [FK_TransplantProductionTrayTypeCost_TransplantProductionTrayType_TransplantProductionTrayTypeID]
+GO
+ALTER TABLE [dbo].[TransplantProductionInputCost]  WITH CHECK ADD  CONSTRAINT [CK_TransplantProductionInputCost_CostPerTray_Greater_Than_Zero] CHECK  (([CostPerTray]>(0)))
+GO
+ALTER TABLE [dbo].[TransplantProductionInputCost] CHECK CONSTRAINT [CK_TransplantProductionInputCost_CostPerTray_Greater_Than_Zero]

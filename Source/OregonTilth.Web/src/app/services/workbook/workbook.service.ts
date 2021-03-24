@@ -33,6 +33,10 @@ import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-s
 import { vFieldLaborActivityForTimeStudyDto } from 'src/app/shared/models/forms/field-standard-times/vFieldLaborActivityForTimeStudyDto';
 import { FieldStandardTimeDto } from 'src/app/shared/models/generated/field-standard-time-dto';
 import { FieldStandardTimeCreateDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-create-dto';
+import { HarvestPostHarvestStandardTimeSummaryDto } from 'src/app/shared/models/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-time-summary-dto';
+import { HarvestPostHarvestStandardTimeCreateDto } from 'src/app/shared/models/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-time-create-dto';
+import { TransplantProductionStandardTimeSummaryDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-summary-dto';
+import { TransplantProductionStandardTimeCreateDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-create-dto';
 import { CropSpecificInfoDto } from 'src/app/shared/models/generated/crop-specific-info-dto';
 import { CropSpecificInfoCreateDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-create-dto';
 
@@ -68,7 +72,7 @@ export class WorkbookService {
     }
 
     // Field Labor Activity Form
-    addFieldLaborActivity(fieldLaborActivityCreateDto: FieldLaborActivityCreateDto): Observable<FieldLaborActivityDto[]> {
+    addFieldLaborActivity(fieldLaborActivityCreateDto: FieldLaborActivityCreateDto): Observable<FieldLaborActivityDto> {
         let route = `/workbooks/${fieldLaborActivityCreateDto.WorkbookID}/forms/field-labor-activities`;
         return this.apiService.postToApi(route, fieldLaborActivityCreateDto);
     }
@@ -90,7 +94,7 @@ export class WorkbookService {
 
 
     // Machinery Form
-    addMachinery(machineryCreateDto: MachineryCreateDto): Observable<MachineryDto[]> {
+    addMachinery(machineryCreateDto: MachineryCreateDto): Observable<MachineryDto> {
         let route = `/workbooks/${machineryCreateDto.WorkbookID}/forms/machinery`;
         return this.apiService.postToApi(route, machineryCreateDto);
     }
@@ -217,7 +221,7 @@ export class WorkbookService {
     }
 
     // Field Input Cost Form
-    addFieldInputCost(fieldInputByCostCreateDto: FieldInputCostCreateDto): Observable<FieldInputCostDto[]> {
+    addFieldInputCost(fieldInputByCostCreateDto: FieldInputCostCreateDto): Observable<FieldInputCostDto> {
         let route = `/workbooks/forms/field-input-costs`;
         return this.apiService.postToApi(route, fieldInputByCostCreateDto);
     }
@@ -238,7 +242,7 @@ export class WorkbookService {
     }
 
     // Transplant Production Inputs Form
-    addTransplantProductionInput(transplantProductionInputCreateDto: TransplantProductionInputCreateDto): Observable<TransplantProductionInputDto[]> {
+    addTransplantProductionInput(transplantProductionInputCreateDto: TransplantProductionInputCreateDto): Observable<TransplantProductionInputDto> {
         let route = `/workbooks/${transplantProductionInputCreateDto.WorkbookID}/forms/transplant-production-inputs`;
         return this.apiService.postToApi(route, transplantProductionInputCreateDto);
     }
@@ -281,7 +285,7 @@ export class WorkbookService {
 
 
     // TP Input Cost Form
-    addTransplantProductionInputCost(transplantProductionInputCostCreateDto: TransplantProductionInputCostCreateDto): Observable<TransplantProductionInputCostDto[]> {
+    addTransplantProductionInputCost(transplantProductionInputCostCreateDto: TransplantProductionInputCostCreateDto): Observable<TransplantProductionInputCostDto> {
         let route = `/workbooks/${transplantProductionInputCostCreateDto.WorkbookID}/forms/transplant-production-input-costs`;
         return this.apiService.postToApi(route, transplantProductionInputCostCreateDto);
     }
@@ -362,6 +366,39 @@ export class WorkbookService {
     updateFieldStandardTime(fieldStandardTimeDto: FieldStandardTimeSummaryDto): Observable<FieldStandardTimeSummaryDto> {
         let route = `/workbooks/${fieldStandardTimeDto.WorkbookID}/forms/field-standard-times/${fieldStandardTimeDto.FieldStandardTimeID}`;
         return this.apiService.putToApi(route, fieldStandardTimeDto);
+    }
+
+
+    // Harvest Post-Harvest Standard Times
+    getHarvestPostHarvestStandardTimes(workbookID: number): Observable<HarvestPostHarvestStandardTimeSummaryDto[]> {
+        let route = `workbooks/${workbookID}/forms/harvest-post-harvest-standard-times`;
+        return this.apiService.getFromApi(route);
+    }
+
+    initializeHarvestPostHarvestTimeStudy(harvestPostHarvestStandardTimeCreateDto: HarvestPostHarvestStandardTimeCreateDto) : Observable<HarvestPostHarvestStandardTimeSummaryDto> {
+        let route = `workbooks/${harvestPostHarvestStandardTimeCreateDto.WorkbookID}/forms/harvest-post-harvest-standard-times/initialize`;
+        return this.apiService.postToApi(route, harvestPostHarvestStandardTimeCreateDto);
+    }
+
+    updateHarvestPostHarvestStandardTime(harvestPostHarvestStandardTimeDto: HarvestPostHarvestStandardTimeSummaryDto): Observable<HarvestPostHarvestStandardTimeSummaryDto> {
+        let route = `/workbooks/${harvestPostHarvestStandardTimeDto.WorkbookID}/forms/harvest-post-harvest-standard-times/${harvestPostHarvestStandardTimeDto.HarvestPostHarvestStandardTimeID}`;
+        return this.apiService.putToApi(route, harvestPostHarvestStandardTimeDto);
+    }
+
+    // Transplant Production Standard Times
+    getTransplantProductionStandardTimes(workbookID: number): Observable<TransplantProductionStandardTimeSummaryDto[]> {
+        let route = `workbooks/${workbookID}/forms/transplant-production-standard-times`;
+        return this.apiService.getFromApi(route);
+    }
+
+    initializeTransplantProductionTimeStudy(transplantProductionStandardTimeCreateDto: TransplantProductionStandardTimeCreateDto) : Observable<TransplantProductionStandardTimeSummaryDto> {
+        let route = `workbooks/${transplantProductionStandardTimeCreateDto.WorkbookID}/forms/transplant-production-standard-times/initialize`;
+        return this.apiService.postToApi(route, transplantProductionStandardTimeCreateDto);
+    }
+
+    updateTransplantProductionStandardTime(transplantProductionStandardTimeDto: TransplantProductionStandardTimeSummaryDto): Observable<TransplantProductionStandardTimeSummaryDto> {
+        let route = `/workbooks/${transplantProductionStandardTimeDto.WorkbookID}/forms/transplant-production-standard-times/${transplantProductionStandardTimeDto.TransplantProductionStandardTimeID}`;
+        return this.apiService.putToApi(route, transplantProductionStandardTimeDto);
     }
 
     // Crop Specific Info form

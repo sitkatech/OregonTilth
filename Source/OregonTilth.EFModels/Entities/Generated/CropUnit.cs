@@ -12,6 +12,11 @@ namespace OregonTilth.EFModels.Entities
     [Index(nameof(CropUnitName), nameof(WorkbookID), Name = "AK_CropUnit_CropUnitName_WorkbookID", IsUnique = true)]
     public partial class CropUnit
     {
+        public CropUnit()
+        {
+            HarvestPostHarvestStandardTimes = new HashSet<HarvestPostHarvestStandardTime>();
+        }
+
         [Key]
         public int CropUnitID { get; set; }
         public int WorkbookID { get; set; }
@@ -22,5 +27,7 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("CropUnits")]
         public virtual Workbook Workbook { get; set; }
+        [InverseProperty(nameof(HarvestPostHarvestStandardTime.CropUnit))]
+        public virtual ICollection<HarvestPostHarvestStandardTime> HarvestPostHarvestStandardTimes { get; set; }
     }
 }

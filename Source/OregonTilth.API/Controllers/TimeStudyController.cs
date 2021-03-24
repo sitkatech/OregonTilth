@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -22,10 +23,8 @@ namespace OregonTilth.API.Controllers
         [HttpPut("workbooks/{workbookID}/time-studies")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<FieldStandardTimeSummaryDto> EditWorkbook([FromBody] TimeStudiesUpsertDto timeStudiesUpsertDto)
+        public ActionResult<IHasTimeStudies> EditWorkbook([FromBody] TimeStudiesUpsertDto timeStudiesUpsertDto)
         {
-            var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
-
             var validationMessages = TimeStudy.ValidateUpsert(_dbContext, timeStudiesUpsertDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
             if (!ModelState.IsValid)
@@ -35,9 +34,25 @@ namespace OregonTilth.API.Controllers
 
             TimeStudy.Upsert(_dbContext, timeStudiesUpsertDto);
 
-            var fieldStandardTimeSummaryDtos = FieldStandardTime.GetDtoListByWorkbookID(_dbContext, timeStudiesUpsertDto.WorkbookID);
-            
-            return Ok(fieldStandardTimeSummaryDtos.Single(x => x.FieldStandardTimeID == timeStudiesUpsertDto.FieldStandardTimeID));
+            IHasTimeStudies returnDto = null;
+            if (timeStudiesUpsertDto.FieldStandardTimeID != null)
+            {
+                returnDto = FieldStandardTime.GetDtoListByWorkbookID(_dbContext, timeStudiesUpsertDto.WorkbookID)
+                    .Single(x => x.FieldStandardTimeID == timeStudiesUpsertDto.FieldStandardTimeID);
+            }
+            if (timeStudiesUpsertDto.HarvestPostHarvestStandardTimeID != null)
+            {
+                returnDto = HarvestPostHarvestStandardTime.GetDtoListByWorkbookID(_dbContext, timeStudiesUpsertDto.WorkbookID)
+                    .Single(x => x.HarvestPostHarvestStandardTimeID == timeStudiesUpsertDto.HarvestPostHarvestStandardTimeID);
+            }
+
+            if (timeStudiesUpsertDto.TransplantProductionStandardTimeID != null)
+            {
+                returnDto = TransplantProductionStandardTime.GetDtoListByWorkbookID(_dbContext, timeStudiesUpsertDto.WorkbookID)
+                    .Single(x => x.TransplantProductionStandardTimeID == timeStudiesUpsertDto.TransplantProductionStandardTimeID);
+            }
+
+            return Ok(returnDto);
         }
 
     }

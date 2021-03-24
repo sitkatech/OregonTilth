@@ -164,7 +164,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/machinery")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<MachineryDto>> CreateMachinery([FromBody] MachineryUpsertDto machineryUpsertDto)
+        public ActionResult<MachineryDto> CreateMachinery([FromBody] MachineryUpsertDto machineryUpsertDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
 
@@ -175,8 +175,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var machineryDtos = Machinery.CreateNewMachinery(_dbContext, machineryUpsertDto, userDto);
-            return Ok(machineryDtos);
+            var machineryDto = Machinery.CreateNewMachinery(_dbContext, machineryUpsertDto, userDto);
+            return Ok(machineryDto);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/machinery")]
@@ -421,7 +421,7 @@ namespace OregonTilth.API.Controllers
         #region "Field Input Costs Form"
         [HttpPost("workbooks/forms/field-input-costs")]
         [WorkbookEditFeature]
-        public ActionResult<IEnumerable<FieldInputCostDto>> CreateFieldInputCost([FromBody] FieldInputCostCreateDto fieldInputCostCreateDto)
+        public ActionResult<FieldInputCostDto> CreateFieldInputCost([FromBody] FieldInputCostCreateDto fieldInputCostCreateDto)
         {
             var validationMessages = FieldInputCost.ValidateCreate(_dbContext, fieldInputCostCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
@@ -430,8 +430,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var fieldInputByCostDtos = FieldInputCost.CreateNewFieldInputCost(_dbContext, fieldInputCostCreateDto);
-            return Ok(fieldInputByCostDtos);
+            var fieldInputCostDto = FieldInputCost.CreateNewFieldInputCost(_dbContext, fieldInputCostCreateDto);
+            return Ok(fieldInputCostDto);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/field-input-costs")]
@@ -610,7 +610,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/transplant-production-inputs")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<TransplantProductionInputDto>> CreateTransplantProductionInput([FromBody] TransplantProductionInputCreateDto transplantProductionInputCreateDto)
+        public ActionResult<TransplantProductionInputDto> CreateTransplantProductionInput([FromBody] TransplantProductionInputCreateDto transplantProductionInputCreateDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
 
@@ -621,8 +621,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var transplantProductionInputDtos = TransplantProductionInput.CreateNewTransplantProductionInput(_dbContext, transplantProductionInputCreateDto, userDto);
-            return Ok(transplantProductionInputDtos);
+            var tpInput = TransplantProductionInput.CreateNewTransplantProductionInput(_dbContext, transplantProductionInputCreateDto, userDto);
+            return Ok(tpInput);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/transplant-production-inputs")]
@@ -741,7 +741,7 @@ namespace OregonTilth.API.Controllers
         #region "Transplant Production Input Costs Form"
         [HttpPost("workbooks/{workbookID}/forms/transplant-production-input-costs")]
         [WorkbookEditFeature]
-        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> CreateTransplantProductionInputCost([FromBody] TransplantProductionInputCostCreateDto transplantProductionInputCostCreateDto)
+        public ActionResult<TransplantProductionInputCostDto> CreateTransplantProductionInputCost([FromBody] TransplantProductionInputCostCreateDto transplantProductionInputCostCreateDto)
         {
             var validationMessages = TransplantProductionInputCost.ValidateCreate(_dbContext, transplantProductionInputCostCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
@@ -750,8 +750,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var transplantProductionInputCostDtos = TransplantProductionInputCost.CreateNewTransplantProductionInputCost(_dbContext, transplantProductionInputCostCreateDto);
-            return Ok(transplantProductionInputCostDtos);
+            var transplantProductionInputCostDto = TransplantProductionInputCost.CreateNewTransplantProductionInputCost(_dbContext, transplantProductionInputCostCreateDto);
+            return Ok(transplantProductionInputCostDto);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/transplant-production-input-costs")]
@@ -965,7 +965,7 @@ namespace OregonTilth.API.Controllers
         [HttpPut("workbooks/{workbookID}/forms/field-standard-times/{fieldStandardTimeID}")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<TransplantProductionInformationDto> UpdateFieldStandardTime([FromBody] FieldStandardTimeDto fieldStandardTimeDto)
+        public ActionResult<FieldStandardTimeSummaryDto> UpdateFieldStandardTime([FromBody] FieldStandardTimeDto fieldStandardTimeDto)
         {
             var validationMessages = FieldStandardTime.ValidateUpdate(_dbContext, fieldStandardTimeDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
@@ -980,6 +980,99 @@ namespace OregonTilth.API.Controllers
 
         #endregion "Field Standard Times"
 
+        #region "Harvest Post-Harvest Standard Times"
+
+        [HttpGet("workbooks/{workbookID}/forms/harvest-post-harvest-standard-times")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> GetHarvestPostHarvestStandardTimes([FromRoute] int workbookID)
+        {
+            var harvestPostHarvestStandardTimes = HarvestPostHarvestStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(harvestPostHarvestStandardTimes);
+        }
+        
+        [HttpPost("workbooks/{workbookID}/forms/harvest-post-harvest-standard-times/initialize")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<HarvestPostHarvestStandardTimeDto>> InitializeTimeStudy([FromBody] HarvestPostHarvestStandardTimeCreateDto createDto)
+        {
+            var validationMessages = HarvestPostHarvestStandardTime.ValidateCreate(_dbContext, createDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var returnDto = HarvestPostHarvestStandardTime.CreateNew(_dbContext, createDto);
+            return Ok(returnDto);
+
+        }
+
+
+        [HttpPut("workbooks/{workbookID}/forms/harvest-post-harvest-standard-times/{harvestPostHarvestStandardTimeID}")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionInformationDto> UpdateHarvestPostHarvestStandardTime([FromBody] HarvestPostHarvestStandardTimeDto harvestPostHarvestStandardTimeDto)
+        {
+            var validationMessages = HarvestPostHarvestStandardTime.ValidateUpdate(_dbContext, harvestPostHarvestStandardTimeDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var harvestPostHarvestStandardTimeSummaryDto = HarvestPostHarvestStandardTime.UpdateHarvestPostHarvestStandardTime(_dbContext, harvestPostHarvestStandardTimeDto);
+            return Ok(harvestPostHarvestStandardTimeSummaryDto);
+        }
+
+        #endregion "Harvest Post-Harvest Standard Times"
+
+        #region "Transplant Production Standard Times"
+
+        [HttpGet("workbooks/{workbookID}/forms/transplant-production-standard-times")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> GetTransplantProductionStandardTimes([FromRoute] int workbookID)
+        {
+            var transplantProductionStandardTimes = TransplantProductionStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(transplantProductionStandardTimes);
+        }
+
+
+      
+
+        [HttpPost("workbooks/{workbookID}/forms/transplant-production-standard-times/initialize")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionStandardTimeDto>> InitializeTimeStudy([FromBody] TransplantProductionStandardTimeCreateDto createDto)
+        {
+            var validationMessages = TransplantProductionStandardTime.ValidateCreate(_dbContext, createDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var returnDto = TransplantProductionStandardTime.CreateNew(_dbContext, createDto);
+            return Ok(returnDto);
+
+        }
+
+
+        [HttpPut("workbooks/{workbookID}/forms/transplant-production-standard-times/{transplantProductionStandardTimeID}")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionInformationDto> UpdateTransplantProductionStandardTime([FromBody] TransplantProductionStandardTimeDto transplantProductionStandardTimeDto)
+        {
+            var validationMessages = TransplantProductionStandardTime.ValidateUpdate(_dbContext, transplantProductionStandardTimeDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transplantProductionStandardTimeSummaryDto = TransplantProductionStandardTime.UpdateTransplantProductionStandardTime(_dbContext, transplantProductionStandardTimeDto);
+            return Ok(transplantProductionStandardTimeSummaryDto);
+        }
+
+        #endregion "Transplant Production Standard Times"
+        
         #region Crop Specific Information Form
         //[HttpPost("workbooks/{workbookID}/forms/crop-specific-info")]
         //[LoggedInUnclassifiedFeature]

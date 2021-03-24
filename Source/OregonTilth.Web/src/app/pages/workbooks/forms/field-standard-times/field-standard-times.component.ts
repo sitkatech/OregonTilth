@@ -86,6 +86,7 @@ export class FieldStandardTimesComponent implements OnInit {
   public closeResult: string;
 
   public updateFieldStandardTimeRequest: any;
+  
   getRowNodeId(data)  {
     return data.FieldStandardTimeID.toString();
   }

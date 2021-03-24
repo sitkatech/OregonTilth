@@ -22,6 +22,7 @@ namespace OregonTilth.EFModels.Entities
             FieldLaborActivities = new HashSet<FieldLaborActivity>();
             FieldLaborByCrops = new HashSet<FieldLaborByCrop>();
             FieldStandardTimes = new HashSet<FieldStandardTime>();
+            HarvestPostHarvestStandardTimes = new HashSet<HarvestPostHarvestStandardTime>();
             Machineries = new HashSet<Machinery>();
             TimeStudies = new HashSet<TimeStudy>();
             TransplantProductionInformations = new HashSet<TransplantProductionInformation>();
@@ -29,6 +30,7 @@ namespace OregonTilth.EFModels.Entities
             TransplantProductionInputs = new HashSet<TransplantProductionInput>();
             TransplantProductionLaborActivities = new HashSet<TransplantProductionLaborActivity>();
             TransplantProductionLaborActivityByCrops = new HashSet<TransplantProductionLaborActivityByCrop>();
+            TransplantProductionStandardTimes = new HashSet<TransplantProductionStandardTime>();
             TransplantProductionTrayTypes = new HashSet<TransplantProductionTrayType>();
         }
 
@@ -66,6 +68,8 @@ namespace OregonTilth.EFModels.Entities
         public virtual ICollection<FieldLaborByCrop> FieldLaborByCrops { get; set; }
         [InverseProperty(nameof(FieldStandardTime.Workbook))]
         public virtual ICollection<FieldStandardTime> FieldStandardTimes { get; set; }
+        [InverseProperty(nameof(HarvestPostHarvestStandardTime.Workbook))]
+        public virtual ICollection<HarvestPostHarvestStandardTime> HarvestPostHarvestStandardTimes { get; set; }
         [InverseProperty(nameof(Machinery.Workbook))]
         public virtual ICollection<Machinery> Machineries { get; set; }
         [InverseProperty(nameof(TimeStudy.Workbook))]
@@ -80,6 +84,8 @@ namespace OregonTilth.EFModels.Entities
         public virtual ICollection<TransplantProductionLaborActivity> TransplantProductionLaborActivities { get; set; }
         [InverseProperty(nameof(TransplantProductionLaborActivityByCrop.Workbook))]
         public virtual ICollection<TransplantProductionLaborActivityByCrop> TransplantProductionLaborActivityByCrops { get; set; }
+        [InverseProperty(nameof(TransplantProductionStandardTime.Workbook))]
+        public virtual ICollection<TransplantProductionStandardTime> TransplantProductionStandardTimes { get; set; }
         [InverseProperty(nameof(TransplantProductionTrayType.Workbook))]
         public virtual ICollection<TransplantProductionTrayType> TransplantProductionTrayTypes { get; set; }
     }

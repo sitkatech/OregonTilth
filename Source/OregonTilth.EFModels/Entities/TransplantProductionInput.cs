@@ -68,7 +68,7 @@ namespace OregonTilth.EFModels.Entities
         {
             return dbContext.TransplantProductionInputs
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
-
+                .Include(x => x.TransplantProductionInputCosts)
                 .AsNoTracking();
         }
 
@@ -78,19 +78,19 @@ namespace OregonTilth.EFModels.Entities
             return transplantProductionLaborActivity?.AsDto();
         }
 
-        public static IQueryable<TransplantProductionInputDto> CreateNewTransplantProductionInput(OregonTilthDbContext dbContext, TransplantProductionInputCreateDto transplantProductionLaborActivityCreateDto, UserDto userDto)
+        public static TransplantProductionInputDto CreateNewTransplantProductionInput(OregonTilthDbContext dbContext, TransplantProductionInputCreateDto tpInputCreateDto, UserDto userDto)
         {
-            var transplantProductionLaborActivity = new TransplantProductionInput
+            var tpInput = new TransplantProductionInput
             {
-                TransplantProductionInputName = transplantProductionLaborActivityCreateDto.TransplantProductionInputName,
-                WorkbookID = transplantProductionLaborActivityCreateDto.WorkbookID
+                TransplantProductionInputName = tpInputCreateDto.TransplantProductionInputName,
+                WorkbookID = tpInputCreateDto.WorkbookID
             };
 
-            dbContext.TransplantProductionInputs.Add(transplantProductionLaborActivity);
+            dbContext.TransplantProductionInputs.Add(tpInput);
             dbContext.SaveChanges();
-            dbContext.Entry(transplantProductionLaborActivity).Reload();
+            dbContext.Entry(tpInput).Reload();
 
-            return GetDtoListByWorkbookID(dbContext, transplantProductionLaborActivityCreateDto.WorkbookID);
+            return GetDtoListByWorkbookID(dbContext, tpInputCreateDto.WorkbookID).ToList().Single(x => x.TransplantProductionInputID == tpInput.TransplantProductionInputID);
         }
 
         public static TransplantProductionInputDto UpdateTransplantProductionInput(OregonTilthDbContext dbContext, TransplantProductionInputDto transplantProductionInputDto)
@@ -106,10 +106,16 @@ namespace OregonTilth.EFModels.Entities
             return GetDtoByTransplantProductionInputID(dbContext, transplantProductionLaborActivity.TransplantProductionInputID);
         }
 
-        // todo: validate deletion
-        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int transplantProductionLaborActivityID)
+        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int tpInputID)
         {
+            var existingRecord = GetTransplantProductionInputImpl(dbContext).Single(x => x.TransplantProductionInputID == tpInputID);
+
             var result = new List<ErrorMessage>();
+
+            if (existingRecord.TransplantProductionInputCosts.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Transplant Production Input", Message = "Cannot delete an input that has Transplant Production Input Cost data." });
+            }
 
             return result;
         }

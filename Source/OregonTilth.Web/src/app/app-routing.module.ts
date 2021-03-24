@@ -35,6 +35,8 @@ import { TransplantProductionInputCostsComponent } from './pages/workbooks/forms
 import { FieldInputByCropComponent } from './pages/workbooks/forms/field-input-by-crop/field-input-by-crop.component';
 import { TransplantProductionInformationComponent } from './pages/workbooks/forms/transplant-production-information/transplant-production-information.component';
 import { FieldStandardTimesComponent } from './pages/workbooks/forms/field-standard-times/field-standard-times.component';
+import { HarvestPostHarvestStandardTimesComponent } from './pages/workbooks/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-times.component';
+import { TransplantProductionStandardTimesComponent } from './pages/workbooks/forms/transplant-production-standard-times/transplant-production-standard-times.component';
 import { CropSpecificInfoComponent } from './pages/workbooks/forms/crop-specific-info/crop-specific-info.component';
 
 const routes: Routes = [
@@ -66,6 +68,8 @@ const routes: Routes = [
   { path: "workbooks/:id/forms/transplant-production-input-costs", component: TransplantProductionInputCostsComponent},
   { path: "workbooks/:id/forms/transplant-production-information", component: TransplantProductionInformationComponent},
   { path: "workbooks/:id/forms/field-standard-times", component: FieldStandardTimesComponent},
+  { path: "workbooks/:id/forms/harvest-post-harvest-standard-times", component: HarvestPostHarvestStandardTimesComponent},
+  { path: "workbooks/:id/forms/transplant-production-standard-times", component: TransplantProductionStandardTimesComponent},
   { path: "workbooks/:id/forms/crop-specific-info", component: CropSpecificInfoComponent},
   { path: "workbooks/:id", component: WorkbookDetailComponent},
   { path: "login-callback", component: LoginCallbackComponent },

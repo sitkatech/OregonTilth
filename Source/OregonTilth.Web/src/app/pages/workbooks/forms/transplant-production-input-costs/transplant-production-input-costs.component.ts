@@ -23,6 +23,7 @@ import { TransplantProductionInputCostCreateDto } from 'src/app/shared/models/fo
 import { TransplantProductionInputCostDto } from 'src/app/shared/models/generated/transplant-production-input-cost-dto';
 import { TransplantProductionInputDto } from 'src/app/shared/models/generated/transplant-production-input-dto';
 import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
+import { element } from 'protractor';
 
 @Component({
   selector: 'transplant-production-input-costs',
@@ -40,6 +41,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
@@ -142,6 +144,13 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         editable: true,
         cellEditor: 'agTextCellEditor',
         valueFormatter: this.gridService.currencyFormatter,
+        valueSetter: params => {
+          params.data.CostPerTray = params.newValue;
+          return true;
+        },
+        valueGetter: params => {
+          return params.data.CostPerTray;
+        },
         sortable: true, 
         filter: true,
       },
@@ -169,9 +178,10 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     ]
   }
 
-  deleteTransplantProductionInputCost(tpInputCost: number) {
-    this.deleteTransplantProductionInputCostRequest = this.workbookService.deleteTransplantProductionInputCost(this.workbookID, tpInputCost).subscribe(tpInputCostDtos => {
-      this.transplantProductionInputCosts = tpInputCostDtos;
+  deleteTransplantProductionInputCost(tpInputCostID: number) {
+    this.deleteTransplantProductionInputCostRequest = this.workbookService.deleteTransplantProductionInputCost(this.workbookID, tpInputCostID).subscribe(tpInputCostDtos => {
+      var rowToRemove = this.gridApi.getRowNode(tpInputCostID.toString());
+      this.gridApi.applyTransaction({remove:[rowToRemove.data]})
       this.alertService.pushAlert(new Alert("Successfully deleted Transplant Production Input Cost", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
@@ -221,7 +231,9 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     this.isLoadingSubmit = true;
     this.addTransplantProductionInputCostRequest = this.workbookService.addTransplantProductionInputCost(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.transplantProductionInputCosts = response;
+
+      var transactionRows = this.gridApi.applyTransaction({add: [response]});
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.alertService.pushAlert(new Alert("Successfully added Transplant Production Input Cost.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
@@ -234,6 +246,14 @@ export class TransplantProductionInputCostsComponent implements OnInit {
 
   resetForm() {
     this.model = new TransplantProductionInputCostCreateDto({WorkbookID: this.workbookID});
+  }
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+  }
+
+  getRowNodeId(data)  {
+    return data.TransplantProductionInputCostID.toString();
   }
 
 }
