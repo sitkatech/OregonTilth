@@ -26,6 +26,7 @@ import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { PhaseEnum } from 'src/app/shared/models/enums/phase.enum';
 import { TpOrDsTypeEnum } from 'src/app/shared/models/enums/tp-or-ds-type.enum';
 import { CropSpecificInfoSummaryDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-summary-dto';
+import { IntegerEditor } from 'src/app/shared/components/ag-grid/integer-editor/integer-editor.component';
 
 @Component({
   selector: 'crop-specific-info',
@@ -183,46 +184,126 @@ export class CropSpecificInfoComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: 'Crop', 
-        field: 'Crop.CropName',
+        field: 'Crop',
+        valueFormatter: params => {
+          return params.data.Crop.CropName;
+        },
+        valueGetter: params => {
+          return params.data.Crop.CropName;
+        },
         editable: false,
-        cellEditor: 'agTextCellEditor',
         sortable: true, 
         filter: true,
       },
-      /* {
-        headerName: 'Field Unit', 
-        field: 'FieldUnitType',
-        editable: true,
-        cellEditor: 'agPopupSelectCellEditor',
-        cellEditorParams: {
-          values: this.fieldUnitTypes.map(x => x.FieldUnitTypeDisplayName)
-        },
+      {
+        headerName: 'TP or DS Type', 
+        field: 'TpOrDsType',
         valueFormatter: function (params) {
-          return params.value.FieldUnitTypeDisplayName;
+          return params.data.TpOrDsType.TpOrDsTypeDisplayName;
         },
-        valueSetter: params => {
-          params.data.FieldUnitType = this.fieldUnitTypes.find(element => {
-            return element.FieldUnitTypeDisplayName == params.newValue;
-          });
-          return true;
+        valueGetter: params => {
+          return params.data.TpOrDsType.TpOrDsTypeDisplayName;
         },
         sortable: true, 
         filter: true,
+        resizable: true
       }, 
       {
-        headerName: 'Cost Per Field Unit', 
-        field: 'CostPerFieldUnit',
+        headerName: 'Drip Tape Rows Per Standard Width', 
+        field:'DripTapeRowsPerStandardWidth',
+        valueGetter: function(params:any) {
+          return params.data.DripTapeRowsPerStandardWidth
+        },
         editable: true,
-        cellEditor: 'agTextCellEditor',
-        valueFormatter: this.gridService.currencyFormatter
+        cellEditorFramework: IntegerEditor,
+        sortable: true, 
+        filter: true,
+        cellStyle: params => {
+          if (params.value) {
+              return { backgroundColor: '#ccf5cc'};
+          } 
+          return {backgroundColor: '#ffdfd6'};
+        },
+        width:150,
+        resizable: true
       },
       {
-        headerName: 'Notes', 
-        field: 'Notes',
+        headerName: 'In Row Spacing', 
+        field:'InRowSpacing',
+        valueGetter: function(params:any) {
+          return params.data.InRowSpacing
+        },
         editable: true,
-        cellEditor: 'agTextCellEditor',
+        cellEditorFramework: IntegerEditor,
+        sortable: true, 
         filter: true,
-      },*/
+        cellStyle: params => {
+          if (params.value) {
+              return { backgroundColor: '#ccf5cc'};
+          } 
+          return {backgroundColor: '#ffdfd6'};
+        },
+        width:150,
+        resizable: true
+      },
+      {
+        headerName: 'Rows Per Standard Width', 
+        field:'RowsPerStandardWidth',
+        valueGetter: function(params:any) {
+          return params.data.RowsPerStandardWidth
+        },
+        editable: true,
+        cellEditorFramework: IntegerEditor,
+        sortable: true, 
+        filter: true,
+        cellStyle: params => {
+          if (params.value) {
+              return { backgroundColor: '#ccf5cc'};
+          } 
+          return {backgroundColor: '#ffdfd6'};
+        },
+        width:150,
+        resizable: true
+      },
+      {
+        headerName: 'Seed Cost Per Standard Unit of Space', 
+        field:'SeedCostPerStandardUnitOfSpace',
+        valueGetter: function(params:any) {
+          return params.data.SeedCostPerStandardUnitOfSpace
+        },
+        editable: true,
+        cellEditorFramework: IntegerEditor,
+        sortable: true, 
+        filter: true,
+        cellStyle: params => {
+          if (params.value) {
+              return { backgroundColor: '#ccf5cc'};
+          } 
+          return {backgroundColor: '#ffdfd6'};
+        },
+        width:150,
+        resizable: true
+      },
+      {
+        headerName: 'Transplant Production Cost Outsourced', 
+        field:'TransplantProductionCostOutsourced',
+        valueGetter: function(params:any) {
+          return params.data.TransplantProductionCostOutsourced
+        },
+        editable: true,
+        cellEditorFramework: IntegerEditor,
+        sortable: true, 
+        filter: true,
+        cellStyle: params => {
+          if (params.value) {
+              return { backgroundColor: '#ccf5cc'};
+          } 
+          return {backgroundColor: '#ffdfd6'};
+        },
+        width:150,
+        resizable: true
+      },
+      
       {
         headerName: 'Delete', field: 'CropSpecificInfoID', valueGetter: function (params: any) {
           return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.CropSpecificInfoID, ObjectDisplayName: params.data.CropSpecificInfoName };
