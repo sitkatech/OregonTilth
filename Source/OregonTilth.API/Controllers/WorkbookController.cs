@@ -1180,7 +1180,7 @@ namespace OregonTilth.API.Controllers
         [HttpGet("workbooks/{workbookID}/forms/crop-specific-info")]
         [LoggedInUnclassifiedFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<CropSpecificInfoDto>> GetCropSpecificInfos([FromRoute] int workbookID)
+        public ActionResult<IEnumerable<CropSpecificInfoSummaryDto>> GetCropSpecificInfos([FromRoute] int workbookID)
         {
             var cropSpecificInfos = CropSpecificInfo.GetDtoListByWorkbookID(_dbContext, workbookID);
             return Ok(cropSpecificInfos);

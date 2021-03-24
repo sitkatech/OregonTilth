@@ -46,3 +46,7 @@ GO
 ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CHK_CropSpecificInfo_TransplantProductionCostOutsourced_NotNull_If_TPOutsourced_selected] CHECK  (([TpOrDsTypeID]=(3) OR [TpOrDsTypeID]=(1) OR [TransplantProductionCostOutsourced] IS NOT NULL AND [TpOrDsTypeID]=(2)))
 GO
 ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [CHK_CropSpecificInfo_TransplantProductionCostOutsourced_NotNull_If_TPOutsourced_selected]
+GO
+ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CHK_DripTapeRowsPerStandardWidth_Greater_Than_Zero] CHECK  (([DripTapeRowsPerStandardWidth]>(0)))
+GO
+ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [CHK_DripTapeRowsPerStandardWidth_Greater_Than_Zero]
