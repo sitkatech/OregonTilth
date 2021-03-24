@@ -45,7 +45,7 @@ namespace OregonTilth.API.Controllers
         }
 
         [HttpGet("lookupTable/tp-or-ds-types")]
-        public ActionResult<List<FieldUnitTypeDto>> ListAllTpOrDsTypes()
+        public ActionResult<List<TpOrDsTypeDto>> ListAllTpOrDsTypes()
         {
             var allTpOrDsTypes = TpOrDsType.List(_dbContext); //FieldUnitType.List(_dbContext);
             return allTpOrDsTypes;

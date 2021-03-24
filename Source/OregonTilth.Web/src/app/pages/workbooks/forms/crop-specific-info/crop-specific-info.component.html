@@ -29,10 +29,28 @@
                   <td>
                     <select class="form-control" [(ngModel)]="item.TpOrDsTypeID">
                       <option disabled="true" [ngValue]="undefined" [selected]="!item.TpOrDsTypeID">Select Tp Type or DS</option>
-                      <option *ngFor="let option of tpOrDsTypes" [selected]="item.TpOrDsTypeID == option.TpOrDsTypeID" [value]="option.TpOrDsTypeID">{{option.tpOrDsTypeDisplayName}}</option>
+                      <option *ngFor="let option of tpOrDsTypes" [selected]="item.TpOrDsTypeID == option.TpOrDsTypeID" [value]="option.TpOrDsTypeID">{{option.TpOrDsTypeDisplayName}}</option>
                     </select>
                   </td>
-                  <td>                  
+                  <td>
+                    <label>Rows Per Standard Width</label>
+                    <input class="form-control" type="number" name="RowsPerStandardWidth" [(ngModel)]="item.RowsPerStandardWidth">                  
+                  </td>
+                  <td>
+                    <label>Drip Tape Rows Per Standard Width</label>
+                    <input class="form-control" type="number" name="DripTapeRowsPerStandardWidth" [(ngModel)]="item.DripTapeRowsPerStandardWidth">                  
+                  </td>
+                  <td>
+                    <label>In Row Spacing</label>
+                    <input class="form-control" type="number" name="InRowSpacing" [(ngModel)]="item.InRowSpacing">                  
+                  </td>
+                  <td>
+                    <label>Seed Cost Per Standard Unit Of Space</label>
+                    <input class="form-control" type="number" name="SeedCostPerStandardUnitOfSpace" [(ngModel)]="item.SeedCostPerStandardUnitOfSpace">                  
+                  </td>
+                  <td>
+                    <label>Transplant Production Cost Outsourced</label>
+                    <input class="form-control" type="number" name="TransplantProductionCostOutsourced" [(ngModel)]="item.TransplantProductionCostOutsourced">                  
                   </td>
                   <td>
                     <button class="btn btn-success" (click)="initializeCropSpecificInfo(item)" [disabled]="startButtonDisabled(item)">Initialize</button>
@@ -49,8 +67,8 @@
         
         <div class="row mt-4">
           <div class="col">
-            <ag-grid-angular #cropSpecificInfoGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="cropSpecificInfo"
-              [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (cellValueChanged)="onCellValueChanged($event)" (gridReady)="onGridReady($event)" [getRowNodeId]="getRowNodeId">
+            <ag-grid-angular #cropSpecificInfoGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="cropSpecificInfos"
+              [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (cellValueChanged)="onCellValueChanged($event)" (gridReady)="onGridReady($event)">
             </ag-grid-angular>
           </div>
         </div>

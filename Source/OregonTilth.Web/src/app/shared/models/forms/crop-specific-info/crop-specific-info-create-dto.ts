@@ -8,7 +8,7 @@ export class CropSpecificInfoCreateDto {
     TpOrDsTypeID: number;
     TpOrDsType: TpOrDsTypeDto;
     RowsPerStandardWidth: number;
-    DropTapeRowsPerStandardWidth: number;
+    DripTapeRowsPerStandardWidth: number;
     InRowSpacing: number;
     SeedCostPerStandardUnitOfSpace: number;
     TransplantProductionCostOutsourced: number;

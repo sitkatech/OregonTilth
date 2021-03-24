@@ -11,7 +11,7 @@ namespace OregonTilth.Models.DataTransferObjects
         public int TpOrDsTypeID { get; set; }
         public TpOrDsTypeDto TpOrDsType { get; set; }
         public int? RowsPerStandardWidth { get; set; }
-        public int DropTapeRowsPerStandardWidth { get; set; }
+        public int DripTapeRowsPerStandardWidth { get; set; }
         public int? InRowSpacing { get; set; }
         public decimal SeedCostPerStandardUnitOfSpace { get; set; }
         public decimal TransplantProductionCostOutsourced { get; set; }

@@ -22,6 +22,7 @@ import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-table
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { TpOrDsTypeDto } from 'src/app/shared/models/generated/tp-or-ds-type-dto';
+import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 
 @Component({
   selector: 'crop-specific-info',
@@ -49,10 +50,12 @@ export class CropSpecificInfoComponent implements OnInit {
   private getWorkbookRequest: any;
   private addCropSpecificInfoRequest: any;
   public model: CropSpecificInfoCreateDto;
-  public createDtos: CropSpecificInfoCreateDto[];
-
+  
   public getCropSpecificInfosRequest: any;
   public cropSpecificInfos: CropSpecificInfoDto[];
+
+  public getCropsRequest: any;
+  public createDtos: CropSpecificInfoCreateDto[];
 
   public initializeCropSpecificInfoRequest: any;
 
@@ -73,11 +76,27 @@ export class CropSpecificInfoComponent implements OnInit {
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
       this.getTpOrDsTypesRequest = this.lookupTablesService.getTpOrDsTypes();
       this.getCropSpecificInfosRequest = this.workbookService.getCropSpecificInfos(this.workbookID);
+      this.getCropsRequest = this.workbookService.getCrops(this.workbookID);
 
-      forkJoin([this.getWorkbookRequest, this.getTpOrDsTypesRequest, this.getCropSpecificInfosRequest]).subscribe(([workbook, tpOrDsTypes, cropSpecificInfos]: [WorkbookDto, TpOrDsTypeDto[], CropSpecificInfoDto[]] ) => {
+      forkJoin([this.getWorkbookRequest, this.getTpOrDsTypesRequest, this.getCropSpecificInfosRequest, this.getCropsRequest]).subscribe(([workbook, tpOrDsTypes, cropSpecificInfos, cropDtos]: [WorkbookDto, TpOrDsTypeDto[], CropSpecificInfoDto[], CropDto[]] ) => {
           this.workbook = workbook;
           this.tpOrDsTypes = tpOrDsTypes;
           this.cropSpecificInfos = cropSpecificInfos;
+
+          cropSpecificInfos.forEach(function(item){
+              const index = cropDtos.findIndex(obj => obj.CropID === item.Crop.CropID)
+              if (index > -1) {
+                cropDtos.splice(index, 1);
+              }
+          });
+          this.createDtos = cropDtos.map(element =>  {
+              return new CropSpecificInfoCreateDto({
+                WorkbookID: this.workbookID, 
+                CropID: element.CropID,
+                Crop: element,
+              })
+          }); 
+
           this.defineColumnDefs();
           this.cdr.markForCheck();
       });
@@ -122,13 +141,13 @@ export class CropSpecificInfoComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: 'Crop', 
-        field: 'CropName',
+        field: 'Crop.CropName',
         editable: false,
         cellEditor: 'agTextCellEditor',
         sortable: true, 
         filter: true,
       },
-      {
+      /* {
         headerName: 'Field Unit', 
         field: 'FieldUnitType',
         editable: true,
@@ -147,7 +166,7 @@ export class CropSpecificInfoComponent implements OnInit {
         },
         sortable: true, 
         filter: true,
-      },
+      }, 
       {
         headerName: 'Cost Per Field Unit', 
         field: 'CostPerFieldUnit',
@@ -161,7 +180,7 @@ export class CropSpecificInfoComponent implements OnInit {
         editable: true,
         cellEditor: 'agTextCellEditor',
         filter: true,
-      },
+      },*/
       {
         headerName: 'Delete', field: 'CropSpecificInfoID', valueGetter: function (params: any) {
           return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.CropSpecificInfoID, ObjectDisplayName: params.data.CropSpecificInfoName };
@@ -216,8 +235,8 @@ export class CropSpecificInfoComponent implements OnInit {
     if (this.getCropSpecificInfosRequest && this.getCropSpecificInfosRequest.unsubscribe) {
       this.getCropSpecificInfosRequest.unsubscribe();
     }
-    if (this.getFieldUnitTypesRequest && this.getFieldUnitTypesRequest.unsubscribe) {
-      this.getFieldUnitTypesRequest.unsubscribe();
+    if (this.getCropsRequest && this.getCropsRequest.unsubscribe) {
+      this.getCropsRequest.unsubscribe();
     }
     if (this.updateCropSpecificInfoRequest && this.updateCropSpecificInfoRequest.unsubscribe) {
       this.updateCropSpecificInfoRequest.unsubscribe();
@@ -229,7 +248,7 @@ export class CropSpecificInfoComponent implements OnInit {
     this.cdr.detach();
   }
 
-  onSubmit(cropSpecificInfoForm: HTMLFormElement): void {
+/*   onSubmit(cropSpecificInfoForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
     this.addCropSpecificInfoRequest = this.workbookService.addCropSpecificInfo(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
@@ -242,7 +261,7 @@ export class CropSpecificInfoComponent implements OnInit {
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     });
-  }
+  } */
 
   resetForm() {
     this.model = new CropSpecificInfoCreateDto({WorkbookID: this.workbookID});

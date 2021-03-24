@@ -15,8 +15,7 @@ namespace OregonTilth.EFModels.Entities
             {
                 CropID = crop.CropID,
                 Workbook = crop.Workbook.AsDto(),
-                CropName = crop.CropName,
-                CropSpecificInfo = crop.CropSpecificInfo?.AsDto()
+                CropName = crop.CropName
             };
             DoCustomMappings(crop, cropDto);
             return cropDto;

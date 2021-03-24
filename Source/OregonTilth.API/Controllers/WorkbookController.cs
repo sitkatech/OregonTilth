@@ -981,20 +981,36 @@ namespace OregonTilth.API.Controllers
         #endregion "Field Standard Times"
 
         #region Crop Specific Information Form
-        [HttpPost("workbooks/{workbookID}/forms/crop-specific-info")]
+        //[HttpPost("workbooks/{workbookID}/forms/crop-specific-info")]
+        //[LoggedInUnclassifiedFeature]
+        //[ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        //public ActionResult<IEnumerable<CropSpecificInfoDto>> CreateCropSpecificInfo([FromBody] CropSpecificInfoCreateDto cropSpecificInfoCreateDto)
+        //{
+        //    var validationMessages = CropSpecificInfo.ValidateCreate(_dbContext, cropSpecificInfoCreateDto);
+        //    validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    var cropSpecificInfoDtos = CropSpecificInfo.Create(_dbContext, cropSpecificInfoCreateDto);
+        //    return Ok(cropSpecificInfoDtos);
+        //}
+
+        [HttpPost("workbooks/{workbookID}/forms/crop-specific-info/initialize")]
         [LoggedInUnclassifiedFeature]
-        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<CropSpecificInfoDto>> CreateCropSpecificInfo([FromBody] CropSpecificInfoCreateDto cropSpecificInfoCreateDto)
+        public ActionResult<IEnumerable<CropSpecificInfoDto>> InitializeCropSpecificInfo([FromBody] CropSpecificInfoCreateDto createDto)
         {
-            var validationMessages = CropSpecificInfo.ValidateCreate(_dbContext, cropSpecificInfoCreateDto);
+            var validationMessages = CropSpecificInfo.ValidateCreate(_dbContext, createDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var cropSpecificInfoDtos = CropSpecificInfo.Create(_dbContext, cropSpecificInfoCreateDto);
-            return Ok(cropSpecificInfoDtos);
+            var returnDto = CropSpecificInfo.Create(_dbContext, createDto);
+            return Ok(returnDto);
+
         }
 
         [HttpGet("workbooks/{workbookID}/forms/crop-specific-info")]

@@ -6,7 +6,6 @@ CREATE TABLE [dbo].[Crop](
 	[CropID] [int] IDENTITY(1,1) NOT NULL,
 	[WorkbookID] [int] NOT NULL,
 	[CropName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[CropSpecificInfoID] [int] NULL,
  CONSTRAINT [PK_Crop_CropID] PRIMARY KEY CLUSTERED 
 (
 	[CropID] ASC
@@ -18,11 +17,6 @@ CREATE TABLE [dbo].[Crop](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
-GO
-ALTER TABLE [dbo].[Crop]  WITH CHECK ADD  CONSTRAINT [FK_Crop_CropSpecificInfo_CropSpecificInfoID] FOREIGN KEY([CropSpecificInfoID])
-REFERENCES [dbo].[CropSpecificInfo] ([CropSpecificInfoID])
-GO
-ALTER TABLE [dbo].[Crop] CHECK CONSTRAINT [FK_Crop_CropSpecificInfo_CropSpecificInfoID]
 GO
 ALTER TABLE [dbo].[Crop]  WITH CHECK ADD  CONSTRAINT [FK_Crop_Workbook_WorkbookID] FOREIGN KEY([WorkbookID])
 REFERENCES [dbo].[Workbook] ([WorkbookID])

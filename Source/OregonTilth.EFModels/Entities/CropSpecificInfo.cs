@@ -69,12 +69,16 @@ namespace OregonTilth.EFModels.Entities
         public static IQueryable<CropSpecificInfoDto> Create(OregonTilthDbContext dbContext, CropSpecificInfoCreateDto cropSpecificInfoCreateDto)
         {
 
-
             var cropSpecificInfo = new CropSpecificInfo
             {
                 WorkbookID = cropSpecificInfoCreateDto.WorkbookID,
-                //CropID = cropSpecificInfoCreateDto.CropID,
-
+                CropID = cropSpecificInfoCreateDto.CropID,
+                TpOrDsTypeID = cropSpecificInfoCreateDto.TpOrDsTypeID,
+                DripTapeRowsPerStandardWidth = cropSpecificInfoCreateDto.DripTapeRowsPerStandardWidth,
+                InRowSpacing = cropSpecificInfoCreateDto.InRowSpacing,
+                SeedCostPerStandardUnitOfSpace = cropSpecificInfoCreateDto.SeedCostPerStandardUnitOfSpace,
+                RowsPerStandardWidth = cropSpecificInfoCreateDto.RowsPerStandardWidth,
+                TransplantProductionCostOutsourced = cropSpecificInfoCreateDto.TransplantProductionCostOutsourced
             };
             dbContext.CropSpecificInfos.Add(cropSpecificInfo);
 

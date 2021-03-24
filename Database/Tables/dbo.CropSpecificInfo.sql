@@ -4,6 +4,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[CropSpecificInfo](
 	[CropSpecificInfoID] [int] IDENTITY(1,1) NOT NULL,
+	[CropID] [int] NOT NULL,
 	[WorkbookID] [int] NOT NULL,
 	[TpOrDsTypeID] [int] NOT NULL,
 	[RowsPerStandardWidth] [int] NULL,
@@ -17,6 +18,11 @@ CREATE TABLE [dbo].[CropSpecificInfo](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
+GO
+ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [FK_CropSpecificInfo_Crop_CropID] FOREIGN KEY([CropID])
+REFERENCES [dbo].[Crop] ([CropID])
+GO
+ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [FK_CropSpecificInfo_Crop_CropID]
 GO
 ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [FK_CropSpecificInfo_TpOrDsType] FOREIGN KEY([TpOrDsTypeID])
 REFERENCES [dbo].[TpOrDsType] ([TpOrDsTypeID])
