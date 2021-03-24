@@ -23,6 +23,8 @@ import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { TpOrDsTypeDto } from 'src/app/shared/models/generated/tp-or-ds-type-dto';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
+import { PhaseEnum } from 'src/app/shared/models/enums/phase.enum';
+import { TpOrDsTypeEnum } from 'src/app/shared/models/enums/tp-or-ds-type.enum';
 
 @Component({
   selector: 'crop-specific-info',
@@ -65,6 +67,8 @@ export class CropSpecificInfoComponent implements OnInit {
   public tpOrDsTypes: TpOrDsTypeDto[];
   private getTpOrDsTypesRequest: any;
 
+  public crops: CropDto[];
+
   public columnDefs: ColDef[];
  
   ngOnInit() {
@@ -82,26 +86,57 @@ export class CropSpecificInfoComponent implements OnInit {
           this.workbook = workbook;
           this.tpOrDsTypes = tpOrDsTypes;
           this.cropSpecificInfos = cropSpecificInfos;
-
-          cropSpecificInfos.forEach(function(item){
-              const index = cropDtos.findIndex(obj => obj.CropID === item.Crop.CropID)
-              if (index > -1) {
-                cropDtos.splice(index, 1);
-              }
-          });
-          this.createDtos = cropDtos.map(element =>  {
-              return new CropSpecificInfoCreateDto({
-                WorkbookID: this.workbookID, 
-                CropID: element.CropID,
-                Crop: element,
-              })
-          }); 
+          this.crops = cropDtos;
 
           this.defineColumnDefs();
           this.cdr.markForCheck();
       });
 
     });
+  }
+
+  cropsRequired() {
+    if(this.crops) {
+      var cropsIDsAlreadyAdded = this.cropSpecificInfos.map(x => {
+        return x.Crop.CropID;
+      })
+
+      var requiredCrops = this.crops.map(crop => {
+        if(!cropsIDsAlreadyAdded.includes(crop.CropID)){
+          return crop;
+        }
+      })
+      return requiredCrops;
+    }
+  }
+
+  onSubmit(cropSpecificInfoForm: HTMLFormElement): void {
+    this.isLoadingSubmit = true;
+    this.addCropSpecificInfoRequest = this.workbookService.initializeCropSpecificInfo(this.model).subscribe(response => {
+      this.isLoadingSubmit = false;
+      var transactionRows = this.gridApi.applyTransaction({add: [response]});
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
+      this.resetForm();
+      this.cdr.detectChanges();
+      
+    }, error => { 
+      this.isLoadingSubmit = false;
+      this.cdr.detectChanges();
+    });
+  }
+
+  inRowSpacingRequired() {
+    if(this.model && (this.model.TpOrDsTypeID == TpOrDsTypeEnum.TransplantFarmProduced || this.model.TpOrDsTypeID == TpOrDsTypeEnum.TransplantOutsourced )){
+      return true;
+    }
+    return false;
+  }
+
+  costOutsourcedRequired() {
+    if(this.model && this.model.TpOrDsTypeID == TpOrDsTypeEnum.TransplantOutsourced){
+      return true;
+    }
+    return false;
   }
 
   startButtonDisabled(cropSpecificInfoCreateDto: CropSpecificInfoCreateDto) {

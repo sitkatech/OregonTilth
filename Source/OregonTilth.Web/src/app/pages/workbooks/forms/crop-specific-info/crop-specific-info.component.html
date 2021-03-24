@@ -22,7 +22,61 @@
             Crop Specific Info required for:
           </div>
           <div class="card-body">
-            <table class="crop-specific-info-required-table">
+            <form *ngIf=(model) (ngSubmit)="onSubmit(cropSpecificInfoForm)" #cropSpecificInfoForm="ngForm">
+              <div class="row">
+                <div class="col-md-3">
+                  <label>Crop</label>
+                  <select class="form-control" [(ngModel)]="model.CropID" name="CropID">
+                    <option disabled="true" [ngValue]="undefined" [selected]="!model.CropID">Select Crop</option>
+                    <option *ngFor="let option of cropsRequired()" [selected]="model.CropID == option.CropID" [value]="option.CropID">{{option.CropName}}</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label>TP Type or DS</label>
+                  <select class="form-control" [(ngModel)]="model.TpOrDsTypeID" name="TpOrDsTypeID">
+                    <option disabled="true" [ngValue]="undefined" [selected]="!model.TpOrDsTypeID">Select Tp Type or DS</option>
+                    <option *ngFor="let option of tpOrDsTypes" [selected]="model.TpOrDsTypeID == option.TpOrDsTypeID" [value]="option.TpOrDsTypeID">{{option.TpOrDsTypeDisplayName}}</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label>Rows Per Standard Width</label>
+                  <input class="form-control" type="number" name="RowsPerStandardWidth" [(ngModel)]="model.RowsPerStandardWidth">       
+                </div>
+                <div class="col-md-3">
+                  <label>Drip Tape Rows Per Standard Width</label>
+                  <input class="form-control" type="number" name="DripTapeRowsPerStandardWidth" [(ngModel)]="model.DripTapeRowsPerStandardWidth">         
+                </div>
+                
+              </div>
+              <div class="row mt-4">
+                <div class="col-md-4">
+                  <label>In Row Spacing</label>
+                  <input class="form-control" type="number" name="InRowSpacing" [(ngModel)]="model.InRowSpacing">                  
+                </div>
+                <div class="col-md-4">
+                  <label>Seed Cost Per Standard Unit Of Space</label>
+                  <input class="form-control" type="number" name="SeedCostPerStandardUnitOfSpace" [(ngModel)]="model.SeedCostPerStandardUnitOfSpace" [disabled]="!inRowSpacingRequired()">                  
+                </div>
+                <div class="col-md-4">
+                  <label>Transplant Production Cost Outsourced</label>
+                  <input class="form-control" type="number" name="TransplantProductionCostOutsourced" [(ngModel)]="model.TransplantProductionCostOutsourced" [disabled]="!costOutsourcedRequired()">                  
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-sm">
+                  <i class="fas fa-bolt"></i> Required field
+                </div>
+                <div class="col-sm text-right">
+                  <button type="submit" class="btn btn-fresca" [disabled]="!cropSpecificInfoForm.form.valid || isLoadingSubmit">
+                    <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                    Submit
+                  </button>
+                  
+                </div>
+              </div>
+            </form>
+
+            <!-- <table class="crop-specific-info-required-table">
               <tbody>
                 <tr *ngFor="let item of createDtos">
                   <td>{{item.Crop.CropName}}</td>
@@ -57,7 +111,7 @@
                   </td>
                 </tr>
               </tbody>
-            </table>
+            </table> -->
 
           </div>
           
