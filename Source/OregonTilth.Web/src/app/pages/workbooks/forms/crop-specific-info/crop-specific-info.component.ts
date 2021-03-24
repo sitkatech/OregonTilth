@@ -27,6 +27,7 @@ import { PhaseEnum } from 'src/app/shared/models/enums/phase.enum';
 import { TpOrDsTypeEnum } from 'src/app/shared/models/enums/tp-or-ds-type.enum';
 import { CropSpecificInfoSummaryDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-summary-dto';
 import { IntegerEditor } from 'src/app/shared/components/ag-grid/integer-editor/integer-editor.component';
+import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 
 @Component({
   selector: 'crop-specific-info',
@@ -227,25 +228,7 @@ export class CropSpecificInfoComponent implements OnInit {
         width:150,
         resizable: true
       },
-      {
-        headerName: 'In Row Spacing', 
-        field:'InRowSpacing',
-        valueGetter: function(params:any) {
-          return params.data.InRowSpacing
-        },
-        editable: true,
-        cellEditorFramework: IntegerEditor,
-        sortable: true, 
-        filter: true,
-        cellStyle: params => {
-          if (params.value) {
-              return { backgroundColor: '#ccf5cc'};
-          } 
-          return {backgroundColor: '#ffdfd6'};
-        },
-        width:150,
-        resizable: true
-      },
+     
       {
         headerName: 'Rows Per Standard Width', 
         field:'RowsPerStandardWidth',
@@ -285,20 +268,54 @@ export class CropSpecificInfoComponent implements OnInit {
         resizable: true
       },
       {
-        headerName: 'Transplant Production Cost Outsourced', 
-        field:'TransplantProductionCostOutsourced',
+        headerName: 'In Row Spacing', 
+        field:'InRowSpacing',
         valueGetter: function(params:any) {
-          return params.data.TransplantProductionCostOutsourced
+          if(params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantFarmProduced || params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantOutsourced){
+            return params.data.InRowSpacing;
+          }
+          return 'N/A';
         },
         editable: true,
         cellEditorFramework: IntegerEditor,
         sortable: true, 
         filter: true,
         cellStyle: params => {
+          if((params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantFarmProduced || params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantOutsourced)){
+            if(params.value){
+              return {backgroundColor: '#ccf5cc'};
+            } else {
+              return {backgroundColor: '#ffdfd6'};
+            }
+          }
+          return { backgroundColor: '#ddd'};
+        },
+        width:150,
+        resizable: true
+      },
+      {
+        headerName: 'Transplant Production Cost Outsourced', 
+        field:'TransplantProductionCostOutsourced',
+        valueGetter: function(params:any) {
+          if(params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantOutsourced){
+            return params.data.TransplantProductionCostOutsourced;
+          }
+          return 'N/A';
+          
+        },
+        editable: true,
+        cellEditorFramework: DecimalEditor,
+        sortable: true, 
+        filter: true,
+        cellStyle: params => {
+
+          if(params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantOutsourced && !params.data.TransplantProductionCostOutsourced){
+            return {backgroundColor: '#ffdfd6'};
+          }
           if (params.value) {
-              return { backgroundColor: '#ccf5cc'};
+              return { backgroundColor: '#ddd'};
           } 
-          return {backgroundColor: '#ffdfd6'};
+          
         },
         width:150,
         resizable: true

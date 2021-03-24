@@ -25,15 +25,15 @@
             <form *ngIf="cropDtosRequired.length > 0" (ngSubmit)="onSubmit(cropSpecificInfoForm)" #cropSpecificInfoForm="ngForm">
               <div class="row">
                 <div class="col-md-3">
-                  <label>Crop</label>
-                  <select class="form-control" [(ngModel)]="model.CropID" name="CropID">
+                  <label class="required">Crop</label>
+                  <select class="form-control" [(ngModel)]="model.CropID" name="CropID" required>
                     <option disabled="true" [ngValue]="undefined" [selected]="!model.CropID">Select Crop</option>
                     <option *ngFor="let option of cropDtosRequired" [selected]="model.CropID == option.CropID" [value]="option.CropID">{{option.CropName}}</option>
                   </select>
                 </div>
                 <div class="col-md-3">
-                  <label>TP Type or DS</label>
-                  <select class="form-control" [(ngModel)]="model.TpOrDsTypeID" name="TpOrDsTypeID">
+                  <label class="required">TP Type or DS</label>
+                  <select class="form-control" [(ngModel)]="model.TpOrDsTypeID" name="TpOrDsTypeID" required>
                     <option disabled="true" [ngValue]="undefined" [selected]="!model.TpOrDsTypeID">Select Tp Type or DS</option>
                     <option *ngFor="let option of tpOrDsTypes" [selected]="model.TpOrDsTypeID == option.TpOrDsTypeID" [value]="option.TpOrDsTypeID">{{option.TpOrDsTypeDisplayName}}</option>
                   </select>
@@ -43,19 +43,19 @@
                   <input class="form-control" type="number" name="RowsPerStandardWidth" [(ngModel)]="model.RowsPerStandardWidth">       
                 </div>
                 <div class="col-md-3">
-                  <label>Drip Tape Rows Per Standard Width</label>
-                  <input class="form-control" type="number" name="DripTapeRowsPerStandardWidth" [(ngModel)]="model.DripTapeRowsPerStandardWidth">         
+                  <label class="required">Drip Tape Rows Per Standard Width</label>
+                  <input class="form-control" type="number" name="DripTapeRowsPerStandardWidth" [(ngModel)]="model.DripTapeRowsPerStandardWidth" required>         
                 </div>
                 
               </div>
               <div class="row mt-4">
                 <div class="col-md-4">
-                  <label>In Row Spacing</label>
-                  <input class="form-control" type="number" name="InRowSpacing" [(ngModel)]="model.InRowSpacing">                  
+                  <label>Seed Cost Per Standard Unit Of Space</label>
+                  <input class="form-control" type="number" name="SeedCostPerStandardUnitOfSpace" [(ngModel)]="model.SeedCostPerStandardUnitOfSpace">                  
                 </div>
                 <div class="col-md-4">
-                  <label>Seed Cost Per Standard Unit Of Space</label>
-                  <input class="form-control" type="number" name="SeedCostPerStandardUnitOfSpace" [(ngModel)]="model.SeedCostPerStandardUnitOfSpace" [disabled]="!inRowSpacingRequired()">                  
+                  <label>In Row Spacing</label>
+                  <input class="form-control" type="number" name="InRowSpacing" [(ngModel)]="model.InRowSpacing" [disabled]="!inRowSpacingRequired()">                  
                 </div>
                 <div class="col-md-4">
                   <label>Transplant Production Cost Outsourced</label>
