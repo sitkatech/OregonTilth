@@ -105,17 +105,12 @@ export class CropSpecificInfoComponent implements OnInit {
       var cropsIDsAlreadyAdded = this.cropSpecificInfos.map(x => {
         return x.Crop.CropID;
       })
-
       var requiredCrops = this.crops.filter(crop => {
         return !cropsIDsAlreadyAdded.includes(crop.CropID);
-
-        
       })
       this.cropDtosRequired = requiredCrops;
     }
   }
-
-
 
   onSubmit(cropSpecificInfoForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
@@ -145,20 +140,6 @@ export class CropSpecificInfoComponent implements OnInit {
       return true;
     }
     return false;
-  }
-
-  startButtonDisabled(cropSpecificInfoCreateDto: CropSpecificInfoCreateDto) {
-    /* if(!fieldStandardTimeCreateDto.FieldUnitTypeID || fieldStandardTimeCreateDto.FieldUnitTypeID == -1){
-      return true;
-    }
-
-    if(fieldStandardTimeCreateDto.LaborTypeID == LaborTypeEnum.Operator 
-      && (!fieldStandardTimeCreateDto.MachineryID || fieldStandardTimeCreateDto.MachineryID == -1)) {
-      return true;
-    } */
-
-    return false;
-
   }
 
   initializeCropSpecificInfo(createDto: CropSpecificInfoCreateDto) {
@@ -301,26 +282,26 @@ export class CropSpecificInfoComponent implements OnInit {
             return params.data.TransplantProductionCostOutsourced;
           }
           return 'N/A';
-          
         },
         editable: true,
         cellEditorFramework: DecimalEditor,
         sortable: true, 
         filter: true,
         cellStyle: params => {
-
-          if(params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantOutsourced && !params.data.TransplantProductionCostOutsourced){
-            return {backgroundColor: '#ffdfd6'};
+          if(params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantOutsourced){
+            if(params.value){
+              return {backgroundColor: '#ccf5cc'};             
+            } else {
+              return {backgroundColor: '#ffdfd6'};
+            }
           }
           if (params.value) {
               return { backgroundColor: '#ddd'};
           } 
-          
         },
         width:150,
         resizable: true
       },
-      
       {
         headerName: 'Delete', field: 'CropSpecificInfoID', valueGetter: function (params: any) {
           return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.CropSpecificInfoID, ObjectDisplayName: params.data.CropSpecificInfoName };
@@ -339,8 +320,16 @@ export class CropSpecificInfoComponent implements OnInit {
 
   deleteCropSpecificInfo(cropSpecificInfoID: number) {
     this.deleteCropSpecificInfoRequest = this.workbookService.deleteCropSpecificInfo(this.workbookID, cropSpecificInfoID).subscribe(cropSpecificInfoDtos => {
-      //this.cropSpecificInfos = cropSpecificInfoDtos;
+      var rowToRemove = this.gridApi.getRowNode(cropSpecificInfoID.toString());
+      this.gridApi.applyTransaction({remove:[rowToRemove.data]})
+
+      var index = this.cropSpecificInfos.findIndex(x => {
+        return x.CropSpecificInfoID == cropSpecificInfoID;
+      })
+      this.cropSpecificInfos.splice(index, 1);
+
       this.alertService.pushAlert(new Alert("Successfully deleted Crop Specific Info", AlertContext.Success));
+      this.refreshCropsRequired();
       this.cdr.detectChanges();
     }, error => {
 
@@ -362,6 +351,10 @@ export class CropSpecificInfoComponent implements OnInit {
 
   onGridReady(params: any) {
     this.gridApi = params.api;
+  }
+
+  getRowNodeId(data)  {
+    return data.CropSpecificInfoID.toString();
   }
 
   ngOnDestroy() {

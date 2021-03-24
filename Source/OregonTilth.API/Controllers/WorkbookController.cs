@@ -1145,22 +1145,7 @@ namespace OregonTilth.API.Controllers
 
         
         #region Crop Specific Information Form
-        //[HttpPost("workbooks/{workbookID}/forms/crop-specific-info")]
-        //[LoggedInUnclassifiedFeature]
-        //[ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        //public ActionResult<IEnumerable<CropSpecificInfoDto>> CreateCropSpecificInfo([FromBody] CropSpecificInfoCreateDto cropSpecificInfoCreateDto)
-        //{
-        //    var validationMessages = CropSpecificInfo.ValidateCreate(_dbContext, cropSpecificInfoCreateDto);
-        //    validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    var cropSpecificInfoDtos = CropSpecificInfo.Create(_dbContext, cropSpecificInfoCreateDto);
-        //    return Ok(cropSpecificInfoDtos);
-        //}
-
+        
         [HttpPost("workbooks/{workbookID}/forms/crop-specific-info/initialize")]
         [LoggedInUnclassifiedFeature]
         public ActionResult<IEnumerable<CropSpecificInfoDto>> InitializeCropSpecificInfo([FromBody] CropSpecificInfoCreateDto createDto)
