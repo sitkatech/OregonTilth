@@ -1,4 +1,5 @@
-﻿using OregonTilth.Models.DataTransferObjects;
+﻿using System.Linq;
+using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
 {
@@ -49,10 +50,10 @@ namespace OregonTilth.EFModels.Entities
         {
             //=([@[FIELD LABOR HRS PER STD BED ]]
             //+[@[HARVEST CREW LABOR HOURS PER STANDARD BED]]
-            //+[@[HARVEST OPERATOR LABOR HOURS PER STANDARD BED]]
+            //+[@[HARVEST OPERATOR LABOR HOURS PER STANDARD BED]] -- this might be removed
             //+[@[TRANSPLANT PRODUCTION LABOR HOURS PER STANDARD BED]]
             //+[@[POST HARVEST LABOR HOURS PER STANDARD BED]])
-            //*[@[STANDARD Units of Space]]
+            
             
 
             return (cropYieldInformation.FieldLaborHoursPerStandardBed() 
@@ -60,7 +61,7 @@ namespace OregonTilth.EFModels.Entities
                    + cropYieldInformation.HarvestOperatorLaborHoursPerStandardBed()
                        + TransplantProductionLaborHoursPerStandardBed()
                        +  PostHarvestLaborHoursPerStandardBed())
-                * cropYieldInformation.Workbook.StandardUnitsOfSpace()
+                
 
             
             
@@ -70,11 +71,9 @@ namespace OregonTilth.EFModels.Entities
         {
             //=SUMIF(Table19[Crop],[@Crop],Table19[LABOR ACTIVITY MINUTES PER STANDARD BED])/60
             
-            // sum the "FieldLaborByCrop"
-
-
-
-            return 0;
+            // sum the "FieldLaborByCrops" for the crop
+            return cropYieldInformation.Crop.FieldLaborByCrops.Sum(x => x.LaborActivityMinutesPerStandardBed()) / 60;
+            
         }
 
 
