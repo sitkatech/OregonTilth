@@ -65,68 +65,8 @@ namespace OregonTilth.EFModels.Entities
 
             var fieldUnitEnum = (FieldUnitTypeEnum) fieldLaborByCrop.CalculatedFieldUnit().FieldUnitTypeID;
 
-            /*
-             =IF([@[Field Unit]]="Bed Feet",INDEX(Table1[Standard Space Length (feet)],1),
-              IF([@[Field Unit]]="Row Feet",INDEX(Table1[Standard Space Length (feet)],1)*
-                INDEX(Table22[Rows per Bed],MATCH([@Crop],Table22[Crop],0)),
-              IF([@[Field Unit]]="Drip Row Feet",INDEX(Table1[Standard Space Length (feet)],1)*
-                INDEX(Table22[Drip Tape Rows per Bed],MATCH([@Crop],Table22[Crop],0)),
-              IF([@[Field Unit]]="Square Feet",INDEX(Table1[Standard Space Length (feet)],1)
-                *INDEX(Table1[Standard Space Width (feet)],1),
-              IF([@[Field Unit]]="Acres",INDEX(Table1[Standard Space Length (feet)],1)
-                *INDEX(Table1[Standard Space Width (feet)],1)/43560,
-              IF([@[Field Unit]]="Transplants",
-                IF(INDEX(Table22[TP Type or DS],MATCH([@Crop],Table22[Crop],0))="Direct Seeded",
-                    0,
-                    INDEX(Table1[Standard Space Length (feet)],1) * INDEX(Table22[Rows per Bed],MATCH([@Crop],Table22[Crop],0)) * 12 / INDEX(Table22[In Row Spacing],MATCH([@Crop],Table22[Crop],0))),
-              NA()))))))
+            return fieldLaborByCrop.Crop.CropSpecificInfos.Single().UnitsUsed(fieldUnitEnum);
 
-             */
-            var standardSpaceLengthFeet = fieldLaborByCrop.Workbook.StandardUnitOfSpaceLength;
-            var standardSpaceWidthFeet = fieldLaborByCrop.Workbook.StandardUnitOfSpaceWidth;
-            
-            var cropSpecificInfo = fieldLaborByCrop.Crop.CropSpecificInfos?
-                .SingleOrDefault(x =>
-                    x.CropID == fieldLaborByCrop.CropID && x.WorkbookID == fieldLaborByCrop.WorkbookID);
-
-            decimal? unitsUsed = null;
-
-            switch (fieldUnitEnum)
-            {
-                case FieldUnitTypeEnum.BedFeet:
-                    unitsUsed = standardSpaceLengthFeet;
-                    break;
-                case FieldUnitTypeEnum.RowFeet:
-                    unitsUsed = standardSpaceLengthFeet * cropSpecificInfo?
-                        .RowsPerStandardWidth;
-                    break;
-                case FieldUnitTypeEnum.SquareFeet:
-                    unitsUsed = standardSpaceLengthFeet * standardSpaceWidthFeet;
-                    break;
-                case FieldUnitTypeEnum.Acres:
-                    unitsUsed = (standardSpaceLengthFeet * standardSpaceWidthFeet) / 43560;
-                    break;
-                case FieldUnitTypeEnum.DripRowFeet:
-                    unitsUsed = standardSpaceLengthFeet * cropSpecificInfo?
-                        .DripTapeRowsPerStandardWidth;
-                    break;
-                case FieldUnitTypeEnum.Transplants:
-                    if (cropSpecificInfo.TpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.DirectSeeded)
-                    {
-                        unitsUsed = 0;
-                    }
-                    else
-                    {
-                        // INDEX(Table1[Standard Space Length (feet)],1) * INDEX(Table22[Rows per Bed],MATCH([@Crop],Table22[Crop],0)) * 12 / INDEX(Table22[In Row Spacing],MATCH([@Crop],Table22[Crop],0))),
-                        unitsUsed = standardSpaceLengthFeet * cropSpecificInfo.RowsPerStandardWidth * 12 /
-                                    cropSpecificInfo.InRowSpacing;
-                    }
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            return unitsUsed ?? 0;
         }
 
         public static FieldUnitType CalculatedFieldUnit(this FieldLaborByCrop fieldLaborByCrop)

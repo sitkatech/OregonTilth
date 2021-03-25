@@ -53,18 +53,18 @@ namespace OregonTilth.EFModels.Entities
             //+[@[HARVEST OPERATOR LABOR HOURS PER STANDARD BED]] -- this might be removed
             //+[@[TRANSPLANT PRODUCTION LABOR HOURS PER STANDARD BED]]
             //+[@[POST HARVEST LABOR HOURS PER STANDARD BED]])
-            
-            
 
-            return (cropYieldInformation.FieldLaborHoursPerStandardBed() 
-                   + cropYieldInformation.HarvestCrewLaborHoursPerStandardBed() 
-                   + cropYieldInformation.HarvestOperatorLaborHoursPerStandardBed()
-                       + TransplantProductionLaborHoursPerStandardBed()
-                       +  PostHarvestLaborHoursPerStandardBed())
-                
 
-            
-            
+
+            return (cropYieldInformation.FieldLaborHoursPerStandardBed()
+                    + cropYieldInformation.HarvestCrewLaborHoursPerStandardBed()
+                    // + cropYieldInformation.HarvestOperatorLaborHoursPerStandardBed()
+                    + cropYieldInformation.TransplantProductionLaborHoursPerStandardBed()
+                    + cropYieldInformation.PostHarvestLaborHoursPerStandardBed());
+
+
+
+
         }
 
         public static decimal FieldLaborHoursPerStandardBed(this CropYieldInformation cropYieldInformation)
@@ -76,6 +76,79 @@ namespace OregonTilth.EFModels.Entities
             
         }
 
+        public static decimal HarvestCrewLaborHoursPerStandardBed(this CropYieldInformation cropYieldInformation)
+        {
+            // =[@[Yield per Standard Unit of Space]]/[@[Harvest Crop Units per Hour (Manual)]]
+            /*
+             *
+             * NEEDS A FORMULA:
+             * Divides the Harvest Yield per Standard of Space for the Crop/Unit
+             * by the (AVERAGE TIME (Crop Units per Minute) from Table 29 divided by 60) where there’s a match at Crop and Unit and H or PH = “Harvest”
+             */
 
+            var harvestYieldPerStandardSpace = cropYieldInformation.HarvestedYieldPerStandardUnitOfSpace;
+
+            var harvestStandardTime = cropYieldInformation.Crop.HarvestPostHarvestStandardTimes.SingleOrDefault(x =>
+                x.CropUnitID == cropYieldInformation.CropUnitID && x.WorkbookID == cropYieldInformation.WorkbookID && x.HarvestTypeID == (int) HarvestTypeEnum.Harvest);
+
+            if (harvestStandardTime?.StandardTimePerUnit != null)
+            {
+                return harvestYieldPerStandardSpace / ((decimal)harvestStandardTime.StandardTimePerUnit / 60);
+            }
+
+            return 0;
+
+        }
+
+        public static decimal PostHarvestLaborHoursPerStandardBed(this CropYieldInformation cropYieldInformation)
+        {
+            var harvestYieldPerStandardSpace = cropYieldInformation.HarvestedYieldPerStandardUnitOfSpace;
+
+            var harvestStandardTime = cropYieldInformation.Crop.HarvestPostHarvestStandardTimes.SingleOrDefault(x =>
+                x.CropUnitID == cropYieldInformation.CropUnitID && x.WorkbookID == cropYieldInformation.WorkbookID && x.HarvestTypeID == (int)HarvestTypeEnum.PostHarvest);
+
+            if (harvestStandardTime?.StandardTimePerUnit != null)
+            {
+                return harvestYieldPerStandardSpace / ((decimal)harvestStandardTime.StandardTimePerUnit / 60);
+            }
+
+            return 0;
+        }
+
+        public static decimal TransplantProductionLaborHoursPerStandardBed(this CropYieldInformation cropYieldInformation)
+        {
+            /*
+              =IF([@[HELPER COLUMN FOR TOTAL SEED OR TP COST ]]="Direct Seeded",0,
+              IF([@[HELPER COLUMN FOR TOTAL SEED OR TP COST ]]="Transplant Outsourced",0,
+              INDEX(Table9[UNITS USED],MATCH(1,(Table9[Field Unit]="Transplants")*([@Crop]=Table9[Crop])*{1},0))*INDEX(Table22[TOTAL LABOR HOURS PER TRANSPLANT],MATCH([@Crop],Table22[Crop],0))))
+             */
+
+            var tpOrDsType = cropYieldInformation.GetTransplantProductionTpOrDsType();
+
+            if (tpOrDsType == null 
+                || tpOrDsType.TpOrDsTypeID == (int) TpOrDsTypeEnum.DirectSeeded 
+                || tpOrDsType.TpOrDsTypeID == (int) TpOrDsTypeEnum.TransplantOutsourced)
+            {
+                return 0;
+            }
+
+            var cropInfo = cropYieldInformation.Crop.CropSpecificInfos.SingleOrDefault();
+            var totalLaborHoursPerTransplant = cropInfo.TotalLaborHoursPerTransplant();
+            // else get Units Used * TotalLaborHoursPerTransplant for the crop
+            var unitsUsed = cropInfo.UnitsUsed(FieldUnitTypeEnum.Transplants);
+
+
+            return totalLaborHoursPerTransplant * unitsUsed;
+        }
+
+        public static TpOrDsType GetTransplantProductionTpOrDsType(this CropYieldInformation cropYieldInformation)
+        {
+            //=INDEX(Table22[TP Type or DS],MATCH([@Crop],Table22[Crop],0))
+            // table 22 = Crop Specific Info
+
+            var cropInfo = cropYieldInformation.Crop.CropSpecificInfos.SingleOrDefault();
+            return cropInfo?.TpOrDsType;
+
+        }
     }
 }
