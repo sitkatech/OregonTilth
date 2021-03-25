@@ -39,6 +39,27 @@ namespace OregonTilth.EFModels.Entities
 
         }
 
+        public static decimal TotalNonLaborInputCosts(this CropYieldInformation cropYieldInformation)
+        {
+            // =[@[TOTAL FIELD INPUT COSTS]]+[@[TOTAL SEED OR TP COST]]+[@[TOTAL PACKAGING COSTS]]
+
+            return cropYieldInformation.TotalFieldInputCosts()
+                   + cropYieldInformation.TotalSeedOrTPCost()
+                   + cropYieldInformation.TotalPackagingCosts();
+
+        }
+
+        public static decimal TotalFieldInputCosts(this CropYieldInformation cropYieldInformation)
+        {
+            // =SUMIF(Table20[Crop],[@Crop], Table20[FIELD INPUT COSTS PER STANDARD BED])
+            //table20 = FieldInputByCrop
+
+            return cropYieldInformation.Crop.FieldInputByCrops.Sum(x => x.FieldInputCostsPerStandardBed());
+
+
+           
+        }
+
         public static decimal TotalLaborCosts(this CropYieldInformation cropYieldInformation)
         {
             //=[@[TOTAL LABOR HOURS]]*INDEX(Table1[Average Hourly Wage],1)
