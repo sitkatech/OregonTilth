@@ -23,6 +23,25 @@ namespace OregonTilth.EFModels.Entities
 
         }
 
+
+        public static decimal MachineryCostsPerStandardBed(this FieldLaborByCrop fieldLaborByCrop)
+        {
+            // =IF([@[CALCULATED MACHINERY NAME]]="",0,INDEX(Table8[Standard Machinery Cost],MATCH([@[CALCULATED MACHINERY NAME]],Table8[Machinery Name],0))*([@[LABOR ACTIVITY MINUTES PER STANDARD BED]]/60))
+
+            var machinery =
+                fieldLaborByCrop.FieldLaborActivity.FieldStandardTimes.SingleOrDefault(x =>
+                    x.LaborTypeID == (int) LaborTypeEnum.Operator)?.Machinery;
+
+            if (machinery == null)
+            {
+                return 0;
+            }
+
+            return machinery.StandardMachineryCost * (fieldLaborByCrop.LaborActivityMinutesPerStandardBed() / 60);
+
+        }
+
+
         public static decimal LaborActivityMinutesPerStandardBed(this FieldLaborByCrop fieldLaborByCrop)
         {
             // =[@[CALCULATED STANDARD TIME]]*[@[UNITS USED PER STANDARD BED]]*[@Occurrences]

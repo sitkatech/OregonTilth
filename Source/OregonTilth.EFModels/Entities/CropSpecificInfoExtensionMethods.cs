@@ -136,5 +136,56 @@ namespace OregonTilth.EFModels.Entities
             return 0;
 
         }
+
+        public static decimal TotalInputCostPerTransplant(this CropSpecificInfo cropSpecificInfo)
+        {
+            //=IF([@[TP Type or DS]]="Direct Seeded",0,
+            //IF([@[TP Type or DS]]= "Transplant Outsourced",0,
+            //IF(ISNA([@[HELPER COLUMN FOR TOTAL INPUT COST PER TRANSPLANT]]),
+            //  INDEX(Table18[CROP / PHASE TOTAL INPUT COSTS PER TRANSPLANT], MATCH(1, (Table18[Crop] =[@Crop]) * (Table18[Phase] = "Seeding") *{ 1},0)),
+            //IF([@[HELPER COLUMN FOR TOTAL INPUT COST PER TRANSPLANT]]> 0,
+            //[@[HELPER COLUMN FOR TOTAL INPUT COST PER TRANSPLANT]],
+            //INDEX(Table18[CROP / PHASE TOTAL INPUT COSTS PER TRANSPLANT], MATCH(1, (Table18[Crop] =[@Crop]) * (Table18[Phase] = "Seeding") *{ 1},0))))))
+            if (cropSpecificInfo.TpOrDsTypeID == (int) TpOrDsTypeEnum.DirectSeeded ||
+                cropSpecificInfo.TpOrDsTypeID == (int) TpOrDsTypeEnum.TransplantOutsourced)
+            {
+                return 0;
+            }
+
+            var seedingTpInfo = cropSpecificInfo.Crop.TransplantProductionInformations.SingleOrDefault(x =>
+                x.PhaseID == (int)PhaseEnum.Seeding);
+            
+            if (cropSpecificInfo.HelperForTotalInputCostPerTransplant() == null)
+            {
+                return seedingTpInfo.CropPhaseTotalInputCostsPerTransplant();
+            }
+
+            if (cropSpecificInfo.HelperForTotalInputCostPerTransplant() > 0)
+            {
+                return (decimal) cropSpecificInfo.HelperForTotalInputCostPerTransplant();
+            }
+
+            return seedingTpInfo.CropPhaseTotalInputCostsPerTransplant(); ;
+        }
+
+        public static decimal? HelperForTotalInputCostPerTransplant(this CropSpecificInfo cropSpecificInfo)
+        {
+            // =INDEX(Table18[CROP/PHASE TOTAL INPUT COSTS PER TRANSPLANT],MATCH(1,([@Crop]=Table18[Crop])*("Potting Up"=Table18[Phase])*{1},0))
+            // table18 == tpInfo
+
+            var tpInfo = cropSpecificInfo.Crop.TransplantProductionInformations.SingleOrDefault(x =>
+                x.PhaseID == (int) PhaseEnum.PottingUp);
+
+            if (tpInfo == null)
+            {
+                return null;
+            }
+
+            return tpInfo.CropPhaseTotalInputCostsPerTray();
+
+            
+        }
+
+
     }
 }

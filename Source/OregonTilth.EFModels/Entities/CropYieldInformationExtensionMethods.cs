@@ -39,6 +39,21 @@ namespace OregonTilth.EFModels.Entities
 
         }
 
+        public static decimal TotalMachineryCosts(this CropYieldInformation cropYieldInformation)
+        {
+            //=IF([@[Post Harvest Machinery Crop Units Per Hour]]=0,
+            //  (SUMIF(Table19[Crop],[@Crop], Table19[MACHINERY COSTS PER STANDARD BED]) * [@[STANDARD Units of Space]] + ([@[Harvest Machinery Operating Cost per Hour]]*[@[Operator Harvest Hours per Standard Unit of Space  ]]) * ([@[STANDARD Units of Space]])),
+            var machineryCostsPerStandardBed = cropYieldInformation.Crop.FieldLaborByCrops.Sum(x => x.MachineryCostsPerStandardBed());
+
+            return machineryCostsPerStandardBed;
+
+            // else
+            //  (SUMIF(Table19[Crop],[@Crop], Table19[MACHINERY COSTS PER STANDARD BED]) + ([@[Harvest Machinery Operating Cost per Hour]]*[@[Operator Harvest Hours per Standard Unit of Space]])+(([@[Yield per Standard Unit of Space]]/[@[Post Harvest Machinery Crop Units Per Hour]])*[@[Post Harvest Machinery Operating Cost per Hour]])))
+            //table19 = FieldLaborActivityByCrop
+
+
+        }
+
         public static decimal TotalNonLaborInputCosts(this CropYieldInformation cropYieldInformation)
         {
             // =[@[TOTAL FIELD INPUT COSTS]]+[@[TOTAL SEED OR TP COST]]+[@[TOTAL PACKAGING COSTS]]
@@ -49,15 +64,57 @@ namespace OregonTilth.EFModels.Entities
 
         }
 
+
+        public static decimal TotalPackagingCosts(this CropYieldInformation cropYieldInformation)
+        {
+            return cropYieldInformation.PackagingCostPerCropUnit *
+                   cropYieldInformation.MarketableYieldPerStandardUnitOfSpace;
+        }
+
+
+        public static decimal TotalSeedOrTPCost(this CropYieldInformation cropYieldInformation)
+        {
+            //=IF([@[HELPER COLUMN FOR TOTAL SEED OR TP COST ]]="Transplant Farm Produced",
+            //  INDEX(Table22[TOTAL INPUT COST PER TRANSPLANT],MATCH([@Crop],Table22[Crop],0))
+            //  * INDEX(Table9[UNITS USED],MATCH(1,([@Crop]=Table9[Crop])*("Transplants"=Table9[Field Unit])*{1},0)),
+            //IF([@[HELPER COLUMN FOR TOTAL SEED OR TP COST]]= "Transplant Outsourced",
+            //  INDEX(Table22[TP Cost(Transplant Outsourced)], MATCH([@Crop], Table22[Crop], 0))
+            //  * INDEX(Table9[UNITS USED], MATCH(1, ([@Crop] = Table9[Crop]) * ("Transplants" = Table9[Field Unit]) *{ 1},0)),
+            //IF([@[HELPER COLUMN FOR TOTAL SEED OR TP COST]]= "Direct Seeded",
+            //  INDEX(Table22[Seed Cost per Standard Row], MATCH([@Crop], Table22[Crop], 0)),
+            //NA())))
+
+            var tpOrDsType = cropYieldInformation.GetTransplantProductionTpOrDsType();
+            var cropSpecificInfo = cropYieldInformation.Crop.CropSpecificInfos.Single();
+
+            if (tpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantFarmProduced)
+            {
+                return cropSpecificInfo.TotalInputCostPerTransplant() *
+                       cropSpecificInfo.UnitsUsed(FieldUnitTypeEnum.Transplants);
+            }
+
+            if (tpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantOutsourced)
+            {
+                return cropSpecificInfo.TransplantProductionCostOutsourced *
+                       cropSpecificInfo.UnitsUsed(FieldUnitTypeEnum.Transplants) 
+                       ?? 0;
+            }
+
+            if (tpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.DirectSeeded)
+            {
+                return cropSpecificInfo.SeedCostPerStandardUnitOfSpace ?? 0;
+            }
+
+            return 0;
+
+        }
+
         public static decimal TotalFieldInputCosts(this CropYieldInformation cropYieldInformation)
         {
             // =SUMIF(Table20[Crop],[@Crop], Table20[FIELD INPUT COSTS PER STANDARD BED])
             //table20 = FieldInputByCrop
 
             return cropYieldInformation.Crop.FieldInputByCrops.Sum(x => x.FieldInputCostsPerStandardBed());
-
-
-           
         }
 
         public static decimal TotalLaborCosts(this CropYieldInformation cropYieldInformation)
