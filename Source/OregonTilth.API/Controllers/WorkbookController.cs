@@ -1140,10 +1140,7 @@ namespace OregonTilth.API.Controllers
         }
 
         #endregion "Crop Yield Information"
-    
 
-
-        
         #region Crop Specific Information Form
         
         [HttpPost("workbooks/{workbookID}/forms/crop-specific-info/initialize")]

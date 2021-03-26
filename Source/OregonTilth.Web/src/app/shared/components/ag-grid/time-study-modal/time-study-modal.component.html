@@ -19,11 +19,11 @@
             <h5>#{{i + 1}}</h5>
           </div>
           <div class="col-md-3">
-            <label for="">Total Minutes</label>
+            <label for="">{{this.durationLabel}}</label>
             <input name="Duration_{{i}}" class="form-control" type="number" [(ngModel)]="timeStudy.Duration" />
           </div>
           <div class="col-md-3">
-            <label for="">Total Units</label>
+            <label for="">{{this.unitsLabel}}</label>
             <input name="Units_{{i}}" class="form-control" type="number" [(ngModel)]="timeStudy.Units" />
           </div>
           <div class="col-md-4">

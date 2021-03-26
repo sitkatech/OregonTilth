@@ -15,11 +15,63 @@ namespace OregonTilth.EFModels.Entities
 
         public static List<ErrorMessage> ValidateUpsert(OregonTilthDbContext dbContext, TimeStudiesUpsertDto upsertDto)
         {
-
-
             var result = new List<ErrorMessage>();
 
-            
+            if (upsertDto.TimeStudies.Any(x => x.Duration <= 0))
+            {
+                string typeName = string.Empty;
+                string message = string.Empty;
+
+                if (upsertDto.FieldStandardTimeID.HasValue)
+                {
+                    typeName = "Total Minutes";
+                    message = "Total Minutes must be greater than 0.";
+                }else if (upsertDto.HarvestPostHarvestStandardTimeID.HasValue)
+                {
+                    typeName = "Total Minutes";
+                    message = "Total Minutes must be greater than 0.";
+                }
+                else if (upsertDto.TransplantProductionStandardTimeID.HasValue)
+                {
+                    typeName = "Total Minutes";
+                    message = "Total Minutes must be greater than 0.";
+                }
+                else
+                {
+                    typeName = "Duration";
+                    message = "Duration must be greater than 0.";
+                }
+
+                result.Add(new ErrorMessage() { Type = typeName, Message = message });
+            }
+
+            if (upsertDto.TimeStudies.Any(x => x.Units <= 0))
+            {
+                string typeName = string.Empty;
+                string message = string.Empty;
+
+                if (upsertDto.FieldStandardTimeID.HasValue)
+                {
+                    typeName = "Total Field Units";
+                    message = "Total Field Units must be greater than 0.";
+                }
+                else if (upsertDto.HarvestPostHarvestStandardTimeID.HasValue)
+                {
+                    typeName = "Total Field Units";
+                    message = "Total Field Units must be greater than 0.";
+                }
+                else if (upsertDto.TransplantProductionStandardTimeID.HasValue)
+                {
+                    typeName = "Total Number Of Trays";
+                    message = "Total Number Of Trays must be greater than 0.";
+                }
+                else
+                {
+                    typeName = "Units";
+                    message = "Total Units must be greater than 0.";
+                }
+                result.Add(new ErrorMessage() { Type = typeName, Message = message });
+            }
 
             return result;
         }

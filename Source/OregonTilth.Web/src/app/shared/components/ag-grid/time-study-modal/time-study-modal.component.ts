@@ -42,6 +42,8 @@ export class TimeStudyModal implements OnInit {
   public isLoadingSubmit: boolean = false;
 
   private submitTimeStudiesRequest: any;
+  public durationLabel: string;
+  public unitsLabel: string;
 
 
   onSubmit(timeStudiesForm: HTMLFormElement): void {
@@ -77,14 +79,20 @@ export class TimeStudyModal implements OnInit {
   ngOnInit() {
     if(this.fieldStandardTime) {
       this.model = this.createModelFromFieldStandardTime(this.fieldStandardTime);
+      this.durationLabel = "Total Minutes";
+      this.unitsLabel = "Total Field Units";
     }
 
     if(this.harvestPostHarvestStandardTime) {
       this.model = this.createModelFromHarvestPostHarvestStandardTime(this.harvestPostHarvestStandardTime);
+      this.durationLabel = "Total Minutes";
+      this.unitsLabel = "Total Field Units";
     }
 
     if(this.transplantProductionStandardTime) {
       this.model = this.createModelFromTransplantProductionStandardTime(this.transplantProductionStandardTime);
+      this.durationLabel = "Total Minutes";
+      this.unitsLabel = "Total Number of Trays";
     }
   }
 
