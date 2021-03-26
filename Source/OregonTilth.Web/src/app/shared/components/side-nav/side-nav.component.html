@@ -89,14 +89,13 @@
 
     <div class="nav-group mb-3">
         <h4>In-Season <field-definition [fieldDefinitionType]="'InSeason'" [labelOverride]="''"></field-definition></h4>
-        <!-- 1c( Field Standard Times Form ), 2c(Harvest and Post Harvest Time Studies Form ), 3c(TP Standard Times Form ) -->
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link"
                 [routerLink]="['/workbooks', workbook ? workbook.WorkbookID : -1, 'forms', 'field-standard-times']"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbook }">
-                    Field Standard Times
+                    Field Labor Time Studies
                     <field-definition [fieldDefinitionType]="'FieldStandardTimesForm'" [labelOverride]="''"></field-definition>
                 </a>
             </li>
