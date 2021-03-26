@@ -24,11 +24,7 @@ namespace OregonTilth.API.Controllers
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<CropYieldInformationDashboardReportDto>> GetCropYieldInformationDashboardReportDtos([FromRoute] int workbookID)
         {
-
-
             var cropYieldInfos = CropYieldInformation.GetDashReportDtoListByWorkbookID(_dbContext, workbookID);
-
-
 
             return Ok(cropYieldInfos);
         }

@@ -59,7 +59,16 @@ namespace OregonTilth.EFModels.Entities
         {
             // =[@[TOTAL DIRECT VARIABLE COSTS]]/[@[TOTAL LABOR HOURS]]
 
-            return cropYieldInformation.TotalDirectVariableCosts() / cropYieldInformation.TotalLaborHours();
+            var totalDirectVariableCosts = cropYieldInformation.TotalDirectVariableCosts();
+
+            var totalLaborHours = cropYieldInformation.TotalLaborHours();
+
+            if (totalLaborHours == 0)
+            {
+                return 0;
+            }
+
+            return totalDirectVariableCosts / totalLaborHours;
         }
 
         public static decimal ContributionMarginPerStandardUnitOfSpace(this CropYieldInformation cropYieldInformation)
@@ -173,16 +182,15 @@ namespace OregonTilth.EFModels.Entities
             //+[@[POST HARVEST LABOR HOURS PER STANDARD BED]])
 
 
-
-            return (cropYieldInformation.FieldLaborHoursPerStandardBed()
-                    + cropYieldInformation.HarvestCrewLaborHoursPerStandardBed()
+            var fieldLaborHoursPerStandardBed = cropYieldInformation.FieldLaborHoursPerStandardBed();
+            var harvestCrewLaborHoursPerStandardBed = cropYieldInformation.HarvestCrewLaborHoursPerStandardBed();
+            var transplantProductionLaborHoursPerStandardBed = cropYieldInformation.TransplantProductionLaborHoursPerStandardBed();
+            var postHarvestLaborHoursPerStandardBed = cropYieldInformation.PostHarvestLaborHoursPerStandardBed();
+            return (fieldLaborHoursPerStandardBed
+                    + harvestCrewLaborHoursPerStandardBed
                     // + cropYieldInformation.HarvestOperatorLaborHoursPerStandardBed()
-                    + cropYieldInformation.TransplantProductionLaborHoursPerStandardBed()
-                    + cropYieldInformation.PostHarvestLaborHoursPerStandardBed());
-
-
-
-
+                    + transplantProductionLaborHoursPerStandardBed
+                    + postHarvestLaborHoursPerStandardBed);
         }
 
         public static decimal FieldLaborHoursPerStandardBed(this CropYieldInformation cropYieldInformation)

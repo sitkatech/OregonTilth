@@ -117,10 +117,17 @@ namespace OregonTilth.EFModels.Entities
             return dbContext.CropYieldInformations
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .Include(x => x.Crop).ThenInclude(x => x.CropSpecificInfos).ThenInclude(x => x.TpOrDsType)
-                .Include(x => x.Crop).ThenInclude(x => x.FieldLaborByCrops).ThenInclude(x => x.FieldLaborActivity)
+                .Include(x => x.Crop).ThenInclude(x => x.CropSpecificInfos).ThenInclude(x => x.Workbook)
+                .Include(x => x.Crop).ThenInclude(x => x.FieldLaborByCrops).ThenInclude(x => x.FieldLaborActivity).ThenInclude(x => x.FieldStandardTimes).ThenInclude(x => x.FieldUnitType)
                 .Include(x => x.Crop).ThenInclude(x => x.FieldInputByCrops).ThenInclude(x => x.FieldInputCost)
+                .Include(x => x.Crop).ThenInclude(x => x.TransplantProductionInformations).ThenInclude(x => x.Phase)
+                .Include(x => x.Crop).ThenInclude(x => x.TransplantProductionInformations).ThenInclude(x => x.TransplantProductionTrayType).ThenInclude(x => x.TransplantProductionInputCosts)
                 .Include(x => x.CropUnit)
                 .AsNoTracking();
+
+            // fieldLaborByCrop.Crop.CropSpecificInfos.Single().UnitsUsed(fieldUnitEnum);
+            //transplantProductionInformation.TransplantProductionTrayType.TransplantProductionInputCosts
+
         }
 
 

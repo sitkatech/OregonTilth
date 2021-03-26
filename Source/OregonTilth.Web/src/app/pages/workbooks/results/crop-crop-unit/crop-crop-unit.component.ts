@@ -17,6 +17,7 @@ import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { CropYieldInformationDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/crop-yield-information-dashboard-report-dto';
 import { ResultsService } from 'src/app/services/results/results.service';
 import { forkJoin } from 'rxjs';
+import { GridService } from 'src/app/shared/services/grid/grid.service';
 
 @Component({
   selector: 'crop-crop-unit',
@@ -30,6 +31,7 @@ export class CropCropUnitComponent implements OnInit {
     private workbookService: WorkbookService,
     private resultsService: ResultsService,
     private alertService: AlertService,
+    private gridService: GridService,
     private router: Router,
     private route: ActivatedRoute) { }
 
@@ -49,7 +51,7 @@ export class CropCropUnitComponent implements OnInit {
 
 
   getRowNodeId(data)  {
-    return data.FieldLaborActivityID.toString();
+    return data.CropYieldInformationID.toString();
   }
  
   ngOnInit() {
@@ -63,6 +65,9 @@ export class CropCropUnitComponent implements OnInit {
       forkJoin([this.getWorkbookRequest, this.getcropYieldInformationDashboardReportDtosRequest]).subscribe(([workbook, cropYieldInformationDashboardReportDtos]: [WorkbookDto, CropYieldInformationDashboardReportDto[]] ) => {
           this.workbook = workbook;
           this.cropYieldInformationDashboardReportDtos = cropYieldInformationDashboardReportDtos;
+          
+          this.defineColumnDefs();
+          this.gridApi.sizeColumnsToFit();
           this.cdr.markForCheck();
       });
 
@@ -73,7 +78,51 @@ export class CropCropUnitComponent implements OnInit {
     this.gridApi = params.api;
   }
 
-
+  defineColumnDefs() {
+    var componentScope = this;
+    this.columnDefs = [
+      {
+        headerName: 'Crop', 
+        field: 'Crop',
+        valueGetter: params => {
+          return params.data.Crop.CropName;
+        },
+        
+      },
+      {
+        headerName: 'Crop Unit', 
+        field: 'CropUnit',
+        valueGetter: params => {
+          return params.data.CropUnit.CropUnitName;
+        },
+      },
+      {
+        headerName: 'Price', 
+        field: 'PricePerCropUnit',
+        valueFormatter: this.gridService.currencyFormatter,
+      },
+      {
+        headerName: 'Variable Cost Per Marketable Unit', 
+        field: 'VariableCostPerMarketableUnit',
+        valueFormatter: this.gridService.currencyFormatter,
+      },
+      {
+        headerName: 'Contribution Margin Per Marketable Unit', 
+        field: 'ContributionMarginPerMarketableUnit',
+        valueFormatter: this.gridService.currencyFormatter,
+      },
+      {
+        headerName: 'Contribution Margin Per Direct Labor Hour', 
+        field: 'ContributionMarginPerDirectLaborHour',
+        valueFormatter: this.gridService.currencyFormatter,
+      },
+      {
+        headerName: 'Contribution Margin Per Standard Unit of Space', 
+        field: 'ContributionMarginPerStandardUnitOfSpace',
+        valueFormatter: this.gridService.currencyFormatter,
+      },
+    ]
+  }
  
 
   ngOnDestroy() {

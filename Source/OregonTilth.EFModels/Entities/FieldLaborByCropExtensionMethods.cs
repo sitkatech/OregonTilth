@@ -81,8 +81,13 @@ namespace OregonTilth.EFModels.Entities
             
             //=INDEX(Table9[UNITS USED],MATCH(1,([@[CALCULATED FIELD UNIT]]=Table9[Field Unit])*([@Crop]=Table9[Crop])*{1},0))
 
+            var calculatedFieldUnit = fieldLaborByCrop.CalculatedFieldUnit();
+            if (calculatedFieldUnit == null)
+            {
+                return 0;
+            }
 
-            var fieldUnitEnum = (FieldUnitTypeEnum) fieldLaborByCrop.CalculatedFieldUnit().FieldUnitTypeID;
+            var fieldUnitEnum = (FieldUnitTypeEnum) calculatedFieldUnit.FieldUnitTypeID;
 
             return fieldLaborByCrop.Crop.CropSpecificInfos.Single().UnitsUsed(fieldUnitEnum);
 
@@ -92,8 +97,8 @@ namespace OregonTilth.EFModels.Entities
         {
             // table14 = Field Standard Times
             // =INDEX(Table14[Field Unit],MATCH(1,([@[Field Labor Activity]]=Table14[Field Labor Activity])*([@[Labor Type]]=Table14[Labor Type])*{1},0))&""
-            return fieldLaborByCrop.FieldLaborActivity.FieldStandardTimes.Single(x =>
-                x.LaborTypeID == fieldLaborByCrop.LaborTypeID && x.WorkbookID == fieldLaborByCrop.WorkbookID).FieldUnitType;
+            return fieldLaborByCrop.FieldLaborActivity.FieldStandardTimes.SingleOrDefault(x =>
+                x.LaborTypeID == fieldLaborByCrop.LaborTypeID && x.WorkbookID == fieldLaborByCrop.WorkbookID)?.FieldUnitType;
 
         }
     }
