@@ -18,6 +18,8 @@ import { CropYieldInformationDashboardReportDto } from 'src/app/shared/models/fo
 import { ResultsService } from 'src/app/services/results/results.service';
 import { forkJoin } from 'rxjs';
 import { GridService } from 'src/app/shared/services/grid/grid.service';
+import { ViewChild } from '@angular/core';
+import { AgGridAngular } from 'ag-grid-angular';
 
 @Component({
   selector: 'crop-crop-unit',
@@ -25,7 +27,8 @@ import { GridService } from 'src/app/shared/services/grid/grid.service';
   styleUrls: ['./crop-crop-unit.component.scss']
 })
 export class CropCropUnitComponent implements OnInit {
-
+  @ViewChild('cropCropUnitGrid') cropCropUnitGrid: AgGridAngular;
+  
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
@@ -33,6 +36,7 @@ export class CropCropUnitComponent implements OnInit {
     private alertService: AlertService,
     private gridService: GridService,
     private router: Router,
+    private utilityFunctionsService: UtilityFunctionsService, 
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -103,6 +107,7 @@ export class CropCropUnitComponent implements OnInit {
         headerName: 'Price', 
         field: 'PricePerCropUnit',
         valueFormatter: this.gridService.currencyFormatter,
+        
         type: 'rightAligned',
         resizable:true,
         sortable:true,
@@ -159,9 +164,18 @@ export class CropCropUnitComponent implements OnInit {
     }
     
     this.cdr.detach();
-
-
-    
   }
 
+  public exportToCsv() {
+    // we need to grab all columns except the first one (trash icon)
+    let columnsKeys = this.cropCropUnitGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+    
+    this.utilityFunctionsService.exportGridToCsv(this.cropCropUnitGrid, 'test.csv', columnIds);
+  }  
 }
