@@ -31,6 +31,8 @@ import { HarvestPostHarvestStandardTimeSummaryDto } from 'src/app/shared/models/
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
 import { HarvestTypeDto } from 'src/app/shared/models/generated/harvest-type-dto';
+import { AgGridAngular } from 'ag-grid-angular';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 
 @Component({
   selector: 'harvest-post-harvest-standard-times',
@@ -42,12 +44,14 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
 
   @ViewChild('upsertAllocationPlan') upsertEntity: any;
   @ViewChild('timeStudyModal') timeStudyModalEntity: any;
+  @ViewChild('harvestPostHarvestStandardTimesGrid') harvestPostHarvestStandardTimesGrid: AgGridAngular;
 
 
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
     private lookupTablesService: LookupTablesService,
+    private utilityFunctionsService: UtilityFunctionsService,
     private alertService: AlertService,
     private route: ActivatedRoute,
     private modalService: NgbModal) { }
@@ -351,6 +355,20 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
     this.model = new HarvestPostHarvestStandardTimeCreateDto({WorkbookID: this.workbookID});
   }
 
+  public exportToCsv() {
+    let columnsKeys = this.harvestPostHarvestStandardTimesGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+    var timeStudiesIndex = columnIds.findIndex(x => {
+      return x == 'TimeStudies';
+    });
+    columnIds.splice(timeStudiesIndex, 1);
+    this.utilityFunctionsService.exportGridToCsv(this.harvestPostHarvestStandardTimesGrid, 'Harvest-Post-Harvest-Time-Studies.csv', columnIds);
+  }  
 
 }
 

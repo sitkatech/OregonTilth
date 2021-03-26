@@ -26,6 +26,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup, Validators,FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { TimeStudyModal } from 'src/app/shared/components/ag-grid/time-study-modal/time-study-modal.component';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { AgGridAngular } from 'ag-grid-angular';
 
 @Component({
   selector: 'field-standard-times',
@@ -37,12 +39,14 @@ export class FieldStandardTimesComponent implements OnInit {
 
   @ViewChild('upsertAllocationPlan') upsertEntity: any;
   @ViewChild('timeStudyModal') timeStudyModalEntity: any;
+  @ViewChild('fieldStandardTimesGrid') fieldStandardTimesGrid: AgGridAngular;
 
 
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
     private lookupTablesService: LookupTablesService,
+    private utilityFunctionsService: UtilityFunctionsService,
     private alertService: AlertService,
     private route: ActivatedRoute,
     private modalService: NgbModal) { }
@@ -385,7 +389,21 @@ export class FieldStandardTimesComponent implements OnInit {
     this.cdr.detach();
   }
 
-  
+  public exportToCsv() {
+    let columnsKeys = this.fieldStandardTimesGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+
+    var timeStudiesIndex = columnIds.findIndex(x => {
+      return x == 'TimeStudies';
+    });
+    columnIds.splice(timeStudiesIndex, 1);
+    this.utilityFunctionsService.exportGridToCsv(this.fieldStandardTimesGrid, 'Field-Time-Studies.csv', columnIds);
+  }  
 
 
 }

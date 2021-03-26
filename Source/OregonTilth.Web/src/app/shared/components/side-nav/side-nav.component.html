@@ -202,5 +202,16 @@
     <div class="nav-group mb-3">
         <h4>Results <field-definition [fieldDefinitionType]="'Results'" [labelOverride]="''"></field-definition></h4>
         <!-- dashboards -->
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link"
+                [routerLink]="['/workbooks', workbook ? workbook.WorkbookID : -1, 'results', 'crop-crop-unit']"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbook }">
+                    Crop/Crop Unit
+                    <field-definition [fieldDefinitionType]="'ResultsCropCropUnit'" [labelOverride]="''"></field-definition>
+                </a>
+            </li>
+        </ul>
     </div>
 </nav>

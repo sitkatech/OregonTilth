@@ -11,4 +11,10 @@ namespace OregonTilth.EFModels.Entities
             return dbContext.HarvestTypes.Select(x => HarvestTypeExtensionMethods.AsDto(x)).ToList();
         }
     }
+
+    public enum HarvestTypeEnum
+    {
+        Harvest = 1,
+        PostHarvest = 2
+    }
 }

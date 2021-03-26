@@ -27,5 +27,8 @@ export enum CustomRichTextType{
     OverheadCostEstimator = 26,
     CropsForm = 27,
     CropUnitsForm = 28,
-    HarvestPostHarvestStandardTimesForm = 29
+    HarvestPostHarvestStandardTimesForm = 29,
+    ResultsCropCropUnit = 30, 
+    ResultsCropCropUnitLaborHours = 31,
+    ResultsCropCropUnitCostsPerCostCategory = 32
 }

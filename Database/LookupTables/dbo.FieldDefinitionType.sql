@@ -26,7 +26,10 @@ USING (VALUES
 (24, 'Results', 'Results'),
 (25, 'AverageHourlyWage', 'Average Hourly Wage'),
 (26, 'StandardUnitOfSpaceLength', 'Standard Unit Of Space Length'),
-(27, 'StandardUnitOfSpaceWidth', 'Standard Unit Of Space Width')
+(27, 'StandardUnitOfSpaceWidth', 'Standard Unit Of Space Width'),
+(28, 'ResultsCropCropUnit', 'Crop/Crop Unit'),
+(29, 'ResultsCropCropUnitLaborHours', 'Crop/Crop Unit Labor Hours per Labor Activity Category'),
+(30, 'ResultsCropCropUnitCostsPerCostCategory', 'Crop/Crop Unit Costs per Cost Category')
 )
 AS Source (FieldDefinitionTypeID, FieldDefinitionTypeName, FieldDefinitionTypeDisplayName)
 ON Target.FieldDefinitionTypeID = Source.FieldDefinitionTypeID

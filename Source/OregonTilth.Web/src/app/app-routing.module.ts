@@ -39,6 +39,7 @@ import { HarvestPostHarvestStandardTimesComponent } from './pages/workbooks/form
 import { TransplantProductionStandardTimesComponent } from './pages/workbooks/forms/transplant-production-standard-times/transplant-production-standard-times.component';
 import { CropYieldInformationComponent } from './pages/workbooks/forms/crop-yield-information/crop-yield-information.component';
 import { CropSpecificInfoComponent } from './pages/workbooks/forms/crop-specific-info/crop-specific-info.component';
+import { CropCropUnitComponent } from './pages/workbooks/results/crop-crop-unit/crop-crop-unit.component';
 
 const routes: Routes = [
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -73,6 +74,7 @@ const routes: Routes = [
   { path: "workbooks/:id/forms/transplant-production-standard-times", component: TransplantProductionStandardTimesComponent},
   { path: "workbooks/:id/forms/crop-yield-information", component: CropYieldInformationComponent},
   { path: "workbooks/:id/forms/crop-specific-info", component: CropSpecificInfoComponent},
+  { path: "workbooks/:id/results/crop-crop-unit", component: CropCropUnitComponent},
   { path: "workbooks/:id", component: WorkbookDetailComponent},
   { path: "login-callback", component: LoginCallbackComponent },
   { path: "create-user-callback", component: CreateUserCallbackComponent },

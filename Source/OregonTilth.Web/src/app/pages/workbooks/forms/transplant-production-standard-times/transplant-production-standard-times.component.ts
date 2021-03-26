@@ -10,29 +10,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { forkJoin } from 'rxjs';
-import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
-import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-labor-activity-dto';
-import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-summary-dto';
-import { vFieldLaborActivityForTimeStudyDto } from 'src/app/shared/models/forms/field-standard-times/vFieldLaborActivityForTimeStudyDto';
-import { LaborTypeDto } from 'src/app/shared/models/generated/labor-type-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
-import { MachineryDto } from 'src/app/shared/models/generated/machinery-dto';
-import { FieldUnitTypeDto } from 'src/app/shared/models/generated/field-unit-type-dto';
-import { FieldStandardTimeCreateDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-create-dto';
-import { LaborTypeEnum } from 'src/app/shared/models/enums/labor-type.enum';
 import { TimeStudyCellRendererComponent } from 'src/app/shared/components/ag-grid/time-study-cell-renderer/time-study-cell-renderer.component';
-import { TimeStudyDto } from 'src/app/shared/models/generated/time-study-dto';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormControl, FormGroup, Validators,FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { TimeStudyModal } from 'src/app/shared/components/ag-grid/time-study-modal/time-study-modal.component';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
-import { CropDto } from 'src/app/shared/models/generated/crop-dto';
-import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
-import { HarvestTypeDto } from 'src/app/shared/models/generated/harvest-type-dto';
 import { TransplantProductionLaborActivityDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-dto';
 import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
 import { TransplantProductionStandardTimeCreateDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-create-dto';
 import { TransplantProductionStandardTimeSummaryDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-summary-dto';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { AgGridAngular } from 'ag-grid-angular';
 
 @Component({
   selector: 'transplant-production-standard-times',
@@ -41,15 +29,15 @@ import { TransplantProductionStandardTimeSummaryDto } from 'src/app/shared/model
 })
 export class TransplantProductionStandardTimesComponent implements OnInit {
 
-
   @ViewChild('upsertAllocationPlan') upsertEntity: any;
   @ViewChild('timeStudyModal') timeStudyModalEntity: any;
-
+  @ViewChild('tpStandardTimesGrid') tpStandardTimesGrid: AgGridAngular;
 
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
     private lookupTablesService: LookupTablesService,
+    private utilityFunctionsService: UtilityFunctionsService,
     private alertService: AlertService,
     private route: ActivatedRoute,
     private modalService: NgbModal) { }
@@ -318,6 +306,20 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
     this.model = new TransplantProductionStandardTimeCreateDto({WorkbookID: this.workbookID});
   }
 
+  public exportToCsv() {
+    let columnsKeys = this.tpStandardTimesGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+    var timeStudiesIndex = columnIds.findIndex(x => {
+      return x == 'TimeStudies';
+    });
+    columnIds.splice(timeStudiesIndex, 1);
+    this.utilityFunctionsService.exportGridToCsv(this.tpStandardTimesGrid, 'Transplant-Production-Time-Studies.csv', columnIds);
+  }  
 
 }
 

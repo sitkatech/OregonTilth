@@ -25,5 +25,9 @@ export enum FieldDefinitionTypeEnum {
     Results = 24,
 	AverageHourlyWage = 25,
 	StandardUnitOfSpaceLength = 26,
-	StandardUnitOfSpaceWidth = 27
+	StandardUnitOfSpaceWidth = 27,
+    ResultsCropCropUnit = 28,
+    ResultsCropCropUnitLaborHours = 29,
+    ResultsCropCropUnitCostsPerCostCategory = 30
+
 }
