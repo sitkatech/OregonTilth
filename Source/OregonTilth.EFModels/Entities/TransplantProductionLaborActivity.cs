@@ -68,7 +68,8 @@ namespace OregonTilth.EFModels.Entities
         {
             return dbContext.TransplantProductionLaborActivities
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
-                
+                .Include(x => x.TransplantProductionStandardTimes)
+                .Include(x => x.TransplantProductionLaborActivityByCrops)
                 .AsNoTracking();
         }
 
@@ -106,11 +107,23 @@ namespace OregonTilth.EFModels.Entities
             return GetDtoByTransplantProductionLaborActivityID(dbContext, transplantProductionLaborActivity.TransplantProductionLaborActivityID);
         }
 
-        // todo: validate deletion
         public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int transplantProductionLaborActivityID)
         {
+            var tpLaborActivity = GetTransplantProductionLaborActivityImpl(dbContext).Single(x =>
+                x.TransplantProductionLaborActivityID == transplantProductionLaborActivityID);
+
             var result = new List<ErrorMessage>();
-            
+
+            if (tpLaborActivity.TransplantProductionStandardTimes.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity", Message = "Cannot delete a TP Labor Activity that has Time Study entries." });
+            }
+
+            if (tpLaborActivity.TransplantProductionLaborActivityByCrops.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity", Message = "Cannot delete a TP Labor Activity that has TP Labor By Crop entries." });
+            }
+
             return result;
         }
 
