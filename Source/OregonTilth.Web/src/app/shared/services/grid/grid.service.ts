@@ -23,7 +23,8 @@ export class GridService {
         return '$' + params.value;
     }
 
-
-
+    currencyFormatterToFixed(params): string {
+        return '$' + params.value.toFixed(2);
+    }
 
 }

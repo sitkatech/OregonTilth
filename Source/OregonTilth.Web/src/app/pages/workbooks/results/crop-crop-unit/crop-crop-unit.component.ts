@@ -87,7 +87,8 @@ export class CropCropUnitComponent implements OnInit {
         valueGetter: params => {
           return params.data.Crop.CropName;
         },
-        
+        resizable:true,
+        sortable:true,
       },
       {
         headerName: 'Crop Unit', 
@@ -95,31 +96,48 @@ export class CropCropUnitComponent implements OnInit {
         valueGetter: params => {
           return params.data.CropUnit.CropUnitName;
         },
+        resizable:true,
+        sortable:true,
       },
       {
         headerName: 'Price', 
         field: 'PricePerCropUnit',
         valueFormatter: this.gridService.currencyFormatter,
+        type: 'rightAligned',
+        resizable:true,
+        sortable:true,
       },
       {
         headerName: 'Variable Cost Per Marketable Unit', 
         field: 'VariableCostPerMarketableUnit',
-        valueFormatter: this.gridService.currencyFormatter,
+        valueFormatter: this.gridService.currencyFormatterToFixed,
+        type: 'rightAligned',
+        resizable:true,
+        sortable:true,
       },
       {
         headerName: 'Contribution Margin Per Marketable Unit', 
         field: 'ContributionMarginPerMarketableUnit',
-        valueFormatter: this.gridService.currencyFormatter,
+        valueFormatter: this.gridService.currencyFormatterToFixed,
+        type: 'rightAligned',
+        resizable:true,
+        sortable:true,
       },
       {
         headerName: 'Contribution Margin Per Direct Labor Hour', 
         field: 'ContributionMarginPerDirectLaborHour',
-        valueFormatter: this.gridService.currencyFormatter,
+        valueFormatter: this.gridService.currencyFormatterToFixed,
+        type: 'rightAligned',
+        resizable:true,
+        sortable:true,
       },
       {
         headerName: 'Contribution Margin Per Standard Unit of Space', 
         field: 'ContributionMarginPerStandardUnitOfSpace',
-        valueFormatter: this.gridService.currencyFormatter,
+        valueFormatter: this.gridService.currencyFormatterToFixed,
+        type: 'rightAligned',
+        resizable:true,
+        sortable:true,
       },
     ]
   }
