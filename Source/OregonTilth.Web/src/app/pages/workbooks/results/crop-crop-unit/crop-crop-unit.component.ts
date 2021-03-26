@@ -14,6 +14,9 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { CropYieldInformationDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/crop-yield-information-dashboard-report-dto';
+import { ResultsService } from 'src/app/services/results/results.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'crop-crop-unit',
@@ -25,36 +28,53 @@ export class CropCropUnitComponent implements OnInit {
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
+    private resultsService: ResultsService,
     private alertService: AlertService,
     private router: Router,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public columnDefs: ColDef[];
-  public richTextTypeID : number = CustomRichTextType.WorkbookDetail;
+  public richTextTypeID : number = CustomRichTextType.ResultsCropCropUnit;
   public workbook: WorkbookDto;
   public roles: Array<RoleDto>;
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
 
+  private getcropYieldInformationDashboardReportDtosRequest: any;
+  public cropYieldInformationDashboardReportDtos: CropYieldInformationDashboardReportDto[];
 
 
+  getRowNodeId(data)  {
+    return data.FieldLaborActivityID.toString();
+  }
+ 
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID).subscribe(workbook => {
-        this.workbook = workbook;
-      }, error => {
-        
-      })
       
+      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+      this.getcropYieldInformationDashboardReportDtosRequest = this.resultsService.getCropYieldInformationDashboardReportDtos(this.workbookID);
+
+      forkJoin([this.getWorkbookRequest, this.getcropYieldInformationDashboardReportDtosRequest]).subscribe(([workbook, cropYieldInformationDashboardReportDtos]: [WorkbookDto, CropYieldInformationDashboardReportDto[]] ) => {
+          this.workbook = workbook;
+          this.cropYieldInformationDashboardReportDtos = cropYieldInformationDashboardReportDtos;
+          this.cdr.markForCheck();
+      });
+
     });
   }
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+  }
+
+
+ 
 
   ngOnDestroy() {
 
@@ -67,7 +87,9 @@ export class CropCropUnitComponent implements OnInit {
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
-
+    if (this.getcropYieldInformationDashboardReportDtosRequest && this.getcropYieldInformationDashboardReportDtosRequest.unsubscribe) {
+      this.getcropYieldInformationDashboardReportDtosRequest.unsubscribe();
+    }
     
     this.cdr.detach();
 

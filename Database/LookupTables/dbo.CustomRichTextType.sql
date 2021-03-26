@@ -28,7 +28,10 @@ USING (VALUES
 (26, 'OverheadCostEstimator', 'Overhead Cost Estimator'),
 (27, 'CropsForm', 'Crops Form'),
 (28, 'CropUnitsForm', 'Crop Units Form'),
-(29, 'HarvestPostHarvestStandardTimesForm', 'Harvest Post Harvest Standard Times Form')
+(29, 'HarvestPostHarvestStandardTimesForm', 'Harvest Post Harvest Standard Times Form'),
+(30, 'ResultsCropCropUnit', 'Crop/Crop Unit'),
+(31, 'ResultsCropCropUnitLaborHours', 'Crop/Crop Unit Labor Hours per Labor Activity Category'),
+(32, 'ResultsCropCropUnitCostsPerCostCategory', 'Crop/Crop Unit Costs per Cost Category')
 )
 AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID

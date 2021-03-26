@@ -106,6 +106,24 @@ namespace OregonTilth.EFModels.Entities
             return cropYieldInformations.Select(x => x.AsSummaryDto());
         }
 
+        public static IQueryable<CropYieldInformationDashboardReportDto> GetDashReportDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
+        {
+            var cropYieldInformations = GetCropYieldInformationForReportImpl(dbContext).Where(x => x.WorkbookID == workbookID);
+            return cropYieldInformations.Select(x => x.AsDashbardReportDto());
+        }
+
+        private static IQueryable<CropYieldInformation> GetCropYieldInformationForReportImpl(OregonTilthDbContext dbContext)
+        {
+            return dbContext.CropYieldInformations
+                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Crop).ThenInclude(x => x.CropSpecificInfos).ThenInclude(x => x.TpOrDsType)
+                .Include(x => x.Crop).ThenInclude(x => x.FieldLaborByCrops).ThenInclude(x => x.FieldLaborActivity)
+                .Include(x => x.Crop).ThenInclude(x => x.FieldInputByCrops).ThenInclude(x => x.FieldInputCost)
+                .Include(x => x.CropUnit)
+                .AsNoTracking();
+        }
+
+
         private static IQueryable<CropYieldInformation> GetCropYieldInformationImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.CropYieldInformations

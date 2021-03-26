@@ -20,6 +20,27 @@ namespace OregonTilth.EFModels.Entities
             };
         }
 
+
+        public static CropYieldInformationDashboardReportDto AsDashbardReportDto(
+            this CropYieldInformation cropYieldInformation)
+        {
+            return new CropYieldInformationDashboardReportDto()
+            {
+                CropYieldInformationID = cropYieldInformation.CropYieldInformationID,
+                Crop = cropYieldInformation.Crop.AsSummaryDto(),
+                CropUnit = cropYieldInformation.CropUnit.AsSummaryDto(),
+                HarvestedYieldPerStandardUnitOfSpace = cropYieldInformation.HarvestedYieldPerStandardUnitOfSpace,
+                MarketableYieldPerStandardUnitOfSpace = cropYieldInformation.MarketableYieldPerStandardUnitOfSpace,
+                PackagingCostPerCropUnit = cropYieldInformation.PackagingCostPerCropUnit,
+                PricePerCropUnit = cropYieldInformation.PricePerCropUnit,
+                WorkbookID = cropYieldInformation.WorkbookID,
+                VariableCostPerMarketableUnit = cropYieldInformation.VariableCostPerMarketableUnit(),
+                ContributionMarginPerMarketableUnit = cropYieldInformation.ContributionMarginPerMarketableUnit(),
+                ContributionMarginPerDirectLaborHour = cropYieldInformation.ContributionMarginPerDirectLaborHour(),
+                ContributionMarginPerStandardUnitOfSpace = cropYieldInformation.ContributionMarginPerStandardUnitOfSpace()
+            };
+        }
+
         public static decimal VariableCostPerMarketableUnit(this CropYieldInformation cropYieldInformation)
         {
             // =[@[TOTAL DIRECT VARIABLE COSTS]]/[@[Total Crop Units Sold]]
