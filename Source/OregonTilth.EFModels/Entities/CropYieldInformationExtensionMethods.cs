@@ -34,11 +34,11 @@ namespace OregonTilth.EFModels.Entities
                    cropYieldInformation.MarketableYieldPerStandardUnitOfSpace;
         }
 
-        public static decimal ContributionMarginPerDirectLaborHour(this CropYieldInformation cropYieldInformaiton)
+        public static decimal ContributionMarginPerDirectLaborHour(this CropYieldInformation cropYieldInformation)
         {
             // =[@[TOTAL DIRECT VARIABLE COSTS]]/[@[TOTAL LABOR HOURS]]
 
-            return cropYieldInformaiton.TotalDirectVariableCosts() / cropYieldInformaiton.TotalLaborHours();
+            return cropYieldInformation.TotalDirectVariableCosts() / cropYieldInformation.TotalLaborHours();
         }
 
         public static decimal ContributionMarginPerStandardUnitOfSpace(this CropYieldInformation cropYieldInformation)
