@@ -278,7 +278,7 @@ export class FieldStandardTimesComponent implements OnInit {
         filter: true
       },
       {
-        headerName: 'Standard Time', 
+        headerName: 'Standard Rate', 
         field:'StandardTimePerUnit',
         valueGetter: function(params:any) {
           return params.data.StandardTimePerUnit
