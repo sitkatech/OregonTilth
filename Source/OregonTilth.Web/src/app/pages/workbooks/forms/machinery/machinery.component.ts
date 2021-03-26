@@ -85,13 +85,15 @@ export class MachineryComponent implements OnInit {
         field: 'MachineryName',
         editable: true,
         cellEditor: 'agPopupTextCellEditor',
+        resizable:true,
       },
       {
         headerName: 'Hourly Machinery Operating Cost', 
         field: 'StandardMachineryCost',
         editable: true,
         cellEditorFramework: DecimalEditor,
-        valueFormatter: this.gridService.currencyFormatter
+        valueFormatter: this.gridService.currencyFormatter,
+        resizable: true,
       },
       {
         headerName: 'Delete', field: 'MachineryID', valueGetter: function (params: any) {
