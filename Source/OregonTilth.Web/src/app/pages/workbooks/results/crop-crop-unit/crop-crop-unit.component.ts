@@ -167,7 +167,6 @@ export class CropCropUnitComponent implements OnInit {
   }
 
   public exportToCsv() {
-    // we need to grab all columns except the first one (trash icon)
     let columnsKeys = this.cropCropUnitGrid.columnApi.getAllDisplayedColumns(); 
     let columnIds: Array<any> = []; 
     columnsKeys.forEach(keys => 
@@ -176,6 +175,7 @@ export class CropCropUnitComponent implements OnInit {
         columnIds.push(columnName); 
       });
     
-    this.utilityFunctionsService.exportGridToCsv(this.cropCropUnitGrid, 'test.csv', columnIds);
+    this.utilityFunctionsService.exportGridToCsv(this.cropCropUnitGrid, 'Results-Crop-Crop-Unit.csv', columnIds);
   }  
+
 }
