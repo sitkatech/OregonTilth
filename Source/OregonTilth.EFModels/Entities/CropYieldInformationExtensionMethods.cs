@@ -22,11 +22,31 @@ namespace OregonTilth.EFModels.Entities
 
         public static decimal VariableCostPerMarketableUnit(this CropYieldInformation cropYieldInformation)
         {
-
             // =[@[TOTAL DIRECT VARIABLE COSTS]]/[@[Total Crop Units Sold]]
-
-
             return cropYieldInformation.TotalDirectVariableCosts() / cropYieldInformation.MarketableYieldPerStandardUnitOfSpace;
+        }
+
+        public static decimal ContributionMarginPerMarketableUnit(this CropYieldInformation cropYieldInformation)
+        {
+            // =[@[TOTAL DIRECT VARIABLE COSTS]]/[@[Marketable Yield Per Standard Unit of Space]]
+
+            return cropYieldInformation.TotalDirectVariableCosts() /
+                   cropYieldInformation.MarketableYieldPerStandardUnitOfSpace;
+        }
+
+        public static decimal ContributionMarginPerDirectLaborHour(this CropYieldInformation cropYieldInformaiton)
+        {
+            // =[@[TOTAL DIRECT VARIABLE COSTS]]/[@[TOTAL LABOR HOURS]]
+
+            return cropYieldInformaiton.TotalDirectVariableCosts() / cropYieldInformaiton.TotalLaborHours();
+        }
+
+        public static decimal ContributionMarginPerStandardUnitOfSpace(this CropYieldInformation cropYieldInformation)
+        {
+            //=[@[CONTRIBUTION MARGIN PER CROP UNIT]]*[@[Marketable Yield Per Standard Unit of Space]]
+
+            return cropYieldInformation.ContributionMarginPerMarketableUnit() *
+                   cropYieldInformation.MarketableYieldPerStandardUnitOfSpace;
         }
 
         public static decimal TotalDirectVariableCosts(this CropYieldInformation cropYieldInformation)
@@ -36,8 +56,7 @@ namespace OregonTilth.EFModels.Entities
             return cropYieldInformation.TotalLaborCosts() 
                    + cropYieldInformation.TotalNonLaborInputCosts() 
                    + cropYieldInformation.TotalMachineryCosts();
-
-        }
+            }
 
         public static decimal TotalMachineryCosts(this CropYieldInformation cropYieldInformation)
         {
