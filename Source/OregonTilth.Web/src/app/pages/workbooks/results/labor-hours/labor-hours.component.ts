@@ -248,7 +248,7 @@ export class LaborHoursComponent implements OnInit {
         columnIds.push(columnName); 
       });
     
-    this.utilityFunctionsService.exportGridToCsv(this.cropCropUnitGrid, 'Results-Crop-Crop-Unit.csv', columnIds);
+    this.utilityFunctionsService.exportGridToCsv(this.cropCropUnitGrid, 'Results-Labor-Activity-Hours.csv', columnIds);
   }  
 
 }
