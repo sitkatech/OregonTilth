@@ -150,7 +150,7 @@ export class LaborHoursComponent implements OnInit {
 
   updateGridData() {
     this.laborHoursDashboardReportDtosForGrid = this.laborHoursDashboardReportDtos.filter(x => {
-      return x.Crop.CropID == this.selectedCrop.CropID && x.CropUnit.CropUnitID == this.selectedCropUnit.CropUnitID;
+      return x.Crop.CropID == this.selectedCrop.CropID && x.CropUnit.CropUnitID == this.selectedCropUnit.CropUnitID && x.LaborActivityHours > 0;
     })
   }
 
