@@ -164,6 +164,25 @@ export class LaborHoursComponent implements OnInit {
         resizable:true,
         sortable:true,
       },
+      {
+        headerName: 'Labor Activity Category', 
+        field: 'FieldLaborActivityCategory',
+        valueGetter: params => {
+          return params.data.FieldLaborActivityCategory.FieldLaborActivityCategoryDisplayName;
+        },
+        
+        resizable:true,
+        sortable:true,
+      },
+      {
+        headerName: 'Labor Activity Hours', 
+        field: 'LaborActivityHours',
+        valueGetter: params => {
+          return params.data.LaborActivityHours.toFixed(2)
+        },
+        resizable:true,
+        sortable:true,
+      },
      
     ]
   }
