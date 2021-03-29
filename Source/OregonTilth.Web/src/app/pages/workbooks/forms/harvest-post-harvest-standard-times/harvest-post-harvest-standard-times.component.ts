@@ -97,50 +97,53 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
       this.currentUser = currentUser;
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getHarvestPostHarvestStandardTimesRequest = this.workbookService.getHarvestPostHarvestStandardTimes(this.workbookID);
-      this.getCropsRequest = this.workbookService.getCrops(this.workbookID);
-      this.getCropUnitsRequest = this.workbookService.getCropUnits(this.workbookID);
-      this.getHarvestTypesRequest = this.lookupTablesService.getHarvestTypes();
-
-      forkJoin(
-        [
-          this.getWorkbookRequest, 
-          this.getHarvestPostHarvestStandardTimesRequest, 
-          this.getCropsRequest,
-          this.getCropUnitsRequest,
-          this.getHarvestTypesRequest
-        ]).subscribe((
-          [
-            workbook, 
-            harvestPostHarvestStandardTimeDtos, 
-            cropDtos,
-            cropUnitDtos,
-            harvestTypeDtos
-          ]: 
-          [
-            WorkbookDto, 
-            HarvestPostHarvestStandardTimeSummaryDto[], 
-            CropDto[],
-            CropUnitDto[],
-            HarvestTypeDto[]
-          ] ) => {
-          this.workbook = workbook;
-          this.harvestPostHarvestStandardTimes = harvestPostHarvestStandardTimeDtos;
-
-          this.crops = cropDtos;
-          this.cropUnits = cropUnitDtos;
-          this.harvestTypes = harvestTypeDtos;
-
-          
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
+      this.refreshData();
 
       this.model = new HarvestPostHarvestStandardTimeCreateDto({WorkbookID: this.workbookID});
 
     });
   }
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getHarvestPostHarvestStandardTimesRequest = this.workbookService.getHarvestPostHarvestStandardTimes(this.workbookID);
+    this.getCropsRequest = this.workbookService.getCrops(this.workbookID);
+    this.getCropUnitsRequest = this.workbookService.getCropUnits(this.workbookID);
+    this.getHarvestTypesRequest = this.lookupTablesService.getHarvestTypes();
+
+    forkJoin(
+      [
+        this.getWorkbookRequest,
+        this.getHarvestPostHarvestStandardTimesRequest,
+        this.getCropsRequest,
+        this.getCropUnitsRequest,
+        this.getHarvestTypesRequest
+      ]).subscribe((
+        [
+          workbook,
+          harvestPostHarvestStandardTimeDtos,
+          cropDtos,
+          cropUnitDtos,
+          harvestTypeDtos
+        ]: [
+            WorkbookDto,
+            HarvestPostHarvestStandardTimeSummaryDto[],
+            CropDto[],
+            CropUnitDto[],
+            HarvestTypeDto[]
+          ]) => {
+        this.workbook = workbook;
+        this.harvestPostHarvestStandardTimes = harvestPostHarvestStandardTimeDtos;
+
+        this.crops = cropDtos;
+        this.cropUnits = cropUnitDtos;
+        this.harvestTypes = harvestTypeDtos;
+
+
+        this.defineColumnDefs();
+        this.cdr.markForCheck();
+      });
+  }
+
   onSubmit(fieldLaborActivityForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
 
@@ -321,6 +324,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
       });
       this.isLoadingSubmit = false;
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })
