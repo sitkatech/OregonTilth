@@ -18,10 +18,19 @@
             <div class="col-md-4">
               <div class="row mt-2">
                 <div class="col">
-                  <button class="btn btn-secondary btn-sm float-right" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
-                    <i class="fas fa-download"></i>
-                    Download
-                  </button> 
+                  <div class="labor-hours-toggle">
+                    <select class="form-control" [(ngModel)]="selectedCrop">
+                      <option *ngFor="let option of availableCrops" [value]="option" [selected]="option.CropID == selectedCrop.CropID">{{option.CropName}}</option>
+                    </select>
+                    <select class="form-control" [(ngModel)]="selectedCropUnit">
+                      <option *ngFor="let option of availableCropUnits" [value]="option" [selected]="option == selectedCropUnit">{{option.CropUnitName}}</option>
+                    </select>
+                    <button class="btn btn-secondary btn-sm" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
+                      <i class="fas fa-download"></i>
+                      Download
+                    </button> 
+                  </div>
+                  
                 </div>
               </div>
               <div class="row mt-2">

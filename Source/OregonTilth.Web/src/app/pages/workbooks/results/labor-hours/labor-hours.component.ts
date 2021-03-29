@@ -26,6 +26,7 @@ import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-table
 import { ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
+import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
 
 
 
@@ -93,6 +94,9 @@ export class LaborHoursComponent implements OnInit {
   public availableCrops: CropDto[];
   public selectedCrop: CropDto;
 
+  public availableCropUnits: CropUnitDto[];
+  public selectedCropUnit: CropUnitDto;
+
 
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -108,11 +112,8 @@ export class LaborHoursComponent implements OnInit {
           this.workbook = workbook;
           this.laborHoursDashboardReportDtos = laborHoursDashboardReportDtos;
           this.laborActivityCategoryDtos = laborActivityCategoryDtos;
-
-          this.availableCrops = laborHoursDashboardReportDtos.map(x => {
-            return x.Crop;
-          })
-          this.selectedCrop = this.availableCrops[0];
+          
+          this.initializeDropdowns();
 
           this.formatChartData();
           this.defineColumnDefs();
@@ -123,6 +124,20 @@ export class LaborHoursComponent implements OnInit {
     });
   }
 
+
+  private initializeDropdowns() {
+    var allCrops = this.laborHoursDashboardReportDtos.map(x => x.Crop);
+    this.availableCrops = [];
+    this.availableCrops = allCrops.reduce((acc, x) => acc.concat(acc.find(y => y.CropID === x.CropID) ? [] : [x]),
+      []);
+    this.selectedCrop = this.availableCrops.length > 0 ? this.availableCrops[0] : null;
+
+    var allCropUnits = this.laborHoursDashboardReportDtos.map(x => x.CropUnit);
+    this.availableCropUnits = [];
+    this.availableCropUnits = allCropUnits.reduce((acc, x) => acc.concat(acc.find(y => y.CropUnitID === x.CropUnitID) ? [] : [x]),
+      []);
+    this.selectedCropUnit = this.availableCropUnits.length > 0 ? this.availableCropUnits[0] : null;
+  }
 
   formatChartData() {
     var recordsForChart = this.laborHoursDashboardReportDtos.filter(x => {
