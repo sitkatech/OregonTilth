@@ -35,7 +35,7 @@ namespace OregonTilth.EFModels.Entities
             if (transplantProductionInformationCreateDto.UsageRate <= 0 ||
                 transplantProductionInformationCreateDto.UsageRate > 100)
             {
-                result.Add(new ErrorMessage() { Type = "Usage Rate", Message = "Usage Rate must be a percentage ranging from 1 to 100." });
+                result.Add(new ErrorMessage() { Type = "Percentage Plantable", Message = "Percentage Plantable must be a percentage ranging from 1 to 100." });
             }
 
             if (transplantProductionInformationCreateDto.SeedsPerTray <= 0)
@@ -66,7 +66,7 @@ namespace OregonTilth.EFModels.Entities
             if (transplantProductionInformationDto.UsageRate <= 0 ||
                 transplantProductionInformationDto.UsageRate > 100)
             {
-                result.Add(new ErrorMessage() { Type = "Usage Rate", Message = "Usage Rate must be a percentage ranging from 1 to 100." });
+                result.Add(new ErrorMessage() { Type = "Percentage Plantable", Message = "Percentage Plantable must be a percentage ranging from 1 to 100." });
             }
 
             if (transplantProductionInformationDto.SeedsPerTray <= 0)
