@@ -19,11 +19,11 @@
               <div class="row mt-2">
                 <div class="col">
                   <div class="labor-hours-toggle">
-                    <select class="form-control" [(ngModel)]="selectedCrop">
-                      <option *ngFor="let option of availableCrops" [value]="option" [selected]="option.CropID == selectedCrop.CropID">{{option.CropName}}</option>
+                    <select class="form-control" [(ngModel)]="selectedCrop" (ngModelChange)="dropdownChanged($event)">
+                      <option *ngFor="let option of availableCrops" [ngValue]="option" [selected]="option.CropID == selectedCrop.CropID">{{option.CropName}}</option>
                     </select>
-                    <select class="form-control" [(ngModel)]="selectedCropUnit">
-                      <option *ngFor="let option of availableCropUnits" [value]="option" [selected]="option == selectedCropUnit">{{option.CropUnitName}}</option>
+                    <select class="form-control" [(ngModel)]="selectedCropUnit" (ngModelChange)="dropdownChanged($event)">
+                      <option *ngFor="let option of availableCropUnits" [ngValue]="option" [selected]="option == selectedCropUnit">{{option.CropUnitName}}</option>
                     </select>
                     <button class="btn btn-secondary btn-sm" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
                       <i class="fas fa-download"></i>
@@ -35,7 +35,7 @@
               </div>
               <div class="row mt-2">
                 <div class="col">
-                  <ag-grid-angular #cropCropUnitGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="laborHoursDashboardReportDtos"
+                  <ag-grid-angular #cropCropUnitGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="laborHoursDashboardReportDtosForGrid"
                     [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (gridReady)="onGridReady($event)">
                   </ag-grid-angular>
                 </div>

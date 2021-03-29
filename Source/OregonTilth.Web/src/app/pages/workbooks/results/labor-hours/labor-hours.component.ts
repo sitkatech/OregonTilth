@@ -62,6 +62,7 @@ export class LaborHoursComponent implements OnInit {
 
   private getLaborHoursDashboardReportDtosRequest: any;
   public laborHoursDashboardReportDtos: LaborHoursDashboardReportDto[];
+  public laborHoursDashboardReportDtosForGrid: LaborHoursDashboardReportDto[];
 
   private getLaborActivityCategoriesRequest: any;
   public laborActivityCategoryDtos : FieldLaborActivityCategoryDto[];
@@ -115,8 +116,9 @@ export class LaborHoursComponent implements OnInit {
           this.laborActivityCategoryDtos = laborActivityCategoryDtos;
           
           this.initializeDropdowns();
-
+          this.updateGridData();
           this.formatChartData();
+
           this.defineColumnDefs();
           this.gridApi.sizeColumnsToFit();
           this.cdr.markForCheck();
@@ -138,7 +140,20 @@ export class LaborHoursComponent implements OnInit {
     this.availableCropUnits = allCropUnits.reduce((acc, x) => acc.concat(acc.find(y => y.CropUnitID === x.CropUnitID) ? [] : [x]),
       []);
     this.selectedCropUnit = this.availableCropUnits.length > 0 ? this.availableCropUnits[0] : null;
+
   }
+
+  dropdownChanged(newValue: any) {
+    this.updateGridData();
+    this.formatChartData();
+  }
+
+  updateGridData() {
+    this.laborHoursDashboardReportDtosForGrid = this.laborHoursDashboardReportDtos.filter(x => {
+      return x.Crop.CropID == this.selectedCrop.CropID && x.CropUnit.CropUnitID == this.selectedCropUnit.CropUnitID;
+    })
+  }
+
 
   formatChartData() {
     var recordsForChart = this.laborHoursDashboardReportDtos.filter(x => {
