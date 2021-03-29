@@ -165,7 +165,7 @@ export class LaborHoursComponent implements OnInit {
     })
 
     this.pieChartLabels = recordsForChart.map(x => {
-      return x.FieldLaborActivityCategory.FieldLaborActivityCategoryDisplayName;
+      return x.FieldLaborActivityCategory;
     })
 
   }
@@ -199,7 +199,7 @@ export class LaborHoursComponent implements OnInit {
         headerName: 'Labor Activity Category', 
         field: 'FieldLaborActivityCategory',
         valueGetter: params => {
-          return params.data.FieldLaborActivityCategory.FieldLaborActivityCategoryDisplayName;
+          return params.data.FieldLaborActivityCategory;
         },
         
         resizable:true,

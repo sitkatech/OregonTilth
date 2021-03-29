@@ -117,8 +117,9 @@ namespace OregonTilth.EFModels.Entities
         {
             var cropYieldInformations = GetCropYieldInformationForReportImpl(dbContext).Where(x => x.WorkbookID == workbookID).ToList();
             var fieldLaborActivityCategories = FieldLaborActivityCategory.List(dbContext);
+            var allHarvestTypes = HarvestType.List(dbContext);
 
-            return cropYieldInformations.SelectMany(x => x.AsLaborHoursReportDto(fieldLaborActivityCategories));
+            return cropYieldInformations.SelectMany(x => x.AsLaborHoursReportDto(fieldLaborActivityCategories, allHarvestTypes));
         }
 
         private static IQueryable<CropYieldInformation> GetCropYieldInformationForReportImpl(OregonTilthDbContext dbContext)

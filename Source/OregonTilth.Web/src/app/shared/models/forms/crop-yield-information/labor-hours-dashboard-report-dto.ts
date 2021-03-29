@@ -8,7 +8,7 @@ export class LaborHoursDashboardReportDto {
     WorkbookID: number;
     Crop: CropDto;
     CropUnit: CropUnitDto;
-    FieldLaborActivityCategory: FieldLaborActivityCategoryDto;
+    FieldLaborActivityCategory: string;
     LaborActivityHours: number;
     constructor(obj?: any) {
         Object.assign(this, obj);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OregonTilth.Models.DataTransferObjects;
 
@@ -42,31 +43,79 @@ namespace OregonTilth.EFModels.Entities
             };
         }
 
-        public static List<LaborHoursDashboardReportDto> AsLaborHoursReportDto(this CropYieldInformation cropYieldInformation,
-            List<FieldLaborActivityCategoryDto> allFieldLaborActivityCategories)
+        public static List<LaborHoursDashboardReportDto> AsLaborHoursReportDto(
+            this CropYieldInformation cropYieldInformation,
+            List<FieldLaborActivityCategoryDto> allFieldLaborActivityCategories, List<HarvestTypeDto> allHarvestTypes)
         {
 
             var returnList = new List<LaborHoursDashboardReportDto>();
 
+            // entries for field labor activities
             foreach (var fieldLaborActivityCategory in allFieldLaborActivityCategories)
             {
-
-                var test = new LaborHoursDashboardReportDto()
+                var reportDto = new LaborHoursDashboardReportDto()
                 {
                     Crop = cropYieldInformation.Crop.AsSummaryDto(),
                     CropUnit = cropYieldInformation.CropUnit.AsSummaryDto(),
-                    FieldLaborActivityCategory = fieldLaborActivityCategory,
-                    LaborActivityHours = cropYieldInformation.LaborActivityHours(fieldLaborActivityCategory)
-
+                    FieldLaborActivityCategory = fieldLaborActivityCategory.FieldLaborActivityCategoryDisplayName,
+                    LaborActivityHours = cropYieldInformation.LaborActivityHoursForFieldLaborActivities(fieldLaborActivityCategory)
                 };
-
-                returnList.Add(test);
+                returnList.Add(reportDto);
             }
+
+            // entries for harvest types
+            foreach (var harvestType in allHarvestTypes)
+            {
+                var reportDto = new LaborHoursDashboardReportDto()
+                {
+                    Crop = cropYieldInformation.Crop.AsSummaryDto(),
+                    CropUnit = cropYieldInformation.CropUnit.AsSummaryDto(),
+                    FieldLaborActivityCategory = harvestType.HarvestTypeDisplayName,
+                    LaborActivityHours = cropYieldInformation.LaborActivityHoursForHarvestActivities(harvestType)
+                };
+                returnList.Add(reportDto);
+            }
+
+            // entry for Transplant Production
+            var tpReportDto = new LaborHoursDashboardReportDto()
+            {
+                Crop = cropYieldInformation.Crop.AsSummaryDto(),
+                CropUnit = cropYieldInformation.CropUnit.AsSummaryDto(),
+                FieldLaborActivityCategory = "Transplant Production",
+                LaborActivityHours = cropYieldInformation.TransplantProductionLaborHoursPerStandardBed()
+            };
+            returnList.Add(tpReportDto);
+
 
             return returnList;
         }
 
-        public static decimal LaborActivityHours(this CropYieldInformation cropYieldInformation,
+        public static decimal LaborActivityHoursForHarvestActivities(this CropYieldInformation cropYieldInformation,
+            HarvestTypeDto harvestType)
+        {
+            // =IF([@[Labor Activity Category Type]]="FLAC",SUMIFS(Table19[LABOR ACTIVITY MINUTES PER STANDARD BED],Table19[Crop],[@Crop],Table19[CALCULATED LABOR ACTIVITY CATEGORY],[@[Labor Activity Category]])/60,
+            // [@[HELPER COLUMN FOR LABOR ACTIVITY HOURS]])
+
+            var harvestTypeEnum = (HarvestTypeEnum) harvestType.HarvestTypeID;
+
+            decimal hours;
+            switch (harvestTypeEnum)
+            {
+                case HarvestTypeEnum.Harvest:
+                    hours = cropYieldInformation.HarvestCrewLaborHoursPerStandardBed();
+                    break;
+                case HarvestTypeEnum.PostHarvest:
+                    hours = cropYieldInformation.PostHarvestLaborHoursPerStandardBed();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return hours;
+
+        }
+
+        public static decimal LaborActivityHoursForFieldLaborActivities(this CropYieldInformation cropYieldInformation,
             FieldLaborActivityCategoryDto fieldLaborActivityCategory)
         {
             // =IF([@[Labor Activity Category Type]]="FLAC",SUMIFS(Table19[LABOR ACTIVITY MINUTES PER STANDARD BED],Table19[Crop],[@Crop],Table19[CALCULATED LABOR ACTIVITY CATEGORY],[@[Labor Activity Category]])/60,

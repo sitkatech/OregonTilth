@@ -12,7 +12,7 @@
     {
         public CropSummaryDto Crop { get; set; }
         public CropUnitSummaryDto CropUnit { get; set; }
-        public FieldLaborActivityCategoryDto FieldLaborActivityCategory { get; set; }
+        public string FieldLaborActivityCategory { get; set; }
         public decimal LaborActivityHours { get; set; }
     }
 }
