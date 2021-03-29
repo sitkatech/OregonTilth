@@ -50,6 +50,6 @@ ALTER TABLE [dbo].[TransplantProductionInformation]  WITH CHECK ADD  CONSTRAINT 
 GO
 ALTER TABLE [dbo].[TransplantProductionInformation] CHECK CONSTRAINT [CK_TransplantProductionInformation_SeedsPerTray_Greater_Than_Zero]
 GO
-ALTER TABLE [dbo].[TransplantProductionInformation]  WITH CHECK ADD  CONSTRAINT [CK_TransplantProductionInformation_UsageRate_In_Valid_Range] CHECK  (([UsageRate]>=(0) AND [UsageRate]<=(100)))
+ALTER TABLE [dbo].[TransplantProductionInformation]  WITH CHECK ADD  CONSTRAINT [CK_TransplantProductionInformation_UsageRate_In_Valid_Range] CHECK  (([UsageRate]>(0) AND [UsageRate]<=(100)))
 GO
 ALTER TABLE [dbo].[TransplantProductionInformation] CHECK CONSTRAINT [CK_TransplantProductionInformation_UsageRate_In_Valid_Range]
