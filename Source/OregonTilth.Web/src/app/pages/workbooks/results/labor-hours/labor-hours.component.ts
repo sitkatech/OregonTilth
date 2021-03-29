@@ -23,7 +23,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { LaborHoursDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/labor-hours-dashboard-report-dto';
 import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/field-labor-activity-category-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
-import { ChartOptions, ChartType } from 'chart.js';
+import { ChartOptions, ChartType, ChartColor } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
@@ -80,15 +80,16 @@ export class LaborHoursComponent implements OnInit {
       },
     }
   };
-  public pieChartLabels: Label[] = [['Download', 'Sales'], ['In', 'Store', 'Sales'], 'Mail Sales'];
-  public pieChartData: number[] = [300, 500, 100];
+  public pieChartLabels: Label[] = [];
+  public pieChartData: number[] = [];
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
-  public pieChartColors = [
-    {
-      backgroundColor: ['rgba(255,0,0,0.3)', 'rgba(0,255,0,0.3)', 'rgba(0,0,255,0.3)'],
-    },
+  public pieChartColors: Array<any> = [
+      { // all colors in order
+        backgroundColor: ['#F94144', '#F3722C', '#F8961E', '#F9C74F', '#90BE6D', '#43AA8B', '#577590', '#1B4332']
+      }
   ];
+  
  
 
   public availableCrops: CropDto[];
@@ -141,7 +142,7 @@ export class LaborHoursComponent implements OnInit {
 
   formatChartData() {
     var recordsForChart = this.laborHoursDashboardReportDtos.filter(x => {
-      return x.Crop.CropID == this.selectedCrop.CropID;
+      return x.Crop.CropID == this.selectedCrop.CropID && x.CropUnit.CropUnitID == this.selectedCropUnit.CropUnitID;
     })
 
     this.pieChartData = recordsForChart.map(x => {
