@@ -46,6 +46,10 @@ REFERENCES [dbo].[Workbook] ([WorkbookID])
 GO
 ALTER TABLE [dbo].[TransplantProductionInformation] CHECK CONSTRAINT [FK_TransplantProductionInformation_Workbook_WorkbookID]
 GO
+ALTER TABLE [dbo].[TransplantProductionInformation]  WITH CHECK ADD  CONSTRAINT [CK_TransplantProductionInformation_SeedsPerTray_Greater_Than_Zero] CHECK  (([SeedsPerTray]>(0)))
+GO
+ALTER TABLE [dbo].[TransplantProductionInformation] CHECK CONSTRAINT [CK_TransplantProductionInformation_SeedsPerTray_Greater_Than_Zero]
+GO
 ALTER TABLE [dbo].[TransplantProductionInformation]  WITH CHECK ADD  CONSTRAINT [CK_TransplantProductionInformation_UsageRate_In_Valid_Range] CHECK  (([UsageRate]>=(0) AND [UsageRate]<=(100)))
 GO
 ALTER TABLE [dbo].[TransplantProductionInformation] CHECK CONSTRAINT [CK_TransplantProductionInformation_UsageRate_In_Valid_Range]
