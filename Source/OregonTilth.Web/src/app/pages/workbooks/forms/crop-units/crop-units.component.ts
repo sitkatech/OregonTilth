@@ -27,6 +27,7 @@ export class CropUnitsComponent implements OnInit {
     private alertService: AlertService,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
@@ -52,16 +53,20 @@ export class CropUnitsComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new CropUnitCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getCropUnitsRequest = this.workbookService.getCropUnits(this.workbookID);
+      this.refreshData();
 
-      forkJoin([this.getWorkbookRequest, this.getCropUnitsRequest]).subscribe(([workbook, cropUnits]: [WorkbookDto, CropUnitDto[]] ) => {
-          this.workbook = workbook;
-          this.cropUnits = cropUnits;
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
+    });
+  }
 
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getCropUnitsRequest = this.workbookService.getCropUnits(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getCropUnitsRequest]).subscribe(([workbook, cropUnits]: [WorkbookDto, CropUnitDto[]]) => {
+      this.workbook = workbook;
+      this.cropUnits = cropUnits;
+      this.defineColumnDefs();
+      this.cdr.markForCheck();
     });
   }
 
@@ -107,9 +112,13 @@ export class CropUnitsComponent implements OnInit {
 
     this.updateCropUnitRequest = this.workbookService.updateCropUnit(dtoToPost).subscribe(cropUnit => {
       data.node.setData(cropUnit);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Crop Unit", AlertContext.Success));
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })
@@ -156,5 +165,8 @@ export class CropUnitsComponent implements OnInit {
     this.model = new CropUnitCreateDto({WorkbookID: this.workbookID});
   }
 
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+  }
 }
 

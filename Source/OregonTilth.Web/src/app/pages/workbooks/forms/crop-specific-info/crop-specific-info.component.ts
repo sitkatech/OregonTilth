@@ -82,21 +82,25 @@ export class CropSpecificInfoComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new CropSpecificInfoCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getTpOrDsTypesRequest = this.lookupTablesService.getTpOrDsTypes();
-      this.getCropSpecificInfosRequest = this.workbookService.getCropSpecificInfos(this.workbookID);
-      this.getCropsRequest = this.workbookService.getCrops(this.workbookID);
+      this.refreshData();
 
-      forkJoin([this.getWorkbookRequest, this.getTpOrDsTypesRequest, this.getCropSpecificInfosRequest, this.getCropsRequest]).subscribe(([workbook, tpOrDsTypes, cropSpecificInfos, cropDtos]: [WorkbookDto, TpOrDsTypeDto[], CropSpecificInfoSummaryDto[], CropDto[]] ) => {
-          this.workbook = workbook;
-          this.tpOrDsTypes = tpOrDsTypes;
-          this.cropSpecificInfos = cropSpecificInfos;
-          this.crops = cropDtos;
-          this.refreshCropsRequired();
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
+    });
+  }
 
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getTpOrDsTypesRequest = this.lookupTablesService.getTpOrDsTypes();
+    this.getCropSpecificInfosRequest = this.workbookService.getCropSpecificInfos(this.workbookID);
+    this.getCropsRequest = this.workbookService.getCrops(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getTpOrDsTypesRequest, this.getCropSpecificInfosRequest, this.getCropsRequest]).subscribe(([workbook, tpOrDsTypes, cropSpecificInfos, cropDtos]: [WorkbookDto, TpOrDsTypeDto[], CropSpecificInfoSummaryDto[], CropDto[]]) => {
+      this.workbook = workbook;
+      this.tpOrDsTypes = tpOrDsTypes;
+      this.cropSpecificInfos = cropSpecificInfos;
+      this.crops = cropDtos;
+      this.refreshCropsRequired();
+      this.defineColumnDefs();
+      this.cdr.markForCheck();
     });
   }
 
@@ -340,9 +344,14 @@ export class CropSpecificInfoComponent implements OnInit {
     var dtoToPost = data.data;
 
     this.updateCropSpecificInfoRequest = this.workbookService.updateCropSpecificInfo(dtoToPost).subscribe(cropSpecificInfo => {
+      data.node.setData(cropSpecificInfo);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Crop Specific Info", AlertContext.Success));
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })

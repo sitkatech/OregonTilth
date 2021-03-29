@@ -63,7 +63,7 @@ namespace OregonTilth.EFModels.Entities
             return crop?.AsDto();
         }
 
-        public static IQueryable<CropDto> CreateNewCrop(OregonTilthDbContext dbContext, CropCreateDto cropCreateDto, UserDto userDto)
+        public static CropDto CreateNewCrop(OregonTilthDbContext dbContext, CropCreateDto cropCreateDto, UserDto userDto)
         {
             var crop = new Crop
             {
@@ -75,7 +75,7 @@ namespace OregonTilth.EFModels.Entities
             dbContext.SaveChanges();
             dbContext.Entry(crop).Reload();
 
-            return GetDtoListByWorkbookID(dbContext, cropCreateDto.WorkbookID);
+            return GetByID(dbContext, crop.CropID).AsDto();
         }
 
         public static IEnumerable<CropDto> List(OregonTilthDbContext dbContext)
