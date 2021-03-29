@@ -20,6 +20,14 @@ import { forkJoin } from 'rxjs';
 import { GridService } from 'src/app/shared/services/grid/grid.service';
 import { ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
+import { LaborHoursDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/labor-hours-dashboard-report-dto';
+import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/field-labor-activity-category-dto';
+import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
+import { ChartOptions, ChartType } from 'chart.js';
+import { Label } from 'ng2-charts';
+import { CropDto } from 'src/app/shared/models/generated/crop-dto';
+
+
 
 @Component({
   selector: 'labor-hours',
@@ -34,6 +42,7 @@ export class LaborHoursComponent implements OnInit {
     private workbookService: WorkbookService,
     private resultsService: ResultsService,
     private alertService: AlertService,
+    private lookupTablesService: LookupTablesService,
     private gridService: GridService,
     private router: Router,
     private utilityFunctionsService: UtilityFunctionsService, 
@@ -50,32 +59,84 @@ export class LaborHoursComponent implements OnInit {
   private workbookID: number;
   private getWorkbookRequest: any;
 
-  private getcropYieldInformationDashboardReportDtosRequest: any;
-  public cropYieldInformationDashboardReportDtos: CropCropUnitDashboardReportDto[];
+  private getLaborHoursDashboardReportDtosRequest: any;
+  public laborHoursDashboardReportDtos: LaborHoursDashboardReportDto[];
 
+  private getLaborActivityCategoriesRequest: any;
+  public laborActivityCategoryDtos : FieldLaborActivityCategoryDto[];
 
-  getRowNodeId(data)  {
-    return data.CropYieldInformationID.toString();
-  }
+  public pieChartOptions: ChartOptions = {
+    responsive: true,
+    legend: {
+      position: 'top',
+    },
+    plugins: {
+      datalabels: {
+        formatter: (value, ctx) => {
+          const label = ctx.chart.data.labels[ctx.dataIndex];
+          return label;
+        },
+      },
+    }
+  };
+  public pieChartLabels: Label[] = [['Download', 'Sales'], ['In', 'Store', 'Sales'], 'Mail Sales'];
+  public pieChartData: number[] = [300, 500, 100];
+  public pieChartType: ChartType = 'pie';
+  public pieChartLegend = true;
+  public pieChartColors = [
+    {
+      backgroundColor: ['rgba(255,0,0,0.3)', 'rgba(0,255,0,0.3)', 'rgba(0,0,255,0.3)'],
+    },
+  ];
  
+
+  public availableCrops: CropDto[];
+  public selectedCrop: CropDto;
+
+
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getcropYieldInformationDashboardReportDtosRequest = this.resultsService.getCropYieldInformationDashboardReportDtos(this.workbookID);
+      this.getLaborHoursDashboardReportDtosRequest = this.resultsService.getLaborHoursDashboardReportDtos(this.workbookID);
+      this.getLaborActivityCategoriesRequest = this.lookupTablesService.getFieldLaborActivityCategories();
 
-      forkJoin([this.getWorkbookRequest, this.getcropYieldInformationDashboardReportDtosRequest]).subscribe(([workbook, cropYieldInformationDashboardReportDtos]: [WorkbookDto, CropCropUnitDashboardReportDto[]] ) => {
+
+      forkJoin([this.getWorkbookRequest, this.getLaborHoursDashboardReportDtosRequest]).subscribe(([workbook, laborHoursDashboardReportDtos, laborActivityCategoryDtos]: [WorkbookDto, LaborHoursDashboardReportDto[], FieldLaborActivityCategoryDto[]] ) => {
           this.workbook = workbook;
-          this.cropYieldInformationDashboardReportDtos = cropYieldInformationDashboardReportDtos;
-          
+          this.laborHoursDashboardReportDtos = laborHoursDashboardReportDtos;
+          this.laborActivityCategoryDtos = laborActivityCategoryDtos;
+
+          this.availableCrops = laborHoursDashboardReportDtos.map(x => {
+            return x.Crop;
+          })
+          this.selectedCrop = this.availableCrops[0];
+
+          this.formatChartData();
           this.defineColumnDefs();
           this.gridApi.sizeColumnsToFit();
           this.cdr.markForCheck();
       });
 
     });
+  }
+
+
+  formatChartData() {
+    var recordsForChart = this.laborHoursDashboardReportDtos.filter(x => {
+      return x.Crop.CropID == this.selectedCrop.CropID;
+    })
+
+    this.pieChartData = recordsForChart.map(x => {
+      return Math.round( x.LaborActivityHours * 1e2 ) / 1e2
+    })
+
+    this.pieChartLabels = recordsForChart.map(x => {
+      return x.FieldLaborActivityCategory.FieldLaborActivityCategoryDisplayName;
+    })
+
   }
 
   onGridReady(params: any) {
@@ -103,47 +164,7 @@ export class LaborHoursComponent implements OnInit {
         resizable:true,
         sortable:true,
       },
-      {
-        headerName: 'Price', 
-        field: 'PricePerCropUnit',
-        valueFormatter: this.gridService.currencyFormatter,
-        
-        type: 'rightAligned',
-        resizable:true,
-        sortable:true,
-      },
-      {
-        headerName: 'Variable Cost Per Marketable Unit', 
-        field: 'VariableCostPerMarketableUnit',
-        valueFormatter: this.gridService.currencyFormatterToFixed,
-        type: 'rightAligned',
-        resizable:true,
-        sortable:true,
-      },
-      {
-        headerName: 'Contribution Margin Per Marketable Unit', 
-        field: 'ContributionMarginPerMarketableUnit',
-        valueFormatter: this.gridService.currencyFormatterToFixed,
-        type: 'rightAligned',
-        resizable:true,
-        sortable:true,
-      },
-      {
-        headerName: 'Contribution Margin Per Direct Labor Hour', 
-        field: 'ContributionMarginPerDirectLaborHour',
-        valueFormatter: this.gridService.currencyFormatterToFixed,
-        type: 'rightAligned',
-        resizable:true,
-        sortable:true,
-      },
-      {
-        headerName: 'Contribution Margin Per Standard Unit of Space', 
-        field: 'ContributionMarginPerStandardUnitOfSpace',
-        valueFormatter: this.gridService.currencyFormatterToFixed,
-        type: 'rightAligned',
-        resizable:true,
-        sortable:true,
-      },
+     
     ]
   }
  
@@ -155,12 +176,14 @@ export class LaborHoursComponent implements OnInit {
     if (this.watchUserChangeSubscription && this.watchUserChangeSubscription.unsubscribe) {
       this.watchUserChangeSubscription.unsubscribe();
     }
-
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
-    if (this.getcropYieldInformationDashboardReportDtosRequest && this.getcropYieldInformationDashboardReportDtosRequest.unsubscribe) {
-      this.getcropYieldInformationDashboardReportDtosRequest.unsubscribe();
+    if (this.getLaborHoursDashboardReportDtosRequest && this.getLaborHoursDashboardReportDtosRequest.unsubscribe) {
+      this.getLaborHoursDashboardReportDtosRequest.unsubscribe();
+    }
+    if (this.getLaborActivityCategoriesRequest && this.getLaborActivityCategoriesRequest.unsubscribe) {
+      this.getLaborActivityCategoriesRequest.unsubscribe();
     }
     
     this.cdr.detach();

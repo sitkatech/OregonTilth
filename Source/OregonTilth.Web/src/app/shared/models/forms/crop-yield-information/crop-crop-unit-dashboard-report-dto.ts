@@ -20,3 +20,5 @@ export class CropCropUnitDashboardReportDto {
         Object.assign(this, obj);
     }
 }
+
+

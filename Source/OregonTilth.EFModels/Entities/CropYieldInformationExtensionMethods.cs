@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
@@ -21,10 +22,10 @@ namespace OregonTilth.EFModels.Entities
         }
 
 
-        public static CropYieldInformationDashboardReportDto AsDashbardReportDto(
+        public static CropCropUnitDashboardReportDto AsDashbardReportDto(
             this CropYieldInformation cropYieldInformation)
         {
-            return new CropYieldInformationDashboardReportDto()
+            return new CropCropUnitDashboardReportDto()
             {
                 CropYieldInformationID = cropYieldInformation.CropYieldInformationID,
                 Crop = cropYieldInformation.Crop.AsSummaryDto(),
@@ -39,6 +40,50 @@ namespace OregonTilth.EFModels.Entities
                 ContributionMarginPerDirectLaborHour = cropYieldInformation.ContributionMarginPerDirectLaborHour(),
                 ContributionMarginPerStandardUnitOfSpace = cropYieldInformation.ContributionMarginPerStandardUnitOfSpace()
             };
+        }
+
+        public static List<LaborHoursDashboardReportDto> AsLaborHoursReportDto(this CropYieldInformation cropYieldInformation,
+            List<FieldLaborActivityCategoryDto> allFieldLaborActivityCategories)
+        {
+
+            var returnList = new List<LaborHoursDashboardReportDto>();
+
+            foreach (var fieldLaborActivityCategory in allFieldLaborActivityCategories)
+            {
+
+                var test = new LaborHoursDashboardReportDto()
+                {
+                    Crop = cropYieldInformation.Crop.AsSummaryDto(),
+                    CropUnit = cropYieldInformation.CropUnit.AsSummaryDto(),
+                    FieldLaborActivityCategory = fieldLaborActivityCategory,
+                    LaborActivityHours = cropYieldInformation.LaborActivityHours(fieldLaborActivityCategory)
+
+                };
+
+                returnList.Add(test);
+            }
+
+            return returnList;
+        }
+
+        public static decimal LaborActivityHours(this CropYieldInformation cropYieldInformation,
+            FieldLaborActivityCategoryDto fieldLaborActivityCategory)
+        {
+            // =IF([@[Labor Activity Category Type]]="FLAC",SUMIFS(Table19[LABOR ACTIVITY MINUTES PER STANDARD BED],Table19[Crop],[@Crop],Table19[CALCULATED LABOR ACTIVITY CATEGORY],[@[Labor Activity Category]])/60,
+            // [@[HELPER COLUMN FOR LABOR ACTIVITY HOURS]])
+
+            
+            var minutes = cropYieldInformation.Crop.FieldLaborByCrops
+                .Where(x => x.FieldLaborActivity.FieldLaborActivityCategoryID ==
+                            fieldLaborActivityCategory.FieldLaborActivityCategoryID)
+                .Sum(x => x.LaborActivityMinutesPerStandardBed());
+
+            if (minutes > 0)
+            {
+                return minutes / 60;
+            }
+
+            return 0;
         }
 
         public static decimal VariableCostPerMarketableUnit(this CropYieldInformation cropYieldInformation)

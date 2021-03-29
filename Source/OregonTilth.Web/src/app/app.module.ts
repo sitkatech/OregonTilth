@@ -69,6 +69,7 @@ import { CropYieldInformationComponent } from './pages/workbooks/forms/crop-yiel
 import { CropSpecificInfoComponent } from './pages/workbooks/forms/crop-specific-info/crop-specific-info.component';
 import { CropCropUnitComponent } from './pages/workbooks/results/crop-crop-unit/crop-crop-unit.component';
 import { LaborHoursComponent } from './pages/workbooks/results/labor-hours/labor-hours.component';
+import { ChartsModule } from 'ng2-charts';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -138,7 +139,8 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     NgMultiSelectDropDownModule.forRoot(),
     MyDatePickerModule,
     CKEditorModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ChartsModule
   ],  
   providers: [
     CookieService,

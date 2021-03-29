@@ -44,6 +44,7 @@ import { CropSpecificInfoDto } from 'src/app/shared/models/generated/crop-specif
 import { CropSpecificInfoCreateDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-create-dto';
 import { CropSpecificInfoSummaryDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-summary-dto';
 import { CropCropUnitDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/crop-crop-unit-dashboard-report-dto';
+import { LaborHoursDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/labor-hours-dashboard-report-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -58,6 +59,11 @@ export class ResultsService {
 
     getCropYieldInformationDashboardReportDtos(workbookID: number): Observable<CropCropUnitDashboardReportDto[]> {
         let route =  `/workbooks/${workbookID}/results/crop-crop-unit`;
+        return this.apiService.getFromApi(route);
+    }
+
+    getLaborHoursDashboardReportDtos(workbookID: number): Observable<LaborHoursDashboardReportDto[]> {
+        let route =  `/workbooks/${workbookID}/results/labor-hours`;
         return this.apiService.getFromApi(route);
     }
     

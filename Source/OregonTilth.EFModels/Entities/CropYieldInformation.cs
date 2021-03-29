@@ -112,6 +112,15 @@ namespace OregonTilth.EFModels.Entities
             return cropYieldInformations.Select(x => x.AsDashbardReportDto());
         }
 
+        // LaborHoursDashboardReportDto
+        public static IEnumerable<LaborHoursDashboardReportDto> GetLaborHoursDashboardReportDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
+        {
+            var cropYieldInformations = GetCropYieldInformationForReportImpl(dbContext).Where(x => x.WorkbookID == workbookID).ToList();
+            var fieldLaborActivityCategories = FieldLaborActivityCategory.List(dbContext);
+
+            return cropYieldInformations.SelectMany(x => x.AsLaborHoursReportDto(fieldLaborActivityCategories));
+        }
+
         private static IQueryable<CropYieldInformation> GetCropYieldInformationForReportImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.CropYieldInformations
