@@ -120,7 +120,6 @@ export class CropsComponent implements OnInit {
         columns: [data.column],
       });
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Crop.", AlertContext.Success));
     }, error => {
       this.refreshData();
       this.isLoadingSubmit = false;
