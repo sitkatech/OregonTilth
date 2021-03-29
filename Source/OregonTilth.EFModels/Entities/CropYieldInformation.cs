@@ -106,7 +106,7 @@ namespace OregonTilth.EFModels.Entities
             return cropYieldInformations.Select(x => x.AsSummaryDto());
         }
 
-        public static IQueryable<CropYieldInformationDashboardReportDto> GetDashReportDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
+        public static IQueryable<CropCropUnitDashboardReportDto> GetCropCropUnitDashboardReportDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
         {
             var cropYieldInformations = GetCropYieldInformationForReportImpl(dbContext).Where(x => x.WorkbookID == workbookID);
             return cropYieldInformations.Select(x => x.AsDashbardReportDto());

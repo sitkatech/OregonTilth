@@ -14,7 +14,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { CropCropUnitDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/crop-crop-unit-dashboard-report-dto';
+import { CropCropUnitDashboardReportDto as CropCropUnitDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/crop-crop-unit-dashboard-report-dto';
 import { ResultsService } from 'src/app/services/results/results.service';
 import { forkJoin } from 'rxjs';
 import { GridService } from 'src/app/shared/services/grid/grid.service';
@@ -22,11 +22,11 @@ import { ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 
 @Component({
-  selector: 'crop-crop-unit',
-  templateUrl: './crop-crop-unit.component.html',
-  styleUrls: ['./crop-crop-unit.component.scss']
+  selector: 'labor-hours',
+  templateUrl: './labor-hours.component.html',
+  styleUrls: ['./labor-hours.component.scss']
 })
-export class CropCropUnitComponent implements OnInit {
+export class LaborHoursComponent implements OnInit {
   @ViewChild('cropCropUnitGrid') cropCropUnitGrid: AgGridAngular;
   
   constructor(private cdr: ChangeDetectorRef, 
@@ -43,7 +43,7 @@ export class CropCropUnitComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public columnDefs: ColDef[];
-  public richTextTypeID : number = CustomRichTextType.ResultsCropCropUnit;
+  public richTextTypeID : number = CustomRichTextType.ResultsCropCropUnitLaborHours;
   public workbook: WorkbookDto;
   public roles: Array<RoleDto>;
   public isLoadingSubmit: boolean = false;

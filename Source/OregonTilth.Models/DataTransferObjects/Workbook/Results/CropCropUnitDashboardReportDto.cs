@@ -1,6 +1,6 @@
 ﻿namespace OregonTilth.Models.DataTransferObjects
 {
-    public class CropYieldInformationDashboardReportDto : CropYieldInformationSummaryDto
+    public class CropCropUnitDashboardReportDto : CropYieldInformationSummaryDto
     {
         public decimal VariableCostPerMarketableUnit { get; set; }
         public decimal ContributionMarginPerMarketableUnit { get; set; }
