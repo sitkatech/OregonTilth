@@ -178,23 +178,23 @@ export class LaborHoursComponent implements OnInit {
     var componentScope = this;
     this.columnDefs = [
       {
-        headerName: 'Crop', 
+        headerName: 'Crop, Crop Unit', 
         field: 'Crop',
         valueGetter: params => {
-          return params.data.Crop.CropName;
+          return params.data.Crop.CropName + ', ' + params.data.CropUnit.CropUnitName;
         },
         resizable:true,
         sortable:true,
       },
-      {
-        headerName: 'Crop Unit', 
-        field: 'CropUnit',
-        valueGetter: params => {
-          return params.data.CropUnit.CropUnitName;
-        },
-        resizable:true,
-        sortable:true,
-      },
+      // {
+      //   headerName: 'Crop Unit', 
+      //   field: 'CropUnit',
+      //   valueGetter: params => {
+      //     return params.data.CropUnit.CropUnitName;
+      //   },
+      //   resizable:true,
+      //   sortable:true,
+      // },
       {
         headerName: 'Labor Activity Category', 
         field: 'FieldLaborActivityCategory',
