@@ -78,33 +78,37 @@ export class FieldLaborByCropComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new FieldLaborByCropCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getCropDtosRequest = this.workbookService.getCrops(this.workbookID);
-      this.getFieldLaborActivityDtosRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
-      this.getLaborTypeDtosRequest = this.lookupTablesService.getLaborTypes();
-      this.getFieldLaborByCropsRequest = this.workbookService.getFieldLaborByCrops(this.workbookID);
-
-      forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldLaborActivityDtosRequest, this.getLaborTypeDtosRequest, this.getFieldLaborByCropsRequest]).subscribe(([workbookDto, cropDtos, fieldLaborActivityDtos, laborTypeDtos, fieldLaborByCrops]: [WorkbookDto, CropDto[], FieldLaborActivityDto[], LaborTypeDto[], FieldLaborByCropDto[]] ) => {
-          this.workbook = workbookDto;
-          this.cropDtos = cropDtos;
-          this.fieldLaborActivityDtos = fieldLaborActivityDtos;
-          this.laborTypeDtos = laborTypeDtos;
-          this.fieldLaborByCropDtos = fieldLaborByCrops;
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
-
-      this.dropdownSettings = {
-        singleSelection: false,
-        idField: 'FieldLaborActivityID',
-        textField: 'FieldLaborActivityName',
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        itemsShowLimit: 10,
-        allowSearchFilter: true
-      };
+      this.refreshData();
 
     });
+  }
+
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getCropDtosRequest = this.workbookService.getCrops(this.workbookID);
+    this.getFieldLaborActivityDtosRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
+    this.getLaborTypeDtosRequest = this.lookupTablesService.getLaborTypes();
+    this.getFieldLaborByCropsRequest = this.workbookService.getFieldLaborByCrops(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldLaborActivityDtosRequest, this.getLaborTypeDtosRequest, this.getFieldLaborByCropsRequest]).subscribe(([workbookDto, cropDtos, fieldLaborActivityDtos, laborTypeDtos, fieldLaborByCrops]: [WorkbookDto, CropDto[], FieldLaborActivityDto[], LaborTypeDto[], FieldLaborByCropDto[]]) => {
+      this.workbook = workbookDto;
+      this.cropDtos = cropDtos;
+      this.fieldLaborActivityDtos = fieldLaborActivityDtos;
+      this.laborTypeDtos = laborTypeDtos;
+      this.fieldLaborByCropDtos = fieldLaborByCrops;
+      this.defineColumnDefs();
+      this.cdr.markForCheck();
+    });
+
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'FieldLaborActivityID',
+      textField: 'FieldLaborActivityName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 10,
+      allowSearchFilter: true
+    };
   }
 
   onGridReady(params: any) {
@@ -219,9 +223,13 @@ export class FieldLaborByCropComponent implements OnInit {
 
     this.updateFieldLaborByCropRequest = this.workbookService.updateFieldLaborByCrop(dtoToPost).subscribe(fieldLaborByCrop => {
       data.node.setData(fieldLaborByCrop);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Field Labor By Crop", AlertContext.Success));
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })

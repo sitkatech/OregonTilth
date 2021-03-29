@@ -76,20 +76,24 @@ export class CropYieldInformationComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new CropYieldInformationCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getCropsRequest = this.workbookService.getCrops(this.workbookID);
-      this.getCropUnitsRequest = this.workbookService.getCropUnits(this.workbookID);
-      this.getCropYieldInformationDtosRequest = this.workbookService.getCropYieldInformation(this.workbookID);
+      this.refreshData();
 
-      forkJoin([this.getWorkbookRequest, this.getCropsRequest, this.getCropUnitsRequest, this.getCropYieldInformationDtosRequest]).subscribe(([workbook, cropDtos, cropUnitDtos, cropYieldInfoDtos]: [WorkbookDto, CropDto[], CropUnitDto[], CropYieldInformationSummaryDto[]] ) => {
-          this.workbook = workbook;
-          this.crops = cropDtos;
-          this.cropUnits = cropUnitDtos;
-          this.cropYieldInformations = cropYieldInfoDtos;
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
+    });
+  }
 
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getCropsRequest = this.workbookService.getCrops(this.workbookID);
+    this.getCropUnitsRequest = this.workbookService.getCropUnits(this.workbookID);
+    this.getCropYieldInformationDtosRequest = this.workbookService.getCropYieldInformation(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getCropsRequest, this.getCropUnitsRequest, this.getCropYieldInformationDtosRequest]).subscribe(([workbook, cropDtos, cropUnitDtos, cropYieldInfoDtos]: [WorkbookDto, CropDto[], CropUnitDto[], CropYieldInformationSummaryDto[]]) => {
+      this.workbook = workbook;
+      this.crops = cropDtos;
+      this.cropUnits = cropUnitDtos;
+      this.cropYieldInformations = cropYieldInfoDtos;
+      this.defineColumnDefs();
+      this.cdr.markForCheck();
     });
   }
 
@@ -260,6 +264,7 @@ export class CropYieldInformationComponent implements OnInit {
       });
       this.isLoadingSubmit = false;
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })
@@ -294,7 +299,6 @@ export class CropYieldInformationComponent implements OnInit {
       this.isLoadingSubmit = false;
       var transactionRows = this.gridApi.applyTransaction({add: [response]});
       this.gridApi.flashCells({ rowNodes: transactionRows.add });
-      this.alertService.pushAlert(new Alert(`Successfully added information.`, AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
       

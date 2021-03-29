@@ -68,33 +68,37 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new TransplantProductionLaborByCropCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getCropDtosRequest = this.workbookService.getCrops(this.workbookID);
-      this.getTransplantProductionLaborActivityDtosRequest = this.workbookService.getTransplantProductionLaborActivities(this.workbookID);
-      this.getPhaseDtosRequest = this.lookupTablesService.getPhases();
-      this.getTransplantProductionLaborByCropsRequest = this.workbookService.getTransplantProductionLaborByCrops(this.workbookID);
-
-      forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getTransplantProductionLaborActivityDtosRequest, this.getPhaseDtosRequest, this.getTransplantProductionLaborByCropsRequest]).subscribe(([workbookDto, cropDtos, transplantProductionLaborActivityDtos, phaseDtos, transplantProductionLaborByCrops]: [WorkbookDto, CropDto[], TransplantProductionLaborActivityDto[], PhaseDto[], TransplantProductionLaborActivityByCropDto[]] ) => {
-          this.workbook = workbookDto;
-          this.cropDtos = cropDtos;
-          this.transplantProductionLaborActivityDtos = transplantProductionLaborActivityDtos;
-          this.phaseDtos = phaseDtos;
-          this.transplantProductionLaborByCropDtos = transplantProductionLaborByCrops;
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
-
-      this.dropdownSettings = {
-        singleSelection: false,
-        idField: 'TransplantProductionLaborActivityID',
-        textField: 'TransplantProductionLaborActivityName',
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        itemsShowLimit: 10,
-        allowSearchFilter: true
-      };
+      this.refreshData();
 
     });
+  }
+
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getCropDtosRequest = this.workbookService.getCrops(this.workbookID);
+    this.getTransplantProductionLaborActivityDtosRequest = this.workbookService.getTransplantProductionLaborActivities(this.workbookID);
+    this.getPhaseDtosRequest = this.lookupTablesService.getPhases();
+    this.getTransplantProductionLaborByCropsRequest = this.workbookService.getTransplantProductionLaborByCrops(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getTransplantProductionLaborActivityDtosRequest, this.getPhaseDtosRequest, this.getTransplantProductionLaborByCropsRequest]).subscribe(([workbookDto, cropDtos, transplantProductionLaborActivityDtos, phaseDtos, transplantProductionLaborByCrops]: [WorkbookDto, CropDto[], TransplantProductionLaborActivityDto[], PhaseDto[], TransplantProductionLaborActivityByCropDto[]]) => {
+      this.workbook = workbookDto;
+      this.cropDtos = cropDtos;
+      this.transplantProductionLaborActivityDtos = transplantProductionLaborActivityDtos;
+      this.phaseDtos = phaseDtos;
+      this.transplantProductionLaborByCropDtos = transplantProductionLaborByCrops;
+      this.defineColumnDefs();
+      this.cdr.markForCheck();
+    });
+
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'TransplantProductionLaborActivityID',
+      textField: 'TransplantProductionLaborActivityName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 10,
+      allowSearchFilter: true
+    };
   }
 
   defineColumnDefs() {
@@ -215,9 +219,13 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
 
     this.updateTransplantProductionLaborByCropRequest = this.workbookService.updateTransplantProductionLaborByCrop(dtoToPost).subscribe(transplantProductionLaborByCrop => {
       data.node.setData(transplantProductionLaborByCrop);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Transplant Production Labor By Crop", AlertContext.Success));
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })

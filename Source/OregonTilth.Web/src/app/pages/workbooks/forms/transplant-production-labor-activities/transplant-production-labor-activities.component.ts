@@ -33,6 +33,7 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
@@ -57,16 +58,20 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new TransplantProductionLaborActivityCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getTransplantProductionLaborActivitiesRequest = this.workbookService.getTransplantProductionLaborActivities(this.workbookID);
+      this.refreshData();
 
-      forkJoin([this.getWorkbookRequest,  this.getTransplantProductionLaborActivitiesRequest]).subscribe(([workbook,  fieldLaborActivities]: [WorkbookDto,  TransplantProductionLaborActivityDto[]] ) => {
-          this.workbook = workbook;
-          this.transplantProductionLaborActivities = fieldLaborActivities;
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
+    });
+  }
 
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getTransplantProductionLaborActivitiesRequest = this.workbookService.getTransplantProductionLaborActivities(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getTransplantProductionLaborActivitiesRequest]).subscribe(([workbook, fieldLaborActivities]: [WorkbookDto, TransplantProductionLaborActivityDto[]]) => {
+      this.workbook = workbook;
+      this.transplantProductionLaborActivities = fieldLaborActivities;
+      this.defineColumnDefs();
+      this.cdr.markForCheck();
     });
   }
 
@@ -112,9 +117,13 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
 
     this.updateTransplantProductionLaborActivityRequest = this.workbookService.updateTransplantProductionLaborActivity(dtoToPost).subscribe(fieldLaborActivity => {
       data.node.setData(fieldLaborActivity);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Transplant Production Labor Activity", AlertContext.Success));
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })
@@ -147,8 +156,8 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
     this.isLoadingSubmit = true;
     this.addTransplantProductionLaborActivityRequest = this.workbookService.addTransplantProductionLaborActivity(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.transplantProductionLaborActivities = response;
-      this.alertService.pushAlert(new Alert("Successfully added Transplant Production Labor Activity.", AlertContext.Success));
+      var transactionRows = this.gridApi.applyTransaction({add: [response]});
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.resetForm();
       this.cdr.detectChanges();
       
@@ -160,6 +169,10 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
 
   resetForm() {
     this.model = new TransplantProductionLaborActivityCreateDto({WorkbookID: this.workbookID});
+  }
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
   }
 
 }

@@ -64,18 +64,23 @@ export class MachineryComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new MachineryCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getMachineryRequest = this.workbookService.getMachinery(this.workbookID);
-
-      forkJoin([this.getWorkbookRequest, this.getMachineryRequest]).subscribe(([workbook, machineries]: [WorkbookDto, MachineryDto[],] ) => {
-          this.workbook = workbook;
-          this.machineries = machineries;
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
+      this.refreshData();
 
     });
   }
+
+  refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getMachineryRequest = this.workbookService.getMachinery(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getMachineryRequest]).subscribe(([workbook, machineries]: [WorkbookDto, MachineryDto[],] ) => {
+        this.workbook = workbook;
+        this.machineries = machineries;
+        this.defineColumnDefs();
+        this.cdr.markForCheck();
+    });
+  }
+
 
   defineColumnDefs() {
     var componentScope = this;
@@ -128,14 +133,17 @@ export class MachineryComponent implements OnInit {
 
     this.updateMachineryRequest = this.workbookService.updateMachinery(dtoToPost).subscribe(machinery => {
       data.node.setData(machinery);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert(`Successfully updated Machinery`, AlertContext.Success));
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })
 
-    console.log(dtoToPost);
   }
 
   ngOnDestroy() {
@@ -166,7 +174,6 @@ export class MachineryComponent implements OnInit {
       this.isLoadingSubmit = false;
       var transactionRows = this.gridApi.applyTransaction({add: [response]});
       this.gridApi.flashCells({ rowNodes: transactionRows.add });
-      this.alertService.pushAlert(new Alert(`Successfully added Machinery '${this.model.MachineryName}'.`, AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
       
