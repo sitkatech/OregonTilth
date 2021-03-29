@@ -53,16 +53,20 @@ export class TransplantProductionInputsComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new TransplantProductionInputCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getTransplantProductionInputsRequest = this.workbookService.getTransplantProductionInputs(this.workbookID);
+      this.refreshData();
 
-      forkJoin([this.getWorkbookRequest,  this.getTransplantProductionInputsRequest]).subscribe(([workbook,  tpInputs]: [WorkbookDto,  TransplantProductionInputDto[]] ) => {
-          this.workbook = workbook;
-          this.transplantProductionInputs = tpInputs;
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
+    });
+  }
 
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getTransplantProductionInputsRequest = this.workbookService.getTransplantProductionInputs(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getTransplantProductionInputsRequest]).subscribe(([workbook, tpInputs]: [WorkbookDto, TransplantProductionInputDto[]]) => {
+      this.workbook = workbook;
+      this.transplantProductionInputs = tpInputs;
+      this.defineColumnDefs();
+      this.cdr.markForCheck();
     });
   }
 
@@ -109,9 +113,13 @@ export class TransplantProductionInputsComponent implements OnInit {
 
     this.updateTransplantProductionInputRequest = this.workbookService.updateTransplantProductionInput(dtoToPost).subscribe(tpInput => {
       data.node.setData(tpInput);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Transplant Production Input", AlertContext.Success));
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })
@@ -146,7 +154,6 @@ export class TransplantProductionInputsComponent implements OnInit {
       this.isLoadingSubmit = false;
       var transactionRows = this.gridApi.applyTransaction({add: [response]});
       this.gridApi.flashCells({ rowNodes: transactionRows.add });
-      this.alertService.pushAlert(new Alert("Successfully added Transplant Production Input.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
       
