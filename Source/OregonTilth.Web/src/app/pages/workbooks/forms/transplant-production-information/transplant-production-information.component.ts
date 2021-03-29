@@ -178,7 +178,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         filter: true,
       },
       {
-        headerName: 'Seeds Per Tray', 
+        headerName: 'Seeds/Seedlings Per Tray', 
         field: 'SeedsPerTray',
         editable: true,
         cellEditorFramework: IntegerEditor,
@@ -192,7 +192,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         }
       },
       {
-        headerName: 'Usage Rate', 
+        headerName: 'Percentage Plantable', 
         field: 'UsageRate',
         editable: true,
         cellEditorFramework: DecimalEditor,
