@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OregonTilth.Models.DataTransferObjects;
 
@@ -112,29 +113,35 @@ namespace OregonTilth.EFModels.Entities
 
             if (cropSpecificInfo.TpOrDsTypeID == (int) TpOrDsTypeEnum.TransplantFarmProduced)
             {
+                var tpInfo = cropSpecificInfo.Crop.TransplantProductionInformations.SingleOrDefault(x =>
+                    x.PhaseID == (int)PhaseEnum.Seeding);
+                var allTpInfosForCrop = cropSpecificInfo.Crop.TransplantProductionInformations;
 
+                var helperLaborHoursPerTransplant = cropSpecificInfo.HelperForLaborHoursPerTransplant(tpInfo, allTpInfosForCrop);
+                if (helperLaborHoursPerTransplant > 0)
+                {
+                    return helperLaborHoursPerTransplant;
+                }
+                
+                return tpInfo?.CropPhaseTotalLaborHoursPerTransplant(allTpInfosForCrop) ?? 0;
             }
-
 
             return 0;
         }
-
-        public static decimal? HelperForLaborHoursPerTransplant(this CropSpecificInfo cropSpecificInfo)
+        
+        public static decimal HelperForLaborHoursPerTransplant(this CropSpecificInfo cropSpecificInfo,
+            TransplantProductionInformation? transplantProductionInformation,
+            ICollection<TransplantProductionInformation> allTpInfosForCrop)
         {
             // table18 == TPInfoForm
             // =INDEX(Table18[CROP/PHASE TOTAL LABOR HOURS PER TRANSPLANT],MATCH(1,([@Crop]=Table18[Crop])*("Potting Up"=Table18[Phase])*{1},0))
-            var tpInfo = cropSpecificInfo.Crop.TransplantProductionInformations.SingleOrDefault(x =>
-                 x.PhaseID == (int) PhaseEnum.PottingUp);
-
-            var allTpInfosForCrop = cropSpecificInfo.Crop.TransplantProductionInformations;
-
-            if (tpInfo != null)
+            
+            if (transplantProductionInformation != null)
             {
-                return tpInfo.CropPhaseTotalLaborHoursPerTransplant(allTpInfosForCrop);
+                return transplantProductionInformation.CropPhaseTotalLaborHoursPerTransplant(allTpInfosForCrop);
             }
 
             return 0;
-
         }
 
         public static decimal TotalInputCostPerTransplant(this CropSpecificInfo cropSpecificInfo)

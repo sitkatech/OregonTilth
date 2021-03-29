@@ -14,7 +14,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { CropYieldInformationDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/crop-yield-information-dashboard-report-dto';
+import { CropCropUnitDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/crop-crop-unit-dashboard-report-dto';
 import { ResultsService } from 'src/app/services/results/results.service';
 import { forkJoin } from 'rxjs';
 import { GridService } from 'src/app/shared/services/grid/grid.service';
@@ -51,7 +51,7 @@ export class CropCropUnitComponent implements OnInit {
   private getWorkbookRequest: any;
 
   private getcropYieldInformationDashboardReportDtosRequest: any;
-  public cropYieldInformationDashboardReportDtos: CropYieldInformationDashboardReportDto[];
+  public cropYieldInformationDashboardReportDtos: CropCropUnitDashboardReportDto[];
 
 
   getRowNodeId(data)  {
@@ -66,7 +66,7 @@ export class CropCropUnitComponent implements OnInit {
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
       this.getcropYieldInformationDashboardReportDtosRequest = this.resultsService.getCropYieldInformationDashboardReportDtos(this.workbookID);
 
-      forkJoin([this.getWorkbookRequest, this.getcropYieldInformationDashboardReportDtosRequest]).subscribe(([workbook, cropYieldInformationDashboardReportDtos]: [WorkbookDto, CropYieldInformationDashboardReportDto[]] ) => {
+      forkJoin([this.getWorkbookRequest, this.getcropYieldInformationDashboardReportDtosRequest]).subscribe(([workbook, cropYieldInformationDashboardReportDtos]: [WorkbookDto, CropCropUnitDashboardReportDto[]] ) => {
           this.workbook = workbook;
           this.cropYieldInformationDashboardReportDtos = cropYieldInformationDashboardReportDtos;
           

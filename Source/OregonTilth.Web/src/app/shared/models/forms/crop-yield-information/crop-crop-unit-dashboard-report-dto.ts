@@ -2,7 +2,7 @@ import { CropDto } from "../../generated/crop-dto";
 import { CropUnitDto } from "../../generated/crop-unit-dto";
 
 
-export class CropYieldInformationDashboardReportDto {
+export class CropCropUnitDashboardReportDto {
     WorkbookID: number;
     Crop: CropDto;
     CropUnit: CropUnitDto;
@@ -20,3 +20,5 @@ export class CropYieldInformationDashboardReportDto {
         Object.assign(this, obj);
     }
 }
+
+
