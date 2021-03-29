@@ -70,7 +70,6 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Crop Yield Information", Message = "Crop Yield Information must be unique per Crop and Crop Unit." });
             }
 
-            // usage rate between 0 - 100
             if (cropYieldInformationDto.HarvestedYieldPerStandardUnitOfSpace <= 0)
             {
                 result.Add(new ErrorMessage() { Type = "Harvested Yield Per Standard Unit Of Space", Message = "Harvested Yield Per Standard Unit Of Space must be greater than zero." });
