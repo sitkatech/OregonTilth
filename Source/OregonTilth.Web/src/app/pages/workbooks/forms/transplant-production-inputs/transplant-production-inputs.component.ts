@@ -13,6 +13,7 @@ import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { TransplantProductionInputDto } from 'src/app/shared/models/generated/transplant-production-input-dto';
 import { TransplantProductionInputCreateDto } from 'src/app/shared/models/forms/transplant-production-inputs/transplant-production-input-create-dto';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'transplant-production-inputs',
@@ -78,6 +79,7 @@ export class TransplantProductionInputsComponent implements OnInit {
         field: 'TransplantProductionInputName',
         editable: true,
         cellEditor: 'agTextCellEditor',
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
