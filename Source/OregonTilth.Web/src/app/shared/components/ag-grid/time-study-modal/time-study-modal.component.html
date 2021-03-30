@@ -9,9 +9,7 @@
   </div>
   <div class="modal-body w-100">
     
-    <!-- <div *ngIf="errorMessage" class="alert alert-danger">
-        {{errorMessage}}
-    </div> -->
+    <app-alert-display></app-alert-display>
     <div class="time-studies-container" *ngIf="model.TimeStudies.length > 0">
       <div class="form-group" *ngFor="let timeStudy of model.TimeStudies; let i = index">
         <div class="row">
