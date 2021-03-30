@@ -38,5 +38,15 @@ namespace OregonTilth.API.Controllers
 
             return Ok(cropYieldInfos);
         }
+
+        [HttpGet("workbooks/{workbookID}/results/variable-costs")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<LaborHoursDashboardReportDto>> GetCropYieldInformationDashboardReportVariableCostDtos([FromRoute] int workbookID)
+        {
+            var cropYieldInfos = CropYieldInformation.GetVariableCostsDashboardReportDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(cropYieldInfos);
+        }
     }
 }

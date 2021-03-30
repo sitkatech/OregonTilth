@@ -46,12 +46,11 @@ namespace OregonTilth.EFModels.Entities
         {
             // =[@[CALCULATED STANDARD TIME]]*[@[UNITS USED PER STANDARD BED]]*[@Occurrences]
 
-            return fieldLaborByCrop.CalculatedStandardTime() 
-                   * fieldLaborByCrop.UnitsUsedPerStandardBed() 
+            var calculatedStandardTime = fieldLaborByCrop.CalculatedStandardTime();
+            var unitsUsedPerStandardBed = fieldLaborByCrop.UnitsUsedPerStandardBed();
+            return calculatedStandardTime 
+                   * unitsUsedPerStandardBed 
                    * fieldLaborByCrop.Occurrences ?? 0;
-
-
-
         }
 
         public static decimal CalculatedStandardTime(this FieldLaborByCrop fieldLaborByCrop)
@@ -89,7 +88,8 @@ namespace OregonTilth.EFModels.Entities
 
             var fieldUnitEnum = (FieldUnitTypeEnum) calculatedFieldUnit.FieldUnitTypeID;
 
-            return fieldLaborByCrop.Crop.CropSpecificInfos.Single().UnitsUsed(fieldUnitEnum);
+            var unitsUsedPerStandardBed = fieldLaborByCrop.Crop.CropSpecificInfos.Single().UnitsUsed(fieldUnitEnum);
+            return unitsUsedPerStandardBed;
 
         }
 

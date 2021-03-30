@@ -15,4 +15,14 @@
         public string FieldLaborActivityCategory { get; set; }
         public decimal LaborActivityHours { get; set; }
     }
+
+    public class VariableCostsDashboardReportDto
+    {
+        public CropSummaryDto Crop { get; set; }
+        public decimal TotalLaborCosts { get; set; }
+        public decimal TotalFieldInputCosts { get; set; }
+        public decimal TotalMachineryCosts { get; set; }
+        public decimal TotalPackagingCosts { get; set; }
+        public decimal TotalSeedOrTpCosts { get; set; }
+    }
 }

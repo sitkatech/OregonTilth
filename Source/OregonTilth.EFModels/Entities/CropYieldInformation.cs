@@ -121,6 +121,14 @@ namespace OregonTilth.EFModels.Entities
             return cropYieldInformations.SelectMany(x => x.AsLaborHoursReportDto(fieldLaborActivityCategories, allHarvestTypes));
         }
 
+        // VariableCostsDashboardReportDto
+        public static IEnumerable<VariableCostsDashboardReportDto> GetVariableCostsDashboardReportDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
+        {
+            var cropYieldInformations = GetCropYieldInformationForReportImpl(dbContext).Where(x => x.WorkbookID == workbookID).ToList();
+
+            return cropYieldInformations.Select(x => x.AsVariableCostsReportDto());
+        }
+
         private static IQueryable<CropYieldInformation> GetCropYieldInformationForReportImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.CropYieldInformations
@@ -135,9 +143,6 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.Crop).ThenInclude(x => x.HarvestPostHarvestStandardTimes)
                 .Include(x => x.CropUnit)
                 .AsNoTracking();
-
-            // fieldLaborByCrop.Crop.CropSpecificInfos.Single().UnitsUsed(fieldUnitEnum);
-            //transplantProductionInformation.TransplantProductionTrayType.TransplantProductionInputCosts
 
         }
 

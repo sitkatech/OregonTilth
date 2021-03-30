@@ -71,6 +71,7 @@ import { CropCropUnitComponent } from './pages/workbooks/results/crop-crop-unit/
 import { LaborHoursComponent } from './pages/workbooks/results/labor-hours/labor-hours.component';
 import { ChartsModule } from 'ng2-charts';
 import { EditableRendererComponent } from './shared/components/ag-grid/editable-renderer/editable-renderer.component';
+import { VariableCostsComponent } from './pages/workbooks/results/variable-costs/variable-costs.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -124,7 +125,8 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     IntegerEditor,
     FieldInputByCropComponent,
     TimeStudyModal,
-    CropSpecificInfoComponent
+    CropSpecificInfoComponent,
+    VariableCostsComponent
   ],
   imports: [
     AppRoutingModule,
