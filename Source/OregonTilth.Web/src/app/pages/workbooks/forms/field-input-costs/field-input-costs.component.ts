@@ -22,6 +22,7 @@ import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-table
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'field-input-costs',
@@ -94,6 +95,7 @@ export class FieldInputCostsComponent implements OnInit {
         field: 'FieldInputCostName',
         editable: true,
         cellEditor: 'agTextCellEditor',
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -114,6 +116,10 @@ export class FieldInputCostsComponent implements OnInit {
           });
           return true;
         },
+        valueGetter: params => {
+          return params.data.FieldUnitType ? params.data.FieldUnitType.FieldUnitTypeDisplayName : '';
+        },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -122,6 +128,7 @@ export class FieldInputCostsComponent implements OnInit {
         field: 'CostPerFieldUnit',
         editable: true,
         cellEditorFramework: DecimalEditor,
+        cellRendererFramework: EditableRendererComponent,
         valueFormatter: this.gridService.currencyFormatter
       },
       {
@@ -129,6 +136,7 @@ export class FieldInputCostsComponent implements OnInit {
         field: 'Notes',
         editable: true,
         cellEditor: 'agTextCellEditor',
+        cellRendererFramework: EditableRendererComponent,
         filter: true,
       },
       {
