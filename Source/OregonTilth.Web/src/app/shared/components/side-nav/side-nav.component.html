@@ -220,6 +220,15 @@
                     <field-definition [fieldDefinitionType]="'ResultsCropCropUnitLaborHours'" [labelOverride]="''"></field-definition>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                [routerLink]="['/workbooks', workbookID, 'results', 'variable-costs']"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                    Variable Costs
+                    <field-definition [fieldDefinitionType]="'ResultsCropCropUnitCostsPerCostCategory'" [labelOverride]="''"></field-definition>
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
