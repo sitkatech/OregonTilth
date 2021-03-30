@@ -13,6 +13,7 @@ import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { CropUnitCreateDto } from 'src/app/shared/models/forms/crop-units/crop-unit-create-dto';
 import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'crop-units',
@@ -77,7 +78,8 @@ export class CropUnitsComponent implements OnInit {
         headerName: 'Crop Unit', 
         field: 'CropUnitName',
         editable: true,
-        cellEditor: 'agPopupTextCellEditor',
+        cellEditor: 'agTextCellEditor',
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true
       },

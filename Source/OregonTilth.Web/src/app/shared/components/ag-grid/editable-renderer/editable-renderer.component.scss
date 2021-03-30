@@ -1,0 +1,25 @@
+.editable-cell-container {
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    &:hover button {
+        border:1px solid #ddd;
+        color:#000;
+    }
+    button {
+        box-sizing: border-box;
+        background:#fff;
+        border:1px solid transparent;
+        color:rgb(196, 196, 196);
+        border-radius:5px;
+        padding:2px 4px;
+        line-height:1;
+        position:relative;
+        transition:all .1s;
+        &:hover {
+            box-shadow:1px 1px 3px #ddd;
+            border:1px solid #000;
+        }
+    }
+}
+

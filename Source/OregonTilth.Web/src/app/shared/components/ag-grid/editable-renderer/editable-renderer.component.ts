@@ -1,0 +1,43 @@
+import {Component} from "@angular/core";
+import { ICellRendererParams, TextCellEditor } from "ag-grid-community";
+
+@Component({
+   selector: 'editable-renderer-component',  
+   templateUrl: './editable-renderer.component.html',
+    styleUrls: ['./editable-renderer.component.scss']
+})
+export class EditableRendererComponent {
+  public params: ICellRendererParams
+  public cellValue: string;
+  public rowIndex: number;
+  public colKey: string;
+  private gridApi: any;
+
+  // gets called once before the renderer is used
+  agInit(params: ICellRendererParams): void {
+    this.refreshEditableCell(params);
+    this.params = params;
+    this.gridApi = params.api;
+  }
+
+  // gets called whenever the cell refreshes
+  refresh(params: ICellRendererParams) {
+    this.refreshEditableCell(params);
+  }
+
+  refreshEditableCell(params: ICellRendererParams) {
+    this.cellValue = this.getValueToDisplay(params);
+  }
+
+  buttonClicked() {
+    this.gridApi.startEditingCell({
+      rowIndex: this.params.node.rowIndex,
+      colKey: this.params.column.getColId()
+    });
+  }
+
+  getValueToDisplay(params: ICellRendererParams) {
+    return params.value;
+  }
+
+}
