@@ -206,7 +206,8 @@ export class FieldStandardTimesComponent implements OnInit {
         sortable: true, 
         filter: true,
         resizable: true,
-        width:150
+        width:150,
+        pinned: 'left'
       },
       {
         headerName: 'Labor Type', 
@@ -214,7 +215,8 @@ export class FieldStandardTimesComponent implements OnInit {
         sortable: true, 
         filter: true,
         resizable: true,
-        width:150
+        width:150,
+        pinned: 'left'
       },
       {
         headerName: 'Machinery', 
