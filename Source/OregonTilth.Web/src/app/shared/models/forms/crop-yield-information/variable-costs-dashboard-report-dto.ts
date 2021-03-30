@@ -11,3 +11,11 @@ export class VariableCostsDashboardReportDto {
         Object.assign(this, obj);
     }
 }
+
+export class ViariableCostForCropPivoted {
+    VariableCost: string;
+    DollarAmount: number;
+    constructor(obj?: any) {
+        Object.assign(this, obj);
+    }
+}

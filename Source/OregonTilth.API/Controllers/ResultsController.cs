@@ -44,7 +44,7 @@ namespace OregonTilth.API.Controllers
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<LaborHoursDashboardReportDto>> GetCropYieldInformationDashboardReportVariableCostDtos([FromRoute] int workbookID)
         {
-            var cropYieldInfos = CropYieldInformation.GetLaborHoursDashboardReportDtoListByWorkbookID(_dbContext, workbookID);
+            var cropYieldInfos = CropYieldInformation.GetVariableCostsDashboardReportDtoListByWorkbookID(_dbContext, workbookID);
 
             return Ok(cropYieldInfos);
         }

@@ -24,6 +24,7 @@ export class GridService {
     }
 
     currencyFormatterToFixed(params): string {
+        debugger;
         return '$' + params.value.toFixed(2);
     }
 

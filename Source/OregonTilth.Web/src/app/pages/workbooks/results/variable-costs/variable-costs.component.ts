@@ -27,6 +27,7 @@ import { ChartOptions, ChartType, ChartColor } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
+import { VariableCostsDashboardReportDto, ViariableCostForCropPivoted } from 'src/app/shared/models/forms/crop-yield-information/variable-costs-dashboard-report-dto';
 
 
 
@@ -53,19 +54,18 @@ export class VariableCostsComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public columnDefs: ColDef[];
-  public richTextTypeID : number = CustomRichTextType.ResultsCropCropUnitLaborHours;
+  public richTextTypeID : number = CustomRichTextType.ResultsCropCropUnitCostsPerCostCategory;
   public workbook: WorkbookDto;
   public roles: Array<RoleDto>;
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
 
-  private getLaborHoursDashboardReportDtosRequest: any;
-  public laborHoursDashboardReportDtos: LaborHoursDashboardReportDto[];
-  public laborHoursDashboardReportDtosForGrid: LaborHoursDashboardReportDto[];
+  private getVariableCostsDashboardReportDtosRequest: any;
+  public variableCostsDashboardReportDtos: VariableCostsDashboardReportDto[];
+  public variableCostsDashboardReportDtosForGrid: VariableCostsDashboardReportDto[];
 
-  private getLaborActivityCategoriesRequest: any;
-  public laborActivityCategoryDtos : FieldLaborActivityCategoryDto[];
+  public variableCostsPivotedForSelectedCrop : ViariableCostForCropPivoted[];
 
   public pieChartOptions: ChartOptions = {
     responsive: true,
@@ -96,8 +96,7 @@ export class VariableCostsComponent implements OnInit {
   public availableCrops: CropDto[];
   public selectedCrop: CropDto;
 
-  public availableCropUnits: CropUnitDto[];
-  public selectedCropUnit: CropUnitDto;
+  
 
 
   ngOnInit() {
@@ -106,14 +105,12 @@ export class VariableCostsComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getLaborHoursDashboardReportDtosRequest = this.resultsService.getLaborHoursDashboardReportDtos(this.workbookID);
-      this.getLaborActivityCategoriesRequest = this.lookupTablesService.getFieldLaborActivityCategories();
+      this.getVariableCostsDashboardReportDtosRequest = this.resultsService.getVariableCostsDashboardReportDtos(this.workbookID);
 
 
-      forkJoin([this.getWorkbookRequest, this.getLaborHoursDashboardReportDtosRequest]).subscribe(([workbook, laborHoursDashboardReportDtos, laborActivityCategoryDtos]: [WorkbookDto, LaborHoursDashboardReportDto[], FieldLaborActivityCategoryDto[]] ) => {
+      forkJoin([this.getWorkbookRequest, this.getVariableCostsDashboardReportDtosRequest]).subscribe(([workbook, variableCostsDashboardReportDtos]: [WorkbookDto, VariableCostsDashboardReportDto[]] ) => {
           this.workbook = workbook;
-          this.laborHoursDashboardReportDtos = laborHoursDashboardReportDtos;
-          this.laborActivityCategoryDtos = laborActivityCategoryDtos;
+          this.variableCostsDashboardReportDtos = variableCostsDashboardReportDtos;
           
           this.initializeDropdowns();
           this.updateGridData();
@@ -129,17 +126,11 @@ export class VariableCostsComponent implements OnInit {
 
 
   private initializeDropdowns() {
-    var allCrops = this.laborHoursDashboardReportDtos.map(x => x.Crop);
+    var allCrops = this.variableCostsDashboardReportDtos.map(x => x.Crop);
     this.availableCrops = [];
     this.availableCrops = allCrops.reduce((acc, x) => acc.concat(acc.find(y => y.CropID === x.CropID) ? [] : [x]),
       []);
     this.selectedCrop = this.availableCrops.length > 0 ? this.availableCrops[0] : null;
-
-    var allCropUnits = this.laborHoursDashboardReportDtos.map(x => x.CropUnit);
-    this.availableCropUnits = [];
-    this.availableCropUnits = allCropUnits.reduce((acc, x) => acc.concat(acc.find(y => y.CropUnitID === x.CropUnitID) ? [] : [x]),
-      []);
-    this.selectedCropUnit = this.availableCropUnits.length > 0 ? this.availableCropUnits[0] : null;
 
   }
 
@@ -149,24 +140,36 @@ export class VariableCostsComponent implements OnInit {
   }
 
   updateGridData() {
-    this.laborHoursDashboardReportDtosForGrid = this.laborHoursDashboardReportDtos.filter(x => {
-      return x.Crop.CropID == this.selectedCrop.CropID && x.CropUnit.CropUnitID == this.selectedCropUnit.CropUnitID && x.LaborActivityHours > 0;
+    this.variableCostsDashboardReportDtosForGrid = this.variableCostsDashboardReportDtos.filter(x => {
+      return x.Crop.CropID == this.selectedCrop.CropID;
     })
+
+    this.variableCostsPivotedForSelectedCrop = [];
+
+    this.variableCostsDashboardReportDtosForGrid.forEach(x => {
+      var pivots = [];
+      pivots.push(new ViariableCostForCropPivoted({VariableCost: 'Total Field Input Costs', DollarAmount: x.TotalFieldInputCosts}))
+      pivots.push(new ViariableCostForCropPivoted({VariableCost: 'Total Labor Costs', DollarAmount: x.TotalLaborCosts}))
+      pivots.push(new ViariableCostForCropPivoted({VariableCost: 'Total Machinery Costs', DollarAmount: x.TotalMachineryCosts}))
+      pivots.push(new ViariableCostForCropPivoted({VariableCost: 'Total Packaging Costs', DollarAmount: x.TotalPackagingCosts}))
+      pivots.push(new ViariableCostForCropPivoted({VariableCost: 'Total Seed or TP Costs', DollarAmount: x.TotalSeedOrTpCosts}))
+      this.variableCostsPivotedForSelectedCrop = this.variableCostsPivotedForSelectedCrop.concat(pivots)
+    });
   }
 
 
   formatChartData() {
-    var recordsForChart = this.laborHoursDashboardReportDtos.filter(x => {
-      return x.Crop.CropID == this.selectedCrop.CropID && x.CropUnit.CropUnitID == this.selectedCropUnit.CropUnitID && x.LaborActivityHours > 0;
+    var recordsForChart = this.variableCostsDashboardReportDtos.filter(x => {
+      return x.Crop.CropID == this.selectedCrop.CropID;
     })
 
-    this.pieChartData = recordsForChart.map(x => {
-      return Math.round( x.LaborActivityHours * 1e2 ) / 1e2
-    })
+    // this.pieChartData = recordsForChart.map(x => {
+    //   return Math.round( x.LaborActivityHours * 1e2 ) / 1e2
+    // })
 
-    this.pieChartLabels = recordsForChart.map(x => {
-      return x.FieldLaborActivityCategory;
-    })
+    // this.pieChartLabels = recordsForChart.map(x => {
+    //   return x.FieldLaborActivityCategory;
+    // })
 
   }
 
@@ -178,32 +181,23 @@ export class VariableCostsComponent implements OnInit {
     var componentScope = this;
     this.columnDefs = [
       {
-        headerName: 'Crop, Crop Unit', 
-        field: 'Crop',
+        headerName: 'Variable Costs', 
+        field: 'VariableCost',
         valueGetter: params => {
-          return params.data.Crop.CropName + ', ' + params.data.CropUnit.CropUnitName;
+          return params.data.VariableCost;
         },
         resizable:true,
         sortable:true,
       },
       {
-        headerName: 'Labor Activity Category', 
-        field: 'FieldLaborActivityCategory',
+        headerName: '', 
+        field: 'DollarAmount',
         valueGetter: params => {
-          return params.data.FieldLaborActivityCategory;
-        },
-        
-        resizable:true,
-        sortable:true,
-      },
-      {
-        headerName: 'Labor Activity Hours', 
-        field: 'LaborActivityHours',
-        valueGetter: params => {
-          return params.data.LaborActivityHours.toFixed(2)
+          return params.data.DollarAmount.toFixed(2)
         },
         resizable:true,
         sortable:true,
+        valueFormatter: this.gridService.currencyFormatter
       },
      
     ]
@@ -220,11 +214,8 @@ export class VariableCostsComponent implements OnInit {
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
-    if (this.getLaborHoursDashboardReportDtosRequest && this.getLaborHoursDashboardReportDtosRequest.unsubscribe) {
-      this.getLaborHoursDashboardReportDtosRequest.unsubscribe();
-    }
-    if (this.getLaborActivityCategoriesRequest && this.getLaborActivityCategoriesRequest.unsubscribe) {
-      this.getLaborActivityCategoriesRequest.unsubscribe();
+    if (this.getVariableCostsDashboardReportDtosRequest && this.getVariableCostsDashboardReportDtosRequest.unsubscribe) {
+      this.getVariableCostsDashboardReportDtosRequest.unsubscribe();
     }
     
     this.cdr.detach();
@@ -239,7 +230,7 @@ export class VariableCostsComponent implements OnInit {
         columnIds.push(columnName); 
       });
     
-    this.utilityFunctionsService.exportGridToCsv(this.cropCropUnitGrid, 'Results-Labor-Activity-Hours.csv', columnIds);
+    this.utilityFunctionsService.exportGridToCsv(this.cropCropUnitGrid, 'Results-Variable-Costs.csv', columnIds);
   }  
 
 }
