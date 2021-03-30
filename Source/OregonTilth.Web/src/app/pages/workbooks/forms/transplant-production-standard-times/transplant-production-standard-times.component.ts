@@ -21,6 +21,7 @@ import { TransplantProductionStandardTimeCreateDto } from 'src/app/shared/models
 import { TransplantProductionStandardTimeSummaryDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-summary-dto';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { AgGridAngular } from 'ag-grid-angular';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'transplant-production-standard-times',
@@ -168,6 +169,7 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
         cellEditorParams: {
           values: this.transplantProductionLaborActivities.map(x => x.TransplantProductionLaborActivityName)
         },
+        cellRendererFramework: EditableRendererComponent,
         editable:true,
         sortable: true, 
         filter: true,
@@ -193,6 +195,7 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
         cellEditorParams: {
           values: this.trayTypes.map(x => x.TransplantProductionTrayTypeName)
         },
+        cellRendererFramework: EditableRendererComponent,
         editable:true,
         sortable: true, 
         filter: true,
@@ -229,6 +232,7 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
           } 
           return {backgroundColor: '#ffdfd6'};
         },
+        cellRendererFramework: EditableRendererComponent,
         width:150
       },
       {
