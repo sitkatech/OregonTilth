@@ -978,6 +978,26 @@ namespace OregonTilth.API.Controllers
             return Ok(fieldStandardTimeSummaryDto);
         }
 
+        [HttpDelete("workbooks/{workbookID}/forms/field-standard-times/{fieldStandardTimeID}")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<FieldStandardTimeSummaryDto>> DeleteFieldStandardTime([FromRoute] int workbookID, [FromRoute] int fieldStandardTimeID)
+        {
+            var validationMessages = FieldStandardTime.ValidateDelete(_dbContext, fieldStandardTimeID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            FieldStandardTime.Delete(_dbContext, fieldStandardTimeID);
+
+            var returnDtos = FieldStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+
         #endregion "Field Standard Times"
 
         #region "Harvest Post-Harvest Standard Times"

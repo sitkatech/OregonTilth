@@ -68,6 +68,8 @@ export class FieldStandardTimesComponent implements OnInit {
   public getFieldStandardTimesRequest: any;
   public fieldStandardTimes: FieldStandardTimeSummaryDto[];
 
+  public deleteFieldStandardTimesRequest: any;
+
   public getvFieldLaborActivitiesForTimeStudiesRequest: any;
   public vFieldLaborActivitiesForTimeStudyDtos: vFieldLaborActivityForTimeStudyDto[];
 
@@ -321,11 +323,35 @@ export class FieldStandardTimesComponent implements OnInit {
         resizable: false,
         width:300
       },
+      {
+        headerName: 'Delete', valueGetter: function (params: any) {
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.FieldStandardTimeID, ObjectDisplayName: null };
+        }, cellRendererFramework: ButtonRendererComponent,
+        cellRendererParams: { 
+          clicked: function(field: any) {
+            if(confirm(`Are you sure you want to delete this record?`)) {
+              componentScope.deleteFieldStandardTime(field.PrimaryKey)
+            }
+          }
+          },
+        sortable: true, filter: true, width: 100, autoHeight:true
+      },
       
     ]
-
-  
   }
+
+  deleteFieldStandardTime(fieldStandardTimeID: number) {
+    this.deleteFieldStandardTimesRequest = this.workbookService.deleteFieldStandardTime(this.workbookID, fieldStandardTimeID).subscribe(fieldStandardTimeDtos => {
+      var rowToRemove = this.gridApi.getRowNode(fieldStandardTimeID.toString());
+      this.gridApi.applyTransaction({remove:[rowToRemove.data]})
+      this.alertService.pushAlert(new Alert("Successfully deleted Field Labor Time Study", AlertContext.Success));
+      this.cdr.detectChanges();
+    }, error => {
+
+    })
+  }
+
+
   public launchModal(modalContent: any, modalTitle: string, fieldStandardTime: FieldStandardTimeSummaryDto) {
     this.modalReference = this.modalService.open(modalContent, { size:'xl', windowClass : "time-studies-modal", ariaLabelledBy: modalTitle, backdrop: 'static', keyboard: false });
     this.modalReference.componentInstance.fieldStandardTime = fieldStandardTime;
