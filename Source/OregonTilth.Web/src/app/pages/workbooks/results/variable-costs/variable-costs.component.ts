@@ -159,17 +159,14 @@ export class VariableCostsComponent implements OnInit {
 
 
   formatChartData() {
-    var recordsForChart = this.variableCostsDashboardReportDtos.filter(x => {
-      return x.Crop.CropID == this.selectedCrop.CropID;
+    
+    this.pieChartData = this.variableCostsPivotedForSelectedCrop.map(x => {
+      return Math.round( x.DollarAmount * 1e2 ) / 1e2
     })
 
-    // this.pieChartData = recordsForChart.map(x => {
-    //   return Math.round( x.LaborActivityHours * 1e2 ) / 1e2
-    // })
-
-    // this.pieChartLabels = recordsForChart.map(x => {
-    //   return x.FieldLaborActivityCategory;
-    // })
+    this.pieChartLabels = this.variableCostsPivotedForSelectedCrop.map(x => {
+      return x.VariableCost;
+    })
 
   }
 
