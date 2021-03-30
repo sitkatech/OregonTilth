@@ -25,6 +25,7 @@ import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { LaborTypeDto } from 'src/app/shared/models/generated/labor-type-dto';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'field-labor-by-crop',
@@ -131,10 +132,14 @@ export class FieldLaborByCropComponent implements OnInit {
           });
           return true;
         },
-        cellEditor: 'agPopupSelectCellEditor',
+        valueGetter: params => {
+          return params.data.Crop ? params.data.Crop.CropName : '';
+        },
+        cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.cropDtos.map(x => x.CropName)
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -151,10 +156,14 @@ export class FieldLaborByCropComponent implements OnInit {
           });
           return true;
         },
+        valueGetter: params => {
+          return params.data.FieldLaborActivity ? params.data.FieldLaborActivity.FieldLaborActivityName : '';
+        },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.fieldLaborActivityDtos.map(x => x.FieldLaborActivityName)
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -171,18 +180,38 @@ export class FieldLaborByCropComponent implements OnInit {
           });
           return true;
         },
+        valueGetter: params => {
+          return params.data.LaborType ? params.data.LaborType.LaborTypeDisplayName : '';
+        },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.laborTypeDtos.map(x => x.LaborTypeName)
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
+
+      /*
+      valueFormatter: function (params) {
+          return params.value ? params.value.CropUnitName : '';
+        },
+        valueSetter: params => {
+          params.data.CropUnit = this.cropUnits.find(element => {
+            return element.CropUnitName == params.newValue;
+          });
+          return true;
+        },
+        valueGetter: params => {
+          return params.data.CropUnit ? params.data.CropUnit.CropUnitName : '';
+        },
+      */
       {
         headerName: 'Occurrences', 
         field: 'Occurrences',
         editable: true,
         cellEditorFramework: DecimalEditor,
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
         cellStyle: params => {

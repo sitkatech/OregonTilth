@@ -5,10 +5,11 @@
     &:hover button {
         border:1px solid #ddd;
         color:#000;
+        background:#fff;
     }
     button {
         box-sizing: border-box;
-        background:#fff;
+        background:transparent;
         border:1px solid transparent;
         color:rgb(196, 196, 196);
         border-radius:5px;

@@ -37,7 +37,7 @@ export class EditableRendererComponent {
   }
 
   getValueToDisplay(params: ICellRendererParams) {
-    return params.value;
+    return params.valueFormatted ? params.valueFormatted : params.value;
   }
 
 }
