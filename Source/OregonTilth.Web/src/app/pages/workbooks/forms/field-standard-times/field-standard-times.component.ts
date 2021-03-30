@@ -28,6 +28,7 @@ import { TimeStudyModal } from 'src/app/shared/components/ag-grid/time-study-mod
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { AgGridAngular } from 'ag-grid-angular';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'field-standard-times',
@@ -231,6 +232,7 @@ export class FieldStandardTimesComponent implements OnInit {
         valueGetter: params => {
           return params.data.Machinery ? params.data.Machinery.MachineryName : 'N/A';
         },
+        cellRendererFramework: EditableRendererComponent,
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.machinery.map(x => x.MachineryName)
@@ -257,6 +259,7 @@ export class FieldStandardTimesComponent implements OnInit {
         valueGetter: params => {
           return params.data.FieldUnitType.FieldUnitTypeDisplayName;
         },
+        cellRendererFramework: EditableRendererComponent,
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.fieldUnits.map(x => x.FieldUnitTypeDisplayName)
@@ -293,6 +296,7 @@ export class FieldStandardTimesComponent implements OnInit {
         },
         editable: true,
         cellEditorFramework: DecimalEditor,
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
         cellStyle: params => {
