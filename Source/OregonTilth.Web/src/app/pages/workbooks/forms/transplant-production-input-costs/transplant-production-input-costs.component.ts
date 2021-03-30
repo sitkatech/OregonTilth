@@ -24,6 +24,7 @@ import { TransplantProductionInputCostDto } from 'src/app/shared/models/generate
 import { TransplantProductionInputDto } from 'src/app/shared/models/generated/transplant-production-input-dto';
 import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
 import { element } from 'protractor';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'transplant-production-input-costs',
@@ -116,6 +117,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         valueGetter: params => {
           return params.data.TransplantProductionInput.TransplantProductionInputName;
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -139,6 +141,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         valueGetter: params => {
           return params.data.TransplantProductionTrayType.TransplantProductionTrayTypeName;
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -155,6 +158,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         valueGetter: params => {
           return params.data.CostPerTray;
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -163,6 +167,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         field: 'Notes',
         editable: true,
         cellEditor: 'agTextCellEditor',
+        cellRendererFramework: EditableRendererComponent,
         filter: true,
         sortable: true, 
       },
