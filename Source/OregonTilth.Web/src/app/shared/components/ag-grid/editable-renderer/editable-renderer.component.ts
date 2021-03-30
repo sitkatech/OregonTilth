@@ -12,6 +12,7 @@ export class EditableRendererComponent {
   public rowIndex: number;
   public colKey: string;
   private gridApi: any;
+  public currentlyEditable: boolean;
 
   // gets called once before the renderer is used
   agInit(params: ICellRendererParams): void {
@@ -26,6 +27,7 @@ export class EditableRendererComponent {
   }
 
   refreshEditableCell(params: ICellRendererParams) {
+    this.currentlyEditable = params.column.isCellEditable(params.node)
     this.cellValue = this.getValueToDisplay(params);
   }
 
