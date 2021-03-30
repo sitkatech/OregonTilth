@@ -18,6 +18,7 @@ import { TransplantProductionLaborActivityDto } from 'src/app/shared/models/gene
 import { PhaseDto } from 'src/app/shared/models/generated/phase-dto';
 import { TransplantProductionLaborByCropCreateDto } from 'src/app/shared/models/forms/transplant-production-labor-by-crop/transplant-production-labor-by-crop-create-dto';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 @Component({
   selector: 'transplant-production-labor-by-crop',
   templateUrl: './transplant-production-labor-by-crop.component.html',
@@ -124,6 +125,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         cellEditorParams: {
           values: this.cropDtos.map(x => x.CropName)
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -147,6 +149,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         cellEditorParams: {
           values: this.transplantProductionLaborActivityDtos.map(x => x.TransplantProductionLaborActivityName)
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -170,6 +173,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         cellEditorParams: {
           values: this.phaseDtos.map(x => x.PhaseDisplayName)
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -185,7 +189,8 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
               return { backgroundColor: '#ccf5cc'};
           } 
           return {backgroundColor: '#ffdfd6'};
-        }
+        },
+        cellRendererFramework: EditableRendererComponent,
       },
       {
         headerName: 'Delete', valueGetter: function (params: any) {
