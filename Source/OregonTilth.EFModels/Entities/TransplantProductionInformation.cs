@@ -32,10 +32,15 @@ namespace OregonTilth.EFModels.Entities
             }
 
             // usage rate between 0 - 100
-            if (transplantProductionInformationCreateDto.UsageRate < 0 ||
+            if (transplantProductionInformationCreateDto.UsageRate <= 0 ||
                 transplantProductionInformationCreateDto.UsageRate > 100)
             {
-                result.Add(new ErrorMessage() { Type = "Usage Rate", Message = "Usage Rate must be a percentage between 0 and 100." });
+                result.Add(new ErrorMessage() { Type = "Percentage Plantable", Message = "Percentage Plantable must be a percentage ranging from 1 to 100." });
+            }
+
+            if (transplantProductionInformationCreateDto.SeedsPerTray <= 0)
+            {
+                result.Add(new ErrorMessage() { Type = "Seeds/Seedlings Per Tray", Message = "Must be greater than zero." });
             }
 
             return result;
@@ -58,14 +63,17 @@ namespace OregonTilth.EFModels.Entities
             }
 
             // usage rate between 0 - 100
-            if (transplantProductionInformationDto.UsageRate < 0 ||
+            if (transplantProductionInformationDto.UsageRate <= 0 ||
                 transplantProductionInformationDto.UsageRate > 100)
             {
-                result.Add(new ErrorMessage() { Type = "Usage Rate", Message = "Usage Rate must be a percentage between 0 and 100." });
+                result.Add(new ErrorMessage() { Type = "Percentage Plantable", Message = "Percentage Plantable must be a percentage ranging from 1 to 100." });
             }
 
-
-
+            if (transplantProductionInformationDto.SeedsPerTray <= 0)
+            {
+                result.Add(new ErrorMessage() { Type = "Seeds/Seedlings Per Tray", Message = "Must be greater than zero." });
+            }
+            
             return result;
         }
 

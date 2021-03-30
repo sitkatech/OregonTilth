@@ -26,7 +26,7 @@
               <div class="row" *ngIf="displayPottingUpMessage()">
                 <div class="col-md-12">
                   <div class="alert alert-info">
-                    When "Potting Up" phase is selected, a entry with "Seeding" phase will also be required/created.
+                    When "Potting Up" phase is selected, an entry with "Seeding" phase is required.
                   </div>
                 </div>
               </div>
@@ -62,11 +62,11 @@
 
               <div class="row">
                 <div class="form-group col-md-4">
-                  <label class="required">Seeds Per Tray</label>
+                  <label class="required">Seeds/Seedlings Per Tray</label>
                   <input class="form-control" type="text" name="SeedsPerTray" [(ngModel)]="model.SeedsPerTray" required>
                 </div>
                 <div class="form-group col-md-4">
-                  <label class="required">Usage Rate</label>
+                  <label class="required">Percentage Plantable</label>
                   <input class="form-control" type="number" min="0" max="100" name="UsageRate" [(ngModel)]="model.UsageRate" required>
                 </div>
               </div>

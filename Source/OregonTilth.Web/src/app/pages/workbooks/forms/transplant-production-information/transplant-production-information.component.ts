@@ -76,24 +76,28 @@ export class TransplantProductionInformationComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new TransplantProductionInformationCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getTpInfoDtosRequest = this.workbookService.getTransplantProductionInformationDtos(this.workbookID);
+      this.refreshData();
 
-      this.getCropsRequest = this.workbookService.getCrops(this.workbookID);
-      this.getPhasesRequest = this.lookupTablesService.getPhases();
-      this.getTrayTypesRequest = this.workbookService.getTransplantProductionTrayTypes(this.workbookID);
-      
+    });
+  }
 
-      forkJoin([this.getWorkbookRequest, this.getTpInfoDtosRequest, this.getCropsRequest, this.getPhasesRequest, this.getTrayTypesRequest]).subscribe(([workbook, tpInfoDtos, cropDtos, phaseDtos, trayTypeDtos]: [WorkbookDto, TransplantProductionInformationDto[], CropDto[], PhaseDto[], TransplantProductionTrayTypeDto[]] ) => {
-          this.workbook = workbook;
-          this.transplantProductionInformationDtos = tpInfoDtos;
-          this.cropDtos = cropDtos;
-          this.phaseDtos = phaseDtos;
-          this.tpTrayTypeDtos = trayTypeDtos;
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getTpInfoDtosRequest = this.workbookService.getTransplantProductionInformationDtos(this.workbookID);
 
+    this.getCropsRequest = this.workbookService.getCrops(this.workbookID);
+    this.getPhasesRequest = this.lookupTablesService.getPhases();
+    this.getTrayTypesRequest = this.workbookService.getTransplantProductionTrayTypes(this.workbookID);
+
+
+    forkJoin([this.getWorkbookRequest, this.getTpInfoDtosRequest, this.getCropsRequest, this.getPhasesRequest, this.getTrayTypesRequest]).subscribe(([workbook, tpInfoDtos, cropDtos, phaseDtos, trayTypeDtos]: [WorkbookDto, TransplantProductionInformationDto[], CropDto[], PhaseDto[], TransplantProductionTrayTypeDto[]]) => {
+      this.workbook = workbook;
+      this.transplantProductionInformationDtos = tpInfoDtos;
+      this.cropDtos = cropDtos;
+      this.phaseDtos = phaseDtos;
+      this.tpTrayTypeDtos = trayTypeDtos;
+      this.defineColumnDefs();
+      this.cdr.markForCheck();
     });
   }
 
@@ -178,7 +182,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         filter: true,
       },
       {
-        headerName: 'Seeds Per Tray', 
+        headerName: 'Seeds/Seedlings Per Tray', 
         field: 'SeedsPerTray',
         editable: true,
         cellEditorFramework: IntegerEditor,
@@ -192,7 +196,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         }
       },
       {
-        headerName: 'Usage Rate', 
+        headerName: 'Percentage Plantable', 
         field: 'UsageRate',
         editable: true,
         cellEditorFramework: DecimalEditor,
@@ -275,9 +279,14 @@ export class TransplantProductionInformationComponent implements OnInit {
 
     this.updateTpInfoRequest = this.workbookService.updateTransplantProductionInformation(dtoToPost).subscribe(tpInfoDto => {
       data.node.setData(tpInfoDto);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
       this.alertService.pushAlert(new Alert("Successfully updated Transplant Production Information.", AlertContext.Success));
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })

@@ -80,45 +80,48 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
       this.currentUser = currentUser;
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getTransplantProductionStandardTimesRequest = this.workbookService.getTransplantProductionStandardTimes(this.workbookID);
-      this.getTransplantProductionLaborActivitiesRequest = this.workbookService.getTransplantProductionLaborActivities(this.workbookID);
-      this.getTransplantProductionTrayTypesRequest = this.workbookService.getTransplantProductionTrayTypes(this.workbookID);
-
-      forkJoin(
-        [
-          this.getWorkbookRequest, 
-          this.getTransplantProductionStandardTimesRequest, 
-          this.getTransplantProductionLaborActivitiesRequest,
-          this.getTransplantProductionTrayTypesRequest,
-        ]).subscribe((
-          [
-            workbook, 
-            transplantProductionStandardTimeDtos, 
-            transplantProductionLaborActivityDtos,
-            transplantProductionTrayTypeDtos,
-          ]: 
-          [
-            WorkbookDto, 
-            TransplantProductionStandardTimeSummaryDto[], 
-            TransplantProductionLaborActivityDto[],
-            TransplantProductionTrayTypeDto[]
-          ] ) => {
-          this.workbook = workbook;
-          this.transplantProductionStandardTimes = transplantProductionStandardTimeDtos;
-
-          this.transplantProductionLaborActivities = transplantProductionLaborActivityDtos;
-          this.trayTypes = transplantProductionTrayTypeDtos;
-
-          
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
-
-      this.model = new TransplantProductionStandardTimeCreateDto({WorkbookID: this.workbookID});
+      this.refreshData();
 
     });
   }
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getTransplantProductionStandardTimesRequest = this.workbookService.getTransplantProductionStandardTimes(this.workbookID);
+    this.getTransplantProductionLaborActivitiesRequest = this.workbookService.getTransplantProductionLaborActivities(this.workbookID);
+    this.getTransplantProductionTrayTypesRequest = this.workbookService.getTransplantProductionTrayTypes(this.workbookID);
+
+    forkJoin(
+      [
+        this.getWorkbookRequest,
+        this.getTransplantProductionStandardTimesRequest,
+        this.getTransplantProductionLaborActivitiesRequest,
+        this.getTransplantProductionTrayTypesRequest,
+      ]).subscribe((
+        [
+          workbook,
+          transplantProductionStandardTimeDtos,
+          transplantProductionLaborActivityDtos,
+          transplantProductionTrayTypeDtos,
+        ]: [
+            WorkbookDto,
+            TransplantProductionStandardTimeSummaryDto[],
+            TransplantProductionLaborActivityDto[],
+            TransplantProductionTrayTypeDto[]
+          ]) => {
+        this.workbook = workbook;
+        this.transplantProductionStandardTimes = transplantProductionStandardTimeDtos;
+
+        this.transplantProductionLaborActivities = transplantProductionLaborActivityDtos;
+        this.trayTypes = transplantProductionTrayTypeDtos;
+
+
+        this.defineColumnDefs();
+        this.cdr.markForCheck();
+      });
+
+    this.model = new TransplantProductionStandardTimeCreateDto({ WorkbookID: this.workbookID });
+  }
+
   onSubmit(fieldLaborActivityForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
 
@@ -274,6 +277,7 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
       });
       this.isLoadingSubmit = false;
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })

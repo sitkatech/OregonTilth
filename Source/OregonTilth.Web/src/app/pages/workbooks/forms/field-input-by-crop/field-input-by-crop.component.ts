@@ -64,32 +64,36 @@ export class FieldInputByCropComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new FieldInputByCropCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getCropDtosRequest = this.workbookService.getCrops(this.workbookID);
-      this.getFieldInputCostDtosRequest = this.workbookService.getFieldInputCosts(this.workbookID);
-
-      this.getFieldInputByCropsRequest = this.workbookService.getFieldInputByCrops(this.workbookID);
-
-      forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldInputCostDtosRequest,  this.getFieldInputByCropsRequest]).subscribe(([workbookDto, cropDtos, fieldInputCostDtos, fieldInputByCrops]: [WorkbookDto, CropDto[], FieldInputCostDto[], FieldInputByCropDto[]] ) => {
-          this.workbook = workbookDto;
-          this.cropDtos = cropDtos;
-          this.fieldInputCostDtos = fieldInputCostDtos;
-          this.fieldInputByCropDtos = fieldInputByCrops;
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
-
-      this.dropdownSettings = {
-        singleSelection: false,
-        idField: 'FieldInputCostID',
-        textField: 'FieldInputCostName',
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        itemsShowLimit: 10,
-        allowSearchFilter: true
-      };
+      this.refreshData();
 
     });
+  }
+
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getCropDtosRequest = this.workbookService.getCrops(this.workbookID);
+    this.getFieldInputCostDtosRequest = this.workbookService.getFieldInputCosts(this.workbookID);
+
+    this.getFieldInputByCropsRequest = this.workbookService.getFieldInputByCrops(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldInputCostDtosRequest, this.getFieldInputByCropsRequest]).subscribe(([workbookDto, cropDtos, fieldInputCostDtos, fieldInputByCrops]: [WorkbookDto, CropDto[], FieldInputCostDto[], FieldInputByCropDto[]]) => {
+      this.workbook = workbookDto;
+      this.cropDtos = cropDtos;
+      this.fieldInputCostDtos = fieldInputCostDtos;
+      this.fieldInputByCropDtos = fieldInputByCrops;
+      this.defineColumnDefs();
+      this.cdr.markForCheck();
+    });
+
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'FieldInputCostID',
+      textField: 'FieldInputCostName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 10,
+      allowSearchFilter: true
+    };
   }
 
   defineColumnDefs() {
@@ -187,9 +191,13 @@ export class FieldInputByCropComponent implements OnInit {
 
     this.updateFieldInputByCropRequest = this.workbookService.updateFieldInputByCrop(dtoToPost).subscribe(fieldInputByCrop => {
       data.node.setData(fieldInputByCrop);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Field Input By Crop", AlertContext.Success));
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })

@@ -70,7 +70,6 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Crop Yield Information", Message = "Crop Yield Information must be unique per Crop and Crop Unit." });
             }
 
-            // usage rate between 0 - 100
             if (cropYieldInformationDto.HarvestedYieldPerStandardUnitOfSpace <= 0)
             {
                 result.Add(new ErrorMessage() { Type = "Harvested Yield Per Standard Unit Of Space", Message = "Harvested Yield Per Standard Unit Of Space must be greater than zero." });
@@ -106,10 +105,20 @@ namespace OregonTilth.EFModels.Entities
             return cropYieldInformations.Select(x => x.AsSummaryDto());
         }
 
-        public static IQueryable<CropYieldInformationDashboardReportDto> GetDashReportDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
+        public static IQueryable<CropCropUnitDashboardReportDto> GetCropCropUnitDashboardReportDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
         {
             var cropYieldInformations = GetCropYieldInformationForReportImpl(dbContext).Where(x => x.WorkbookID == workbookID);
             return cropYieldInformations.Select(x => x.AsDashbardReportDto());
+        }
+
+        // LaborHoursDashboardReportDto
+        public static IEnumerable<LaborHoursDashboardReportDto> GetLaborHoursDashboardReportDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
+        {
+            var cropYieldInformations = GetCropYieldInformationForReportImpl(dbContext).Where(x => x.WorkbookID == workbookID).ToList();
+            var fieldLaborActivityCategories = FieldLaborActivityCategory.List(dbContext);
+            var allHarvestTypes = HarvestType.List(dbContext);
+
+            return cropYieldInformations.SelectMany(x => x.AsLaborHoursReportDto(fieldLaborActivityCategories, allHarvestTypes));
         }
 
         private static IQueryable<CropYieldInformation> GetCropYieldInformationForReportImpl(OregonTilthDbContext dbContext)
@@ -122,6 +131,8 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.Crop).ThenInclude(x => x.FieldInputByCrops).ThenInclude(x => x.FieldInputCost)
                 .Include(x => x.Crop).ThenInclude(x => x.TransplantProductionInformations).ThenInclude(x => x.Phase)
                 .Include(x => x.Crop).ThenInclude(x => x.TransplantProductionInformations).ThenInclude(x => x.TransplantProductionTrayType).ThenInclude(x => x.TransplantProductionInputCosts)
+                .Include(x => x.Crop).ThenInclude(x => x.TransplantProductionLaborActivityByCrops).ThenInclude(x => x.TransplantProductionLaborActivity).ThenInclude(x => x.TransplantProductionStandardTimes)
+                .Include(x => x.Crop).ThenInclude(x => x.HarvestPostHarvestStandardTimes)
                 .Include(x => x.CropUnit)
                 .AsNoTracking();
 

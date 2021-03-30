@@ -100,72 +100,75 @@ export class FieldStandardTimesComponent implements OnInit {
       this.currentUser = currentUser;
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getFieldLaborActivitiesRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
-      this.getFieldStandardTimesRequest = this.workbookService.getFieldStandardTimes(this.workbookID);
-      this.getvFieldLaborActivitiesForTimeStudiesRequest = this.workbookService.getFieldLaborActivitiesForTimeStudies(this.workbookID);
-      this.getLaborTypesRequest = this.lookupTablesService.getLaborTypes();
-      this.getMachineryRequest = this.workbookService.getMachinery(this.workbookID);
-      this.getFieldUnitsRequest = this.lookupTablesService.getFieldUnitTypes();
+      this.refreshData();
 
-      forkJoin(
+    });
+  }
+
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getFieldLaborActivitiesRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
+    this.getFieldStandardTimesRequest = this.workbookService.getFieldStandardTimes(this.workbookID);
+    this.getvFieldLaborActivitiesForTimeStudiesRequest = this.workbookService.getFieldLaborActivitiesForTimeStudies(this.workbookID);
+    this.getLaborTypesRequest = this.lookupTablesService.getLaborTypes();
+    this.getMachineryRequest = this.workbookService.getMachinery(this.workbookID);
+    this.getFieldUnitsRequest = this.lookupTablesService.getFieldUnitTypes();
+
+    forkJoin(
+      [
+        this.getWorkbookRequest,
+        this.getFieldLaborActivitiesRequest,
+        this.getFieldStandardTimesRequest,
+        this.getvFieldLaborActivitiesForTimeStudiesRequest,
+        this.getLaborTypesRequest,
+        this.getMachineryRequest,
+        this.getFieldUnitsRequest
+      ]).subscribe((
         [
-          this.getWorkbookRequest, 
-          this.getFieldLaborActivitiesRequest, 
-          this.getFieldStandardTimesRequest, 
-          this.getvFieldLaborActivitiesForTimeStudiesRequest, 
-          this.getLaborTypesRequest,
-          this.getMachineryRequest,
-          this.getFieldUnitsRequest
-        ]).subscribe((
-          [
-            workbook, 
-            fieldLaborActivities, 
-            fieldStandardTimes, 
-            vFieldLaborActivityForTimeStudyDtos, 
-            laborTypeDtos,
-            machineryDtos,
-            fieldUnitDtos
-          ]: 
-          [
-            WorkbookDto, 
-            FieldLaborActivityDto[], 
-            FieldStandardTimeSummaryDto[], 
-            vFieldLaborActivityForTimeStudyDto[], 
+          workbook,
+          fieldLaborActivities,
+          fieldStandardTimes,
+          vFieldLaborActivityForTimeStudyDtos,
+          laborTypeDtos,
+          machineryDtos,
+          fieldUnitDtos
+        ]: [
+            WorkbookDto,
+            FieldLaborActivityDto[],
+            FieldStandardTimeSummaryDto[],
+            vFieldLaborActivityForTimeStudyDto[],
             LaborTypeDto[],
             MachineryDto[],
             FieldUnitTypeDto[]
-          ] ) => {
-          this.workbook = workbook;
-          this.fieldLaborActivities = fieldLaborActivities;
-          this.fieldStandardTimes = fieldStandardTimes;
+          ]) => {
+        this.workbook = workbook;
+        this.fieldLaborActivities = fieldLaborActivities;
+        this.fieldStandardTimes = fieldStandardTimes;
 
-          this.vFieldLaborActivitiesForTimeStudyDtos = vFieldLaborActivityForTimeStudyDtos;
-          this.laborTypes = laborTypeDtos;
-          this.machinery = machineryDtos;
-          this.fieldUnits = fieldUnitDtos;
+        this.vFieldLaborActivitiesForTimeStudyDtos = vFieldLaborActivityForTimeStudyDtos;
+        this.laborTypes = laborTypeDtos;
+        this.machinery = machineryDtos;
+        this.fieldUnits = fieldUnitDtos;
 
-          this.createDtos = vFieldLaborActivityForTimeStudyDtos.map(element =>  {
-              return new FieldStandardTimeCreateDto({
-                WorkbookID: this.workbookID, 
-                FieldLaborActivityID: element.FieldLaborActivityID,
-                FieldLaborActivity: this.fieldLaborActivities.find(x => {
-                  return x.FieldLaborActivityID == element.FieldLaborActivityID;
-                }),
-                LaborTypeID: element.LaborTypeID,
-                LaborType: this.laborTypes.find(x => {
-                  return x.LaborTypeID == element.LaborTypeID;
-                }),
-              })
+        this.createDtos = vFieldLaborActivityForTimeStudyDtos.map(element => {
+          return new FieldStandardTimeCreateDto({
+            WorkbookID: this.workbookID,
+            FieldLaborActivityID: element.FieldLaborActivityID,
+            FieldLaborActivity: this.fieldLaborActivities.find(x => {
+              return x.FieldLaborActivityID == element.FieldLaborActivityID;
+            }),
+            LaborTypeID: element.LaborTypeID,
+            LaborType: this.laborTypes.find(x => {
+              return x.LaborTypeID == element.LaborTypeID;
+            }),
           });
+        });
 
-          
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
+
+        this.defineColumnDefs();
+        this.cdr.markForCheck();
       });
-      this.model = new FieldStandardTimeCreateDto({WorkbookID: this.workbookID});
-
-    });
+    this.model = new FieldStandardTimeCreateDto({ WorkbookID: this.workbookID });
   }
 
   onGridReady(params: any) {
@@ -359,8 +362,13 @@ export class FieldStandardTimesComponent implements OnInit {
     var dtoToPost = data.data;
     this.updateFieldStandardTimeRequest = this.workbookService.updateFieldStandardTime(dtoToPost).subscribe(fieldStandardTime => {
       data.node.setData(fieldStandardTime);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })

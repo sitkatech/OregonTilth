@@ -30,6 +30,7 @@ export class TransplantProductionTrayTypesComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
@@ -54,16 +55,20 @@ export class TransplantProductionTrayTypesComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new TransplantProductionTrayTypeCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getTransplantProductionTrayTypesRequest = this.workbookService.getTransplantProductionTrayTypes(this.workbookID);
+      this.refreshData();
 
-      forkJoin([this.getWorkbookRequest,  this.getTransplantProductionTrayTypesRequest]).subscribe(([workbook,  tpTrayTypes]: [WorkbookDto,  TransplantProductionTrayTypeDto[]] ) => {
-          this.workbook = workbook;
-          this.transplantProductionTrayTypes = tpTrayTypes;
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
+    });
+  }
 
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getTransplantProductionTrayTypesRequest = this.workbookService.getTransplantProductionTrayTypes(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getTransplantProductionTrayTypesRequest]).subscribe(([workbook, tpTrayTypes]: [WorkbookDto, TransplantProductionTrayTypeDto[]]) => {
+      this.workbook = workbook;
+      this.transplantProductionTrayTypes = tpTrayTypes;
+      this.defineColumnDefs();
+      this.cdr.markForCheck();
     });
   }
 
@@ -109,9 +114,13 @@ export class TransplantProductionTrayTypesComponent implements OnInit {
 
     this.updateTransplantProductionTrayTypeRequest = this.workbookService.updateTransplantProductionTrayType(dtoToPost).subscribe(tpTrayTypeDto => {
       data.node.setData(tpTrayTypeDto);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Transplant Production Tray Type", AlertContext.Success));
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })
@@ -144,8 +153,9 @@ export class TransplantProductionTrayTypesComponent implements OnInit {
     this.isLoadingSubmit = true;
     this.addTransplantProductionTrayTypeRequest = this.workbookService.addTransplantProductionTrayType(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.transplantProductionTrayTypes = response;
-      this.alertService.pushAlert(new Alert("Successfully added Transplant Production Tray Type.", AlertContext.Success));
+      var transactionRows = this.gridApi.applyTransaction({add: [response]});
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
+      
       this.resetForm();
       this.cdr.detectChanges();
       
@@ -157,6 +167,10 @@ export class TransplantProductionTrayTypesComponent implements OnInit {
 
   resetForm() {
     this.model = new TransplantProductionTrayTypeCreateDto({WorkbookID: this.workbookID});
+  }
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
   }
 
 }

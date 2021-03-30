@@ -229,7 +229,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/crops")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<CropDto>> CreateCrop([FromBody] CropCreateDto cropCreateDto)
+        public ActionResult<CropDto> CreateCrop([FromBody] CropCreateDto cropCreateDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
 
@@ -240,8 +240,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var cropDtos = Crop.CreateNewCrop(_dbContext, cropCreateDto, userDto);
-            return Ok(cropDtos);
+            var cropDto = Crop.CreateNewCrop(_dbContext, cropCreateDto, userDto);
+            return Ok(cropDto);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/crops")]
@@ -481,7 +481,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/transplant-production-labor-activities")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<TransplantProductionLaborActivityDto>> CreateTransplantProductionLaborActivity([FromBody] TransplantProductionLaborActivityCreateDto transplantProductionLaborActivityCreateDto)
+        public ActionResult<TransplantProductionLaborActivityDto> CreateTransplantProductionLaborActivity([FromBody] TransplantProductionLaborActivityCreateDto transplantProductionLaborActivityCreateDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
 
@@ -676,7 +676,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/transplant-production-tray-types")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<TransplantProductionTrayTypeDto>> CreateTransplantProductionTrayType([FromBody] TransplantProductionTrayTypeCreateDto transplantProductionTrayTypeCreateDto)
+        public ActionResult<TransplantProductionTrayTypeDto> CreateTransplantProductionTrayType([FromBody] TransplantProductionTrayTypeCreateDto transplantProductionTrayTypeCreateDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
 

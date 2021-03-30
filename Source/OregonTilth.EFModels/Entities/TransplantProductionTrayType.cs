@@ -81,7 +81,7 @@ namespace OregonTilth.EFModels.Entities
             return transplantProductionTrayType?.AsDto();
         }
 
-        public static IQueryable<TransplantProductionTrayTypeDto> CreateNewTransplantProductionTrayType(OregonTilthDbContext dbContext, TransplantProductionTrayTypeCreateDto transplantProductionTrayTypeCreateDto, UserDto userDto)
+        public static TransplantProductionTrayTypeDto CreateNewTransplantProductionTrayType(OregonTilthDbContext dbContext, TransplantProductionTrayTypeCreateDto transplantProductionTrayTypeCreateDto, UserDto userDto)
         {
             var transplantProductionTrayType = new TransplantProductionTrayType
             {
@@ -93,7 +93,7 @@ namespace OregonTilth.EFModels.Entities
             dbContext.SaveChanges();
             dbContext.Entry(transplantProductionTrayType).Reload();
 
-            return GetDtoListByWorkbookID(dbContext, transplantProductionTrayTypeCreateDto.WorkbookID);
+            return GetByID(dbContext, transplantProductionTrayType.TransplantProductionTrayTypeID).AsDto();
         }
 
         public static TransplantProductionTrayTypeDto UpdateTransplantProductionTrayType(OregonTilthDbContext dbContext, TransplantProductionTrayTypeDto transplantProductionTrayTypeDto)

@@ -67,18 +67,22 @@ export class FieldInputCostsComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new FieldInputCostCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getFieldUnitTypesRequest = this.lookupTablesService.getFieldUnitTypes();
-      this.getFieldInputCostsRequest = this.workbookService.getFieldInputCosts(this.workbookID);
+      this.refreshData();
 
-      forkJoin([this.getWorkbookRequest, this.getFieldUnitTypesRequest, this.getFieldInputCostsRequest]).subscribe(([workbook, fieldUnitTypes, fieldInputCosts]: [WorkbookDto, FieldUnitTypeDto[], FieldInputCostDto[]] ) => {
-          this.workbook = workbook;
-          this.fieldUnitTypes = fieldUnitTypes;
-          this.fieldInputCosts = fieldInputCosts;
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
+    });
+  }
 
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getFieldUnitTypesRequest = this.lookupTablesService.getFieldUnitTypes();
+    this.getFieldInputCostsRequest = this.workbookService.getFieldInputCosts(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getFieldUnitTypesRequest, this.getFieldInputCostsRequest]).subscribe(([workbook, fieldUnitTypes, fieldInputCosts]: [WorkbookDto, FieldUnitTypeDto[], FieldInputCostDto[]]) => {
+      this.workbook = workbook;
+      this.fieldUnitTypes = fieldUnitTypes;
+      this.fieldInputCosts = fieldInputCosts;
+      this.defineColumnDefs();
+      this.cdr.markForCheck();
     });
   }
 
@@ -160,8 +164,12 @@ export class FieldInputCostsComponent implements OnInit {
     this.updateFieldInputCostRequest = this.workbookService.updateFieldInputCost(dtoToPost).subscribe(fieldInputCost => {
       this.isLoadingSubmit = false;
       data.node.setData(fieldInputCost);
-      this.alertService.pushAlert(new Alert("Successfully updated Field Input Cost", AlertContext.Success));
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })
@@ -199,7 +207,6 @@ export class FieldInputCostsComponent implements OnInit {
       var transactionRows = this.gridApi.applyTransaction({add: [response]});
       this.gridApi.flashCells({ rowNodes: transactionRows.add });
       
-      this.alertService.pushAlert(new Alert("Successfully added Field Input Cost.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
       

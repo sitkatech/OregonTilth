@@ -12,5 +12,10 @@ namespace OregonTilth.EFModels.Entities
                 CropName = crop.CropName,
             };
         }
+
+
+
+
+
     }
 }

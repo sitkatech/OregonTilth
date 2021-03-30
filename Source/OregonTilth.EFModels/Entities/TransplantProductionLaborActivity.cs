@@ -79,7 +79,7 @@ namespace OregonTilth.EFModels.Entities
             return transplantProductionLaborActivity?.AsDto();
         }
 
-        public static IQueryable<TransplantProductionLaborActivityDto> CreateNewTransplantProductionLaborActivity(OregonTilthDbContext dbContext, TransplantProductionLaborActivityCreateDto transplantProductionLaborActivityCreateDto, UserDto userDto)
+        public static TransplantProductionLaborActivityDto CreateNewTransplantProductionLaborActivity(OregonTilthDbContext dbContext, TransplantProductionLaborActivityCreateDto transplantProductionLaborActivityCreateDto, UserDto userDto)
         {
             var transplantProductionLaborActivity = new TransplantProductionLaborActivity
             {
@@ -91,7 +91,9 @@ namespace OregonTilth.EFModels.Entities
             dbContext.SaveChanges();
             dbContext.Entry(transplantProductionLaborActivity).Reload();
 
-            return GetDtoListByWorkbookID(dbContext, transplantProductionLaborActivityCreateDto.WorkbookID);
+            return GetDtoByTransplantProductionLaborActivityID(dbContext,
+                transplantProductionLaborActivity.TransplantProductionLaborActivityID);
+
         }
 
         public static TransplantProductionLaborActivityDto UpdateTransplantProductionLaborActivity(OregonTilthDbContext dbContext, TransplantProductionLaborActivityDto transplantProductionLaborActivityDto)

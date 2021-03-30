@@ -211,6 +211,15 @@
                     <field-definition [fieldDefinitionType]="'ResultsCropCropUnit'" [labelOverride]="''"></field-definition>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                [routerLink]="['/workbooks', workbook ? workbook.WorkbookID : -1, 'results', 'labor-hours']"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbook }">
+                    Labor Hours
+                    <field-definition [fieldDefinitionType]="'ResultsCropCropUnitLaborHours'" [labelOverride]="''"></field-definition>
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
