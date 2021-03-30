@@ -21,6 +21,7 @@ import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/butto
 import { MachineryCreateDto } from 'src/app/shared/models/forms/machinery/machinery-create-dto';
 import { GridService } from 'src/app/shared/services/grid/grid.service';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'machinery',
@@ -89,7 +90,8 @@ export class MachineryComponent implements OnInit {
         headerName: 'Machinery', 
         field: 'MachineryName',
         editable: true,
-        cellEditor: 'agPopupTextCellEditor',
+        cellEditor: 'agTextCellEditor',
+        cellRendererFramework: EditableRendererComponent,
         resizable:true,
       },
       {
@@ -98,6 +100,7 @@ export class MachineryComponent implements OnInit {
         editable: true,
         cellEditorFramework: DecimalEditor,
         valueFormatter: this.gridService.currencyFormatter,
+        cellRendererFramework: EditableRendererComponent,
         resizable: true,
       },
       {
