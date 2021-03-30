@@ -188,7 +188,7 @@ namespace OregonTilth.EFModels.Entities
                 return null;
             }
 
-            return tpInfo.CropPhaseTotalInputCostsPerTray();
+            return tpInfo.CropPhaseTotalInputCostsPerTray((PhaseEnum) tpInfo.PhaseID);
 
             
         }

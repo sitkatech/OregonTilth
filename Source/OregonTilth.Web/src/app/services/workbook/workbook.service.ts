@@ -372,6 +372,11 @@ export class WorkbookService {
         return this.apiService.putToApi(route, fieldStandardTimeDto);
     }
 
+    deleteFieldStandardTime(workbookID: number, fieldStandardTimeID: number): Observable<FieldStandardTimeSummaryDto[]> {
+        let route = `workbooks/${workbookID}/forms/field-standard-times/${fieldStandardTimeID}`;
+        return this.apiService.deleteToApi(route);
+    }
+
 
     // Harvest Post-Harvest Standard Times
     getHarvestPostHarvestStandardTimes(workbookID: number): Observable<HarvestPostHarvestStandardTimeSummaryDto[]> {

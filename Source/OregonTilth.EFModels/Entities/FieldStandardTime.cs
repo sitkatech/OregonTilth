@@ -102,6 +102,28 @@ namespace OregonTilth.EFModels.Entities
             return GetFieldStandardTimeSummaryDtos(dbContext).Single(x => x.FieldStandardTimeID == fieldStandardTime.FieldStandardTimeID);
         }
 
-        
+        // todo: validate deletion
+        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int fieldStandardTimeID)
+        {
+            var result = new List<ErrorMessage>();
+
+            return result;
+        }
+
+        public static void Delete(OregonTilthDbContext dbContext, int fieldStandardTimeID)
+        {
+            var existingFieldStandardTime = dbContext
+                .FieldStandardTimes
+                .SingleOrDefault(x => x.FieldStandardTimeID == fieldStandardTimeID);
+
+            if (existingFieldStandardTime != null)
+            {
+                dbContext.TimeStudies.RemoveRange(existingFieldStandardTime.TimeStudies);
+                dbContext.FieldStandardTimes.Remove(existingFieldStandardTime);
+                dbContext.SaveChanges();
+            }
+        }
+
+
     }
 }

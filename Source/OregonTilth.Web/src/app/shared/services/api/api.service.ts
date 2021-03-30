@@ -137,6 +137,7 @@ export class ApiService {
                 for (const key of Object.keys(error.error)) {
                     // FIXME: will break if errror.error[key] is not a string[]
                     const newLocal = new Alert((error.error[key] as string[]).map((fe: string) => { return key + ": " + fe; }).join(","));
+                    newLocal.uniqueCode = key + error.error[key];
                     this.alertService.pushAlert(newLocal);
                 }
             } else {
