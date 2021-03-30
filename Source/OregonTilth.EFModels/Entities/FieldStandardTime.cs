@@ -10,22 +10,25 @@ namespace OregonTilth.EFModels.Entities
     {
         public static IEnumerable<FieldStandardTimeSummaryDto> GetFieldStandardTimeSummaryDtos(OregonTilthDbContext dbContext)
         {
-            var fieldStandardTimes = dbContext.FieldStandardTimes
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
-                .Include(x => x.FieldLaborActivity)
-                .Include(x => x.FieldUnitType)
-                .Include(x => x.Machinery)
-                .Include(x => x.LaborType)
-                .Include(x => x.TimeStudies)
-                .ToList();
+            var fieldStandardTimes = GetFieldStandardTimesImpl(dbContext).ToList();
 
             var fieldStandardTimeSummaryDtos = new List<FieldStandardTimeSummaryDto>();
-
             foreach (var fieldStandardTime in fieldStandardTimes)
             {
                 fieldStandardTimeSummaryDtos.Add(fieldStandardTime.AsSummaryDto());
             }
             return fieldStandardTimeSummaryDtos;
+        }
+
+        private static IQueryable<FieldStandardTime> GetFieldStandardTimesImpl(OregonTilthDbContext dbContext)
+        {
+            return dbContext.FieldStandardTimes
+                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.FieldLaborActivity)
+                .Include(x => x.FieldUnitType)
+                .Include(x => x.Machinery)
+                .Include(x => x.LaborType)
+                .Include(x => x.TimeStudies);
         }
 
         public static FieldStandardTimeSummaryDto CreateNew(OregonTilthDbContext dbContext, FieldStandardTimeCreateDto createDto)
@@ -71,6 +74,11 @@ namespace OregonTilth.EFModels.Entities
            
 
             return result;
+        }
+
+        public static FieldStandardTime GetByID(OregonTilthDbContext dbContext, int fieldStandardTimeID)
+        {
+            return GetFieldStandardTimesImpl(dbContext).Single(x => x.FieldStandardTimeID == fieldStandardTimeID);
         }
 
         public static IEnumerable<FieldStandardTimeSummaryDto> GetDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)

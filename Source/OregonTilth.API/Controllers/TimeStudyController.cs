@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -37,8 +38,13 @@ namespace OregonTilth.API.Controllers
             IHasTimeStudies returnDto = null;
             if (timeStudiesUpsertDto.FieldStandardTimeID != null)
             {
-                returnDto = FieldStandardTime.GetDtoListByWorkbookID(_dbContext, timeStudiesUpsertDto.WorkbookID)
-                    .Single(x => x.FieldStandardTimeID == timeStudiesUpsertDto.FieldStandardTimeID);
+                var fieldStandardTime = FieldStandardTime.GetByID(_dbContext, timeStudiesUpsertDto.FieldStandardTimeID.Value);
+                var sumOfTimeStudyAverages = fieldStandardTime.TimeStudies.ToList().Sum(x => x.Duration / x.Units);
+
+                fieldStandardTime.StandardTimePerUnit = sumOfTimeStudyAverages / fieldStandardTime.TimeStudies.Count();
+                _dbContext.SaveChanges();
+
+                returnDto = fieldStandardTime.AsSummaryDto();
             }
             if (timeStudiesUpsertDto.HarvestPostHarvestStandardTimeID != null)
             {

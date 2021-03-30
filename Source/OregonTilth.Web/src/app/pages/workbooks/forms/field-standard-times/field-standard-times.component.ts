@@ -267,9 +267,14 @@ export class FieldStandardTimesComponent implements OnInit {
         headerName: 'Avg Min Per Field Unit', 
         valueGetter: function(params:any) {
           if(params.data.TimeStudies.length > 0) {
-            var minutes = params.data.TimeStudies.map(x => x.Duration).reduce((x,y) => x + y, 0);
-            var totalUnits = params.data.TimeStudies.map(x => x.Units).reduce((x,y) => x + y, 0);
-            return (minutes / totalUnits).toFixed(4);
+            var avgArray = params.data.TimeStudies.map(element => {
+                return {
+                    x: element.Duration / element.Units
+                };
+            });
+            var sumOfAvgs = avgArray.map(element => element.x).reduce((a, b) => a + b, 0)
+            var avgOfAvgs = sumOfAvgs / avgArray.length;
+            return avgOfAvgs;
           }
           return 'N/A';
         },
