@@ -20,6 +20,7 @@ import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/f
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'field-labor-activities',
@@ -99,6 +100,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
         field: 'FieldLaborActivityName',
         editable: true,
         cellEditor: 'agTextCellEditor',
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -119,6 +121,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
           });
           return true;
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -141,8 +144,9 @@ export class FieldLaborActivitiesComponent implements OnInit {
           return true;
         },
         valueGetter: params => {
-          return params.data.LaborTypeCrew;
+          return params.data.LaborTypeCrew ? "Yes" : "No";
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -165,8 +169,9 @@ export class FieldLaborActivitiesComponent implements OnInit {
           return true;
         },
         valueGetter: params => {
-          return params.data.LaborTypeOperator;
+          return params.data.LaborTypeOperator ? "Yes" : "No";
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
