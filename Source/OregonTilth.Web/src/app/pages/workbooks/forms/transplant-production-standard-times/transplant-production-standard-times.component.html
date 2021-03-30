@@ -19,7 +19,7 @@
         <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
         <div class="card mt-4">
           <div class="card-header">
-            Initialize Time Studies
+            Start Time Studies
           </div>
           <div class="card-body">
             <form *ngIf=(model) (ngSubmit)="onSubmit(transplantProductionStandardTimesForm)" #transplantProductionStandardTimesForm="ngForm">
@@ -54,7 +54,7 @@
                 <div class="col-sm text-right">
                   <button type="submit" class="btn btn-fresca" [disabled]="!transplantProductionStandardTimesForm.form.valid || isLoadingSubmit">
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
-                    Initialize
+                    Start
                   </button>
                 </div>
               </div>
