@@ -52,17 +52,20 @@ namespace OregonTilth.EFModels.Entities
         }
 
         public static decimal CropPhaseTotalInputCostsPerTray(
-            this TransplantProductionInformation transplantProductionInformation)
+            this TransplantProductionInformation transplantProductionInformation, PhaseEnum? phaseEnum)
         {
             // =([@[SEED(LING) COST PER TRAY]]+[@[STANDARD INPUT COSTS PER TRAY]]+[@[Crop Specific Input Costs per Tray]])
 
-            return transplantProductionInformation.SeedCostPerTray() +
+            var phase = phaseEnum ?? (PhaseEnum) transplantProductionInformation.PhaseID;
+
+
+            return transplantProductionInformation.SeedCostPerTray(phase) +
                    transplantProductionInformation.StandardInputCostsPerTray() +
                    transplantProductionInformation.CropSpecificInputCostsPerTray ?? 0;
 
         }
 
-        public static decimal SeedCostPerTray(this TransplantProductionInformation transplantProductionInformation)
+        public static decimal SeedCostPerTray(this TransplantProductionInformation transplantProductionInformation, PhaseEnum phaseEnum)
         {
             // =IF([@Phase]="Seeding",[@[Cost per Seed]],
             //IF([@Phase] = "Potting Up",INDEX(
@@ -70,7 +73,7 @@ namespace OregonTilth.EFModels.Entities
             //),NA()))
             //*[@[Seeds / Seedlings per Tray]]
 
-            if (transplantProductionInformation.PhaseID == (int) PhaseEnum.Seeding)
+            if (phaseEnum == PhaseEnum.Seeding)
             {
                 if (transplantProductionInformation.CostPerSeed != null)
                 {
@@ -79,7 +82,7 @@ namespace OregonTilth.EFModels.Entities
                 
             }
 
-            if (transplantProductionInformation.PhaseID == (int)PhaseEnum.PottingUp)
+            if (phaseEnum == PhaseEnum.PottingUp)
             {
                 return transplantProductionInformation.CropPhaseTotalInputCostsPerTransplant() *
                        transplantProductionInformation.SeedsPerTray;
@@ -92,7 +95,7 @@ namespace OregonTilth.EFModels.Entities
         {
             // =[@[CROP/PHASE TOTAL INPUT COSTS PER TRAY]]/([@[Seeds/Seedlings per Tray]]*[@[Usage Rate]])
 
-            return transplantProductionInformation.CropPhaseTotalInputCostsPerTray() /
+            return transplantProductionInformation.CropPhaseTotalInputCostsPerTray(PhaseEnum.Seeding) /
                    (transplantProductionInformation.SeedsPerTray * transplantProductionInformation.UsageRate);
 
         }
