@@ -24,6 +24,7 @@ import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-table
 import { IntegerEditor } from 'src/app/shared/components/ag-grid/integer-editor/integer-editor.component';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { PhaseEnum } from 'src/app/shared/models/enums/phase.enum';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'transplant-production-information',
@@ -132,6 +133,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         cellEditorParams: {
           values: this.cropDtos.map(x => x.CropName)
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -155,6 +157,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         cellEditorParams: {
           values: this.phaseDtos.map(x => x.PhaseDisplayName)
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -178,6 +181,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         cellEditorParams: {
           values: this.tpTrayTypeDtos.map(x => x.TransplantProductionTrayTypeName)
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -193,7 +197,8 @@ export class TransplantProductionInformationComponent implements OnInit {
               return { backgroundColor: '#ccf5cc'};
           } 
           return {backgroundColor: '#ffdfd6'};
-        }
+        },
+        cellRendererFramework: EditableRendererComponent,
       },
       {
         headerName: 'Percentage Plantable', 
@@ -204,7 +209,8 @@ export class TransplantProductionInformationComponent implements OnInit {
         filter: true,
         valueFormatter: params => {
           return params.value + '%';
-        }
+        },
+        cellRendererFramework: EditableRendererComponent,
       },
       {
         headerName: 'Cost Per Seed', 
@@ -233,7 +239,8 @@ export class TransplantProductionInformationComponent implements OnInit {
             return { backgroundColor: '#ddd' };
           }
           return {backgroundColor: '#ccf5cc'};
-        }
+        },
+        cellRendererFramework: EditableRendererComponent,
       },
       {
         headerName: 'Crop Specific Input Costs per Tray', 
@@ -245,6 +252,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         valueFormatter: params => {
           return params.value ? '$' + params.value : '';
         },
+        cellRendererFramework: EditableRendererComponent,
         width:250
       },
       {
