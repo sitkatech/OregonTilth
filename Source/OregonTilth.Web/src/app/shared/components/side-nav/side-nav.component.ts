@@ -1,7 +1,6 @@
 import { Component, OnInit, HostListener, ChangeDetectorRef, OnDestroy, Input } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserDetailedDto } from '../../models';
-import { WorkbookDto } from '../../models/generated/workbook-dto';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -11,9 +10,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 
 export class SideNavComponent implements OnInit {
-    @Input() workbook: WorkbookDto;
     private watchUserChangeSubscription: any;
     private currentUser: UserDetailedDto;
+    public workbookID: number;
 
     constructor(
         private authenticationService: AuthenticationService,
@@ -25,17 +24,10 @@ export class SideNavComponent implements OnInit {
     ngOnInit() {
         this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
             this.currentUser = currentUser;
+            this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
         });
     }
 
-    getWorkbookID() {
-        return this.workbook ? this.workbook.WorkbookID : -1;
-    }
-
-    navLinksDisabled() {
-        if(this.workbook) return false;
-        return true;
-    }
 
   ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();

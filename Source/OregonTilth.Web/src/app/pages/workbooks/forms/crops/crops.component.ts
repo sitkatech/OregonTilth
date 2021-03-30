@@ -16,6 +16,7 @@ import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { CropCreateDto } from 'src/app/shared/models/forms/crops/crop-create-dto';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'crops',
@@ -80,7 +81,8 @@ export class CropsComponent implements OnInit {
         headerName: 'Crop', 
         field: 'CropName',
         editable: true,
-        cellEditor: 'agPopupTextCellEditor',
+        cellEditor: 'agTextCellEditor',
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true
       },

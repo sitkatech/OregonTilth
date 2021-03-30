@@ -70,6 +70,7 @@ import { CropSpecificInfoComponent } from './pages/workbooks/forms/crop-specific
 import { CropCropUnitComponent } from './pages/workbooks/results/crop-crop-unit/crop-crop-unit.component';
 import { LaborHoursComponent } from './pages/workbooks/results/labor-hours/labor-hours.component';
 import { ChartsModule } from 'ng2-charts';
+import { EditableRendererComponent } from './shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -119,6 +120,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     FieldDefinitionEditComponent,
     TrainingComponent,
     DecimalEditor,
+    EditableRendererComponent,
     IntegerEditor,
     FieldInputByCropComponent,
     TimeStudyModal,
@@ -135,7 +137,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     FormsModule,
     NgxChartsModule,
     BrowserAnimationsModule,
-    AgGridModule.withComponents([DecimalEditor, IntegerEditor]),
+    AgGridModule.withComponents([DecimalEditor, IntegerEditor, EditableRendererComponent]),
     NgMultiSelectDropDownModule.forRoot(),
     MyDatePickerModule,
     CKEditorModule,

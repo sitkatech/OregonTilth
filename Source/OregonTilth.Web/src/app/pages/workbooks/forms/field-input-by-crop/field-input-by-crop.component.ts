@@ -17,6 +17,7 @@ import { FieldInputByCropDto } from 'src/app/shared/models/generated/field-input
 import { FieldInputByCropCreateDto } from 'src/app/shared/models/forms/field-input-by-crop/field-input-by-crop-create-dto';
 import { FieldInputCostDto } from 'src/app/shared/models/generated/field-input-cost-dto';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 @Component({
   selector: 'field-input-labor-by-crop',
   templateUrl: './field-input-by-crop.component.html',
@@ -119,6 +120,7 @@ export class FieldInputByCropComponent implements OnInit {
         cellEditorParams: {
           values: this.cropDtos.map(x => x.CropName)
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -142,6 +144,7 @@ export class FieldInputByCropComponent implements OnInit {
         cellEditorParams: {
           values: this.fieldInputCostDtos.map(x => x.FieldInputCostName)
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -157,7 +160,8 @@ export class FieldInputByCropComponent implements OnInit {
               return { backgroundColor: '#ccf5cc'};
           } 
           return {backgroundColor: '#ffdfd6'};
-        }
+        },
+        cellRendererFramework: EditableRendererComponent,
       },
       {
         headerName: 'Delete', valueGetter: function (params: any) {

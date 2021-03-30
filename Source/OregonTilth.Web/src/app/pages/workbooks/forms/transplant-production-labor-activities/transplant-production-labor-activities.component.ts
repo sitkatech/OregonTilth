@@ -17,6 +17,7 @@ import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { TransplantProductionLaborActivityCreateDto } from 'src/app/shared/models/forms/transplant-production-labor-activities/transplant-production-labor-activity-create-dto';
 import { TransplantProductionLaborActivityDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-dto';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'transplant-production-labor-activities',
@@ -82,7 +83,8 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
         headerName: 'Transplant Production Labor Activity', 
         field: 'TransplantProductionLaborActivityName',
         editable: true,
-        cellEditor: 'agPopupTextCellEditor',
+        cellEditor: 'agTextCellEditor',
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },

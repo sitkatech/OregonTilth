@@ -33,6 +33,7 @@ import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
 import { HarvestTypeDto } from 'src/app/shared/models/generated/harvest-type-dto';
 import { AgGridAngular } from 'ag-grid-angular';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'harvest-post-harvest-standard-times',
@@ -190,6 +191,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         cellEditorParams: {
           values: this.crops.map(x => x.CropName)
         },
+        cellRendererFramework: EditableRendererComponent,
         editable:true,
         sortable: true, 
         filter: true,
@@ -215,6 +217,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         cellEditorParams: {
           values: this.cropUnits.map(x => x.CropUnitName)
         },
+        cellRendererFramework: EditableRendererComponent,
         editable:true,
         sortable: true, 
         filter: true,
@@ -240,6 +243,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         cellEditorParams: {
           values: this.harvestTypes.map(x => x.HarvestTypeDisplayName)
         },
+        cellRendererFramework: EditableRendererComponent,
         editable:true,
         sortable: true, 
         filter: true,
@@ -276,6 +280,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
           } 
           return {backgroundColor: '#ffdfd6'};
         },
+        cellRendererFramework: EditableRendererComponent,
         width:150
       },
       {

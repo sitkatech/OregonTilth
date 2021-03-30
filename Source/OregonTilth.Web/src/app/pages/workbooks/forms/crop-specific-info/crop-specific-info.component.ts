@@ -28,6 +28,7 @@ import { TpOrDsTypeEnum } from 'src/app/shared/models/enums/tp-or-ds-type.enum';
 import { CropSpecificInfoSummaryDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-summary-dto';
 import { IntegerEditor } from 'src/app/shared/components/ag-grid/integer-editor/integer-editor.component';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'crop-specific-info',
@@ -202,6 +203,7 @@ export class CropSpecificInfoComponent implements OnInit {
         },
         editable: true,
         cellEditorFramework: IntegerEditor,
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
         cellStyle: params => {
@@ -230,6 +232,7 @@ export class CropSpecificInfoComponent implements OnInit {
           } 
           return {backgroundColor: '#ffdfd6'};
         },
+        cellRendererFramework: EditableRendererComponent,
         width:150,
         resizable: true
       },
@@ -249,6 +252,7 @@ export class CropSpecificInfoComponent implements OnInit {
           } 
           return {backgroundColor: '#ffdfd6'};
         },
+        cellRendererFramework: EditableRendererComponent,
         width:150,
         resizable: true
       },
@@ -263,6 +267,7 @@ export class CropSpecificInfoComponent implements OnInit {
         },
         editable: true,
         cellEditorFramework: IntegerEditor,
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
         cellStyle: params => {
@@ -289,6 +294,7 @@ export class CropSpecificInfoComponent implements OnInit {
         },
         editable: true,
         cellEditorFramework: DecimalEditor,
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
         cellStyle: params => {

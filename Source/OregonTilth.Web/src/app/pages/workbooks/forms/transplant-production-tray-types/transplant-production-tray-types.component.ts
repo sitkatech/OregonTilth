@@ -15,6 +15,7 @@ import { TransplantProductionInputDto } from 'src/app/shared/models/generated/tr
 import { TransplantProductionInputCreateDto } from 'src/app/shared/models/forms/transplant-production-inputs/transplant-production-input-create-dto';
 import { TransplantProductionTrayTypeCreateDto } from 'src/app/shared/models/forms/transplant-production-tray-types/transplant-production-tray-type-create-dto';
 import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'transplant-production-tray-types',
@@ -80,6 +81,7 @@ export class TransplantProductionTrayTypesComponent implements OnInit {
         field: 'TransplantProductionTrayTypeName',
         editable: true,
         cellEditor: 'agTextCellEditor',
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },

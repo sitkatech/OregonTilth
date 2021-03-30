@@ -2,30 +2,21 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
-import { UserService } from 'src/app/services/user/user.service';
-import { DatePipe, DecimalPipe } from '@angular/common';
 import { WorkbookService } from 'src/app/services/workbook/workbook.service';
 import { WorkbookDto } from 'src/app/shared/models/generated/workbook-dto';
 import { ColDef } from 'ag-grid-community';
-import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
-import { RoleDto } from 'src/app/shared/models/generated/role-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Alert } from 'src/app/shared/models/alert';
-import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { MachineryDto } from 'src/app/shared/models/generated/machinery-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
-import { MachineryCreateDto } from 'src/app/shared/models/forms/machinery/machinery-create-dto';
 import { GridService } from 'src/app/shared/services/grid/grid.service';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
-import { CropYieldInformationDto } from 'src/app/shared/models/generated/crop-yield-information-dto';
 import { CropYieldInformationSummaryDto } from 'src/app/shared/models/forms/crop-yield-information/crop-yield-information-summary-dto';
 import { CropYieldInformationCreateDto } from 'src/app/shared/models/forms/crop-yield-information/crop-yield-information-create-dto';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'crop-yield-information',
@@ -119,6 +110,7 @@ export class CropYieldInformationComponent implements OnInit {
         cellEditorParams: {
           values: this.crops.map(x => x.CropName)
         },
+        cellRendererFramework: EditableRendererComponent,
         editable:true,
         sortable: true, 
         filter: true,
@@ -144,7 +136,7 @@ export class CropYieldInformationComponent implements OnInit {
         cellEditorParams: {
           values: this.cropUnits.map(x => x.CropUnitName)
         },
-        
+        cellRendererFramework: EditableRendererComponent,
         editable:true,
         sortable: true, 
         filter: true,
@@ -167,6 +159,7 @@ export class CropYieldInformationComponent implements OnInit {
           } 
           return {backgroundColor: '#ffdfd6'};
         },
+        cellRendererFramework: EditableRendererComponent,
         width:150
       },
       {
@@ -185,6 +178,7 @@ export class CropYieldInformationComponent implements OnInit {
           } 
           return {backgroundColor: '#ffdfd6'};
         },
+        cellRendererFramework: EditableRendererComponent,
         width:150
       },
       {
@@ -204,6 +198,7 @@ export class CropYieldInformationComponent implements OnInit {
           } 
           return {backgroundColor: '#ffdfd6'};
         },
+        cellRendererFramework: EditableRendererComponent,
         width:150
       },
       {
@@ -223,6 +218,7 @@ export class CropYieldInformationComponent implements OnInit {
           } 
           return {backgroundColor: '#ffdfd6'};
         },
+        cellRendererFramework: EditableRendererComponent,
         width:150
       },
       {
