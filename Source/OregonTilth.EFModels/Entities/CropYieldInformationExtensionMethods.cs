@@ -43,6 +43,20 @@ namespace OregonTilth.EFModels.Entities
             };
         }
 
+        public static VariableCostsDashboardReportDto AsVariableCostsReportDto(
+            this CropYieldInformation cropYieldInformation)
+        {
+            return new VariableCostsDashboardReportDto()
+            {
+                Crop = cropYieldInformation.Crop.AsSummaryDto(),
+                TotalFieldInputCosts = cropYieldInformation.TotalFieldInputCosts(),
+                TotalLaborCosts = cropYieldInformation.TotalLaborCosts(),
+                TotalMachineryCosts = cropYieldInformation.TotalMachineryCosts(),
+                TotalPackagingCosts = cropYieldInformation.TotalPackagingCosts(),
+                TotalSeedOrTpCosts = cropYieldInformation.TotalSeedOrTPCost()
+            };
+        }
+
         public static List<LaborHoursDashboardReportDto> AsLaborHoursReportDto(
             this CropYieldInformation cropYieldInformation,
             List<FieldLaborActivityCategoryDto> allFieldLaborActivityCategories, List<HarvestTypeDto> allHarvestTypes)

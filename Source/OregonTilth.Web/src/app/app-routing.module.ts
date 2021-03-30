@@ -41,6 +41,7 @@ import { CropYieldInformationComponent } from './pages/workbooks/forms/crop-yiel
 import { CropSpecificInfoComponent } from './pages/workbooks/forms/crop-specific-info/crop-specific-info.component';
 import { CropCropUnitComponent } from './pages/workbooks/results/crop-crop-unit/crop-crop-unit.component';
 import { LaborHoursComponent } from './pages/workbooks/results/labor-hours/labor-hours.component';
+import { VariableCostsComponent } from './pages/workbooks/results/variable-costs/variable-costs.component';
 
 const routes: Routes = [
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -77,6 +78,7 @@ const routes: Routes = [
   { path: "workbooks/:id/forms/crop-specific-info", component: CropSpecificInfoComponent},
   { path: "workbooks/:id/results/crop-crop-unit", component: CropCropUnitComponent},
   { path: "workbooks/:id/results/labor-hours", component: LaborHoursComponent},
+  { path: "workbooks/:id/results/variable-costs", component: VariableCostsComponent},
   { path: "workbooks/:id", component: WorkbookDetailComponent},
   { path: "login-callback", component: LoginCallbackComponent },
   { path: "create-user-callback", component: CreateUserCallbackComponent },

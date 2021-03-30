@@ -186,15 +186,6 @@ export class VariableCostsComponent implements OnInit {
         resizable:true,
         sortable:true,
       },
-      // {
-      //   headerName: 'Crop Unit', 
-      //   field: 'CropUnit',
-      //   valueGetter: params => {
-      //     return params.data.CropUnit.CropUnitName;
-      //   },
-      //   resizable:true,
-      //   sortable:true,
-      // },
       {
         headerName: 'Labor Activity Category', 
         field: 'FieldLaborActivityCategory',

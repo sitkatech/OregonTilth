@@ -3,15 +3,15 @@
         <li class="breadcrumb-item" aria-current="page">
           <a routerLink="/workbooks">Workbooks</a>
         </li>
-        <li *ngIf="workbook" class="breadcrumb-item active" aria-current="page">Labor Hours</li>
+        <li *ngIf="workbook" class="breadcrumb-item active" aria-current="page">Variable Costs</li>
     </ol>
 </nav>
 <div class="container-fluid">
     <div class="row mb-2">
-      <side-nav [workbook]="workbook" class="col-lg-2"></side-nav>
+      <side-nav class="col-lg-2"></side-nav>
       <div class="col-lg-10">
           <app-alert-display></app-alert-display>
-          <h2 class="d-inline-block" *ngIf="workbook">Crop/Crop-Unit Labor Hours per Labor Activity Category</h2>
+          <h2 class="d-inline-block" *ngIf="workbook">Crop/Crop Unit Costs per Cost Category as % of Total Costs</h2>
           <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
           
           <div class="row">
