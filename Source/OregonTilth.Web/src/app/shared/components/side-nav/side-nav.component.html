@@ -217,7 +217,7 @@
                 [routerLink]="['/workbooks', workbookID, 'results', 'labor-hours']"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    Labor Hours
+                    Labor Breakdown
                     <field-definition [fieldDefinitionType]="'ResultsCropCropUnitLaborHours'" [labelOverride]="''"></field-definition>
                 </a>
             </li>
@@ -226,7 +226,7 @@
                 [routerLink]="['/workbooks', workbookID, 'results', 'variable-costs']"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    Variable Costs
+                    Cost Breakdown
                     <field-definition [fieldDefinitionType]="'ResultsCropCropUnitCostsPerCostCategory'" [labelOverride]="''"></field-definition>
                 </a>
             </li>

@@ -100,7 +100,6 @@ namespace OregonTilth.EFModels.Entities
             };
             returnList.Add(tpReportDto);
 
-
             return returnList;
         }
 
@@ -134,7 +133,6 @@ namespace OregonTilth.EFModels.Entities
         {
             // =IF([@[Labor Activity Category Type]]="FLAC",SUMIFS(Table19[LABOR ACTIVITY MINUTES PER STANDARD BED],Table19[Crop],[@Crop],Table19[CALCULATED LABOR ACTIVITY CATEGORY],[@[Labor Activity Category]])/60,
             // [@[HELPER COLUMN FOR LABOR ACTIVITY HOURS]])
-
             
             var minutes = cropYieldInformation.Crop.FieldLaborByCrops
                 .Where(x => x.FieldLaborActivity.FieldLaborActivityCategoryID ==
@@ -157,18 +155,15 @@ namespace OregonTilth.EFModels.Entities
 
         public static decimal ContributionMarginPerMarketableUnit(this CropYieldInformation cropYieldInformation)
         {
-            // =[@[TOTAL DIRECT VARIABLE COSTS]]/[@[Marketable Yield Per Standard Unit of Space]]
-
-            return cropYieldInformation.TotalDirectVariableCosts() /
-                   cropYieldInformation.MarketableYieldPerStandardUnitOfSpace;
+            // =[@[TOTAL DIRECT VARIABLE COSTS]]/[@[Marketable Yield Per Standard Unit of Space]]-
+            var variableCost = cropYieldInformation.VariableCostPerMarketableUnit();
+            var price = cropYieldInformation.PricePerCropUnit;
+            return price - variableCost;
         }
 
         public static decimal ContributionMarginPerDirectLaborHour(this CropYieldInformation cropYieldInformation)
         {
             // =[@[TOTAL DIRECT VARIABLE COSTS]]/[@[TOTAL LABOR HOURS]]
-
-            var totalDirectVariableCosts = cropYieldInformation.TotalDirectVariableCosts();
-
             var totalLaborHours = cropYieldInformation.TotalLaborHours();
 
             if (totalLaborHours == 0)
@@ -176,7 +171,10 @@ namespace OregonTilth.EFModels.Entities
                 return 0;
             }
 
-            return totalDirectVariableCosts / totalLaborHours;
+            var contributionMarginPerStandardUnitOfSpace = cropYieldInformation.ContributionMarginPerStandardUnitOfSpace();
+            var result = contributionMarginPerStandardUnitOfSpace / totalLaborHours; 
+
+            return result;
         }
 
         public static decimal ContributionMarginPerStandardUnitOfSpace(this CropYieldInformation cropYieldInformation)
