@@ -328,7 +328,7 @@ export class CropSpecificInfoComponent implements OnInit {
         filter: true,
         cellStyle: params => {
           if(params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantOutsourced){
-            if(params.value){
+            if(params.value >= 0){
               return {backgroundColor: '#ccf5cc'};             
             } else {
               return {backgroundColor: '#ffdfd6'};
