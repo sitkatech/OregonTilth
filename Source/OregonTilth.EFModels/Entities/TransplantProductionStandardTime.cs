@@ -99,6 +99,18 @@ namespace OregonTilth.EFModels.Entities
             return GetTransplantProductionStandardTimeSummaryDtos(dbContext).Single(x => x.TransplantProductionStandardTimeID == transplantProductionStandardTime.TransplantProductionStandardTimeID);
         }
 
+        public static TransplantProductionStandardTime GetByID(OregonTilthDbContext dbContext, int tpStandardTimeID)
+        {
+            return GetTransplantProductionStandardTimesImpl(dbContext).Single(x => x.TransplantProductionStandardTimeID == tpStandardTimeID);
+        }
 
+        private static IQueryable<TransplantProductionStandardTime> GetTransplantProductionStandardTimesImpl(OregonTilthDbContext dbContext)
+        {
+            return dbContext.TransplantProductionStandardTimes
+                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.TransplantProductionTrayType)
+                .Include(x => x.TransplantProductionLaborActivity)
+                .Include(x => x.TimeStudies);
+        }
     }
 }

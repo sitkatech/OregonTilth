@@ -206,9 +206,14 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
         headerName: 'Avg Min Per Tray', 
         valueGetter: function(params:any) {
           if(params.data.TimeStudies.length > 0) {
-            var minutes = params.data.TimeStudies.map(x => x.Duration).reduce((x,y) => x + y, 0);
-            var totalUnits = params.data.TimeStudies.map(x => x.Units).reduce((x,y) => x + y, 0);
-            return (minutes / totalUnits).toFixed(4);
+            var avgArray = params.data.TimeStudies.map(element => {
+                return {
+                    x: element.Duration / element.Units
+                };
+            });
+            var sumOfAvgs = avgArray.map(element => element.x).reduce((a, b) => a + b, 0)
+            var avgOfAvgs = sumOfAvgs / avgArray.length;
+            return avgOfAvgs;
           }
           return 'N/A';
         },
@@ -217,7 +222,7 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
         filter: true
       },
       {
-        headerName: 'Standard Time', 
+        headerName: 'Standard Rate', 
         field:'StandardTimePerUnit',
         valueGetter: function(params:any) {
           return params.data.StandardTimePerUnit

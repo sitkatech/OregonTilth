@@ -60,6 +60,13 @@ namespace OregonTilth.API.Controllers
 
             if (timeStudiesUpsertDto.TransplantProductionStandardTimeID != null)
             {
+                var tpStandardTime = TransplantProductionStandardTime.GetByID(_dbContext, timeStudiesUpsertDto.TransplantProductionStandardTimeID.Value);
+                var sumOfTimeStudyAverages = tpStandardTime.TimeStudies.ToList().Sum(x => x.Duration / x.Units);
+
+                tpStandardTime.StandardTimePerUnit = sumOfTimeStudyAverages / tpStandardTime.TimeStudies.Count();
+                _dbContext.SaveChanges();
+
+
                 returnDto = TransplantProductionStandardTime.GetDtoListByWorkbookID(_dbContext, timeStudiesUpsertDto.WorkbookID)
                     .Single(x => x.TransplantProductionStandardTimeID == timeStudiesUpsertDto.TransplantProductionStandardTimeID);
             }
