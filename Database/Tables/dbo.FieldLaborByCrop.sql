@@ -6,19 +6,17 @@ CREATE TABLE [dbo].[FieldLaborByCrop](
 	[FieldLaborByCropID] [int] IDENTITY(1,1) NOT NULL,
 	[WorkbookID] [int] NOT NULL,
 	[CropID] [int] NOT NULL,
-	[FieldLaborActivityID] [int] NOT NULL,
-	[LaborTypeID] [int] NOT NULL,
 	[Occurrences] [decimal](18, 4) NULL,
+	[FieldStandardTimeID] [int] NOT NULL,
  CONSTRAINT [PK_FieldLaborByCrop_FieldLaborByCropID] PRIMARY KEY CLUSTERED 
 (
 	[FieldLaborByCropID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
- CONSTRAINT [AK_FieldLaborByCrop_WorkbookID_CropID_FieldLaborActivityID_LaborTypeID] UNIQUE NONCLUSTERED 
+ CONSTRAINT [AK_FieldLaborByCrop_WorkbookID_CropID_FieldStandardTimeID] UNIQUE NONCLUSTERED 
 (
 	[WorkbookID] ASC,
 	[CropID] ASC,
-	[FieldLaborActivityID] ASC,
-	[LaborTypeID] ASC
+	[FieldStandardTimeID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
@@ -28,15 +26,10 @@ REFERENCES [dbo].[Crop] ([CropID])
 GO
 ALTER TABLE [dbo].[FieldLaborByCrop] CHECK CONSTRAINT [FK_FieldLaborByCrop_Crop_CropID]
 GO
-ALTER TABLE [dbo].[FieldLaborByCrop]  WITH CHECK ADD  CONSTRAINT [FK_FieldLaborByCrop_FieldLaborActivity_FieldLaborActivityID] FOREIGN KEY([FieldLaborActivityID])
-REFERENCES [dbo].[FieldLaborActivity] ([FieldLaborActivityID])
+ALTER TABLE [dbo].[FieldLaborByCrop]  WITH CHECK ADD  CONSTRAINT [FK_FieldLaborByCrop_FieldStandardTime_FieldStandardTimeID] FOREIGN KEY([FieldStandardTimeID])
+REFERENCES [dbo].[FieldStandardTime] ([FieldStandardTimeID])
 GO
-ALTER TABLE [dbo].[FieldLaborByCrop] CHECK CONSTRAINT [FK_FieldLaborByCrop_FieldLaborActivity_FieldLaborActivityID]
-GO
-ALTER TABLE [dbo].[FieldLaborByCrop]  WITH CHECK ADD  CONSTRAINT [FK_FieldLaborByCrop_LaborType_LaborTypeID] FOREIGN KEY([LaborTypeID])
-REFERENCES [dbo].[LaborType] ([LaborTypeID])
-GO
-ALTER TABLE [dbo].[FieldLaborByCrop] CHECK CONSTRAINT [FK_FieldLaborByCrop_LaborType_LaborTypeID]
+ALTER TABLE [dbo].[FieldLaborByCrop] CHECK CONSTRAINT [FK_FieldLaborByCrop_FieldStandardTime_FieldStandardTimeID]
 GO
 ALTER TABLE [dbo].[FieldLaborByCrop]  WITH CHECK ADD  CONSTRAINT [FK_FieldLaborByCrop_Workbook_WorkbookID] FOREIGN KEY([WorkbookID])
 REFERENCES [dbo].[Workbook] ([WorkbookID])

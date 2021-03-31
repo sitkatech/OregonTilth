@@ -135,8 +135,7 @@ namespace OregonTilth.EFModels.Entities
             // [@[HELPER COLUMN FOR LABOR ACTIVITY HOURS]])
             
             var minutes = cropYieldInformation.Crop.FieldLaborByCrops
-                .Where(x => x.FieldLaborActivity.FieldLaborActivityCategoryID ==
-                            fieldLaborActivityCategory.FieldLaborActivityCategoryID)
+                .Where(x => x.FieldStandardTime.FieldLaborActivity.FieldLaborActivityCategoryID == fieldLaborActivityCategory.FieldLaborActivityCategoryID)
                 .Sum(x => x.LaborActivityMinutesPerStandardBed());
 
             if (minutes > 0)

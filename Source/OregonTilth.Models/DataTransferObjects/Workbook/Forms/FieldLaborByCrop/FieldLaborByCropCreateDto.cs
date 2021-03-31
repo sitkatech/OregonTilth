@@ -7,7 +7,6 @@ namespace OregonTilth.Models.DataTransferObjects
     {
         [Required] public int WorkbookID { get; set; }
         [Required] public int CropID { get; set; }
-        [Required] public List<FieldLaborActivityDto> FieldLaborActivities { get; set; }
-        [Required] public int LaborTypeID { get; set; }
+        [Required] public List<FieldStandardTimeDto> FieldStandardTimes { get; set; }
     }
 }

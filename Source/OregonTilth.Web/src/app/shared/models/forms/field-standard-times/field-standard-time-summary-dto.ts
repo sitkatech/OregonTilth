@@ -15,6 +15,7 @@ export class FieldStandardTimeSummaryDto {
     AverageMinutesPerFieldUnit: number;
     StandardTimePerUnit: number;
     TimeStudies: TimeStudySummaryDto[];
+    FieldLaborActivityAndLaborTypeNameForDropdown: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

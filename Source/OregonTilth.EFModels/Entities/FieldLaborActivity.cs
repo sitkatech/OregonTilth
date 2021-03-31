@@ -83,7 +83,6 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .Include(x => x.FieldLaborActivityCategory)
                 .Include(x => x.FieldStandardTimes)
-                .Include(x => x.FieldLaborByCrops)
                 .AsNoTracking();
         }
 
@@ -133,14 +132,9 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
             var existingFieldLaborActivity = GetFieldLaborActivityImpl(dbContext).Single(x => x.FieldLaborActivityID == fieldLaborActivityID);
 
-            if (existingFieldLaborActivity.FieldLaborByCrops.Any())
-            {
-                result.Add(new ErrorMessage() { Type = "Field Labor Activity", Message = "Cannot delete a Field Labor Activity that has Field Labor By Crop data." });
-            }
 
             if (existingFieldLaborActivity.FieldStandardTimes.Any())
             {
-                // I'm thinking that we might want to cascade delete in the case of Standard Time data because there is no way to currently delete Field Standard Times once initialized
                 result.Add(new ErrorMessage() { Type = "Field Labor Activity", Message = "Cannot delete a Field Labor Activity that has Field Standard Time data." });
             }
 
