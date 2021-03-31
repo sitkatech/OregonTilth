@@ -88,6 +88,8 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
   public closeResult: string;
 
   public updateStandardTimeRequest: any;
+
+  private deleteHarvestPostHarvestStandardTimeRequest: any;
   
   getRowNodeId(data)  {
     return data.HarvestPostHarvestStandardTimeID.toString();
@@ -306,7 +308,31 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         resizable: false,
         width:300
       },
+      {
+        headerName: 'Delete', valueGetter: function (params: any) {
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.HarvestPostHarvestStandardTimeID, ObjectDisplayName: null };
+        }, cellRendererFramework: ButtonRendererComponent,
+        cellRendererParams: { 
+          clicked: function(field: any) {
+            if(confirm(`Are you sure you want to delete this record?`)) {
+              componentScope.deleteHarvestPostHarvestStandardTime(field.PrimaryKey)
+            }
+          }
+          },
+        sortable: true, filter: true, width: 100, autoHeight:true
+      },
     ]
+  }
+
+  deleteHarvestPostHarvestStandardTime(harvestPostHarvestStandardTimeID: number) {
+    this.deleteHarvestPostHarvestStandardTimeRequest = this.workbookService.deleteHarvestPostHarvestStandardTime(this.workbookID, harvestPostHarvestStandardTimeID).subscribe(fieldStandardTimeDtos => {
+      var rowToRemove = this.gridApi.getRowNode(harvestPostHarvestStandardTimeID.toString());
+      this.gridApi.applyTransaction({remove:[rowToRemove.data]})
+      this.alertService.pushAlert(new Alert("Successfully deleted Time Study", AlertContext.Success));
+      this.cdr.detectChanges();
+    }, error => {
+
+    })
   }
 
   public launchModal(modalContent: any, modalTitle: string, harvestPostHarvestStandardTime: HarvestPostHarvestStandardTimeSummaryDto) {
