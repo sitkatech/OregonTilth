@@ -48,6 +48,12 @@ namespace OregonTilth.API.Controllers
             }
             if (timeStudiesUpsertDto.HarvestPostHarvestStandardTimeID != null)
             {
+                var harvestStandardTime = HarvestPostHarvestStandardTime.GetByID(_dbContext, timeStudiesUpsertDto.HarvestPostHarvestStandardTimeID.Value);
+                var sumOfTimeStudyAverages = harvestStandardTime.TimeStudies.ToList().Sum(x => x.Duration / x.Units);
+
+                harvestStandardTime.StandardTimePerUnit = sumOfTimeStudyAverages / harvestStandardTime.TimeStudies.Count();
+                _dbContext.SaveChanges();
+
                 returnDto = HarvestPostHarvestStandardTime.GetDtoListByWorkbookID(_dbContext, timeStudiesUpsertDto.WorkbookID)
                     .Single(x => x.HarvestPostHarvestStandardTimeID == timeStudiesUpsertDto.HarvestPostHarvestStandardTimeID);
             }

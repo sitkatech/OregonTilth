@@ -104,6 +104,19 @@ namespace OregonTilth.EFModels.Entities
             return GetHarvestPostHarvestStandardTimeSummaryDtos(dbContext).Single(x => x.HarvestPostHarvestStandardTimeID == harvestPostHarvestStandardTime.HarvestPostHarvestStandardTimeID);
         }
 
+        public static HarvestPostHarvestStandardTime GetByID(OregonTilthDbContext dbContext, int harvestPostHarvestStandardTimeID)
+        {
+            return GetHarvestPostHarvestStandardTimesImpl(dbContext).Single(x => x.HarvestPostHarvestStandardTimeID == harvestPostHarvestStandardTimeID);
+        }
 
+        private static IQueryable<HarvestPostHarvestStandardTime> GetHarvestPostHarvestStandardTimesImpl(OregonTilthDbContext dbContext)
+        {
+            return dbContext.HarvestPostHarvestStandardTimes
+                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Crop)
+                .Include(x => x.CropUnit)
+                .Include(x => x.HarvestType)
+                .Include(x => x.TimeStudies);
+        }
     }
 }
