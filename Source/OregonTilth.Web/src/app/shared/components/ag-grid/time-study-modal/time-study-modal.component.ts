@@ -86,7 +86,7 @@ export class TimeStudyModal implements OnInit {
     if(this.harvestPostHarvestStandardTime) {
       this.model = this.createModelFromHarvestPostHarvestStandardTime(this.harvestPostHarvestStandardTime);
       this.durationLabel = "Total Minutes";
-      this.unitsLabel = "Total Field Units";
+      this.unitsLabel = "Total Crop Units";
     }
 
     if(this.transplantProductionStandardTime) {

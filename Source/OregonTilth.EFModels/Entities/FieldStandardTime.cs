@@ -107,13 +107,26 @@ namespace OregonTilth.EFModels.Entities
         {
             var result = new List<ErrorMessage>();
 
+            var existingFieldStandardTime = dbContext
+                .FieldStandardTimes
+                .Include(x => x.TimeStudies)
+                .Include(x => x.FieldLaborByCrops)
+                .Single(x => x.FieldStandardTimeID == fieldStandardTimeID);
+
+
+            if (existingFieldStandardTime.FieldLaborByCrops.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Field Time Study", Message = "You cannot delete a Field Time Study that is being referenced through the Field Labor By Crop form." });
+            }
+
+            
             return result;
         }
 
         public static void Delete(OregonTilthDbContext dbContext, int fieldStandardTimeID)
         {
             var existingFieldStandardTime = dbContext
-                .FieldStandardTimes
+                .FieldStandardTimes.Include(x => x.TimeStudies)
                 .SingleOrDefault(x => x.FieldStandardTimeID == fieldStandardTimeID);
 
             if (existingFieldStandardTime != null)
