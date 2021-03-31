@@ -7,7 +7,7 @@ CREATE TABLE [dbo].[CropSpecificInfo](
 	[CropID] [int] NOT NULL,
 	[WorkbookID] [int] NOT NULL,
 	[TpOrDsTypeID] [int] NOT NULL,
-	[RowsPerStandardWidth] [int] NULL,
+	[RowsPerStandardWidth] [int] NOT NULL,
 	[DripTapeRowsPerStandardWidth] [int] NOT NULL,
 	[InRowSpacing] [int] NULL,
 	[SeedCostPerStandardUnitOfSpace] [money] NULL,
@@ -50,3 +50,7 @@ GO
 ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CHK_DripTapeRowsPerStandardWidth_Greater_Than_Zero] CHECK  (([DripTapeRowsPerStandardWidth]>(0)))
 GO
 ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [CHK_DripTapeRowsPerStandardWidth_Greater_Than_Zero]
+GO
+ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CK_CropSpecificInfo_RowsPerStandardWidth_Greater_Than_Zero] CHECK  (([RowsPerStandardWidth]>(0)))
+GO
+ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [CK_CropSpecificInfo_RowsPerStandardWidth_Greater_Than_Zero]

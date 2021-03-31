@@ -36,6 +36,11 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Drip Tape Rows Per Standard Width", Message = "Drip Tape Rows Per Standard Width must be greater than zero." });
             }
 
+            if (cropSpecificInfoCreateDto.RowsPerStandardWidth <= 0)
+            {
+                result.Add(new ErrorMessage() { Type = "Rows Per Standard Width", Message = "Rows Per Standard Width must be greater than zero." });
+            }
+
             return result;
         }
 
@@ -59,6 +64,11 @@ namespace OregonTilth.EFModels.Entities
             if (cropSpecificInfoDto.DripTapeRowsPerStandardWidth <= 0)
             {
                 result.Add(new ErrorMessage() { Type = "Drip Tape Rows Per Standard Width", Message = "Drip Tape Rows Per Standard Width must be greater than zero." });
+            }
+
+            if (cropSpecificInfoDto.RowsPerStandardWidth <= 0)
+            {
+                result.Add(new ErrorMessage() { Type = "Rows Per Standard Width", Message = "Rows Per Standard Width must be greater than zero." });
             }
 
             return result;
