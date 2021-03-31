@@ -102,7 +102,6 @@ namespace OregonTilth.EFModels.Entities
             return GetFieldStandardTimeSummaryDtos(dbContext).Single(x => x.FieldStandardTimeID == fieldStandardTime.FieldStandardTimeID);
         }
 
-        // todo: validate deletion
         public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int fieldStandardTimeID)
         {
             var result = new List<ErrorMessage>();

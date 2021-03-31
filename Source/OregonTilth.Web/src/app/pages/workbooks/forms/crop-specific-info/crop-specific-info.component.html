@@ -39,27 +39,27 @@
                   </select>
                 </div>
                 <div class="col-md-3">
-                  <label>Rows Per Standard Width</label>
-                  <input class="form-control" type="number" name="RowsPerStandardWidth" [(ngModel)]="model.RowsPerStandardWidth">       
+                  <label class="required">Rows Per Standard Width</label>
+                  <input class="form-control" min="1" type="number" name="RowsPerStandardWidth" [(ngModel)]="model.RowsPerStandardWidth" required>       
                 </div>
                 <div class="col-md-3">
                   <label class="required">Drip Tape Rows Per Standard Width</label>
-                  <input class="form-control" type="number" name="DripTapeRowsPerStandardWidth" [(ngModel)]="model.DripTapeRowsPerStandardWidth" required>         
+                  <input class="form-control" min="0" type="number" name="DripTapeRowsPerStandardWidth" [(ngModel)]="model.DripTapeRowsPerStandardWidth" required>         
                 </div>
                 
               </div>
               <div class="row mt-4">
                 <div class="col-md-4">
-                  <label>Seed Cost Per Standard Unit Of Space</label>
-                  <input class="form-control" type="number" name="SeedCostPerStandardUnitOfSpace" [(ngModel)]="model.SeedCostPerStandardUnitOfSpace">                  
+                  <label [class.required]="seedCostRequired()">Seed Cost Per Standard Unit Of Space</label>
+                  <input class="form-control" min="0" type="number" name="SeedCostPerStandardUnitOfSpace" [(ngModel)]="model.SeedCostPerStandardUnitOfSpace" [disabled]="!seedCostRequired()" [required]="seedCostRequired()">                  
                 </div>
                 <div class="col-md-4">
-                  <label>In Row Spacing</label>
-                  <input class="form-control" type="number" name="InRowSpacing" [(ngModel)]="model.InRowSpacing" [disabled]="!inRowSpacingRequired()">                  
+                  <label [class.required]="inRowSpacingRequired()">In Row Spacing</label>
+                  <input class="form-control" type="number" name="InRowSpacing" [(ngModel)]="model.InRowSpacing" [disabled]="!inRowSpacingRequired()" [required]="inRowSpacingRequired()">                  
                 </div>
                 <div class="col-md-4">
-                  <label>Transplant Production Cost Outsourced</label>
-                  <input class="form-control" type="number" name="TransplantProductionCostOutsourced" [(ngModel)]="model.TransplantProductionCostOutsourced" [disabled]="!costOutsourcedRequired()">                  
+                  <label [class.required]="costOutsourcedRequired()">Transplant Production Cost Outsourced</label>
+                  <input class="form-control" type="number" name="TransplantProductionCostOutsourced" [(ngModel)]="model.TransplantProductionCostOutsourced" [disabled]="!costOutsourcedRequired()" [required]="costOutsourcedRequired()">                  
                 </div>
               </div>
               <div class="row mt-4">
