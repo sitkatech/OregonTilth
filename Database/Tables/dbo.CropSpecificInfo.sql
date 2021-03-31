@@ -43,6 +43,10 @@ ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CHK_CropSpecif
 GO
 ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [CHK_CropSpecificInfo_InRowSpacing_NotNull_If_TPtype_selected]
 GO
+ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CHK_CropSpecificInfo_SeedCostPerStandardUnitOfSpace_Not_Null_If_DirectSeeded] CHECK  (([TpOrDsTypeID]=(2) OR [TpOrDsTypeID]=(1) OR [SeedCostPerStandardUnitOfSpace] IS NOT NULL AND [TpOrDsTypeID]=(3)))
+GO
+ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [CHK_CropSpecificInfo_SeedCostPerStandardUnitOfSpace_Not_Null_If_DirectSeeded]
+GO
 ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CHK_CropSpecificInfo_TransplantProductionCostOutsourced_NotNull_If_TPOutsourced_selected] CHECK  (([TpOrDsTypeID]=(3) OR [TpOrDsTypeID]=(1) OR [TransplantProductionCostOutsourced] IS NOT NULL AND [TpOrDsTypeID]=(2)))
 GO
 ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [CHK_CropSpecificInfo_TransplantProductionCostOutsourced_NotNull_If_TPOutsourced_selected]

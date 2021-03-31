@@ -50,8 +50,8 @@
               </div>
               <div class="row mt-4">
                 <div class="col-md-4">
-                  <label>Seed Cost Per Standard Unit Of Space</label>
-                  <input class="form-control" type="number" name="SeedCostPerStandardUnitOfSpace" [(ngModel)]="model.SeedCostPerStandardUnitOfSpace">                  
+                  <label [class.required]="seedCostRequired()">Seed Cost Per Standard Unit Of Space</label>
+                  <input class="form-control" min="0" type="number" name="SeedCostPerStandardUnitOfSpace" [(ngModel)]="model.SeedCostPerStandardUnitOfSpace" [disabled]="!seedCostRequired()" [required]="seedCostRequired()">                  
                 </div>
                 <div class="col-md-4">
                   <label [class.required]="inRowSpacingRequired()">In Row Spacing</label>

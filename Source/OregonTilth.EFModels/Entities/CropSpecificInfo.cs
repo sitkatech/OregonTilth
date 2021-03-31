@@ -25,6 +25,12 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "In Row Spacing", Message = "In Row Spacing is required and must be greater than zero when a Transplant Type is selected." });
             }
 
+            if (cropSpecificInfoCreateDto.TpOrDsTypeID == (int)TpOrDsTypeEnum.DirectSeeded &&
+                (cropSpecificInfoCreateDto.SeedCostPerStandardUnitOfSpace == null || cropSpecificInfoCreateDto.SeedCostPerStandardUnitOfSpace < 0))
+            {
+                result.Add(new ErrorMessage() { Type = "Seed Cost Per Standard Unit of Space", Message = "Seed Cost Per Standard Unit of Space is required and must be greater than or equal to zero when Direct Seeded is selected." });
+            }
+
             if (cropSpecificInfoCreateDto.TransplantProductionCostOutsourced == null
                 && cropSpecificInfoCreateDto.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantOutsourced)
             {
@@ -53,6 +59,12 @@ namespace OregonTilth.EFModels.Entities
                     || cropSpecificInfoDto.TpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantOutsourced))
             {
                 result.Add(new ErrorMessage() { Type = "In Row Spacing", Message = "In Row Spacing is required and must be greater than zero when a Transplant Type is selected." });
+            }
+
+            if (cropSpecificInfoDto.TpOrDsType.TpOrDsTypeID == (int) TpOrDsTypeEnum.DirectSeeded &&
+                (cropSpecificInfoDto.SeedCostPerStandardUnitOfSpace == null || cropSpecificInfoDto.SeedCostPerStandardUnitOfSpace < 0))
+            {
+                result.Add(new ErrorMessage() { Type = "Seed Cost Per Standard Unit of Space", Message = "Seed Cost Per Standard Unit of Space is required and must be greater than or equal to zero when Direct Seeded is selected." });
             }
 
             if (cropSpecificInfoDto.TransplantProductionCostOutsourced == null
