@@ -47,9 +47,9 @@ ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CHK_CropSpecif
 GO
 ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [CHK_CropSpecificInfo_TransplantProductionCostOutsourced_NotNull_If_TPOutsourced_selected]
 GO
-ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CHK_DripTapeRowsPerStandardWidth_Greater_Than_Zero] CHECK  (([DripTapeRowsPerStandardWidth]>(0)))
+ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CK_CropSpecificInfo_DripTapeRowsPerStandardWidth_Greater_Than_Or_Equal_To_Zero] CHECK  (([DripTapeRowsPerStandardWidth]>=(0)))
 GO
-ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [CHK_DripTapeRowsPerStandardWidth_Greater_Than_Zero]
+ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [CK_CropSpecificInfo_DripTapeRowsPerStandardWidth_Greater_Than_Or_Equal_To_Zero]
 GO
 ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CK_CropSpecificInfo_RowsPerStandardWidth_Greater_Than_Zero] CHECK  (([RowsPerStandardWidth]>(0)))
 GO

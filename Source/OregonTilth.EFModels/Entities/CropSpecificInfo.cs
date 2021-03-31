@@ -31,9 +31,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Transplant Production Cost Outsourced", Message = "Transplant Production Cost Outsourced is required when a Transplant Type is outsourced." });
             }
 
-            if (cropSpecificInfoCreateDto.DripTapeRowsPerStandardWidth <= 0)
+            if (cropSpecificInfoCreateDto.DripTapeRowsPerStandardWidth < 0)
             {
-                result.Add(new ErrorMessage() { Type = "Drip Tape Rows Per Standard Width", Message = "Drip Tape Rows Per Standard Width must be greater than zero." });
+                result.Add(new ErrorMessage() { Type = "Drip Tape Rows Per Standard Width", Message = "Drip Tape Rows Per Standard Width must be greater than or equal to zero." });
             }
 
             if (cropSpecificInfoCreateDto.RowsPerStandardWidth <= 0)
@@ -61,9 +61,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Transplant Production Cost Outsourced", Message = "Transplant Production Cost Outsourced is required when a Transplant Type is outsourced." });
             }
 
-            if (cropSpecificInfoDto.DripTapeRowsPerStandardWidth <= 0)
+            if (cropSpecificInfoDto.DripTapeRowsPerStandardWidth < 0)
             {
-                result.Add(new ErrorMessage() { Type = "Drip Tape Rows Per Standard Width", Message = "Drip Tape Rows Per Standard Width must be greater than zero." });
+                result.Add(new ErrorMessage() { Type = "Drip Tape Rows Per Standard Width", Message = "Drip Tape Rows Per Standard Width must be greater than or equal to zero." });
             }
 
             if (cropSpecificInfoDto.RowsPerStandardWidth <= 0)
