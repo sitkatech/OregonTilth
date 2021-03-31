@@ -88,6 +88,8 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
   public closeResult: string;
 
   public updateStandardTimeRequest: any;
+
+  private deleteHarvestPostHarvestStandardTimeRequest: any;
   
   getRowNodeId(data)  {
     return data.HarvestPostHarvestStandardTimeID.toString();
@@ -225,7 +227,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         width:150
       },
       {
-        headerName: 'Harvest Type', 
+        headerName: 'Harvest/Post-Harvest', 
         field: 'HarvestType',
         valueFormatter: function (params) {
           return params.value ? params.value.HarvestTypeDisplayName : '';
@@ -254,9 +256,14 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         headerName: 'Avg Min Per Unit', 
         valueGetter: function(params:any) {
           if(params.data.TimeStudies.length > 0) {
-            var minutes = params.data.TimeStudies.map(x => x.Duration).reduce((x,y) => x + y, 0);
-            var totalUnits = params.data.TimeStudies.map(x => x.Units).reduce((x,y) => x + y, 0);
-            return (minutes / totalUnits).toFixed(4);
+            var avgArray = params.data.TimeStudies.map(element => {
+                return {
+                    x: element.Duration / element.Units
+                };
+            });
+            var sumOfAvgs = avgArray.map(element => element.x).reduce((a, b) => a + b, 0)
+            var avgOfAvgs = sumOfAvgs / avgArray.length;
+            return avgOfAvgs;
           }
           return 'N/A';
         },
@@ -265,7 +272,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         filter: true
       },
       {
-        headerName: 'Standard Time', 
+        headerName: 'Standard Rate', 
         field:'StandardTimePerUnit',
         valueGetter: function(params:any) {
           return params.data.StandardTimePerUnit
@@ -301,7 +308,31 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         resizable: false,
         width:300
       },
+      {
+        headerName: 'Delete', valueGetter: function (params: any) {
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.HarvestPostHarvestStandardTimeID, ObjectDisplayName: null };
+        }, cellRendererFramework: ButtonRendererComponent,
+        cellRendererParams: { 
+          clicked: function(field: any) {
+            if(confirm(`Are you sure you want to delete this record?`)) {
+              componentScope.deleteHarvestPostHarvestStandardTime(field.PrimaryKey)
+            }
+          }
+          },
+        sortable: true, filter: true, width: 100, autoHeight:true
+      },
     ]
+  }
+
+  deleteHarvestPostHarvestStandardTime(harvestPostHarvestStandardTimeID: number) {
+    this.deleteHarvestPostHarvestStandardTimeRequest = this.workbookService.deleteHarvestPostHarvestStandardTime(this.workbookID, harvestPostHarvestStandardTimeID).subscribe(fieldStandardTimeDtos => {
+      var rowToRemove = this.gridApi.getRowNode(harvestPostHarvestStandardTimeID.toString());
+      this.gridApi.applyTransaction({remove:[rowToRemove.data]})
+      this.alertService.pushAlert(new Alert("Successfully deleted Time Study", AlertContext.Success));
+      this.cdr.detectChanges();
+    }, error => {
+
+    })
   }
 
   public launchModal(modalContent: any, modalTitle: string, harvestPostHarvestStandardTime: HarvestPostHarvestStandardTimeSummaryDto) {

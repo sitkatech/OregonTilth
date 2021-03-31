@@ -140,6 +140,14 @@ export class CropSpecificInfoComponent implements OnInit {
     return false;
   }
 
+  seedCostRequired() {
+    if(this.model && (this.model.TpOrDsTypeID == TpOrDsTypeEnum.DirectSeeded)){
+      return true;
+    }
+    return false;
+  }
+
+
   costOutsourcedRequired() {
     if(this.model && this.model.TpOrDsTypeID == TpOrDsTypeEnum.TransplantOutsourced){
       return true;
@@ -207,10 +215,14 @@ export class CropSpecificInfoComponent implements OnInit {
         sortable: true, 
         filter: true,
         cellStyle: params => {
-          if (params.value) {
+          if (params.value || params.value == 0) {
               return { backgroundColor: '#ccf5cc'};
           } 
           return {backgroundColor: '#ffdfd6'};
+        },
+        valueSetter: params => {
+          params.data.DripTapeRowsPerStandardWidth = params.newValue ? params.newValue : 0;
+          return true;
         },
         width:150,
         resizable: true
@@ -232,6 +244,10 @@ export class CropSpecificInfoComponent implements OnInit {
           } 
           return {backgroundColor: '#ffdfd6'};
         },
+        valueSetter: params => {
+          params.data.RowsPerStandardWidth = params.newValue ? params.newValue : 0;
+          return true;
+        },
         cellRendererFramework: EditableRendererComponent,
         width:150,
         resizable: true
@@ -240,17 +256,26 @@ export class CropSpecificInfoComponent implements OnInit {
         headerName: 'Seed Cost Per Standard Unit of Space', 
         field:'SeedCostPerStandardUnitOfSpace',
         valueGetter: function(params:any) {
-          return params.data.SeedCostPerStandardUnitOfSpace
+          if(params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.DirectSeeded) {
+            return params.data.SeedCostPerStandardUnitOfSpace;
+          }
+          return 'N/A';
         },
-        editable: true,
+        editable: params => {
+          return params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.DirectSeeded;
+        },
         cellEditorFramework: IntegerEditor,
         sortable: true, 
         filter: true,
         cellStyle: params => {
-          if (params.value) {
+          if (params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.DirectSeeded) {
+            if(params.value >= 0) {
               return { backgroundColor: '#ccf5cc'};
+            } else {
+              {backgroundColor: '#ffdfd6'};
+            }
           } 
-          return {backgroundColor: '#ffdfd6'};
+          return {backgroundColor: '#ddd'};
         },
         cellRendererFramework: EditableRendererComponent,
         width:150,
@@ -265,7 +290,9 @@ export class CropSpecificInfoComponent implements OnInit {
           }
           return 'N/A';
         },
-        editable: true,
+        editable: params => {
+          return params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantFarmProduced || params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantOutsourced;
+        },
         cellEditorFramework: IntegerEditor,
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
@@ -292,14 +319,16 @@ export class CropSpecificInfoComponent implements OnInit {
           }
           return 'N/A';
         },
-        editable: true,
+        editable: params => {
+          return params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantOutsourced;
+        },
         cellEditorFramework: DecimalEditor,
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
         cellStyle: params => {
           if(params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantOutsourced){
-            if(params.value){
+            if(params.value >= 0){
               return {backgroundColor: '#ccf5cc'};             
             } else {
               return {backgroundColor: '#ffdfd6'};

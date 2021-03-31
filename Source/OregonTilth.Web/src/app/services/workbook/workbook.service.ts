@@ -394,6 +394,11 @@ export class WorkbookService {
         return this.apiService.putToApi(route, harvestPostHarvestStandardTimeDto);
     }
 
+    deleteHarvestPostHarvestStandardTime(workbookID: number, harvestPostHarvestStandardTimeID: number): Observable<HarvestPostHarvestStandardTimeSummaryDto[]> {
+        let route = `workbooks/${workbookID}/forms/harvest-post-harvest-standard-times/${harvestPostHarvestStandardTimeID}`;
+        return this.apiService.deleteToApi(route);
+    }
+
     // Transplant Production Standard Times
     getTransplantProductionStandardTimes(workbookID: number): Observable<TransplantProductionStandardTimeSummaryDto[]> {
         let route = `workbooks/${workbookID}/forms/transplant-production-standard-times`;

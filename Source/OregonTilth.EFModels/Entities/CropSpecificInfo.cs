@@ -18,11 +18,17 @@ namespace OregonTilth.EFModels.Entities
         {
             var result = new List<ErrorMessage>();
 
-            if (cropSpecificInfoCreateDto.InRowSpacing == null 
+            if ((cropSpecificInfoCreateDto.InRowSpacing == null || cropSpecificInfoCreateDto.InRowSpacing <= 0)
                 && (cropSpecificInfoCreateDto.TpOrDsTypeID == (int) TpOrDsTypeEnum.TransplantFarmProduced 
                     || cropSpecificInfoCreateDto.TpOrDsTypeID == (int) TpOrDsTypeEnum.TransplantOutsourced))
             {
-                result.Add(new ErrorMessage() { Type = "In Row Spacing", Message = "In Row Spacing is required when a Transplant Type is selected." });
+                result.Add(new ErrorMessage() { Type = "In Row Spacing", Message = "In Row Spacing is required and must be greater than zero when a Transplant Type is selected." });
+            }
+
+            if (cropSpecificInfoCreateDto.TpOrDsTypeID == (int)TpOrDsTypeEnum.DirectSeeded &&
+                (cropSpecificInfoCreateDto.SeedCostPerStandardUnitOfSpace == null || cropSpecificInfoCreateDto.SeedCostPerStandardUnitOfSpace < 0))
+            {
+                result.Add(new ErrorMessage() { Type = "Seed Cost Per Standard Unit of Space", Message = "Seed Cost Per Standard Unit of Space is required and must be greater than or equal to zero when Direct Seeded is selected." });
             }
 
             if (cropSpecificInfoCreateDto.TransplantProductionCostOutsourced == null
@@ -31,9 +37,14 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Transplant Production Cost Outsourced", Message = "Transplant Production Cost Outsourced is required when a Transplant Type is outsourced." });
             }
 
-            if (cropSpecificInfoCreateDto.DripTapeRowsPerStandardWidth <= 0)
+            if (cropSpecificInfoCreateDto.DripTapeRowsPerStandardWidth < 0)
             {
-                result.Add(new ErrorMessage() { Type = "Drip Tape Rows Per Standard Width", Message = "Drip Tape Rows Per Standard Width must be greater than zero." });
+                result.Add(new ErrorMessage() { Type = "Drip Tape Rows Per Standard Width", Message = "Drip Tape Rows Per Standard Width must be greater than or equal to zero." });
+            }
+
+            if (cropSpecificInfoCreateDto.RowsPerStandardWidth <= 0)
+            {
+                result.Add(new ErrorMessage() { Type = "Rows Per Standard Width", Message = "Rows Per Standard Width must be greater than zero." });
             }
 
             return result;
@@ -43,11 +54,17 @@ namespace OregonTilth.EFModels.Entities
         {
             var result = new List<ErrorMessage>();
 
-            if (cropSpecificInfoDto.InRowSpacing == null
+            if ((cropSpecificInfoDto.InRowSpacing == null || cropSpecificInfoDto.InRowSpacing <= 0)
                 && (cropSpecificInfoDto.TpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantFarmProduced
                     || cropSpecificInfoDto.TpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantOutsourced))
             {
-                result.Add(new ErrorMessage() { Type = "In Row Spacing", Message = "In Row Spacing is required when a Transplant Type is selected." });
+                result.Add(new ErrorMessage() { Type = "In Row Spacing", Message = "In Row Spacing is required and must be greater than zero when a Transplant Type is selected." });
+            }
+
+            if (cropSpecificInfoDto.TpOrDsType.TpOrDsTypeID == (int) TpOrDsTypeEnum.DirectSeeded &&
+                (cropSpecificInfoDto.SeedCostPerStandardUnitOfSpace == null || cropSpecificInfoDto.SeedCostPerStandardUnitOfSpace < 0))
+            {
+                result.Add(new ErrorMessage() { Type = "Seed Cost Per Standard Unit of Space", Message = "Seed Cost Per Standard Unit of Space is required and must be greater than or equal to zero when Direct Seeded is selected." });
             }
 
             if (cropSpecificInfoDto.TransplantProductionCostOutsourced == null
@@ -56,9 +73,14 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Transplant Production Cost Outsourced", Message = "Transplant Production Cost Outsourced is required when a Transplant Type is outsourced." });
             }
 
-            if (cropSpecificInfoDto.DripTapeRowsPerStandardWidth <= 0)
+            if (cropSpecificInfoDto.DripTapeRowsPerStandardWidth < 0)
             {
-                result.Add(new ErrorMessage() { Type = "Drip Tape Rows Per Standard Width", Message = "Drip Tape Rows Per Standard Width must be greater than zero." });
+                result.Add(new ErrorMessage() { Type = "Drip Tape Rows Per Standard Width", Message = "Drip Tape Rows Per Standard Width must be greater than or equal to zero." });
+            }
+
+            if (cropSpecificInfoDto.RowsPerStandardWidth <= 0)
+            {
+                result.Add(new ErrorMessage() { Type = "Rows Per Standard Width", Message = "Rows Per Standard Width must be greater than zero." });
             }
 
             return result;

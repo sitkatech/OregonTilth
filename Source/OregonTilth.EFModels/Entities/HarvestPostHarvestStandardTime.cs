@@ -104,6 +104,40 @@ namespace OregonTilth.EFModels.Entities
             return GetHarvestPostHarvestStandardTimeSummaryDtos(dbContext).Single(x => x.HarvestPostHarvestStandardTimeID == harvestPostHarvestStandardTime.HarvestPostHarvestStandardTimeID);
         }
 
+        public static HarvestPostHarvestStandardTime GetByID(OregonTilthDbContext dbContext, int harvestPostHarvestStandardTimeID)
+        {
+            return GetHarvestPostHarvestStandardTimesImpl(dbContext).Single(x => x.HarvestPostHarvestStandardTimeID == harvestPostHarvestStandardTimeID);
+        }
 
+        private static IQueryable<HarvestPostHarvestStandardTime> GetHarvestPostHarvestStandardTimesImpl(OregonTilthDbContext dbContext)
+        {
+            return dbContext.HarvestPostHarvestStandardTimes
+                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Crop)
+                .Include(x => x.CropUnit)
+                .Include(x => x.HarvestType)
+                .Include(x => x.TimeStudies);
+        }
+
+        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int fieldStandardTimeID)
+        {
+            var result = new List<ErrorMessage>();
+
+            return result;
+        }
+
+        public static void Delete(OregonTilthDbContext dbContext, int harvestPostHarvestStandardTimeID)
+        {
+            var existingHarvestPostHarvestStandardTime = dbContext
+                .HarvestPostHarvestStandardTimes.Include(x => x.TimeStudies)
+                .SingleOrDefault(x => x.HarvestPostHarvestStandardTimeID == harvestPostHarvestStandardTimeID);
+
+            if (existingHarvestPostHarvestStandardTime != null)
+            {
+                dbContext.TimeStudies.RemoveRange(existingHarvestPostHarvestStandardTime.TimeStudies);
+                dbContext.HarvestPostHarvestStandardTimes.Remove(existingHarvestPostHarvestStandardTime);
+                dbContext.SaveChanges();
+            }
+        }
     }
 }

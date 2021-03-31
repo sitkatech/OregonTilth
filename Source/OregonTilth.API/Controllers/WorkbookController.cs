@@ -1043,6 +1043,26 @@ namespace OregonTilth.API.Controllers
             return Ok(harvestPostHarvestStandardTimeSummaryDto);
         }
 
+        [HttpDelete("workbooks/{workbookID}/forms/harvest-post-harvest-standard-times/{harvestPostHarvestStandardTimeID}")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<FieldStandardTimeSummaryDto>> DeleteHarvestPostHarvestStandardTime([FromRoute] int workbookID, [FromRoute] int harvestPostHarvestStandardTimeID)
+        {
+            var validationMessages = HarvestPostHarvestStandardTime.ValidateDelete(_dbContext, harvestPostHarvestStandardTimeID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            HarvestPostHarvestStandardTime.Delete(_dbContext, harvestPostHarvestStandardTimeID);
+
+            var returnDtos = HarvestPostHarvestStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+
         #endregion "Harvest Post-Harvest Standard Times"
 
         #region "Transplant Production Standard Times"
