@@ -34,16 +34,16 @@
                     </option>
                   </select>
                 </div>
-                <div class="form-group col-md-3">
-                  <label class="required">Field Labor Activity</label>
+                <div class="form-group col-md-6">
+                  <label class="required">Field Labor Activity and Labor Types</label>
                   <ng-multiselect-dropdown
                     [settings]="dropdownSettings"
-                    [data]="fieldLaborActivityDtos"
-                    [(ngModel)]="model.FieldLaborActivities"
+                    [data]="fieldStandardTimeDtos"
+                    [(ngModel)]="model.FieldStandardTimes"
                     [ngModelOptions]="{standalone: true}">
                   </ng-multiselect-dropdown>
                 </div>
-                <div class="form-group col-md-3">
+<!--                 <div class="form-group col-md-3">
                   <label class="required">Labor Type</label>
                   <select name="LaborTypeID" class="form-control" [(ngModel)]="model.LaborTypeID" required>
                     <option value=""></option>
@@ -51,7 +51,7 @@
                       {{option.LaborTypeDisplayName}}
                     </option>
                   </select>
-                </div>
+                </div> -->
                 <!-- <div class="form-group col-md-3">
                   <label class="required">Occurrences</label>
                   <input type="number" name="Occurrences" class="form-control" [(ngModel)]="model.Occurrences" required>
@@ -66,7 +66,7 @@
                 <div class="col-sm text-right">
                   <button type="submit" class="btn btn-fresca" [disabled]="!fieldLaborActivityForm.form.valid || isLoadingSubmit">
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
-                    Add <span *ngIf="model.FieldLaborActivities && model.FieldLaborActivities.length > 0">({{model.FieldLaborActivities.length}})</span>
+                    Add <span *ngIf="model.FieldStandardTimes && model.FieldStandardTimes.length > 0">({{model.FieldStandardTimes.length}})</span>
                   </button>
                 </div>
               </div>

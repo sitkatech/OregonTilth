@@ -14,8 +14,8 @@ namespace OregonTilth.Models.DataTransferObjects
         public FieldUnitTypeDto FieldUnitType { get; set; }
         public IEnumerable<TimeStudySummaryDto> TimeStudies { get; set; }
         
-        
-        
+        public string FieldLaborActivityAndLaborTypeNameForDropdown { get; set; }
+
         public decimal AverageMinutesPerFieldUnit { get; set; }
         public decimal? StandardTimePerUnit { get; set; }
     }

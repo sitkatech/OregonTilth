@@ -26,6 +26,7 @@ import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { LaborTypeDto } from 'src/app/shared/models/generated/labor-type-dto';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
+import { FieldStandardTimeDto } from 'src/app/shared/models/generated/field-standard-time-dto';
 
 @Component({
   selector: 'field-labor-by-crop',
@@ -61,11 +62,11 @@ export class FieldLaborByCropComponent implements OnInit {
   public cropDtos: CropDto[];
   private getCropDtosRequest: any;
 
-  public fieldLaborActivityDtos: FieldLaborActivityDto[];
-  private getFieldLaborActivityDtosRequest: any;
+  public fieldStandardTimeDtos: FieldStandardTimeDto[];
+  private getFieldStandardTimeDtosRequest: any;
 
-  public laborTypeDtos: LaborTypeDto[];
-  private getLaborTypeDtosRequest: any;
+/*   public laborTypeDtos: LaborTypeDto[];
+  private getLaborTypeDtosRequest: any; */
 
   private updateFieldLaborByCropRequest: any;
   private deleteFieldLaborByCropRequest: any;
@@ -87,15 +88,14 @@ export class FieldLaborByCropComponent implements OnInit {
   private refreshData() {
     this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
     this.getCropDtosRequest = this.workbookService.getCrops(this.workbookID);
-    this.getFieldLaborActivityDtosRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
-    this.getLaborTypeDtosRequest = this.lookupTablesService.getLaborTypes();
+    this.getFieldStandardTimeDtosRequest = this.workbookService.getFieldStandardTimes(this.workbookID);
+    //this.getLaborTypeDtosRequest = this.lookupTablesService.getLaborTypes();
     this.getFieldLaborByCropsRequest = this.workbookService.getFieldLaborByCrops(this.workbookID);
 
-    forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldLaborActivityDtosRequest, this.getLaborTypeDtosRequest, this.getFieldLaborByCropsRequest]).subscribe(([workbookDto, cropDtos, fieldLaborActivityDtos, laborTypeDtos, fieldLaborByCrops]: [WorkbookDto, CropDto[], FieldLaborActivityDto[], LaborTypeDto[], FieldLaborByCropDto[]]) => {
+    forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldStandardTimeDtosRequest, this.getFieldLaborByCropsRequest]).subscribe(([workbookDto, cropDtos, fieldStandardTimeDtos, fieldLaborByCrops]: [WorkbookDto, CropDto[], FieldStandardTimeDto[], FieldLaborByCropDto[]]) => {
       this.workbook = workbookDto;
       this.cropDtos = cropDtos;
-      this.fieldLaborActivityDtos = fieldLaborActivityDtos;
-      this.laborTypeDtos = laborTypeDtos;
+      this.fieldStandardTimeDtos = fieldStandardTimeDtos;
       this.fieldLaborByCropDtos = fieldLaborByCrops;
       this.defineColumnDefs();
       this.cdr.markForCheck();
@@ -103,8 +103,8 @@ export class FieldLaborByCropComponent implements OnInit {
 
     this.dropdownSettings = {
       singleSelection: false,
-      idField: 'FieldLaborActivityID',
-      textField: 'FieldLaborActivityName',
+      idField: 'FieldStandardTimeID',
+      textField: 'FieldLaborActivityAndLaborTypeNameForDropdown',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 10,
@@ -145,49 +145,49 @@ export class FieldLaborByCropComponent implements OnInit {
       },
       {
         headerName: 'Field Labor Activity', 
-        field: 'FieldLaborActivity',
-        editable: true,
-        valueFormatter: function (params) {
-          return params.value.FieldLaborActivityName;
-        },
-        valueSetter: params => {
+        field: 'FieldStandardTime.FieldLaborActivity.FieldLaborActivityName',
+        editable: false,
+        /* valueFormatter: function (params) {
+          return params.value.FieldLaborActivity.FieldLaborActivityName;
+        }, */
+        /* valueSetter: params => {
           params.data.FieldLaborActivity = this.fieldLaborActivityDtos.find(element => {
             return element.FieldLaborActivityName == params.newValue;
           });
           return true;
-        },
-        valueGetter: params => {
+        }, */
+        /* valueGetter: params => {
           return params.data.FieldLaborActivity ? params.data.FieldLaborActivity.FieldLaborActivityName : '';
-        },
-        cellEditor: 'agSelectCellEditor',
+        }, */
+/*         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.fieldLaborActivityDtos.map(x => x.FieldLaborActivityName)
         },
-        cellRendererFramework: EditableRendererComponent,
+        cellRendererFramework: EditableRendererComponent, */
         sortable: true, 
         filter: true,
       },
       {
         headerName: 'Labor Type', 
-        field: 'LaborType',
-        editable: true,
-        valueFormatter: function (params) {
-          return params.value.LaborTypeName;
-        },
-        valueSetter: params => {
+        field: 'FieldStandardTime.LaborType.LaborTypeDisplayName',
+        editable: false,
+        /* valueFormatter: function (params) {
+          return params.value.LaborType.LaborTypeName;
+        }, */
+/*         valueSetter: params => {
           params.data.LaborType = this.laborTypeDtos.find(element => {
             return element.LaborTypeDisplayName == params.newValue;
           });
           return true;
-        },
-        valueGetter: params => {
+        }, */
+        /* valueGetter: params => {
           return params.data.LaborType ? params.data.LaborType.LaborTypeDisplayName : '';
-        },
-        cellEditor: 'agSelectCellEditor',
+        }, */
+/*         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.laborTypeDtos.map(x => x.LaborTypeName)
         },
-        cellRendererFramework: EditableRendererComponent,
+        cellRendererFramework: EditableRendererComponent, */
         sortable: true, 
         filter: true,
       },
@@ -285,18 +285,15 @@ export class FieldLaborByCropComponent implements OnInit {
     if (this.getCropDtosRequest && this.getCropDtosRequest.unsubscribe) {
       this.getCropDtosRequest.unsubscribe();
     }
-    if (this.getFieldLaborActivityDtosRequest && this.getFieldLaborActivityDtosRequest.unsubscribe) {
-      this.getFieldLaborActivityDtosRequest.unsubscribe();
-    }
-    if (this.getLaborTypeDtosRequest && this.getLaborTypeDtosRequest.unsubscribe) {
-      this.getLaborTypeDtosRequest.unsubscribe();
+    if (this.getFieldStandardTimeDtosRequest && this.getFieldStandardTimeDtosRequest.unsubscribe) {
+      this.getFieldStandardTimeDtosRequest.unsubscribe();
     }
 
     this.authenticationService.dispose();
     this.cdr.detach();
   }
 
-  onSubmit(fieldLaborActivityForm: HTMLFormElement): void {
+  onSubmit(fieldLaborByCropForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
 
 

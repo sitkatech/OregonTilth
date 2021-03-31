@@ -15,7 +15,6 @@ namespace OregonTilth.EFModels.Entities
     {
         public LaborType()
         {
-            FieldLaborByCrops = new HashSet<FieldLaborByCrop>();
             FieldStandardTimes = new HashSet<FieldStandardTime>();
         }
 
@@ -28,8 +27,6 @@ namespace OregonTilth.EFModels.Entities
         [StringLength(100)]
         public string LaborTypeDisplayName { get; set; }
 
-        [InverseProperty(nameof(FieldLaborByCrop.LaborType))]
-        public virtual ICollection<FieldLaborByCrop> FieldLaborByCrops { get; set; }
         [InverseProperty(nameof(FieldStandardTime.LaborType))]
         public virtual ICollection<FieldStandardTime> FieldStandardTimes { get; set; }
     }

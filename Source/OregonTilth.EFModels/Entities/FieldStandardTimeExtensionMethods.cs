@@ -16,6 +16,7 @@ namespace OregonTilth.EFModels.Entities
                 LaborType = fieldStandardTime.LaborType.AsDto(),
                 Machinery = fieldStandardTime.Machinery?.AsSummaryDto(),
                 FieldUnitType = fieldStandardTime.FieldUnitType?.AsDto(),
+                FieldLaborActivityAndLaborTypeNameForDropdown = $"{fieldStandardTime.FieldLaborActivity.FieldLaborActivityName}, {fieldStandardTime.LaborType.LaborTypeDisplayName}",
                 // todo: something for this
                 AverageMinutesPerFieldUnit = 0,
                 StandardTimePerUnit = fieldStandardTime.StandardTimePerUnit,
