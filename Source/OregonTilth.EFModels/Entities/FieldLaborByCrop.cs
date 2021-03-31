@@ -116,8 +116,6 @@ namespace OregonTilth.EFModels.Entities
 
 
             fieldLaborByCrop.CropID = fieldLaborByCropDto.Crop.CropID;
-            //fieldLaborByCrop.FieldLaborActivityID = fieldLaborByCropDto.FieldLaborActivity.FieldLaborActivityID;
-            //fieldLaborByCrop.LaborTypeID = fieldLaborByCropDto.LaborType.LaborTypeID;
             fieldLaborByCrop.FieldStandardTimeID = fieldLaborByCropDto.FieldStandardTime.FieldStandardTimeID;
             fieldLaborByCrop.Occurrences = fieldLaborByCropDto.Occurrences;
 

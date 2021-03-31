@@ -14,7 +14,6 @@ namespace OregonTilth.EFModels.Entities
             {
                 FieldLaborByCropID = fieldLaborByCrop.FieldLaborByCropID,
                 Workbook = fieldLaborByCrop.Workbook.AsSummaryDto(),
-                //FieldLaborActivity = fieldLaborByCrop.FieldLaborActivity.AsSummaryDto(),
                 FieldStandardTime = fieldLaborByCrop.FieldStandardTime.AsSummaryDto(),
                 Crop = fieldLaborByCrop.Crop.AsSummaryDto(),
                 Occurrences = fieldLaborByCrop.Occurrences
@@ -27,10 +26,6 @@ namespace OregonTilth.EFModels.Entities
         public static decimal MachineryCostsPerStandardBed(this FieldLaborByCrop fieldLaborByCrop)
         {
             // =IF([@[CALCULATED MACHINERY NAME]]="",0,INDEX(Table8[Standard Machinery Cost],MATCH([@[CALCULATED MACHINERY NAME]],Table8[Machinery Name],0))*([@[LABOR ACTIVITY MINUTES PER STANDARD BED]]/60))
-
-            //var machinery =
-            //    fieldLaborByCrop.FieldLaborActivity.FieldStandardTimes.SingleOrDefault(x =>
-            //        x.LaborTypeID == (int) LaborTypeEnum.Operator)?.Machinery;
             var machinery = fieldLaborByCrop.FieldStandardTime.Machinery;
 
             if (machinery == null)
@@ -60,11 +55,6 @@ namespace OregonTilth.EFModels.Entities
             //Table14[Standard Time],
             //MATCH(1,([@[Field Labor Activity]]=Table14[Field Labor Activity])*([@[Labor Type]]=Table14[Labor Type])*{1},
             //0)) 
-
-
-            // get the standard time from FieldLaborStandardTime matched on activity and labor type
-            //var standardTime =  fieldLaborByCrop.FieldLaborActivity?.FieldStandardTimes
-            //    .SingleOrDefault(x => x.LaborTypeID == fieldLaborByCrop.LaborTypeID && x.WorkbookID == fieldLaborByCrop.WorkbookID)?.StandardTimePerUnit;
             var standardTime = fieldLaborByCrop.FieldStandardTime.StandardTimePerUnit;
 
             if (standardTime != null)
@@ -81,7 +71,6 @@ namespace OregonTilth.EFModels.Entities
             // table22 = Crop Specific Info
             
             //=INDEX(Table9[UNITS USED],MATCH(1,([@[CALCULATED FIELD UNIT]]=Table9[Field Unit])*([@Crop]=Table9[Crop])*{1},0))
-
             var calculatedFieldUnit = fieldLaborByCrop.CalculatedFieldUnit();
             if (calculatedFieldUnit == null)
             {
@@ -99,8 +88,6 @@ namespace OregonTilth.EFModels.Entities
         {
             // table14 = Field Standard Times
             // =INDEX(Table14[Field Unit],MATCH(1,([@[Field Labor Activity]]=Table14[Field Labor Activity])*([@[Labor Type]]=Table14[Labor Type])*{1},0))&""
-            //return fieldLaborByCrop.FieldLaborActivity.FieldStandardTimes.SingleOrDefault(x =>
-            //    x.LaborTypeID == fieldLaborByCrop.LaborTypeID && x.WorkbookID == fieldLaborByCrop.WorkbookID)?.FieldUnitType;
             return fieldLaborByCrop.FieldStandardTime.FieldUnitType;
 
         }

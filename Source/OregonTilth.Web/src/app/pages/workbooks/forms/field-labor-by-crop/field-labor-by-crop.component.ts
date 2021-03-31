@@ -2,28 +2,19 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
-import { UserService } from 'src/app/services/user/user.service';
-import { DatePipe, DecimalPipe } from '@angular/common';
 import { WorkbookService } from 'src/app/services/workbook/workbook.service';
 import { WorkbookDto } from 'src/app/shared/models/generated/workbook-dto';
 import { ColDef } from 'ag-grid-community';
-import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
-import { RoleDto } from 'src/app/shared/models/generated/role-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-labor-activity-dto';
-import { FieldLaborActivityCreateDto } from 'src/app/shared/models/forms/field-labor-activities/field-labor-activity-create-dto';
-import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/field-labor-activity-category-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { FieldLaborByCropCreateDto } from 'src/app/shared/models/forms/field-labor-by-crop/field-labor-by-crop-create-dto';
 import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor-by-crop-dto';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
-import { LaborTypeDto } from 'src/app/shared/models/generated/labor-type-dto';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { FieldStandardTimeDto } from 'src/app/shared/models/generated/field-standard-time-dto';
@@ -57,16 +48,11 @@ export class FieldLaborByCropComponent implements OnInit {
   public getFieldLaborByCropsRequest: any;
   public fieldLaborByCropDtos: FieldLaborByCropDto[];
 
-  
-
   public cropDtos: CropDto[];
   private getCropDtosRequest: any;
 
   public fieldStandardTimeDtos: FieldStandardTimeDto[];
   private getFieldStandardTimeDtosRequest: any;
-
-/*   public laborTypeDtos: LaborTypeDto[];
-  private getLaborTypeDtosRequest: any; */
 
   private updateFieldLaborByCropRequest: any;
   private deleteFieldLaborByCropRequest: any;
@@ -89,7 +75,6 @@ export class FieldLaborByCropComponent implements OnInit {
     this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
     this.getCropDtosRequest = this.workbookService.getCrops(this.workbookID);
     this.getFieldStandardTimeDtosRequest = this.workbookService.getFieldStandardTimes(this.workbookID);
-    //this.getLaborTypeDtosRequest = this.lookupTablesService.getLaborTypes();
     this.getFieldLaborByCropsRequest = this.workbookService.getFieldLaborByCrops(this.workbookID);
 
     forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldStandardTimeDtosRequest, this.getFieldLaborByCropsRequest]).subscribe(([workbookDto, cropDtos, fieldStandardTimeDtos, fieldLaborByCrops]: [WorkbookDto, CropDto[], FieldStandardTimeDto[], FieldLaborByCropDto[]]) => {
@@ -191,21 +176,6 @@ export class FieldLaborByCropComponent implements OnInit {
         sortable: true, 
         filter: true,
       },
-
-      /*
-      valueFormatter: function (params) {
-          return params.value ? params.value.CropUnitName : '';
-        },
-        valueSetter: params => {
-          params.data.CropUnit = this.cropUnits.find(element => {
-            return element.CropUnitName == params.newValue;
-          });
-          return true;
-        },
-        valueGetter: params => {
-          return params.data.CropUnit ? params.data.CropUnit.CropUnitName : '';
-        },
-      */
       {
         headerName: 'Occurrences', 
         field: 'Occurrences',
