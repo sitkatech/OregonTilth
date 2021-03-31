@@ -225,7 +225,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         width:150
       },
       {
-        headerName: 'Harvest Type', 
+        headerName: 'Harvest/Post-Harvest', 
         field: 'HarvestType',
         valueFormatter: function (params) {
           return params.value ? params.value.HarvestTypeDisplayName : '';
@@ -270,7 +270,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         filter: true
       },
       {
-        headerName: 'Standard Time', 
+        headerName: 'Standard Rate', 
         field:'StandardTimePerUnit',
         valueGetter: function(params:any) {
           return params.data.StandardTimePerUnit
