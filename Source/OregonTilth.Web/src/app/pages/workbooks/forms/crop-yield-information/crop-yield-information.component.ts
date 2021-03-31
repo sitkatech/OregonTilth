@@ -160,7 +160,8 @@ export class CropYieldInformationComponent implements OnInit {
           return {backgroundColor: '#ffdfd6'};
         },
         cellRendererFramework: EditableRendererComponent,
-        width:150
+        width:150,
+        resizable: true,
       },
       {
         headerName: 'Marketable Yield Per Standard Unit of Space', 
@@ -179,7 +180,8 @@ export class CropYieldInformationComponent implements OnInit {
           return {backgroundColor: '#ffdfd6'};
         },
         cellRendererFramework: EditableRendererComponent,
-        width:150
+        width:150,
+        resizable: true,
       },
       {
         headerName: 'Price Per Crop Unit', 
@@ -199,7 +201,8 @@ export class CropYieldInformationComponent implements OnInit {
           return {backgroundColor: '#ffdfd6'};
         },
         cellRendererFramework: EditableRendererComponent,
-        width:150
+        width:150,
+        resizable: true,
       },
       {
         headerName: 'Packaging Cost Per Crop Unit', 
@@ -219,7 +222,8 @@ export class CropYieldInformationComponent implements OnInit {
           return {backgroundColor: '#ffdfd6'};
         },
         cellRendererFramework: EditableRendererComponent,
-        width:150
+        width:150,
+        resizable: true,
       },
       {
         headerName: 'Delete', field: 'CropYieldInformationID', valueGetter: function (params: any) {
