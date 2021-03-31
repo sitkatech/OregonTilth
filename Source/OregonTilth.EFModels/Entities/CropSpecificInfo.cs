@@ -18,11 +18,11 @@ namespace OregonTilth.EFModels.Entities
         {
             var result = new List<ErrorMessage>();
 
-            if (cropSpecificInfoCreateDto.InRowSpacing == null 
+            if ((cropSpecificInfoCreateDto.InRowSpacing == null || cropSpecificInfoCreateDto.InRowSpacing <= 0)
                 && (cropSpecificInfoCreateDto.TpOrDsTypeID == (int) TpOrDsTypeEnum.TransplantFarmProduced 
                     || cropSpecificInfoCreateDto.TpOrDsTypeID == (int) TpOrDsTypeEnum.TransplantOutsourced))
             {
-                result.Add(new ErrorMessage() { Type = "In Row Spacing", Message = "In Row Spacing is required when a Transplant Type is selected." });
+                result.Add(new ErrorMessage() { Type = "In Row Spacing", Message = "In Row Spacing is required and must be greater than zero when a Transplant Type is selected." });
             }
 
             if (cropSpecificInfoCreateDto.TransplantProductionCostOutsourced == null
@@ -48,11 +48,11 @@ namespace OregonTilth.EFModels.Entities
         {
             var result = new List<ErrorMessage>();
 
-            if (cropSpecificInfoDto.InRowSpacing == null
+            if ((cropSpecificInfoDto.InRowSpacing == null || cropSpecificInfoDto.InRowSpacing <= 0)
                 && (cropSpecificInfoDto.TpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantFarmProduced
                     || cropSpecificInfoDto.TpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantOutsourced))
             {
-                result.Add(new ErrorMessage() { Type = "In Row Spacing", Message = "In Row Spacing is required when a Transplant Type is selected." });
+                result.Add(new ErrorMessage() { Type = "In Row Spacing", Message = "In Row Spacing is required and must be greater than zero when a Transplant Type is selected." });
             }
 
             if (cropSpecificInfoDto.TransplantProductionCostOutsourced == null

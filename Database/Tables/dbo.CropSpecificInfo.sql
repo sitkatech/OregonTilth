@@ -39,7 +39,7 @@ REFERENCES [dbo].[Workbook] ([WorkbookID])
 GO
 ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [FK_CropSpecificInfo_Workbook_WorkbookID]
 GO
-ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CHK_CropSpecificInfo_InRowSpacing_NotNull_If_TPtype_selected] CHECK  (([TpOrDsTypeID]=(3) OR [InRowSpacing] IS NOT NULL AND ([TpOrDsTypeID]=(2) OR [TpOrDsTypeID]=(1))))
+ALTER TABLE [dbo].[CropSpecificInfo]  WITH CHECK ADD  CONSTRAINT [CHK_CropSpecificInfo_InRowSpacing_NotNull_If_TPtype_selected] CHECK  (([TpOrDsTypeID]=(3) OR [InRowSpacing] IS NOT NULL AND ([TpOrDsTypeID]=(2) OR [TpOrDsTypeID]=(1)) AND [InRowSpacing]>(0)))
 GO
 ALTER TABLE [dbo].[CropSpecificInfo] CHECK CONSTRAINT [CHK_CropSpecificInfo_InRowSpacing_NotNull_If_TPtype_selected]
 GO
