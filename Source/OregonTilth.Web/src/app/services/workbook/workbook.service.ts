@@ -415,6 +415,11 @@ export class WorkbookService {
         return this.apiService.putToApi(route, transplantProductionStandardTimeDto);
     }
 
+    deleteTransplantProductionStandardTime(workbookID: number, transplantProductionStandardTimeID: number): Observable<TransplantProductionStandardTimeSummaryDto[]> {
+        let route = `workbooks/${workbookID}/forms/transplant-production-standard-times/${transplantProductionStandardTimeID}`;
+        return this.apiService.deleteToApi(route);
+    }
+
     // Crop Yield Information
     addCropYieldInformation(createDto: CropYieldInformationCreateDto): Observable<CropYieldInformationSummaryDto> {
         let route = `/workbooks/${createDto.WorkbookID}/forms/crop-yield-information`;

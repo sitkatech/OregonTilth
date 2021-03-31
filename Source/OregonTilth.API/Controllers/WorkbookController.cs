@@ -1111,6 +1111,27 @@ namespace OregonTilth.API.Controllers
             return Ok(transplantProductionStandardTimeSummaryDto);
         }
 
+
+        [HttpDelete("workbooks/{workbookID}/forms/transplant-production-standard-times/{transplantProductionStandardTimeID}")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionStandardTimeSummaryDto>> DeleteTransplantProductionStandardTime([FromRoute] int workbookID, [FromRoute] int transplantProductionStandardTimeID)
+        {
+            var validationMessages = TransplantProductionStandardTime.ValidateDelete(_dbContext, transplantProductionStandardTimeID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            TransplantProductionStandardTime.Delete(_dbContext, transplantProductionStandardTimeID);
+
+            var returnDtos = TransplantProductionStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+
         #endregion "Transplant Production Standard Times"
 
         #region "Crop Yield Information"

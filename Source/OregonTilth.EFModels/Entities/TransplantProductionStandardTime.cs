@@ -112,5 +112,26 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.TransplantProductionLaborActivity)
                 .Include(x => x.TimeStudies);
         }
+
+        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int tpStandardTimeID)
+        {
+            var result = new List<ErrorMessage>();
+
+            return result;
+        }
+
+        public static void Delete(OregonTilthDbContext dbContext, int transplantProductionStandardTimeID)
+        {
+            var existingTPStandardTime = dbContext
+                .TransplantProductionStandardTimes.Include(x => x.TimeStudies)
+                .SingleOrDefault(x => x.TransplantProductionStandardTimeID == transplantProductionStandardTimeID);
+
+            if (existingTPStandardTime != null)
+            {
+                dbContext.TimeStudies.RemoveRange(existingTPStandardTime.TimeStudies);
+                dbContext.TransplantProductionStandardTimes.Remove(existingTPStandardTime);
+                dbContext.SaveChanges();
+            }
+        }
     }
 }
