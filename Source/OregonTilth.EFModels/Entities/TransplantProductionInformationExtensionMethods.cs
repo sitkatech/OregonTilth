@@ -1,10 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
 {
     public static partial class TransplantProductionInformationExtensionMethods
     {
+
+        public static TransplantProductionInformationSummaryDto AsSummaryDto(this TransplantProductionInformation transplantProductionInformation)
+        {
+            return new TransplantProductionInformationSummaryDto()
+            {
+                TransplantProductionInformationID = transplantProductionInformation.TransplantProductionInformationID,
+                Workbook = transplantProductionInformation.Workbook.AsSummaryDto(),
+                Crop = transplantProductionInformation.Crop.AsSummaryDto(),
+                Phase = transplantProductionInformation.Phase.AsDto(),
+                TransplantProductionTrayType = transplantProductionInformation.TransplantProductionTrayType.AsSummaryDto(),
+                SeedsPerTray = transplantProductionInformation.SeedsPerTray,
+                UsageRate = transplantProductionInformation.UsageRate
+            };
+        }
+
+
         public static decimal CropPhaseTotalLaborHoursPerTransplant(
             this TransplantProductionInformation transplantProductionInformation,
             ICollection<TransplantProductionInformation> allTpInfosForCrop)
@@ -39,14 +56,12 @@ namespace OregonTilth.EFModels.Entities
         }
 
 
-        public static decimal CropPhaseTotalLaborHoursPerTray(
-            this TransplantProductionInformation transplantProductionInformation)
+        public static decimal CropPhaseTotalLaborHoursPerTray(this TransplantProductionInformation transplantProductionInformation)
         {
 
             // =SUMIFS(Table31[LABOR ACTIVITY TOTAL MINUTES PER TRAY],Table31[Crop],[@Crop],Table31[Phase],[@Phase])/60
             var trayTypeID = transplantProductionInformation.TransplantProductionTrayTypeID;
-            return transplantProductionInformation.Crop.TransplantProductionLaborActivityByCrops
-                .Where(x => x.PhaseID == transplantProductionInformation.PhaseID)
+            return transplantProductionInformation.TransplantProductionLaborActivityByCrops
                 .Sum(x => x.LaborActivityTotalMinutesPerTray(trayTypeID)) / 60;
 
         }

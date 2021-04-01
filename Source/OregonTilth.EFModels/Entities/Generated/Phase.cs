@@ -16,7 +16,6 @@ namespace OregonTilth.EFModels.Entities
         public Phase()
         {
             TransplantProductionInformations = new HashSet<TransplantProductionInformation>();
-            TransplantProductionLaborActivityByCrops = new HashSet<TransplantProductionLaborActivityByCrop>();
         }
 
         [Key]
@@ -30,7 +29,5 @@ namespace OregonTilth.EFModels.Entities
 
         [InverseProperty(nameof(TransplantProductionInformation.Phase))]
         public virtual ICollection<TransplantProductionInformation> TransplantProductionInformations { get; set; }
-        [InverseProperty(nameof(TransplantProductionLaborActivityByCrop.Phase))]
-        public virtual ICollection<TransplantProductionLaborActivityByCrop> TransplantProductionLaborActivityByCrops { get; set; }
     }
 }
