@@ -99,6 +99,49 @@ namespace OregonTilth.EFModels.Entities
             return GetTransplantProductionStandardTimeSummaryDtos(dbContext).Single(x => x.TransplantProductionStandardTimeID == transplantProductionStandardTime.TransplantProductionStandardTimeID);
         }
 
+        public static TransplantProductionStandardTime GetByID(OregonTilthDbContext dbContext, int tpStandardTimeID)
+        {
+            return GetTransplantProductionStandardTimesImpl(dbContext).Single(x => x.TransplantProductionStandardTimeID == tpStandardTimeID);
+        }
 
+        private static IQueryable<TransplantProductionStandardTime> GetTransplantProductionStandardTimesImpl(OregonTilthDbContext dbContext)
+        {
+            return dbContext.TransplantProductionStandardTimes
+                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.TransplantProductionTrayType)
+                .Include(x => x.TransplantProductionLaborActivity)
+                .Include(x => x.TimeStudies);
+        }
+
+        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int tpStandardTimeID)
+        {
+            var result = new List<ErrorMessage>();
+            var existingTPStandardTime = dbContext
+                .TransplantProductionStandardTimes.Include(x => x.TimeStudies)
+                .Include(x => x.TransplantProductionLaborActivity).ThenInclude(x => x.TransplantProductionLaborActivityByCrops)
+                .Single(x => x.TransplantProductionStandardTimeID == tpStandardTimeID);
+
+            if (existingTPStandardTime.TransplantProductionLaborActivity.TransplantProductionLaborActivityByCrops.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Validation Error", Message = "Cannot delete a time study with a Labor Activity in use on the TP Labor Activity by Crop form." });
+            }
+
+
+            return result;
+        }
+
+        public static void Delete(OregonTilthDbContext dbContext, int transplantProductionStandardTimeID)
+        {
+            var existingTPStandardTime = dbContext
+                .TransplantProductionStandardTimes.Include(x => x.TimeStudies)
+                .SingleOrDefault(x => x.TransplantProductionStandardTimeID == transplantProductionStandardTimeID);
+
+            if (existingTPStandardTime != null)
+            {
+                dbContext.TimeStudies.RemoveRange(existingTPStandardTime.TimeStudies);
+                dbContext.TransplantProductionStandardTimes.Remove(existingTPStandardTime);
+                dbContext.SaveChanges();
+            }
+        }
     }
 }

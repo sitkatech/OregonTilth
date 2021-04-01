@@ -22,6 +22,7 @@ import { TransplantProductionStandardTimeSummaryDto } from 'src/app/shared/model
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { AgGridAngular } from 'ag-grid-angular';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
+import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 
 @Component({
   selector: 'transplant-production-standard-times',
@@ -71,6 +72,7 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
   public closeResult: string;
 
   public updateStandardTimeRequest: any;
+  private deleteStandardTimeRequest: any;
   
   getRowNodeId(data)  {
     return data.TransplantProductionStandardTimeID.toString();
@@ -206,9 +208,14 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
         headerName: 'Avg Min Per Tray', 
         valueGetter: function(params:any) {
           if(params.data.TimeStudies.length > 0) {
-            var minutes = params.data.TimeStudies.map(x => x.Duration).reduce((x,y) => x + y, 0);
-            var totalUnits = params.data.TimeStudies.map(x => x.Units).reduce((x,y) => x + y, 0);
-            return (minutes / totalUnits).toFixed(4);
+            var avgArray = params.data.TimeStudies.map(element => {
+                return {
+                    x: element.Duration / element.Units
+                };
+            });
+            var sumOfAvgs = avgArray.map(element => element.x).reduce((a, b) => a + b, 0)
+            var avgOfAvgs = sumOfAvgs / avgArray.length;
+            return avgOfAvgs;
           }
           return 'N/A';
         },
@@ -217,7 +224,7 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
         filter: true
       },
       {
-        headerName: 'Standard Time', 
+        headerName: 'Standard Rate', 
         field:'StandardTimePerUnit',
         valueGetter: function(params:any) {
           return params.data.StandardTimePerUnit
@@ -253,7 +260,31 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
         resizable: false,
         width:300
       },
+      {
+        headerName: 'Delete', valueGetter: function (params: any) {
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.TransplantProductionStandardTimeID, ObjectDisplayName: null };
+        }, cellRendererFramework: ButtonRendererComponent,
+        cellRendererParams: { 
+          clicked: function(field: any) {
+            if(confirm(`Are you sure you want to delete this record?`)) {
+              componentScope.deleteTransplantProductionStandardTime(field.PrimaryKey)
+            }
+          }
+          },
+        sortable: true, filter: true, width: 100, autoHeight:true
+      },
     ]
+  }
+
+  deleteTransplantProductionStandardTime(transplantProductionStandardTimeID: number) {
+    this.deleteStandardTimeRequest = this.workbookService.deleteTransplantProductionStandardTime(this.workbookID, transplantProductionStandardTimeID).subscribe(fieldStandardTimeDtos => {
+      var rowToRemove = this.gridApi.getRowNode(transplantProductionStandardTimeID.toString());
+      this.gridApi.applyTransaction({remove:[rowToRemove.data]})
+      this.alertService.pushAlert(new Alert("Successfully deleted Time Study", AlertContext.Success));
+      this.cdr.detectChanges();
+    }, error => {
+
+    })
   }
 
   public launchModal(modalContent: any, modalTitle: string, transplantProductionStandardTime: TransplantProductionStandardTimeSummaryDto) {
@@ -305,6 +336,9 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
     
     if (this.initializeStandardTimeRequest && this.initializeStandardTimeRequest.unsubscribe) {
       this.initializeStandardTimeRequest.unsubscribe();
+    }
+    if (this.deleteStandardTimeRequest && this.deleteStandardTimeRequest.unsubscribe) {
+      this.deleteStandardTimeRequest.unsubscribe();
     }
     this.authenticationService.dispose();
     this.cdr.detach();
