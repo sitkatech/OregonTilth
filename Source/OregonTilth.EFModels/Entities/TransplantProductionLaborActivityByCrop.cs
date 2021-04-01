@@ -29,12 +29,11 @@ namespace OregonTilth.EFModels.Entities
 
             var userTransplantProductionLaborActivityByCropsForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionLaborActivityByCropDto.Workbook.WorkbookID).ToList();
             if (userTransplantProductionLaborActivityByCropsForWorkbook.Any(x => x.Workbook.WorkbookID == transplantProductionLaborActivityByCropDto.Workbook.WorkbookID
-                                                          && x.Crop.CropID == transplantProductionLaborActivityByCropDto.Crop.CropID
+                                                          && x.TransplantProductionInformation.TransplantProductionInformationID == transplantProductionLaborActivityByCropDto.TransplantProductionInformation.TransplantProductionInformationID
                                                           && x.TransplantProductionLaborActivity.TransplantProductionLaborActivityID == transplantProductionLaborActivityByCropDto.TransplantProductionLaborActivity.TransplantProductionLaborActivityID
-                                                          && x.Phase.PhaseID == transplantProductionLaborActivityByCropDto.Phase.PhaseID
                                                           && x.TransplantProductionLaborActivityByCropID != transplantProductionLaborActivityByCropDto.TransplantProductionLaborActivityByCropID))
             {
-                result.Add(new ErrorMessage() { Type = "TP Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, TP Labor Activity, and Labor Type." });
+                result.Add(new ErrorMessage() { Type = "TP Labor By Crop", Message = "Cannot have more than one entry per Workbook, TP Labor Activity, and TP Info." });
             }
 
             if (transplantProductionLaborActivityByCropDto.Occurrences != null 
@@ -62,9 +61,11 @@ namespace OregonTilth.EFModels.Entities
         {
             return dbContext.TransplantProductionLaborActivityByCrops
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
-                .Include(x => x.Crop)
+                .Include(x => x.TransplantProductionInformation).ThenInclude(x => x.Crop)
+                .Include(x => x.TransplantProductionInformation).ThenInclude(x => x.Phase)
+                .Include(x => x.TransplantProductionInformation).ThenInclude(x => x.Workbook)
+                .Include(x => x.TransplantProductionInformation).ThenInclude(x => x.TransplantProductionTrayType)
                 .Include(x => x.TransplantProductionLaborActivity)
-                .Include(x => x.Phase)
                 .AsNoTracking();
         }
 
@@ -88,15 +89,13 @@ namespace OregonTilth.EFModels.Entities
                 if (!currentTpLaborByCrops.Any(x =>
                     x.TransplantProductionLaborActivityID ==
                     transplantProductionLaborActivityDto.TransplantProductionLaborActivityID
-                    && x.CropID == transplantProductionLaborByCropCreateDto.CropID
-                    && x.PhaseID == transplantProductionLaborByCropCreateDto.PhaseID))
+                    && x.TransplantProductionInformationID == transplantProductionLaborByCropCreateDto.TransplantProductionInformationID))
                 {
                     var tpLaborByCrop = new TransplantProductionLaborActivityByCrop
                     {
                         WorkbookID = transplantProductionLaborByCropCreateDto.WorkbookID,
-                        CropID = transplantProductionLaborByCropCreateDto.CropID,
+                        TransplantProductionInformationID = transplantProductionLaborByCropCreateDto.TransplantProductionInformationID,
                         TransplantProductionLaborActivityID = transplantProductionLaborActivityDto.TransplantProductionLaborActivityID,
-                        PhaseID = transplantProductionLaborByCropCreateDto.PhaseID,
                     };
                     dbContext.TransplantProductionLaborActivityByCrops.Add(tpLaborByCrop);
                     addedTpLaborActivityIDs.Add(tpLaborByCrop.TransplantProductionLaborActivityID);
@@ -106,8 +105,7 @@ namespace OregonTilth.EFModels.Entities
             dbContext.SaveChanges();
             var tpLaborActivityByCrops = GetDtoListByWorkbookID(dbContext, transplantProductionLaborByCropCreateDto.WorkbookID).ToList();
             var addedTpLaborActivityByCrop = tpLaborActivityByCrops.Where(x =>
-                x.Crop.CropID == transplantProductionLaborByCropCreateDto.CropID && 
-                x.Phase.PhaseID == transplantProductionLaborByCropCreateDto.PhaseID &&
+                x.TransplantProductionInformation.TransplantProductionInformationID == transplantProductionLaborByCropCreateDto.TransplantProductionInformationID &&
                 addedTpLaborActivityIDs.Contains(x.TransplantProductionLaborActivity.TransplantProductionLaborActivityID)).ToList();
 
             return addedTpLaborActivityByCrop;
@@ -120,9 +118,8 @@ namespace OregonTilth.EFModels.Entities
                 .SingleOrDefault(x => x.TransplantProductionLaborActivityByCropID == transplantProductionLaborActivityByCropDto.TransplantProductionLaborActivityByCropID);
 
 
-            fieldLaborByCrop.CropID = transplantProductionLaborActivityByCropDto.Crop.CropID;
+            fieldLaborByCrop.TransplantProductionInformationID = transplantProductionLaborActivityByCropDto.TransplantProductionInformation.TransplantProductionInformationID;
             fieldLaborByCrop.TransplantProductionLaborActivityID = transplantProductionLaborActivityByCropDto.TransplantProductionLaborActivity.TransplantProductionLaborActivityID;
-            fieldLaborByCrop.PhaseID = transplantProductionLaborActivityByCropDto.Phase.PhaseID;
             fieldLaborByCrop.Occurrences = transplantProductionLaborActivityByCropDto.Occurrences;
 
             dbContext.SaveChanges();

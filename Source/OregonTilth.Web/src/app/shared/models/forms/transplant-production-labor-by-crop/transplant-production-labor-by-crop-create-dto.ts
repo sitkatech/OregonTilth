@@ -2,8 +2,7 @@ import { TransplantProductionLaborActivityDto } from "../../generated/transplant
 
 export class TransplantProductionLaborByCropCreateDto {
     WorkbookID: number;
-    CropID: number;
-    PhaseID: number;
+    TransplantProductionInformationID: number;
     TransplantProductionLaborActivities: TransplantProductionLaborActivityDto[];
     constructor(obj?: any) {
         Object.assign(this, obj);

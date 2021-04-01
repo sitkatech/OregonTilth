@@ -95,13 +95,12 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<Crop> GetCropImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.Crops
-                .Include(x => x.TransplantProductionInformations)
+                .Include(x => x.TransplantProductionInformations).ThenInclude(x => x.TransplantProductionLaborActivityByCrops)
                 .Include(x => x.CropSpecificInfos)
                 .Include(x => x.CropYieldInformations)
                 .Include(x => x.FieldInputByCrops)
                 .Include(x => x.FieldLaborByCrops)
                 .Include(x => x.HarvestPostHarvestStandardTimes)
-                .Include(x => x.TransplantProductionLaborActivityByCrops)
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .AsNoTracking();
         }
@@ -140,10 +139,6 @@ namespace OregonTilth.EFModels.Entities
             if (crop.FieldInputByCrops.Any())
             {
                 result.Add(new ErrorMessage() { Type = "Crop", Message = $"Cannot delete '{crop.CropName}' because it is used on the Field Input By Crop form." });
-            }
-            if (crop.TransplantProductionLaborActivityByCrops.Any())
-            {
-                result.Add(new ErrorMessage() { Type = "Crop", Message = $"Cannot delete '{crop.CropName}' because it is used on the Transplant Labor Activity By Crop form." });
             }
 
             return result;

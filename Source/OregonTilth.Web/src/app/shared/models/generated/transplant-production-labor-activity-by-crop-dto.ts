@@ -3,17 +3,15 @@
 //  Use the corresponding partial class for customizations.
 //  Source Table: [dbo].[TransplantProductionLaborActivityByCrop]
 import { WorkbookDto } from './workbook-dto'
-import { CropDto } from './crop-dto'
 import { TransplantProductionLaborActivityDto } from './transplant-production-labor-activity-dto'
-import { PhaseDto } from './phase-dto'
+import { TransplantProductionInformationDto } from './transplant-production-information-dto'
 
 export class TransplantProductionLaborActivityByCropDto {
 	TransplantProductionLaborActivityByCropID : number
 	Workbook : WorkbookDto
-	Crop : CropDto
 	TransplantProductionLaborActivity : TransplantProductionLaborActivityDto
-	Phase : PhaseDto
 	Occurrences : number
+	TransplantProductionInformation : TransplantProductionInformationDto
 
     constructor(obj?: any) {
         Object.assign(this, obj);

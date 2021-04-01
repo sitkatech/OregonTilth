@@ -20,7 +20,6 @@ namespace OregonTilth.EFModels.Entities
             FieldLaborByCrops = new HashSet<FieldLaborByCrop>();
             HarvestPostHarvestStandardTimes = new HashSet<HarvestPostHarvestStandardTime>();
             TransplantProductionInformations = new HashSet<TransplantProductionInformation>();
-            TransplantProductionLaborActivityByCrops = new HashSet<TransplantProductionLaborActivityByCrop>();
         }
 
         [Key]
@@ -45,7 +44,5 @@ namespace OregonTilth.EFModels.Entities
         public virtual ICollection<HarvestPostHarvestStandardTime> HarvestPostHarvestStandardTimes { get; set; }
         [InverseProperty(nameof(TransplantProductionInformation.Crop))]
         public virtual ICollection<TransplantProductionInformation> TransplantProductionInformations { get; set; }
-        [InverseProperty(nameof(TransplantProductionLaborActivityByCrop.Crop))]
-        public virtual ICollection<TransplantProductionLaborActivityByCrop> TransplantProductionLaborActivityByCrops { get; set; }
     }
 }
