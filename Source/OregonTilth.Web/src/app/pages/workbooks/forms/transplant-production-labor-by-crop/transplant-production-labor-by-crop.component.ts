@@ -75,7 +75,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
   private refreshData() {
     this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
     this.getTransplantProductionInformationDtosRequest = this.workbookService.getTransplantProductionInformationDtos(this.workbookID);
-    this.getTransplantProductionLaborActivityDtosRequest = this.workbookService.getTransplantProductionLaborActivities(this.workbookID);
+    this.getTransplantProductionLaborActivityDtosRequest = this.workbookService.getTransplantProductionLaborActivitiesFromTransplantProductionStandardTimes(this.workbookID);
     this.getTransplantProductionLaborByCropsRequest = this.workbookService.getTransplantProductionLaborByCrops(this.workbookID);
 
     forkJoin([this.getWorkbookRequest, this.getTransplantProductionInformationDtosRequest, this.getTransplantProductionLaborActivityDtosRequest, this.getTransplantProductionLaborByCropsRequest]).subscribe(([workbookDto, transplantProductionInformationDtos, transplantProductionLaborActivityDtos, transplantProductionLaborByCrops]: [WorkbookDto, TransplantProductionInformationDto[], TransplantProductionLaborActivityDto[], TransplantProductionLaborActivityByCropDto[]]) => {

@@ -7,6 +7,7 @@ using OregonTilth.API.Services.Filters;
 using OregonTilth.EFModels.Entities;
 using OregonTilth.Models.DataTransferObjects;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OregonTilth.API.Controllers
 {
@@ -501,8 +502,18 @@ namespace OregonTilth.API.Controllers
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<TransplantProductionLaborActivityDto>> GetTransplantProductionLaborActivities([FromRoute] int workbookID)
         {
-            var fieldLaborActivities = TransplantProductionLaborActivity.GetDtoListByWorkbookID(_dbContext, workbookID);
-            return Ok(fieldLaborActivities);
+            var transplantProductionLaborActivityDtos = TransplantProductionLaborActivity.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(transplantProductionLaborActivityDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/transplant-production-labor-activities-from-tp-standard-times")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionLaborActivityDto>> GetTransplantProductionLaborActivitiesFromTransplantProductionStandardTimes([FromRoute] int workbookID)
+        {
+            var transplantProductionStandardTimeDtos = TransplantProductionStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+            var transplantProductionLaborActivityDtos = transplantProductionStandardTimeDtos.Select(x => x.TransplantProductionLaborActivity);
+            return Ok(transplantProductionLaborActivityDtos);
         }
 
         [HttpPut("workbooks/{workbookID}/forms/transplant-production-labor-activities")]
