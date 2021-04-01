@@ -116,6 +116,16 @@ namespace OregonTilth.EFModels.Entities
         public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int tpStandardTimeID)
         {
             var result = new List<ErrorMessage>();
+            var existingTPStandardTime = dbContext
+                .TransplantProductionStandardTimes.Include(x => x.TimeStudies)
+                .Include(x => x.TransplantProductionLaborActivity).ThenInclude(x => x.TransplantProductionLaborActivityByCrops)
+                .Single(x => x.TransplantProductionStandardTimeID == tpStandardTimeID);
+
+            if (existingTPStandardTime.TransplantProductionLaborActivity.TransplantProductionLaborActivityByCrops.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Validation Error", Message = "Cannot delete a time study with a Labor Activity in use on the TP Labor Activity by Crop form." });
+            }
+
 
             return result;
         }
