@@ -463,9 +463,9 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<TransplantProductionLaborActivityByCrop>(entity =>
             {
-                entity.HasOne(d => d.Crop)
+                entity.HasOne(d => d.TransplantProductionInformation)
                     .WithMany(p => p.TransplantProductionLaborActivityByCrops)
-                    .HasForeignKey(d => d.CropID)
+                    .HasForeignKey(d => d.TransplantProductionInformationID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.TransplantProductionLaborActivity)

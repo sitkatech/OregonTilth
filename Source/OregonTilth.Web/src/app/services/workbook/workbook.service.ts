@@ -224,6 +224,11 @@ export class WorkbookService {
         return this.apiService.deleteToApi(route);
     }
 
+    getTransplantProductionLaborActivitiesFromTransplantProductionStandardTimes(workbookID: number): Observable<TransplantProductionLaborActivityDto[]> {
+        let route = `workbooks/${workbookID}/forms/transplant-production-labor-activities-from-tp-standard-times`;
+        return this.apiService.getFromApi(route);
+    }
+
     // Field Input Cost Form
     addFieldInputCost(fieldInputByCostCreateDto: FieldInputCostCreateDto): Observable<FieldInputCostDto> {
         let route = `/workbooks/forms/field-input-costs`;
