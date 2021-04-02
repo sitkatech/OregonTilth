@@ -23,6 +23,8 @@ import { TransplantProductionInputCostCreateDto } from 'src/app/shared/models/fo
 import { TransplantProductionInputCostDto } from 'src/app/shared/models/generated/transplant-production-input-cost-dto';
 import { TransplantProductionInputDto } from 'src/app/shared/models/generated/transplant-production-input-dto';
 import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
+import { element } from 'protractor';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'transplant-production-input-costs',
@@ -40,6 +42,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
@@ -70,20 +73,24 @@ export class TransplantProductionInputCostsComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new TransplantProductionInputCostCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getTransplantProductionInputsRequest = this.workbookService.getTransplantProductionInputs(this.workbookID);
-      this.getTransplantProductionTrayTypesRequest = this.workbookService.getTransplantProductionTrayTypes(this.workbookID);
-      this.getTransplantProductionInputCostsRequest = this.workbookService.getTransplantProductionInputCosts(this.workbookID);
+      this.refreshData();
 
-      forkJoin([this.getWorkbookRequest, this.getTransplantProductionInputsRequest, this.getTransplantProductionTrayTypesRequest, this.getTransplantProductionInputCostsRequest]).subscribe(([workbook, tpInputs, tpTrayTypes, tpInputCosts]: [WorkbookDto, TransplantProductionInputDto[], TransplantProductionTrayTypeDto[], TransplantProductionInputCostDto[]] ) => {
-          this.workbook = workbook;
-          this.transplantProductionInputs = tpInputs;
-          this.transplantProductionTrayTypes = tpTrayTypes;
-          this.transplantProductionInputCosts = tpInputCosts;
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
+    });
+  }
 
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getTransplantProductionInputsRequest = this.workbookService.getTransplantProductionInputs(this.workbookID);
+    this.getTransplantProductionTrayTypesRequest = this.workbookService.getTransplantProductionTrayTypes(this.workbookID);
+    this.getTransplantProductionInputCostsRequest = this.workbookService.getTransplantProductionInputCosts(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getTransplantProductionInputsRequest, this.getTransplantProductionTrayTypesRequest, this.getTransplantProductionInputCostsRequest]).subscribe(([workbook, tpInputs, tpTrayTypes, tpInputCosts]: [WorkbookDto, TransplantProductionInputDto[], TransplantProductionTrayTypeDto[], TransplantProductionInputCostDto[]]) => {
+      this.workbook = workbook;
+      this.transplantProductionInputs = tpInputs;
+      this.transplantProductionTrayTypes = tpTrayTypes;
+      this.transplantProductionInputCosts = tpInputCosts;
+      this.defineColumnDefs();
+      this.cdr.markForCheck();
     });
   }
 
@@ -110,6 +117,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         valueGetter: params => {
           return params.data.TransplantProductionInput.TransplantProductionInputName;
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -133,6 +141,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         valueGetter: params => {
           return params.data.TransplantProductionTrayType.TransplantProductionTrayTypeName;
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -142,6 +151,14 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         editable: true,
         cellEditor: 'agTextCellEditor',
         valueFormatter: this.gridService.currencyFormatter,
+        valueSetter: params => {
+          params.data.CostPerTray = params.newValue;
+          return true;
+        },
+        valueGetter: params => {
+          return params.data.CostPerTray;
+        },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -150,6 +167,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         field: 'Notes',
         editable: true,
         cellEditor: 'agTextCellEditor',
+        cellRendererFramework: EditableRendererComponent,
         filter: true,
         sortable: true, 
       },
@@ -169,9 +187,10 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     ]
   }
 
-  deleteTransplantProductionInputCost(tpInputCost: number) {
-    this.deleteTransplantProductionInputCostRequest = this.workbookService.deleteTransplantProductionInputCost(this.workbookID, tpInputCost).subscribe(tpInputCostDtos => {
-      this.transplantProductionInputCosts = tpInputCostDtos;
+  deleteTransplantProductionInputCost(tpInputCostID: number) {
+    this.deleteTransplantProductionInputCostRequest = this.workbookService.deleteTransplantProductionInputCost(this.workbookID, tpInputCostID).subscribe(tpInputCostDtos => {
+      var rowToRemove = this.gridApi.getRowNode(tpInputCostID.toString());
+      this.gridApi.applyTransaction({remove:[rowToRemove.data]})
       this.alertService.pushAlert(new Alert("Successfully deleted Transplant Production Input Cost", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
@@ -184,9 +203,13 @@ export class TransplantProductionInputCostsComponent implements OnInit {
 
     this.updateTransplantProductionInputCostRequest = this.workbookService.updateTransplantProductionInputCost(dtoToPost).subscribe(tpInputCost => {
       data.node.setData(tpInputCost);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Transplant Production Input Cost", AlertContext.Success));
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })
@@ -221,7 +244,9 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     this.isLoadingSubmit = true;
     this.addTransplantProductionInputCostRequest = this.workbookService.addTransplantProductionInputCost(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.transplantProductionInputCosts = response;
+
+      var transactionRows = this.gridApi.applyTransaction({add: [response]});
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.alertService.pushAlert(new Alert("Successfully added Transplant Production Input Cost.", AlertContext.Success));
       this.resetForm();
       this.cdr.detectChanges();
@@ -234,6 +259,14 @@ export class TransplantProductionInputCostsComponent implements OnInit {
 
   resetForm() {
     this.model = new TransplantProductionInputCostCreateDto({WorkbookID: this.workbookID});
+  }
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+  }
+
+  getRowNodeId(data)  {
+    return data.TransplantProductionInputCostID.toString();
   }
 
 }

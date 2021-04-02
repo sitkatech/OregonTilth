@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
@@ -30,6 +31,12 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "Field Labor Activities must have a name." });
             }
 
+            if (fieldLaborActivityUpsertDto.LaborTypeCrew == false &&
+                fieldLaborActivityUpsertDto.LaborTypeOperator == false)
+            {
+                result.Add(new ErrorMessage() { Type = "Labor Type", Message = "At least one labor type is required for Field Labor Activities" });
+            }
+
             return result;
         }
 
@@ -47,6 +54,12 @@ namespace OregonTilth.EFModels.Entities
             if (string.IsNullOrEmpty(fieldLaborActivityDto.FieldLaborActivityName))
             {
                 result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "Field Labor Activities must have a name." });
+            }
+
+            if (fieldLaborActivityDto.LaborTypeCrew == false &&
+                fieldLaborActivityDto.LaborTypeOperator == false)
+            {
+                result.Add(new ErrorMessage() { Type = "Labor Type", Message = "At least one labor type is required for Field Labor Activities" });
             }
 
             return result;
@@ -69,6 +82,7 @@ namespace OregonTilth.EFModels.Entities
             return dbContext.FieldLaborActivities
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .Include(x => x.FieldLaborActivityCategory)
+                .Include(x => x.FieldStandardTimes)
                 .AsNoTracking();
         }
 
@@ -78,20 +92,22 @@ namespace OregonTilth.EFModels.Entities
             return fieldLaborActivity?.AsDto();
         }
 
-        public static IQueryable<FieldLaborActivityDto> CreateNewFieldLaborActivity(OregonTilthDbContext dbContext, FieldLaborActivityUpsertDto fieldLaborActivityUpsertDto, UserDto userDtoUserID)
+        public static FieldLaborActivityDto CreateNewFieldLaborActivity(OregonTilthDbContext dbContext, FieldLaborActivityUpsertDto fieldLaborActivityUpsertDto, UserDto userDtoUserID)
         {
             var fieldLaborActivity = new FieldLaborActivity
             {
                FieldLaborActivityName = fieldLaborActivityUpsertDto.FieldLaborActivityName,
                FieldLaborActivityCategoryID = fieldLaborActivityUpsertDto.FieldLaborActivityCategoryID,
-               WorkbookID = fieldLaborActivityUpsertDto.WorkbookID
+               WorkbookID = fieldLaborActivityUpsertDto.WorkbookID,
+               LaborTypeCrew = fieldLaborActivityUpsertDto.LaborTypeCrew,
+               LaborTypeOperator = fieldLaborActivityUpsertDto.LaborTypeOperator
             };
 
             dbContext.FieldLaborActivities.Add(fieldLaborActivity);
             dbContext.SaveChanges();
             dbContext.Entry(fieldLaborActivity).Reload();
 
-            return GetDtoListByWorkbookID(dbContext, fieldLaborActivityUpsertDto.WorkbookID);
+            return GetDtoByFieldLaborActivityID(dbContext, fieldLaborActivity.FieldLaborActivityID);
         }
 
         public static FieldLaborActivityDto UpdateFieldLaborActivity(OregonTilthDbContext dbContext, FieldLaborActivityDto fieldLaborActivityDto)
@@ -102,6 +118,8 @@ namespace OregonTilth.EFModels.Entities
 
             fieldLaborActivity.FieldLaborActivityCategoryID = fieldLaborActivityDto.FieldLaborActivityCategory.FieldLaborActivityCategoryID;
             fieldLaborActivity.FieldLaborActivityName = fieldLaborActivityDto.FieldLaborActivityName;
+            fieldLaborActivity.LaborTypeCrew = fieldLaborActivityDto.LaborTypeCrew;
+            fieldLaborActivity.LaborTypeOperator = fieldLaborActivityDto.LaborTypeOperator;
 
             dbContext.SaveChanges();
             dbContext.Entry(fieldLaborActivity).Reload();
@@ -109,11 +127,17 @@ namespace OregonTilth.EFModels.Entities
             return GetDtoByFieldLaborActivityID(dbContext, fieldLaborActivity.FieldLaborActivityID);
         }
 
-        // todo: validate deletion
         public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int fieldLaborActivityID)
         {
             var result = new List<ErrorMessage>();
-            
+            var existingFieldLaborActivity = GetFieldLaborActivityImpl(dbContext).Single(x => x.FieldLaborActivityID == fieldLaborActivityID);
+
+
+            if (existingFieldLaborActivity.FieldStandardTimes.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Field Labor Activity", Message = "Cannot delete a Field Labor Activity that has Field Standard Time data." });
+            }
+
             return result;
         }
 

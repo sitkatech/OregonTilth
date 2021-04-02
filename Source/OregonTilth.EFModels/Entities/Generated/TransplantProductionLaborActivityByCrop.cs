@@ -9,24 +9,20 @@ using Microsoft.EntityFrameworkCore;
 namespace OregonTilth.EFModels.Entities
 {
     [Table("TransplantProductionLaborActivityByCrop")]
-    [Index(nameof(WorkbookID), nameof(CropID), nameof(TransplantProductionLaborActivityID), nameof(PhaseID), Name = "AK_TransplantProductionLaborActivityByCrop_WorkbookID_CropID_TransplantProductionLaborActivityID_LaborTypeID", IsUnique = true)]
+    [Index(nameof(WorkbookID), nameof(TransplantProductionLaborActivityID), nameof(TransplantProductionInformationID), Name = "AK_TransplantProductionLaborActivityByCrop_WorkbookID_TransplantProductionLaborActivityID_TransplantProductionInformationID", IsUnique = true)]
     public partial class TransplantProductionLaborActivityByCrop
     {
         [Key]
         public int TransplantProductionLaborActivityByCropID { get; set; }
         public int WorkbookID { get; set; }
-        public int CropID { get; set; }
         public int TransplantProductionLaborActivityID { get; set; }
-        public int? PhaseID { get; set; }
         [Column(TypeName = "decimal(18, 4)")]
         public decimal? Occurrences { get; set; }
+        public int TransplantProductionInformationID { get; set; }
 
-        [ForeignKey(nameof(CropID))]
+        [ForeignKey(nameof(TransplantProductionInformationID))]
         [InverseProperty("TransplantProductionLaborActivityByCrops")]
-        public virtual Crop Crop { get; set; }
-        [ForeignKey(nameof(PhaseID))]
-        [InverseProperty("TransplantProductionLaborActivityByCrops")]
-        public virtual Phase Phase { get; set; }
+        public virtual TransplantProductionInformation TransplantProductionInformation { get; set; }
         [ForeignKey(nameof(TransplantProductionLaborActivityID))]
         [InverseProperty("TransplantProductionLaborActivityByCrops")]
         public virtual TransplantProductionLaborActivity TransplantProductionLaborActivity { get; set; }

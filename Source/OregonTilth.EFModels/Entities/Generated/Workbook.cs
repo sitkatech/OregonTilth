@@ -14,17 +14,24 @@ namespace OregonTilth.EFModels.Entities
     {
         public Workbook()
         {
+            CropSpecificInfos = new HashSet<CropSpecificInfo>();
             CropUnits = new HashSet<CropUnit>();
+            CropYieldInformations = new HashSet<CropYieldInformation>();
             Crops = new HashSet<Crop>();
             FieldInputByCrops = new HashSet<FieldInputByCrop>();
             FieldInputCosts = new HashSet<FieldInputCost>();
             FieldLaborActivities = new HashSet<FieldLaborActivity>();
             FieldLaborByCrops = new HashSet<FieldLaborByCrop>();
+            FieldStandardTimes = new HashSet<FieldStandardTime>();
+            HarvestPostHarvestStandardTimes = new HashSet<HarvestPostHarvestStandardTime>();
             Machineries = new HashSet<Machinery>();
+            TimeStudies = new HashSet<TimeStudy>();
+            TransplantProductionInformations = new HashSet<TransplantProductionInformation>();
             TransplantProductionInputCosts = new HashSet<TransplantProductionInputCost>();
             TransplantProductionInputs = new HashSet<TransplantProductionInput>();
             TransplantProductionLaborActivities = new HashSet<TransplantProductionLaborActivity>();
             TransplantProductionLaborActivityByCrops = new HashSet<TransplantProductionLaborActivityByCrop>();
+            TransplantProductionStandardTimes = new HashSet<TransplantProductionStandardTime>();
             TransplantProductionTrayTypes = new HashSet<TransplantProductionTrayType>();
         }
 
@@ -36,12 +43,22 @@ namespace OregonTilth.EFModels.Entities
         [Required]
         [StringLength(255)]
         public string WorkbookName { get; set; }
+        [Column(TypeName = "money")]
+        public decimal? AverageHourlyWage { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
+        public decimal? StandardUnitOfSpaceLength { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
+        public decimal? StandardUnitOfSpaceWidth { get; set; }
 
         [ForeignKey(nameof(UserID))]
         [InverseProperty("Workbooks")]
         public virtual User User { get; set; }
+        [InverseProperty(nameof(CropSpecificInfo.Workbook))]
+        public virtual ICollection<CropSpecificInfo> CropSpecificInfos { get; set; }
         [InverseProperty(nameof(CropUnit.Workbook))]
         public virtual ICollection<CropUnit> CropUnits { get; set; }
+        [InverseProperty(nameof(CropYieldInformation.Workbook))]
+        public virtual ICollection<CropYieldInformation> CropYieldInformations { get; set; }
         [InverseProperty(nameof(Crop.Workbook))]
         public virtual ICollection<Crop> Crops { get; set; }
         [InverseProperty(nameof(FieldInputByCrop.Workbook))]
@@ -52,8 +69,16 @@ namespace OregonTilth.EFModels.Entities
         public virtual ICollection<FieldLaborActivity> FieldLaborActivities { get; set; }
         [InverseProperty(nameof(FieldLaborByCrop.Workbook))]
         public virtual ICollection<FieldLaborByCrop> FieldLaborByCrops { get; set; }
+        [InverseProperty(nameof(FieldStandardTime.Workbook))]
+        public virtual ICollection<FieldStandardTime> FieldStandardTimes { get; set; }
+        [InverseProperty(nameof(HarvestPostHarvestStandardTime.Workbook))]
+        public virtual ICollection<HarvestPostHarvestStandardTime> HarvestPostHarvestStandardTimes { get; set; }
         [InverseProperty(nameof(Machinery.Workbook))]
         public virtual ICollection<Machinery> Machineries { get; set; }
+        [InverseProperty(nameof(TimeStudy.Workbook))]
+        public virtual ICollection<TimeStudy> TimeStudies { get; set; }
+        [InverseProperty(nameof(TransplantProductionInformation.Workbook))]
+        public virtual ICollection<TransplantProductionInformation> TransplantProductionInformations { get; set; }
         [InverseProperty(nameof(TransplantProductionInputCost.Workbook))]
         public virtual ICollection<TransplantProductionInputCost> TransplantProductionInputCosts { get; set; }
         [InverseProperty(nameof(TransplantProductionInput.Workbook))]
@@ -62,6 +87,8 @@ namespace OregonTilth.EFModels.Entities
         public virtual ICollection<TransplantProductionLaborActivity> TransplantProductionLaborActivities { get; set; }
         [InverseProperty(nameof(TransplantProductionLaborActivityByCrop.Workbook))]
         public virtual ICollection<TransplantProductionLaborActivityByCrop> TransplantProductionLaborActivityByCrops { get; set; }
+        [InverseProperty(nameof(TransplantProductionStandardTime.Workbook))]
+        public virtual ICollection<TransplantProductionStandardTime> TransplantProductionStandardTimes { get; set; }
         [InverseProperty(nameof(TransplantProductionTrayType.Workbook))]
         public virtual ICollection<TransplantProductionTrayType> TransplantProductionTrayTypes { get; set; }
     }

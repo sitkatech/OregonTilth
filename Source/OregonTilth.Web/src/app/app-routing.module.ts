@@ -33,6 +33,15 @@ import { TransplantProductionInputsComponent } from './pages/workbooks/forms/tra
 import { TransplantProductionTrayTypesComponent } from './pages/workbooks/forms/transplant-production-tray-types/transplant-production-tray-types.component';
 import { TransplantProductionInputCostsComponent } from './pages/workbooks/forms/transplant-production-input-costs/transplant-production-input-costs.component';
 import { FieldInputByCropComponent } from './pages/workbooks/forms/field-input-by-crop/field-input-by-crop.component';
+import { TransplantProductionInformationComponent } from './pages/workbooks/forms/transplant-production-information/transplant-production-information.component';
+import { FieldStandardTimesComponent } from './pages/workbooks/forms/field-standard-times/field-standard-times.component';
+import { HarvestPostHarvestStandardTimesComponent } from './pages/workbooks/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-times.component';
+import { TransplantProductionStandardTimesComponent } from './pages/workbooks/forms/transplant-production-standard-times/transplant-production-standard-times.component';
+import { CropYieldInformationComponent } from './pages/workbooks/forms/crop-yield-information/crop-yield-information.component';
+import { CropSpecificInfoComponent } from './pages/workbooks/forms/crop-specific-info/crop-specific-info.component';
+import { CropCropUnitComponent } from './pages/workbooks/results/crop-crop-unit/crop-crop-unit.component';
+import { LaborHoursComponent } from './pages/workbooks/results/labor-hours/labor-hours.component';
+import { VariableCostsComponent } from './pages/workbooks/results/variable-costs/variable-costs.component';
 
 const routes: Routes = [
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -61,6 +70,15 @@ const routes: Routes = [
   { path: "workbooks/:id/forms/crop-units", component: CropUnitsComponent},
   { path: "workbooks/:id/forms/field-input-costs", component: FieldInputCostsComponent},
   { path: "workbooks/:id/forms/transplant-production-input-costs", component: TransplantProductionInputCostsComponent},
+  { path: "workbooks/:id/forms/transplant-production-information", component: TransplantProductionInformationComponent},
+  { path: "workbooks/:id/forms/field-standard-times", component: FieldStandardTimesComponent},
+  { path: "workbooks/:id/forms/harvest-post-harvest-standard-times", component: HarvestPostHarvestStandardTimesComponent},
+  { path: "workbooks/:id/forms/transplant-production-standard-times", component: TransplantProductionStandardTimesComponent},
+  { path: "workbooks/:id/forms/crop-yield-information", component: CropYieldInformationComponent},
+  { path: "workbooks/:id/forms/crop-specific-info", component: CropSpecificInfoComponent},
+  { path: "workbooks/:id/results/crop-crop-unit", component: CropCropUnitComponent},
+  { path: "workbooks/:id/results/labor-hours", component: LaborHoursComponent},
+  { path: "workbooks/:id/results/variable-costs", component: VariableCostsComponent},
   { path: "workbooks/:id", component: WorkbookDetailComponent},
   { path: "login-callback", component: LoginCallbackComponent },
   { path: "create-user-callback", component: CreateUserCallbackComponent },

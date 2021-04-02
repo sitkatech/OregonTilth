@@ -9,6 +9,6 @@ namespace OregonTilth.Models.DataTransferObjects
         [Required] public int TransplantProductionInputID { get; set; }
         [Required] public int TransplantProductionTrayTypeID { get; set; }
         [Required] public decimal CostPerTray { get; set; }
-        [Required] public string Notes { get; set; }
+        public string Notes { get; set; }
     }
 }

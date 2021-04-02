@@ -14,7 +14,7 @@ namespace OregonTilth.EFModels.Entities
     {
         public FieldLaborActivity()
         {
-            FieldLaborByCrops = new HashSet<FieldLaborByCrop>();
+            FieldStandardTimes = new HashSet<FieldStandardTime>();
         }
 
         [Key]
@@ -24,6 +24,8 @@ namespace OregonTilth.EFModels.Entities
         [StringLength(100)]
         public string FieldLaborActivityName { get; set; }
         public int FieldLaborActivityCategoryID { get; set; }
+        public bool LaborTypeCrew { get; set; }
+        public bool LaborTypeOperator { get; set; }
 
         [ForeignKey(nameof(FieldLaborActivityCategoryID))]
         [InverseProperty("FieldLaborActivities")]
@@ -31,7 +33,7 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("FieldLaborActivities")]
         public virtual Workbook Workbook { get; set; }
-        [InverseProperty(nameof(FieldLaborByCrop.FieldLaborActivity))]
-        public virtual ICollection<FieldLaborByCrop> FieldLaborByCrops { get; set; }
+        [InverseProperty(nameof(FieldStandardTime.FieldLaborActivity))]
+        public virtual ICollection<FieldStandardTime> FieldStandardTimes { get; set; }
     }
 }

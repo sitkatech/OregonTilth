@@ -14,7 +14,9 @@ namespace OregonTilth.EFModels.Entities
     {
         public TransplantProductionTrayType()
         {
+            TransplantProductionInformations = new HashSet<TransplantProductionInformation>();
             TransplantProductionInputCosts = new HashSet<TransplantProductionInputCost>();
+            TransplantProductionStandardTimes = new HashSet<TransplantProductionStandardTime>();
         }
 
         [Key]
@@ -27,7 +29,11 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("TransplantProductionTrayTypes")]
         public virtual Workbook Workbook { get; set; }
+        [InverseProperty(nameof(TransplantProductionInformation.TransplantProductionTrayType))]
+        public virtual ICollection<TransplantProductionInformation> TransplantProductionInformations { get; set; }
         [InverseProperty(nameof(TransplantProductionInputCost.TransplantProductionTrayType))]
         public virtual ICollection<TransplantProductionInputCost> TransplantProductionInputCosts { get; set; }
+        [InverseProperty(nameof(TransplantProductionStandardTime.TransplantProductionTrayType))]
+        public virtual ICollection<TransplantProductionStandardTime> TransplantProductionStandardTimes { get; set; }
     }
 }

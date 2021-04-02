@@ -96,13 +96,26 @@ namespace OregonTilth.EFModels.Entities
         {
             return dbContext.CropUnits
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.CropYieldInformations)
+                .Include(x => x.HarvestPostHarvestStandardTimes)
                 .AsNoTracking();
         }
 
-        // todo: validate deletion
         public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int cropUnitID)
         {
+            var cropUnit = GetCropUnitImpl(dbContext).Single(x => x.CropUnitID == cropUnitID);
+            
             var result = new List<ErrorMessage>();
+
+            if (cropUnit.CropYieldInformations.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Crop Unit", Message = "Cannot delete a Crop Unit that has Crop Yield Information." });
+            }
+
+            if (cropUnit.HarvestPostHarvestStandardTimes.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Crop Unit", Message = "Cannot delete a Crop Unit that has Harvest/Post-Harvest time study data." });
+            }
 
             return result;
         }

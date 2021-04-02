@@ -13,7 +13,7 @@ export class ButtonRendererComponent implements AgRendererComponent {
   agInit(params: any): void {
     if(params.value === null)
     {
-      params = { value: { ButtonText: "", PrimaryKey: -1, ObjectDisplayName: ""}, }
+      params = { value: { ButtonText: "", PrimaryKey: -1, ObjectDisplayName: ""}, data: params.data }
     }
     else
     {
@@ -21,7 +21,7 @@ export class ButtonRendererComponent implements AgRendererComponent {
     }
   }
   btnClickedHandler() {
-    this.params.clicked(this.params.value);
+    this.params.clicked(this.params.value, this.params.data);
   }
 
   refresh(params: any): boolean {

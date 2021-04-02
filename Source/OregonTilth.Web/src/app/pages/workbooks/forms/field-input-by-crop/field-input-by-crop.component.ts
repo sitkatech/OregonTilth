@@ -17,6 +17,7 @@ import { FieldInputByCropDto } from 'src/app/shared/models/generated/field-input
 import { FieldInputByCropCreateDto } from 'src/app/shared/models/forms/field-input-by-crop/field-input-by-crop-create-dto';
 import { FieldInputCostDto } from 'src/app/shared/models/generated/field-input-cost-dto';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 @Component({
   selector: 'field-input-labor-by-crop',
   templateUrl: './field-input-by-crop.component.html',
@@ -64,32 +65,36 @@ export class FieldInputByCropComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new FieldInputByCropCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getCropDtosRequest = this.workbookService.getCrops(this.workbookID);
-      this.getFieldInputCostDtosRequest = this.workbookService.getFieldInputCosts(this.workbookID);
-
-      this.getFieldInputByCropsRequest = this.workbookService.getFieldInputByCrops(this.workbookID);
-
-      forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldInputCostDtosRequest,  this.getFieldInputByCropsRequest]).subscribe(([workbookDto, cropDtos, fieldInputCostDtos, fieldInputByCrops]: [WorkbookDto, CropDto[], FieldInputCostDto[], FieldInputByCropDto[]] ) => {
-          this.workbook = workbookDto;
-          this.cropDtos = cropDtos;
-          this.fieldInputCostDtos = fieldInputCostDtos;
-          this.fieldInputByCropDtos = fieldInputByCrops;
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
-
-      this.dropdownSettings = {
-        singleSelection: false,
-        idField: 'FieldInputCostID',
-        textField: 'FieldInputCostName',
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        itemsShowLimit: 10,
-        allowSearchFilter: true
-      };
+      this.refreshData();
 
     });
+  }
+
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getCropDtosRequest = this.workbookService.getCrops(this.workbookID);
+    this.getFieldInputCostDtosRequest = this.workbookService.getFieldInputCosts(this.workbookID);
+
+    this.getFieldInputByCropsRequest = this.workbookService.getFieldInputByCrops(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldInputCostDtosRequest, this.getFieldInputByCropsRequest]).subscribe(([workbookDto, cropDtos, fieldInputCostDtos, fieldInputByCrops]: [WorkbookDto, CropDto[], FieldInputCostDto[], FieldInputByCropDto[]]) => {
+      this.workbook = workbookDto;
+      this.cropDtos = cropDtos;
+      this.fieldInputCostDtos = fieldInputCostDtos;
+      this.fieldInputByCropDtos = fieldInputByCrops;
+      this.defineColumnDefs();
+      this.cdr.markForCheck();
+    });
+
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'FieldInputCostID',
+      textField: 'FieldInputCostName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 10,
+      allowSearchFilter: true
+    };
   }
 
   defineColumnDefs() {
@@ -115,6 +120,7 @@ export class FieldInputByCropComponent implements OnInit {
         cellEditorParams: {
           values: this.cropDtos.map(x => x.CropName)
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -138,6 +144,7 @@ export class FieldInputByCropComponent implements OnInit {
         cellEditorParams: {
           values: this.fieldInputCostDtos.map(x => x.FieldInputCostName)
         },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -153,7 +160,8 @@ export class FieldInputByCropComponent implements OnInit {
               return { backgroundColor: '#ccf5cc'};
           } 
           return {backgroundColor: '#ffdfd6'};
-        }
+        },
+        cellRendererFramework: EditableRendererComponent,
       },
       {
         headerName: 'Delete', valueGetter: function (params: any) {
@@ -187,9 +195,13 @@ export class FieldInputByCropComponent implements OnInit {
 
     this.updateFieldInputByCropRequest = this.workbookService.updateFieldInputByCrop(dtoToPost).subscribe(fieldInputByCrop => {
       data.node.setData(fieldInputByCrop);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Field Input By Crop", AlertContext.Success));
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })
@@ -231,16 +243,16 @@ export class FieldInputByCropComponent implements OnInit {
   onSubmit(fieldInputByCropForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
     this.addFieldInputByCropRequest = this.workbookService.addFieldInputByCrop(this.model).subscribe(response => {
+      var transactionRows = this.gridApi.applyTransaction({add: response });
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.isLoadingSubmit = false;
-      
-      this.fieldInputByCropDtos = response;
-      
-      
-      this.alertService.pushAlert(new Alert("Successfully added record(s).", AlertContext.Success));
+      if(response.length > 0){
+        this.alertService.pushAlert(new Alert(`Successfully added ${response.length} Field Input By Crop(s) for Crop '${response[0].Crop.CropName}'.`, AlertContext.Success));
+      }else{
+        this.alertService.pushAlert(new Alert(`No Field Input By Crop was added.`, AlertContext.Info));
+      }
       this.resetForm();
-
       this.cdr.detectChanges();
-      this.gridApi.redrawRows();
       
     }, error => { 
       this.isLoadingSubmit = false;

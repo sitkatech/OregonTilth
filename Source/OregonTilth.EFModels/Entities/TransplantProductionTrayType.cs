@@ -67,6 +67,9 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<TransplantProductionTrayType> GetTransplantProductionTrayTypeImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.TransplantProductionTrayTypes
+                .Include(x => x.TransplantProductionInformations)
+                .Include(x => x.TransplantProductionInputCosts)
+                .Include(x => x.TransplantProductionStandardTimes)
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
 
                 .AsNoTracking();
@@ -78,7 +81,7 @@ namespace OregonTilth.EFModels.Entities
             return transplantProductionTrayType?.AsDto();
         }
 
-        public static IQueryable<TransplantProductionTrayTypeDto> CreateNewTransplantProductionTrayType(OregonTilthDbContext dbContext, TransplantProductionTrayTypeCreateDto transplantProductionTrayTypeCreateDto, UserDto userDto)
+        public static TransplantProductionTrayTypeDto CreateNewTransplantProductionTrayType(OregonTilthDbContext dbContext, TransplantProductionTrayTypeCreateDto transplantProductionTrayTypeCreateDto, UserDto userDto)
         {
             var transplantProductionTrayType = new TransplantProductionTrayType
             {
@@ -90,7 +93,7 @@ namespace OregonTilth.EFModels.Entities
             dbContext.SaveChanges();
             dbContext.Entry(transplantProductionTrayType).Reload();
 
-            return GetDtoListByWorkbookID(dbContext, transplantProductionTrayTypeCreateDto.WorkbookID);
+            return GetByID(dbContext, transplantProductionTrayType.TransplantProductionTrayTypeID).AsDto();
         }
 
         public static TransplantProductionTrayTypeDto UpdateTransplantProductionTrayType(OregonTilthDbContext dbContext, TransplantProductionTrayTypeDto transplantProductionTrayTypeDto)
@@ -106,10 +109,29 @@ namespace OregonTilth.EFModels.Entities
             return GetDtoByTransplantProductionTrayTypeID(dbContext, transplantProductionTrayType.TransplantProductionTrayTypeID);
         }
 
+        public static TransplantProductionTrayType GetByID(OregonTilthDbContext dbContext, int transplantProductionTrayTypeID)
+        {
+            return GetTransplantProductionTrayTypeImpl(dbContext).Single(x => x.TransplantProductionTrayTypeID == transplantProductionTrayTypeID);
+        }
+
         // todo: validate deletion
         public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int transplantProductionTrayTypeID)
         {
             var result = new List<ErrorMessage>();
+            var transplantProductionTrayType = GetByID(dbContext, transplantProductionTrayTypeID);
+            if (transplantProductionTrayType.TransplantProductionInformations.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = $"Cannot delete '{transplantProductionTrayType.TransplantProductionTrayTypeName}' because it is used on the Transplant Production Information form." });
+            }
+            if (transplantProductionTrayType.TransplantProductionInputCosts.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = $"Cannot delete '{transplantProductionTrayType.TransplantProductionTrayTypeName}' because it is used on the Transplant Production Input Costs form." });
+            }
+            if (transplantProductionTrayType.TransplantProductionStandardTimes.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = $"Cannot delete '{transplantProductionTrayType.TransplantProductionTrayTypeName}' because it is used on the Transplant Production Standard Times form." });
+            }
+
 
             return result;
         }

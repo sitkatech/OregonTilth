@@ -21,11 +21,23 @@
         <div class="col">
             <form *ngIf=(model) (ngSubmit)="onSubmit(newWorkbookForm)" #newWorkbookForm="ngForm">
                 <div class="form-group mt-4 row">
-                  <div class="col-sm-2 control-label">
+                  <div class="col-sm-4 control-label">
                     <label class="required">Workbook Name</label>
-                  </div>
-                  <div class="col-sm-10">
                     <input class="form-control" type="text" name="WorkbookName" [(ngModel)]="model.WorkbookName">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-4">
+                      <label class="control-label">Average Hourly Wage</label>
+                      <input class="form-control" type="number" name="AverageHourlyWage" [(ngModel)]="model.AverageHourlyWage">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Standard Unit of Space Length</label>
+                    <input class="form-control" type="number" name="StandardUnitOfSpaceLength" [(ngModel)]="model.StandardUnitOfSpaceLength">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Standard Unit of Space Width</label>
+                    <input class="form-control" type="number" name="StandardUnitOfSpaceWidth" [(ngModel)]="model.StandardUnitOfSpaceWidth">
                   </div>
                 </div>
                 <div class="row">

@@ -18,7 +18,9 @@ namespace OregonTilth.EFModels.Entities
         }
 
         public virtual DbSet<Crop> Crops { get; set; }
+        public virtual DbSet<CropSpecificInfo> CropSpecificInfos { get; set; }
         public virtual DbSet<CropUnit> CropUnits { get; set; }
+        public virtual DbSet<CropYieldInformation> CropYieldInformations { get; set; }
         public virtual DbSet<CustomRichText> CustomRichTexts { get; set; }
         public virtual DbSet<CustomRichTextType> CustomRichTextTypes { get; set; }
         public virtual DbSet<DatabaseMigration> DatabaseMigrations { get; set; }
@@ -29,22 +31,28 @@ namespace OregonTilth.EFModels.Entities
         public virtual DbSet<FieldLaborActivity> FieldLaborActivities { get; set; }
         public virtual DbSet<FieldLaborActivityCategory> FieldLaborActivityCategories { get; set; }
         public virtual DbSet<FieldLaborByCrop> FieldLaborByCrops { get; set; }
+        public virtual DbSet<FieldStandardTime> FieldStandardTimes { get; set; }
         public virtual DbSet<FieldUnitType> FieldUnitTypes { get; set; }
         public virtual DbSet<FileResource> FileResources { get; set; }
         public virtual DbSet<FileResourceMimeType> FileResourceMimeTypes { get; set; }
+        public virtual DbSet<HarvestPostHarvestStandardTime> HarvestPostHarvestStandardTimes { get; set; }
         public virtual DbSet<HarvestType> HarvestTypes { get; set; }
         public virtual DbSet<LaborType> LaborTypes { get; set; }
         public virtual DbSet<Machinery> Machineries { get; set; }
         public virtual DbSet<Phase> Phases { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<TimeStudy> TimeStudies { get; set; }
         public virtual DbSet<TpOrDsType> TpOrDsTypes { get; set; }
+        public virtual DbSet<TransplantProductionInformation> TransplantProductionInformations { get; set; }
         public virtual DbSet<TransplantProductionInput> TransplantProductionInputs { get; set; }
         public virtual DbSet<TransplantProductionInputCost> TransplantProductionInputCosts { get; set; }
         public virtual DbSet<TransplantProductionLaborActivity> TransplantProductionLaborActivities { get; set; }
         public virtual DbSet<TransplantProductionLaborActivityByCrop> TransplantProductionLaborActivityByCrops { get; set; }
+        public virtual DbSet<TransplantProductionStandardTime> TransplantProductionStandardTimes { get; set; }
         public virtual DbSet<TransplantProductionTrayType> TransplantProductionTrayTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Workbook> Workbooks { get; set; }
+        public virtual DbSet<vFieldLaborActivityForTimeStudy> vFieldLaborActivityForTimeStudies { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -69,12 +77,49 @@ namespace OregonTilth.EFModels.Entities
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
+            modelBuilder.Entity<CropSpecificInfo>(entity =>
+            {
+                entity.HasOne(d => d.Crop)
+                    .WithMany(p => p.CropSpecificInfos)
+                    .HasForeignKey(d => d.CropID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.TpOrDsType)
+                    .WithMany(p => p.CropSpecificInfos)
+                    .HasForeignKey(d => d.TpOrDsTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CropSpecificInfo_TpOrDsType");
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.CropSpecificInfos)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
             modelBuilder.Entity<CropUnit>(entity =>
             {
                 entity.Property(e => e.CropUnitName).IsUnicode(false);
 
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.CropUnits)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<CropYieldInformation>(entity =>
+            {
+                entity.HasOne(d => d.Crop)
+                    .WithMany(p => p.CropYieldInformations)
+                    .HasForeignKey(d => d.CropID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.CropUnit)
+                    .WithMany(p => p.CropYieldInformations)
+                    .HasForeignKey(d => d.CropUnitID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.CropYieldInformations)
                     .HasForeignKey(d => d.WorkbookID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
@@ -191,18 +236,31 @@ namespace OregonTilth.EFModels.Entities
                     .HasForeignKey(d => d.CropID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.FieldLaborActivity)
+                entity.HasOne(d => d.FieldStandardTime)
                     .WithMany(p => p.FieldLaborByCrops)
-                    .HasForeignKey(d => d.FieldLaborActivityID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
-                entity.HasOne(d => d.LaborType)
-                    .WithMany(p => p.FieldLaborByCrops)
-                    .HasForeignKey(d => d.LaborTypeID)
+                    .HasForeignKey(d => d.FieldStandardTimeID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.FieldLaborByCrops)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<FieldStandardTime>(entity =>
+            {
+                entity.HasOne(d => d.FieldLaborActivity)
+                    .WithMany(p => p.FieldStandardTimes)
+                    .HasForeignKey(d => d.FieldLaborActivityID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.LaborType)
+                    .WithMany(p => p.FieldStandardTimes)
+                    .HasForeignKey(d => d.LaborTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.FieldStandardTimes)
                     .HasForeignKey(d => d.WorkbookID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
@@ -247,6 +305,29 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.FileResourceMimeTypeIconSmallFilename).IsUnicode(false);
 
                 entity.Property(e => e.FileResourceMimeTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<HarvestPostHarvestStandardTime>(entity =>
+            {
+                entity.HasOne(d => d.Crop)
+                    .WithMany(p => p.HarvestPostHarvestStandardTimes)
+                    .HasForeignKey(d => d.CropID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.CropUnit)
+                    .WithMany(p => p.HarvestPostHarvestStandardTimes)
+                    .HasForeignKey(d => d.CropUnitID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.HarvestType)
+                    .WithMany(p => p.HarvestPostHarvestStandardTimes)
+                    .HasForeignKey(d => d.HarvestTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.HarvestPostHarvestStandardTimes)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<HarvestType>(entity =>
@@ -297,6 +378,16 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.RoleName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<TimeStudy>(entity =>
+            {
+                entity.Property(e => e.Notes).IsUnicode(false);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TimeStudies)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
             modelBuilder.Entity<TpOrDsType>(entity =>
             {
                 entity.Property(e => e.TpOrDsTypeID).ValueGeneratedNever();
@@ -304,6 +395,29 @@ namespace OregonTilth.EFModels.Entities
                 entity.Property(e => e.TpOrDsTypeDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.TpOrDsTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<TransplantProductionInformation>(entity =>
+            {
+                entity.HasOne(d => d.Crop)
+                    .WithMany(p => p.TransplantProductionInformations)
+                    .HasForeignKey(d => d.CropID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Phase)
+                    .WithMany(p => p.TransplantProductionInformations)
+                    .HasForeignKey(d => d.PhaseID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.TransplantProductionTrayType)
+                    .WithMany(p => p.TransplantProductionInformations)
+                    .HasForeignKey(d => d.TransplantProductionTrayTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TransplantProductionInformations)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<TransplantProductionInput>(entity =>
@@ -349,9 +463,9 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<TransplantProductionLaborActivityByCrop>(entity =>
             {
-                entity.HasOne(d => d.Crop)
+                entity.HasOne(d => d.TransplantProductionInformation)
                     .WithMany(p => p.TransplantProductionLaborActivityByCrops)
-                    .HasForeignKey(d => d.CropID)
+                    .HasForeignKey(d => d.TransplantProductionInformationID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.TransplantProductionLaborActivity)
@@ -361,6 +475,24 @@ namespace OregonTilth.EFModels.Entities
 
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.TransplantProductionLaborActivityByCrops)
+                    .HasForeignKey(d => d.WorkbookID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<TransplantProductionStandardTime>(entity =>
+            {
+                entity.HasOne(d => d.TransplantProductionLaborActivity)
+                    .WithMany(p => p.TransplantProductionStandardTimes)
+                    .HasForeignKey(d => d.TransplantProductionLaborActivityID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.TransplantProductionTrayType)
+                    .WithMany(p => p.TransplantProductionStandardTimes)
+                    .HasForeignKey(d => d.TransplantProductionTrayTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Workbook)
+                    .WithMany(p => p.TransplantProductionStandardTimes)
                     .HasForeignKey(d => d.WorkbookID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
@@ -403,6 +535,15 @@ namespace OregonTilth.EFModels.Entities
                     .WithMany(p => p.Workbooks)
                     .HasForeignKey(d => d.UserID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<vFieldLaborActivityForTimeStudy>(entity =>
+            {
+                entity.ToView("vFieldLaborActivityForTimeStudy");
+
+                entity.Property(e => e.FieldLaborActivityName).IsUnicode(false);
+
+                entity.Property(e => e.LaborTypeDisplayName).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

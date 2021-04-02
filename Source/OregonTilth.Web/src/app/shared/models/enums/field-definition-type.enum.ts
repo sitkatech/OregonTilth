@@ -22,5 +22,12 @@ export enum FieldDefinitionTypeEnum {
     PreSeason = 21,
     InSeason = 22,
     PostSeason = 23,
-    Results = 24
+    Results = 24,
+	AverageHourlyWage = 25,
+	StandardUnitOfSpaceLength = 26,
+	StandardUnitOfSpaceWidth = 27,
+    ResultsCropCropUnit = 28,
+    ResultsCropCropUnitLaborHours = 29,
+    ResultsCropCropUnitCostsPerCostCategory = 30
+
 }

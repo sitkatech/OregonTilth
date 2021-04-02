@@ -20,6 +20,7 @@ import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/f
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'field-labor-activities',
@@ -36,6 +37,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
@@ -56,6 +58,10 @@ export class FieldLaborActivitiesComponent implements OnInit {
   private deleteFieldLaborActivityRequest: any;
 
   public columnDefs: ColDef[];
+
+  getRowNodeId(data)  {
+    return data.FieldLaborActivityID.toString();
+  }
  
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -63,19 +69,27 @@ export class FieldLaborActivitiesComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getFieldLaborActivityCategoriesRequest = this.lookupTablesService.getFieldLaborActivityCategories();
-      this.getFieldLaborActivitiesRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
-
-      forkJoin([this.getWorkbookRequest, this.getFieldLaborActivityCategoriesRequest, this.getFieldLaborActivitiesRequest]).subscribe(([workbook, fieldLaborActivityCategories, fieldLaborActivities]: [WorkbookDto, FieldLaborActivityCategoryDto[], FieldLaborActivityDto[]] ) => {
-          this.workbook = workbook;
-          this.fieldLaborActivityCategories = fieldLaborActivityCategories;
-          this.fieldLaborActivities = fieldLaborActivities;
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
+      this.refreshData();
 
     });
+  }
+
+  private refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getFieldLaborActivityCategoriesRequest = this.lookupTablesService.getFieldLaborActivityCategories();
+    this.getFieldLaborActivitiesRequest = this.workbookService.getFieldLaborActivities(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getFieldLaborActivityCategoriesRequest, this.getFieldLaborActivitiesRequest]).subscribe(([workbook, fieldLaborActivityCategories, fieldLaborActivities]: [WorkbookDto, FieldLaborActivityCategoryDto[], FieldLaborActivityDto[]]) => {
+      this.workbook = workbook;
+      this.fieldLaborActivityCategories = fieldLaborActivityCategories;
+      this.fieldLaborActivities = fieldLaborActivities;
+      this.defineColumnDefs();
+      this.cdr.markForCheck();
+    });
+  }
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
   }
 
   defineColumnDefs() {
@@ -85,7 +99,8 @@ export class FieldLaborActivitiesComponent implements OnInit {
         headerName: 'Field Labor Activity', 
         field: 'FieldLaborActivityName',
         editable: true,
-        cellEditor: 'agPopupTextCellEditor',
+        cellEditor: 'agTextCellEditor',
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -93,7 +108,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
         headerName: 'Field Labor Category', 
         field: 'FieldLaborActivityCategory',
         editable: true,
-        cellEditor: 'agPopupSelectCellEditor',
+        cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.fieldLaborActivityCategories.map(x => x.FieldLaborActivityCategoryDisplayName)
         },
@@ -106,6 +121,57 @@ export class FieldLaborActivitiesComponent implements OnInit {
           });
           return true;
         },
+        cellRendererFramework: EditableRendererComponent,
+        sortable: true, 
+        filter: true,
+      },
+      {
+        headerName: 'Crew', 
+        field: 'LaborTypeCrew',
+        editable: true,
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['Yes', 'No']
+        },
+        valueFormatter: function (params) {
+          if(params.value == "Yes" || params.value == true) {
+            return "Yes";
+          } 
+          return "No";
+        },
+        valueSetter: params => {
+          params.data.LaborTypeCrew = params.newValue == "Yes" ? true : false;
+          return true;
+        },
+        valueGetter: params => {
+          return params.data.LaborTypeCrew ? "Yes" : "No";
+        },
+        cellRendererFramework: EditableRendererComponent,
+        sortable: true, 
+        filter: true,
+      },
+      {
+        headerName: 'Operator', 
+        field: 'LaborTypeOperator',
+        editable: true,
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['Yes', 'No']
+        },
+        valueFormatter: function (params) {
+          if(params.value == "Yes" || params.value == true) {
+            return "Yes";
+          } 
+          return "No";
+        },
+        valueSetter: params => {
+          params.data.LaborTypeOperator = params.newValue == "Yes" ? true : false;
+          return true;
+        },
+        valueGetter: params => {
+          return params.data.LaborTypeOperator ? "Yes" : "No";
+        },
+        cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
       },
@@ -127,7 +193,8 @@ export class FieldLaborActivitiesComponent implements OnInit {
 
   deleteFieldLaborActivity(fieldLaborActivityID: number) {
     this.deleteFieldLaborActivityRequest = this.workbookService.deleteFieldLaborActivity(this.workbookID, fieldLaborActivityID).subscribe(fieldLaborActivityDtos => {
-      this.fieldLaborActivities = fieldLaborActivityDtos;
+      var rowToRemove = this.gridApi.getRowNode(fieldLaborActivityID.toString());
+      this.gridApi.applyTransaction({remove:[rowToRemove.data]})
       this.alertService.pushAlert(new Alert("Successfully deleted Field Labor Activity", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
@@ -140,9 +207,13 @@ export class FieldLaborActivitiesComponent implements OnInit {
 
     this.updateFieldLaborActivityRequest = this.workbookService.updateFieldLaborActivity(dtoToPost).subscribe(fieldLaborActivity => {
       data.node.setData(fieldLaborActivity);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert("Successfully updated Field Labor Activity", AlertContext.Success));
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })
@@ -177,8 +248,8 @@ export class FieldLaborActivitiesComponent implements OnInit {
     this.isLoadingSubmit = true;
     this.addFieldLaborActivityRequest = this.workbookService.addFieldLaborActivity(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.fieldLaborActivities = response;
-      this.alertService.pushAlert(new Alert("Successfully added Field Labor Activity.", AlertContext.Success));
+      var transactionRows = this.gridApi.applyTransaction({add: [response]});
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.resetForm();
       this.cdr.detectChanges();
       
@@ -189,7 +260,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
   }
 
   resetForm() {
-    this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID, FieldLaborActivityCategoryID: this.model.FieldLaborActivityCategoryID});
+    this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID});
   }
 
 }

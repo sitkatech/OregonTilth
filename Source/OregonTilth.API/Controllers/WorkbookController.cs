@@ -7,6 +7,7 @@ using OregonTilth.API.Services.Filters;
 using OregonTilth.EFModels.Entities;
 using OregonTilth.Models.DataTransferObjects;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OregonTilth.API.Controllers
 {
@@ -164,7 +165,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/machinery")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<MachineryDto>> CreateMachinery([FromBody] MachineryUpsertDto machineryUpsertDto)
+        public ActionResult<MachineryDto> CreateMachinery([FromBody] MachineryUpsertDto machineryUpsertDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
 
@@ -175,8 +176,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var machineryDtos = Machinery.CreateNewMachinery(_dbContext, machineryUpsertDto, userDto);
-            return Ok(machineryDtos);
+            var machineryDto = Machinery.CreateNewMachinery(_dbContext, machineryUpsertDto, userDto);
+            return Ok(machineryDto);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/machinery")]
@@ -229,7 +230,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/crops")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<CropDto>> CreateCrop([FromBody] CropCreateDto cropCreateDto)
+        public ActionResult<CropDto> CreateCrop([FromBody] CropCreateDto cropCreateDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
 
@@ -240,8 +241,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var cropDtos = Crop.CreateNewCrop(_dbContext, cropCreateDto, userDto);
-            return Ok(cropDtos);
+            var cropDto = Crop.CreateNewCrop(_dbContext, cropCreateDto, userDto);
+            return Ok(cropDto);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/crops")]
@@ -368,8 +369,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var fieldLaborByCropDtos = FieldLaborByCrop.CreateNewFieldLaborByCrop(_dbContext, fieldLaborByCropCreateDto);
-            return Ok(fieldLaborByCropDtos);
+            var addedFieldLaborByCrops = FieldLaborByCrop.CreateNewFieldLaborByCrop(_dbContext, fieldLaborByCropCreateDto);
+            return Ok(addedFieldLaborByCrops);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/field-labor-by-crop")]
@@ -421,17 +422,17 @@ namespace OregonTilth.API.Controllers
         #region "Field Input Costs Form"
         [HttpPost("workbooks/forms/field-input-costs")]
         [WorkbookEditFeature]
-        public ActionResult<IEnumerable<FieldInputCostDto>> CreateFieldInputCost([FromBody] FieldInputCostCreateDto fieldInputByCostCreateDto)
+        public ActionResult<FieldInputCostDto> CreateFieldInputCost([FromBody] FieldInputCostCreateDto fieldInputCostCreateDto)
         {
-            var validationMessages = FieldInputCost.ValidateCreate(_dbContext, fieldInputByCostCreateDto);
+            var validationMessages = FieldInputCost.ValidateCreate(_dbContext, fieldInputCostCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var fieldInputByCostDtos = FieldInputCost.CreateNewFieldInputCost(_dbContext, fieldInputByCostCreateDto);
-            return Ok(fieldInputByCostDtos);
+            var fieldInputCostDto = FieldInputCost.CreateNewFieldInputCost(_dbContext, fieldInputCostCreateDto);
+            return Ok(fieldInputCostDto);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/field-input-costs")]
@@ -481,7 +482,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/transplant-production-labor-activities")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<TransplantProductionLaborActivityDto>> CreateTransplantProductionLaborActivity([FromBody] TransplantProductionLaborActivityCreateDto transplantProductionLaborActivityCreateDto)
+        public ActionResult<TransplantProductionLaborActivityDto> CreateTransplantProductionLaborActivity([FromBody] TransplantProductionLaborActivityCreateDto transplantProductionLaborActivityCreateDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
 
@@ -501,8 +502,18 @@ namespace OregonTilth.API.Controllers
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
         public ActionResult<IEnumerable<TransplantProductionLaborActivityDto>> GetTransplantProductionLaborActivities([FromRoute] int workbookID)
         {
-            var fieldLaborActivities = TransplantProductionLaborActivity.GetDtoListByWorkbookID(_dbContext, workbookID);
-            return Ok(fieldLaborActivities);
+            var transplantProductionLaborActivityDtos = TransplantProductionLaborActivity.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(transplantProductionLaborActivityDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/transplant-production-labor-activities-from-tp-standard-times")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionLaborActivityDto>> GetTransplantProductionLaborActivitiesFromTransplantProductionStandardTimes([FromRoute] int workbookID)
+        {
+            var transplantProductionStandardTimeDtos = TransplantProductionStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+            var transplantProductionLaborActivityDtos = transplantProductionStandardTimeDtos.Select(x => x.TransplantProductionLaborActivity);
+            return Ok(transplantProductionLaborActivityDtos);
         }
 
         [HttpPut("workbooks/{workbookID}/forms/transplant-production-labor-activities")]
@@ -547,7 +558,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/transplant-production-labor-by-crop")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<TransplantProductionLaborActivityByCropDto>> CreateTransplantProductionLaborActivityByCrop([FromBody] TransplantProductionLaborActivityByCropCreateDto transplantProductionLaborByCropCreateDto)
+        public ActionResult<IEnumerable<TransplantProductionLaborActivityByCropSummaryDto>> CreateTransplantProductionLaborActivityByCrop([FromBody] TransplantProductionLaborActivityByCropCreateDto transplantProductionLaborByCropCreateDto)
         {
             var validationMessages = TransplantProductionLaborActivityByCrop.ValidateCreate(_dbContext, transplantProductionLaborByCropCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
@@ -556,8 +567,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var transplantProductionLaborByCropDtos = TransplantProductionLaborActivityByCrop.CreateBulk(_dbContext, transplantProductionLaborByCropCreateDto);
-            return Ok(transplantProductionLaborByCropDtos);
+            var addedTransplantProductionLaborByCropDtos = TransplantProductionLaborActivityByCrop.CreateBulk(_dbContext, transplantProductionLaborByCropCreateDto);
+            return Ok(addedTransplantProductionLaborByCropDtos);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/transplant-production-labor-by-crop")]
@@ -610,7 +621,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/transplant-production-inputs")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<TransplantProductionInputDto>> CreateTransplantProductionInput([FromBody] TransplantProductionInputCreateDto transplantProductionInputCreateDto)
+        public ActionResult<TransplantProductionInputDto> CreateTransplantProductionInput([FromBody] TransplantProductionInputCreateDto transplantProductionInputCreateDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
 
@@ -621,8 +632,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var transplantProductionInputDtos = TransplantProductionInput.CreateNewTransplantProductionInput(_dbContext, transplantProductionInputCreateDto, userDto);
-            return Ok(transplantProductionInputDtos);
+            var tpInput = TransplantProductionInput.CreateNewTransplantProductionInput(_dbContext, transplantProductionInputCreateDto, userDto);
+            return Ok(tpInput);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/transplant-production-inputs")]
@@ -676,7 +687,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/transplant-production-tray-types")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<TransplantProductionTrayTypeDto>> CreateTransplantProductionTrayType([FromBody] TransplantProductionTrayTypeCreateDto transplantProductionTrayTypeCreateDto)
+        public ActionResult<TransplantProductionTrayTypeDto> CreateTransplantProductionTrayType([FromBody] TransplantProductionTrayTypeCreateDto transplantProductionTrayTypeCreateDto)
         {
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
 
@@ -741,7 +752,7 @@ namespace OregonTilth.API.Controllers
         #region "Transplant Production Input Costs Form"
         [HttpPost("workbooks/{workbookID}/forms/transplant-production-input-costs")]
         [WorkbookEditFeature]
-        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> CreateTransplantProductionInputCost([FromBody] TransplantProductionInputCostCreateDto transplantProductionInputCostCreateDto)
+        public ActionResult<TransplantProductionInputCostDto> CreateTransplantProductionInputCost([FromBody] TransplantProductionInputCostCreateDto transplantProductionInputCostCreateDto)
         {
             var validationMessages = TransplantProductionInputCost.ValidateCreate(_dbContext, transplantProductionInputCostCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
@@ -750,8 +761,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var transplantProductionInputCostDtos = TransplantProductionInputCost.CreateNewTransplantProductionInputCost(_dbContext, transplantProductionInputCostCreateDto);
-            return Ok(transplantProductionInputCostDtos);
+            var transplantProductionInputCostDto = TransplantProductionInputCost.CreateNewTransplantProductionInputCost(_dbContext, transplantProductionInputCostCreateDto);
+            return Ok(transplantProductionInputCostDto);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/transplant-production-input-costs")]
@@ -801,7 +812,7 @@ namespace OregonTilth.API.Controllers
         [HttpPost("workbooks/{workbookID}/forms/field-input-by-crop")]
         [LoggedInUnclassifiedFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IEnumerable<FieldInputByCropDto>> CreateFieldInputByCrop([FromBody] FieldInputByCropCreateDto fieldInputByCropCreateDto)
+        public ActionResult<IEnumerable<FieldInputByCropSummaryDto>> CreateFieldInputByCrop([FromBody] FieldInputByCropCreateDto fieldInputByCropCreateDto)
         {
             var validationMessages = FieldInputByCrop.ValidateCreate(_dbContext, fieldInputByCropCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
@@ -810,8 +821,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var fieldInputByCropDtos = FieldInputByCrop.CreateBulk(_dbContext, fieldInputByCropCreateDto);
-            return Ok(fieldInputByCropDtos);
+            var addedFieldInputByCropDtos = FieldInputByCrop.CreateBulk(_dbContext, fieldInputByCropCreateDto);
+            return Ok(addedFieldInputByCropDtos);
         }
 
         [HttpGet("workbooks/{workbookID}/forms/field-input-by-crop")]
@@ -859,5 +870,414 @@ namespace OregonTilth.API.Controllers
             return Ok(returnDtos);
         }
         #endregion
+
+        #region "Transplant Production Information Form"
+        [HttpPost("workbooks/{workbookID}/forms/transplant-production-information")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionInformationDto>> CreateTransplantProductionInformation([FromBody] TransplantProductionInformationCreateDto tpInfoCreateDto)
+        {
+            var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+
+            var validationMessages = TransplantProductionInformation.ValidateCreate(_dbContext, tpInfoCreateDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var tpInfoDtos = TransplantProductionInformation.CreateNewTransplantProductionInformation(_dbContext, tpInfoCreateDto, userDto);
+            return Ok(tpInfoDtos);
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/transplant-production-information")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionInformationDto>> GetTransplantProductionInformations([FromRoute] int workbookID)
+        {
+            var tpInfoDtos = TransplantProductionInformation.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(tpInfoDtos);
+        }
+
+        [HttpPut("workbooks/{workbookID}/forms/transplant-production-information")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionInformationDto> UpdateTransplantProductionInformation([FromBody] TransplantProductionInformationDto tpInfoDto)
+        {
+            var validationMessages = TransplantProductionInformation.ValidateUpdate(_dbContext, tpInfoDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var tpInfoDtos = TransplantProductionInformation.UpdateTransplantProductionInformation(_dbContext, tpInfoDto);
+            return Ok(tpInfoDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/transplant-production-information/{transplantProductionInformationID}")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionInformationDto>> DeleteTransplantProductionInformation([FromRoute] int workbookID, [FromRoute] int transplantProductionInformationID)
+        {
+            var validationMessages = TransplantProductionInformation.ValidateDelete(_dbContext, transplantProductionInformationID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            TransplantProductionInformation.Delete(_dbContext, transplantProductionInformationID);
+
+            var returnDtos = TransplantProductionInformation.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+
+        #endregion "Transplant Production Information Form"
+
+        #region "Field Standard Times"
+
+        [HttpGet("workbooks/{workbookID}/forms/field-standard-times")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> GetFieldStandardTimes([FromRoute] int workbookID)
+        {
+            var fieldStandardTimes = FieldStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldStandardTimes);
+        }
+
+
+        [HttpGet("workbooks/{workbookID}/forms/field-standard-times/time-studies")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<vFieldLaborActivityForTimeStudyDto>> GetFieldStandardTimesForTimeStudies([FromRoute] int workbookID)
+        {
+            var fieldStandardTimesForTimeStudies = vFieldLaborActivityForTimeStudy.GetUninitializedDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(fieldStandardTimesForTimeStudies);
+        }
+
+        [HttpPost("workbooks/{workbookID}/forms/field-standard-times/initialize")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<FieldStandardTimeDto>> InitializeFieldTimeStudy([FromBody] FieldStandardTimeCreateDto createDto)
+        {
+            var validationMessages = FieldStandardTime.ValidateCreate(_dbContext, createDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var returnDto = FieldStandardTime.CreateNew(_dbContext, createDto);
+            return Ok(returnDto);
+            
+        }
+
+
+        [HttpPut("workbooks/{workbookID}/forms/field-standard-times/{fieldStandardTimeID}")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<FieldStandardTimeSummaryDto> UpdateFieldStandardTime([FromBody] FieldStandardTimeDto fieldStandardTimeDto)
+        {
+            var validationMessages = FieldStandardTime.ValidateUpdate(_dbContext, fieldStandardTimeDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var fieldStandardTimeSummaryDto = FieldStandardTime.UpdateFieldStandardTime(_dbContext, fieldStandardTimeDto);
+            return Ok(fieldStandardTimeSummaryDto);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/field-standard-times/{fieldStandardTimeID}")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<FieldStandardTimeSummaryDto>> DeleteFieldStandardTime([FromRoute] int workbookID, [FromRoute] int fieldStandardTimeID)
+        {
+            var validationMessages = FieldStandardTime.ValidateDelete(_dbContext, fieldStandardTimeID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            FieldStandardTime.Delete(_dbContext, fieldStandardTimeID);
+
+            var returnDtos = FieldStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+
+        #endregion "Field Standard Times"
+
+        #region "Harvest Post-Harvest Standard Times"
+
+        [HttpGet("workbooks/{workbookID}/forms/harvest-post-harvest-standard-times")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> GetHarvestPostHarvestStandardTimes([FromRoute] int workbookID)
+        {
+            var harvestPostHarvestStandardTimes = HarvestPostHarvestStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(harvestPostHarvestStandardTimes);
+        }
+        
+        [HttpPost("workbooks/{workbookID}/forms/harvest-post-harvest-standard-times/initialize")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<HarvestPostHarvestStandardTimeDto>> InitializeTimeStudy([FromBody] HarvestPostHarvestStandardTimeCreateDto createDto)
+        {
+            var validationMessages = HarvestPostHarvestStandardTime.ValidateCreate(_dbContext, createDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var returnDto = HarvestPostHarvestStandardTime.CreateNew(_dbContext, createDto);
+            return Ok(returnDto);
+
+        }
+
+
+        [HttpPut("workbooks/{workbookID}/forms/harvest-post-harvest-standard-times/{harvestPostHarvestStandardTimeID}")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionInformationDto> UpdateHarvestPostHarvestStandardTime([FromBody] HarvestPostHarvestStandardTimeDto harvestPostHarvestStandardTimeDto)
+        {
+            var validationMessages = HarvestPostHarvestStandardTime.ValidateUpdate(_dbContext, harvestPostHarvestStandardTimeDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var harvestPostHarvestStandardTimeSummaryDto = HarvestPostHarvestStandardTime.UpdateHarvestPostHarvestStandardTime(_dbContext, harvestPostHarvestStandardTimeDto);
+            return Ok(harvestPostHarvestStandardTimeSummaryDto);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/harvest-post-harvest-standard-times/{harvestPostHarvestStandardTimeID}")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<FieldStandardTimeSummaryDto>> DeleteHarvestPostHarvestStandardTime([FromRoute] int workbookID, [FromRoute] int harvestPostHarvestStandardTimeID)
+        {
+            var validationMessages = HarvestPostHarvestStandardTime.ValidateDelete(_dbContext, harvestPostHarvestStandardTimeID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            HarvestPostHarvestStandardTime.Delete(_dbContext, harvestPostHarvestStandardTimeID);
+
+            var returnDtos = HarvestPostHarvestStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+
+        #endregion "Harvest Post-Harvest Standard Times"
+
+        #region "Transplant Production Standard Times"
+
+        [HttpGet("workbooks/{workbookID}/forms/transplant-production-standard-times")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionInputCostDto>> GetTransplantProductionStandardTimes([FromRoute] int workbookID)
+        {
+            var transplantProductionStandardTimes = TransplantProductionStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(transplantProductionStandardTimes);
+        }
+
+
+      
+
+        [HttpPost("workbooks/{workbookID}/forms/transplant-production-standard-times/initialize")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<TransplantProductionStandardTimeDto>> InitializeTimeStudy([FromBody] TransplantProductionStandardTimeCreateDto createDto)
+        {
+            var validationMessages = TransplantProductionStandardTime.ValidateCreate(_dbContext, createDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var returnDto = TransplantProductionStandardTime.CreateNew(_dbContext, createDto);
+            return Ok(returnDto);
+
+        }
+
+
+        [HttpPut("workbooks/{workbookID}/forms/transplant-production-standard-times/{transplantProductionStandardTimeID}")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<TransplantProductionInformationDto> UpdateTransplantProductionStandardTime([FromBody] TransplantProductionStandardTimeDto transplantProductionStandardTimeDto)
+        {
+            var validationMessages = TransplantProductionStandardTime.ValidateUpdate(_dbContext, transplantProductionStandardTimeDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transplantProductionStandardTimeSummaryDto = TransplantProductionStandardTime.UpdateTransplantProductionStandardTime(_dbContext, transplantProductionStandardTimeDto);
+            return Ok(transplantProductionStandardTimeSummaryDto);
+        }
+
+
+        [HttpDelete("workbooks/{workbookID}/forms/transplant-production-standard-times/{transplantProductionStandardTimeID}")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<TransplantProductionStandardTimeSummaryDto>> DeleteTransplantProductionStandardTime([FromRoute] int workbookID, [FromRoute] int transplantProductionStandardTimeID)
+        {
+            var validationMessages = TransplantProductionStandardTime.ValidateDelete(_dbContext, transplantProductionStandardTimeID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            TransplantProductionStandardTime.Delete(_dbContext, transplantProductionStandardTimeID);
+
+            var returnDtos = TransplantProductionStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+
+        #endregion "Transplant Production Standard Times"
+
+        #region "Crop Yield Information"
+
+        [HttpGet("workbooks/{workbookID}/forms/crop-yield-information")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<CropYieldInformationDto>> GetCropYieldInformations([FromRoute] int workbookID)
+        {
+            var cropYieldInformations = CropYieldInformation.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(cropYieldInformations);
+        }
+
+
+
+
+        [HttpPost("workbooks/{workbookID}/forms/crop-yield-information")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<CropYieldInformationSummaryDto> CreateCropYieldInformation([FromBody] CropYieldInformationCreateDto createDto)
+        {
+            var validationMessages = CropYieldInformation.ValidateCreate(_dbContext, createDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var returnDto = CropYieldInformation.CreateNewCropYieldInformation(_dbContext, createDto);
+            return Ok(returnDto);
+
+        }
+
+
+        [HttpPut("workbooks/{workbookID}/forms/crop-yield-information")]
+        [WorkbookEditFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<CropYieldInformationSummaryDto> UpdateCropYieldInformation([FromBody] CropYieldInformationSummaryDto cropYieldInformationDto)
+        {
+            var validationMessages = CropYieldInformation.ValidateUpdate(_dbContext, cropYieldInformationDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var cropYieldInformationSummaryDto = CropYieldInformation.UpdateCropYieldInformation(_dbContext, cropYieldInformationDto);
+            return Ok(cropYieldInformationSummaryDto);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/crop-yield-information/{cropYieldInformationID}")]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        [WorkbookEditFeature]
+        public ActionResult<CropYieldInformationSummaryDto> DeleteCropYieldInformation([FromRoute] int workbookID, [FromRoute] int cropYieldInformationID)
+        {
+            var validationMessages = CropYieldInformation.ValidateDelete(_dbContext, cropYieldInformationID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            CropYieldInformation.Delete(_dbContext, cropYieldInformationID);
+
+            var returnDtos = CropYieldInformation.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+
+        #endregion "Crop Yield Information"
+
+        #region Crop Specific Information Form
+        
+        [HttpPost("workbooks/{workbookID}/forms/crop-specific-info/initialize")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<CropSpecificInfoDto>> InitializeCropSpecificInfo([FromBody] CropSpecificInfoCreateDto createDto)
+        {
+            var validationMessages = CropSpecificInfo.ValidateCreate(_dbContext, createDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var returnDto = CropSpecificInfo.Create(_dbContext, createDto);
+            return Ok(returnDto);
+
+        }
+
+        [HttpGet("workbooks/{workbookID}/forms/crop-specific-info")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<CropSpecificInfoSummaryDto>> GetCropSpecificInfos([FromRoute] int workbookID)
+        {
+            var cropSpecificInfos = CropSpecificInfo.GetDtoListByWorkbookID(_dbContext, workbookID);
+            return Ok(cropSpecificInfos);
+        }
+
+        [HttpPut("workbooks/{workbookID}/forms/crop-specific-info")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<CropSpecificInfoDto> UpdateCropSpecificInfo([FromBody] CropSpecificInfoSummaryDto cropSpecificInfoDto)
+        {
+            var validationMessages = CropSpecificInfo.ValidateUpdate(_dbContext, cropSpecificInfoDto);
+            validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var cropSpecificInfoDtos = CropSpecificInfo.UpdateCropSpecificInfo(_dbContext, cropSpecificInfoDto);
+            return Ok(cropSpecificInfoDtos);
+        }
+
+        [HttpDelete("workbooks/{workbookID}/forms/crop-specific-info/{cropSpecificInfoID}")]
+        [LoggedInUnclassifiedFeature]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<CropSpecificInfoDto>> DeleteCropSpecificInfo([FromRoute] int workbookID, [FromRoute] int cropSpecificInfoID)
+        {
+            var validationMessages = CropSpecificInfo.ValidateDelete(_dbContext, cropSpecificInfoID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            CropSpecificInfo.Delete(_dbContext, cropSpecificInfoID);
+
+            var returnDtos = CropSpecificInfo.GetDtoListByWorkbookID(_dbContext, workbookID);
+
+            return Ok(returnDtos);
+        }
+        #endregion
     }
+
+
 }
+

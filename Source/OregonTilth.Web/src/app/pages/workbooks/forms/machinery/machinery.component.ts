@@ -20,6 +20,8 @@ import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { MachineryCreateDto } from 'src/app/shared/models/forms/machinery/machinery-create-dto';
 import { GridService } from 'src/app/shared/services/grid/grid.service';
+import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
+import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 
 @Component({
   selector: 'machinery',
@@ -37,6 +39,7 @@ export class MachineryComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute) { }
 
+  private gridApi: any;
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public workbook: WorkbookDto;
@@ -62,18 +65,23 @@ export class MachineryComponent implements OnInit {
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
       this.model = new MachineryCreateDto({WorkbookID: this.workbookID});
       
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getMachineryRequest = this.workbookService.getMachinery(this.workbookID);
-
-      forkJoin([this.getWorkbookRequest, this.getMachineryRequest]).subscribe(([workbook, machineries]: [WorkbookDto, MachineryDto[],] ) => {
-          this.workbook = workbook;
-          this.machineries = machineries;
-          this.defineColumnDefs();
-          this.cdr.markForCheck();
-      });
+      this.refreshData();
 
     });
   }
+
+  refreshData() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+    this.getMachineryRequest = this.workbookService.getMachinery(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getMachineryRequest]).subscribe(([workbook, machineries]: [WorkbookDto, MachineryDto[],] ) => {
+        this.workbook = workbook;
+        this.machineries = machineries;
+        this.defineColumnDefs();
+        this.cdr.markForCheck();
+    });
+  }
+
 
   defineColumnDefs() {
     var componentScope = this;
@@ -82,14 +90,18 @@ export class MachineryComponent implements OnInit {
         headerName: 'Machinery', 
         field: 'MachineryName',
         editable: true,
-        cellEditor: 'agPopupTextCellEditor',
+        cellEditor: 'agTextCellEditor',
+        cellRendererFramework: EditableRendererComponent,
+        resizable:true,
       },
       {
         headerName: 'Hourly Machinery Operating Cost', 
         field: 'StandardMachineryCost',
         editable: true,
-        cellEditor: 'agPopupTextCellEditor',
-        valueFormatter: this.gridService.currencyFormatter
+        cellEditorFramework: DecimalEditor,
+        valueFormatter: this.gridService.currencyFormatter,
+        cellRendererFramework: EditableRendererComponent,
+        resizable: true,
       },
       {
         headerName: 'Delete', field: 'MachineryID', valueGetter: function (params: any) {
@@ -111,7 +123,8 @@ export class MachineryComponent implements OnInit {
 
   deleteMachinery(machineryID: number) {
     this.deleteMachineryRequest = this.workbookService.deleteMachinery(this.workbookID, machineryID).subscribe(machineryDtos => {
-      this.machineries = machineryDtos;
+      var rowToRemove = this.gridApi.getRowNode(machineryID.toString());
+      this.gridApi.applyTransaction({remove:[rowToRemove.data]})
       this.cdr.detectChanges();
     }, error => {
 
@@ -121,18 +134,19 @@ export class MachineryComponent implements OnInit {
   onCellValueChanged(data: any) {
     var dtoToPost = data.data;
 
-
-
     this.updateMachineryRequest = this.workbookService.updateMachinery(dtoToPost).subscribe(machinery => {
       data.node.setData(machinery);
+      this.gridApi.flashCells({
+        rowNodes: [data.node],
+        columns: [data.column],
+      });
       this.isLoadingSubmit = false;
-      this.alertService.pushAlert(new Alert(`Successfully updated Machinery`, AlertContext.Success));
     }, error => {
+      this.refreshData();
       this.isLoadingSubmit = false;
       this.cdr.detectChanges();
     })
 
-    console.log(dtoToPost);
   }
 
   ngOnDestroy() {
@@ -161,8 +175,8 @@ export class MachineryComponent implements OnInit {
     this.isLoadingSubmit = true;
     this.addMachineryRequest = this.workbookService.addMachinery(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.machineries = response;
-      this.alertService.pushAlert(new Alert(`Successfully added Machinery '${this.model.MachineryName}'.`, AlertContext.Success));
+      var transactionRows = this.gridApi.applyTransaction({add: [response]});
+      this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.resetForm();
       this.cdr.detectChanges();
       
@@ -176,5 +190,12 @@ export class MachineryComponent implements OnInit {
     this.model = new MachineryCreateDto({WorkbookID: this.workbookID});
   }
 
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+  }
+
+  getRowNodeId(data)  {
+    return data.MachineryID.toString();
+  }
 }
 

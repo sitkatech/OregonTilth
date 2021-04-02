@@ -30,9 +30,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Transplant Production Input Cost", Message = "Entries must be unique per Tray Type and Input within a workbook." });
             }
 
-            if (transplantProductionInputCostCreateDto.CostPerTray < 0)
+            if (transplantProductionInputCostCreateDto.CostPerTray <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Cost Per Tray", Message = "Cost per Tray must be greater than or equal to 0." });
+                result.Add(new ErrorMessage() { Type = "Cost Per Tray", Message = "Cost per Tray must be greater than 0." });
             }
 
             return result;
@@ -53,9 +53,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Transplant Production Input Cost", Message = "Entries must be unique per Tray Type and Input within a workbook." });
             }
 
-            if (transplantProductionInputCostDto.CostPerTray < 0)
+            if (transplantProductionInputCostDto.CostPerTray <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Cost Per Field Unit", Message = "Cost per Field Unit must be greater than or equal to 0." });
+                result.Add(new ErrorMessage() { Type = "Cost Per Tray", Message = "Cost per Tray must be greater than 0." });
             }
 
             return result;
@@ -88,7 +88,7 @@ namespace OregonTilth.EFModels.Entities
             return tpInputCost?.AsSummaryDto();
         }
 
-        public static IQueryable<TransplantProductionInputCostSummaryDto> CreateNewTransplantProductionInputCost(OregonTilthDbContext dbContext, TransplantProductionInputCostCreateDto tpInputCostCreateDto)
+        public static TransplantProductionInputCostSummaryDto CreateNewTransplantProductionInputCost(OregonTilthDbContext dbContext, TransplantProductionInputCostCreateDto tpInputCostCreateDto)
         {
             var tpInputCost = new TransplantProductionInputCost
             {
@@ -103,7 +103,7 @@ namespace OregonTilth.EFModels.Entities
             dbContext.SaveChanges();
             dbContext.Entry(tpInputCost).Reload();
 
-            return GetDtoListByWorkbookID(dbContext, tpInputCostCreateDto.WorkbookID);
+            return GetDtoListByWorkbookID(dbContext, tpInputCostCreateDto.WorkbookID).ToList().Single(x => x.TransplantProductionInputCostID == tpInputCost.TransplantProductionInputCostID);
         }
 
         public static TransplantProductionInputCostSummaryDto UpdateTransplantProductionInputCost(OregonTilthDbContext dbContext, TransplantProductionInputCostDto transplantProductionInputCostDto)

@@ -20,6 +20,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AlertDisplayComponent } from './components/alert-display/alert-display.component';
 import { FieldDefinitionGridHeaderComponent } from './components/field-definition-grid-header/field-definition-grid-header.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { TimeStudyCellRendererComponent } from './components/ag-grid/time-study-cell-renderer/time-study-cell-renderer.component';
 
 @NgModule({
     declarations: [
@@ -30,6 +31,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
         SubscriptionInsufficientComponent,
         LinkRendererComponent,
         ButtonRendererComponent,
+        TimeStudyCellRendererComponent,
         FontAwesomeIconLinkRendererComponent,
         MultiLinkRendererComponent,
         CustomRichTextComponent,

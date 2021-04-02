@@ -30,9 +30,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Field Input By Cost Name", Message = "Field Input Costs must have a name." });
             }
 
-            if (fieldInputByCostCreateDto.CostPerFieldUnit < 0)
+            if (fieldInputByCostCreateDto.CostPerFieldUnit <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Cost Per Field Unit", Message = "Cost per Field Unit must be greater than or equal to 0." });
+                result.Add(new ErrorMessage() { Type = "Cost Per Field Unit", Message = "Cost per Field Unit must be greater than 0." });
             }
 
             return result;
@@ -54,9 +54,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Field Input By Cost Name", Message = "Field Input Costs must have a name." });
             }
 
-            if(fieldInputByCostDto.CostPerFieldUnit < 0)
+            if(fieldInputByCostDto.CostPerFieldUnit <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Cost Per Field Unit", Message = "Cost per Field Unit must be greater than or equal to 0." });
+                result.Add(new ErrorMessage() { Type = "Cost Per Field Unit", Message = "Cost per Field Unit must be greater than 0." });
             }
 
             return result;
@@ -74,11 +74,17 @@ namespace OregonTilth.EFModels.Entities
             return fieldInputByCosts.Select(x => x.AsDto());
         }
 
+        public static FieldInputCost GetByID(OregonTilthDbContext dbContext, int fieldInputCostID)
+        {
+            return GetFieldInputCostImpl(dbContext).Single(x => x.FieldInputCostID == fieldInputCostID);
+        }
+
         private static IQueryable<FieldInputCost> GetFieldInputCostImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.FieldInputCosts
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .Include(x => x.FieldUnitType)
+                .Include(x => x.FieldInputByCrops)
                 .AsNoTracking();
         }
 
@@ -88,22 +94,22 @@ namespace OregonTilth.EFModels.Entities
             return fieldInputByCost?.AsDto();
         }
 
-        public static IQueryable<FieldInputCostDto> CreateNewFieldInputCost(OregonTilthDbContext dbContext, FieldInputCostCreateDto fieldInputByCostCreateDto)
+        public static FieldInputCostDto CreateNewFieldInputCost(OregonTilthDbContext dbContext, FieldInputCostCreateDto fieldInputCostCreateDto)
         {
             var fieldInputByCost = new FieldInputCost
             {
-               FieldInputCostName = fieldInputByCostCreateDto.FieldInputCostName,
-               FieldUnitTypeID = fieldInputByCostCreateDto.FieldUnitTypeID,
-               WorkbookID = fieldInputByCostCreateDto.WorkbookID,
-               CostPerFieldUnit = fieldInputByCostCreateDto.CostPerFieldUnit,
-               Notes = fieldInputByCostCreateDto.Notes
+               FieldInputCostName = fieldInputCostCreateDto.FieldInputCostName,
+               FieldUnitTypeID = fieldInputCostCreateDto.FieldUnitTypeID,
+               WorkbookID = fieldInputCostCreateDto.WorkbookID,
+               CostPerFieldUnit = fieldInputCostCreateDto.CostPerFieldUnit,
+               Notes = fieldInputCostCreateDto.Notes
             };
 
             dbContext.FieldInputCosts.Add(fieldInputByCost);
             dbContext.SaveChanges();
             dbContext.Entry(fieldInputByCost).Reload();
 
-            return GetDtoListByWorkbookID(dbContext, fieldInputByCostCreateDto.WorkbookID);
+            return GetDtoListByWorkbookID(dbContext, fieldInputCostCreateDto.WorkbookID).ToList().Single(x => x.FieldInputCostID == fieldInputByCost.FieldInputCostID);
         }
 
         public static FieldInputCostDto UpdateFieldInputCost(OregonTilthDbContext dbContext, FieldInputCostDto fieldInputByCostDto)
@@ -112,9 +118,10 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.FieldUnitType)
                 .Single(x => x.FieldInputCostID == fieldInputByCostDto.FieldInputCostID);
 
-            fieldInputByCost.FieldUnitTypeID = fieldInputByCostDto.FieldInputCostID;
+            fieldInputByCost.FieldUnitTypeID = fieldInputByCostDto.FieldUnitType.FieldUnitTypeID;
             fieldInputByCost.FieldInputCostName = fieldInputByCostDto.FieldInputCostName;
             fieldInputByCost.CostPerFieldUnit = fieldInputByCostDto.CostPerFieldUnit;
+            fieldInputByCost.Notes = fieldInputByCostDto.Notes;
 
             dbContext.SaveChanges();
             dbContext.Entry(fieldInputByCost).Reload();
@@ -122,11 +129,17 @@ namespace OregonTilth.EFModels.Entities
             return GetDtoByFieldInputCostID(dbContext, fieldInputByCost.FieldInputCostID);
         }
 
-        // todo: validate deletion
-        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int fieldInputByCostID)
+        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int fieldInputCostID)
         {
             var result = new List<ErrorMessage>();
-            
+            var fieldInputCost = GetByID(dbContext, fieldInputCostID);
+
+
+            if (fieldInputCost.FieldInputByCrops.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Field Input Cost", Message = "Cannot delete this record because it is used on the Field Input By Crops form." });
+            }
+
             return result;
         }
 

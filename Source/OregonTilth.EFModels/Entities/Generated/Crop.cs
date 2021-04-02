@@ -14,9 +14,12 @@ namespace OregonTilth.EFModels.Entities
     {
         public Crop()
         {
+            CropSpecificInfos = new HashSet<CropSpecificInfo>();
+            CropYieldInformations = new HashSet<CropYieldInformation>();
             FieldInputByCrops = new HashSet<FieldInputByCrop>();
             FieldLaborByCrops = new HashSet<FieldLaborByCrop>();
-            TransplantProductionLaborActivityByCrops = new HashSet<TransplantProductionLaborActivityByCrop>();
+            HarvestPostHarvestStandardTimes = new HashSet<HarvestPostHarvestStandardTime>();
+            TransplantProductionInformations = new HashSet<TransplantProductionInformation>();
         }
 
         [Key]
@@ -29,11 +32,17 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("Crops")]
         public virtual Workbook Workbook { get; set; }
+        [InverseProperty(nameof(CropSpecificInfo.Crop))]
+        public virtual ICollection<CropSpecificInfo> CropSpecificInfos { get; set; }
+        [InverseProperty(nameof(CropYieldInformation.Crop))]
+        public virtual ICollection<CropYieldInformation> CropYieldInformations { get; set; }
         [InverseProperty(nameof(FieldInputByCrop.Crop))]
         public virtual ICollection<FieldInputByCrop> FieldInputByCrops { get; set; }
         [InverseProperty(nameof(FieldLaborByCrop.Crop))]
         public virtual ICollection<FieldLaborByCrop> FieldLaborByCrops { get; set; }
-        [InverseProperty(nameof(TransplantProductionLaborActivityByCrop.Crop))]
-        public virtual ICollection<TransplantProductionLaborActivityByCrop> TransplantProductionLaborActivityByCrops { get; set; }
+        [InverseProperty(nameof(HarvestPostHarvestStandardTime.Crop))]
+        public virtual ICollection<HarvestPostHarvestStandardTime> HarvestPostHarvestStandardTimes { get; set; }
+        [InverseProperty(nameof(TransplantProductionInformation.Crop))]
+        public virtual ICollection<TransplantProductionInformation> TransplantProductionInformations { get; set; }
     }
 }
