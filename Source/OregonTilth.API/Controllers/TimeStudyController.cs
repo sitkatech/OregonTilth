@@ -24,7 +24,7 @@ namespace OregonTilth.API.Controllers
         [HttpPut("workbooks/{workbookID}/time-studies")]
         [WorkbookEditFeature]
         [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
-        public ActionResult<IHasTimeStudies> EditWorkbook([FromBody] TimeStudiesUpsertDto timeStudiesUpsertDto)
+        public ActionResult<IHasTimeStudies> UpsertTimeStudies([FromBody] TimeStudiesUpsertDto timeStudiesUpsertDto)
         {
             var validationMessages = TimeStudy.ValidateUpsert(_dbContext, timeStudiesUpsertDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
