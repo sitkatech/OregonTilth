@@ -24,3 +24,19 @@ header-nav::after{
     z-index: -1;
 }
 
+.footer .footer-partners {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    a {
+        margin:15px;
+        img {
+            max-height:100px;
+            image-rendering: -moz-crisp-edges; /* Firefox */
+            image-rendering: -o-crisp-edges; /* Opera */
+            image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming) */
+            image-rendering: crisp-edges;
+            -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
+        }
+    } 
+}
