@@ -41,9 +41,9 @@ namespace OregonTilth.EFModels.Entities
             {
                 result.Add(new ErrorMessage() { Type = "Marketable Yield Per Standard Unit Of Space", Message = "Marketable Yield Per Standard Unit Of Space must be greater than zero." });
             }
-            if (cropYieldInformationCreateDto.PackagingCostPerCropUnit <= 0)
+            if (cropYieldInformationCreateDto.PackagingCostPerCropUnit < 0)
             {
-                result.Add(new ErrorMessage() { Type = "Packaging Cost Per Crop Unit", Message = "Packaging Cost Per Crop Unit must be greater than zero." });
+                result.Add(new ErrorMessage() { Type = "Packaging Cost Per Crop Unit", Message = "Packaging Cost Per Crop Unit must be greater than or equal to zero." });
             }
 
             if (cropYieldInformationCreateDto.PricePerCropUnit <= 0)
@@ -79,9 +79,9 @@ namespace OregonTilth.EFModels.Entities
             {
                 result.Add(new ErrorMessage() { Type = "Marketable Yield Per Standard Unit Of Space", Message = "Marketable Yield Per Standard Unit Of Space must be greater than zero." });
             }
-            if (cropYieldInformationDto.PackagingCostPerCropUnit <= 0)
+            if (cropYieldInformationDto.PackagingCostPerCropUnit < 0)
             {
-                result.Add(new ErrorMessage() { Type = "Packaging Cost Per Crop Unit", Message = "Packaging Cost Per Crop Unit must be greater than zero." });
+                result.Add(new ErrorMessage() { Type = "Packaging Cost Per Crop Unit", Message = "Packaging Cost Per Crop Unit must be greater than or equal to zero." });
             }
             if (cropYieldInformationDto.PricePerCropUnit <= 0)
             {
