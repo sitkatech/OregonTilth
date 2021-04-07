@@ -33,7 +33,16 @@
                 [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
                 Machinery Costs
                     <field-definition [fieldDefinitionType]="'MachineryCostForm'" [labelOverride]="''"></field-definition>
-            </a>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                [routerLink]="['/workbooks', workbookID, 'forms', 'field-input-costs']"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                    Field Input Cost
+                    <field-definition [fieldDefinitionType]="'FieldInputCostForm'" [labelOverride]="''"></field-definition>
+                </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link"
@@ -73,11 +82,20 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'field-input-costs']"
+                [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-inputs']"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                Field Input Cost
-                <field-definition [fieldDefinitionType]="'FieldInputCostForm'" [labelOverride]="''"></field-definition>
+                    TP Inputs
+                    <field-definition [fieldDefinitionType]="'TPInputForm'" [labelOverride]="''"></field-definition>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-input-costs']"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                    TP Input Costs
+                    <field-definition [fieldDefinitionType]="'TPInputCostForm'" [labelOverride]="''"></field-definition>
                 </a>
             </li>
             
@@ -131,8 +149,8 @@
                 [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
                     Field Labor By Crop
                     <field-definition [fieldDefinitionType]="'FieldLaborByCropForm'" [labelOverride]="''"></field-definition>
-            </a>
-        </li>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link"
                 [routerLink]="['/workbooks', workbookID, 'forms', 'field-input-by-crop']"
@@ -140,26 +158,8 @@
                 [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
                     Field Input By Crop
                     <field-definition [fieldDefinitionType]="'FieldInputByCropForm'" [labelOverride]="''"></field-definition>
-            </a>
-        </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-inputs']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    TP Inputs
-                    <field-definition [fieldDefinitionType]="'TPInputForm'" [labelOverride]="''"></field-definition>
-            </a>
-        </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-input-costs']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                TP Input Costs
-                    <field-definition [fieldDefinitionType]="'TPInputCostForm'" [labelOverride]="''"></field-definition>
-            </a>
-        </li>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link"
                 [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-information']"
