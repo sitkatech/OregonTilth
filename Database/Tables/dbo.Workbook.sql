@@ -7,9 +7,9 @@ CREATE TABLE [dbo].[Workbook](
 	[UserID] [int] NOT NULL,
 	[CreateDate] [datetime] NOT NULL,
 	[WorkbookName] [varchar](255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[AverageHourlyWage] [money] NULL,
-	[StandardUnitOfSpaceLength] [decimal](18, 4) NULL,
-	[StandardUnitOfSpaceWidth] [decimal](18, 4) NULL,
+	[AverageHourlyWage] [money] NOT NULL,
+	[StandardUnitOfSpaceLength] [decimal](18, 4) NOT NULL,
+	[StandardUnitOfSpaceWidth] [decimal](18, 4) NOT NULL,
  CONSTRAINT [PK_Workbook_WorkbookID] PRIMARY KEY CLUSTERED 
 (
 	[WorkbookID] ASC
