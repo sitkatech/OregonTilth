@@ -50,7 +50,9 @@ export class WorkbooksComponent implements OnInit {
       let _datePipe = this.datePipe;
       this.columnDefs = [
         {
-          headerName: 'Name', valueGetter: function (params: any) {
+          headerName: 'Name',
+          field: 'WorkbookName',
+          valueGetter: function (params: any) {
             return { LinkValue: params.data.WorkbookID, LinkDisplay: params.data.WorkbookName };
           }, cellRendererFramework: LinkRendererComponent,
           cellRendererParams: { inRouterLink: "/workbooks/" },
