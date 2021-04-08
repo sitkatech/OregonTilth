@@ -137,6 +137,7 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.Crop).ThenInclude(x => x.CropSpecificInfos).ThenInclude(x => x.Workbook)
                 .Include(x => x.Crop).ThenInclude(x => x.FieldLaborByCrops).ThenInclude(x => x.FieldStandardTime).ThenInclude(x => x.FieldLaborActivity)
                 .Include(x => x.Crop).ThenInclude(x => x.FieldLaborByCrops).ThenInclude(x => x.FieldStandardTime).ThenInclude(x => x.FieldUnitType)
+                .Include(x => x.Crop).ThenInclude(x => x.FieldLaborByCrops).ThenInclude(x => x.FieldStandardTime).ThenInclude(x => x.Machinery)
                 .Include(x => x.Crop).ThenInclude(x => x.FieldInputByCrops).ThenInclude(x => x.FieldInputCost).ThenInclude(x => x.FieldUnitType)
                 .Include(x => x.Crop).ThenInclude(x => x.TransplantProductionInformations).ThenInclude(x => x.Phase)
                 .Include(x => x.Crop).ThenInclude(x => x.TransplantProductionInformations).ThenInclude(x => x.TransplantProductionTrayType).ThenInclude(x => x.TransplantProductionInputCosts)
@@ -144,7 +145,7 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.Crop).ThenInclude(x => x.HarvestPostHarvestStandardTimes)
                 .Include(x => x.CropUnit)
                 .AsNoTracking();
-
+            //fieldLaborByCrop.FieldStandardTime.Machinery
         }
 
 
