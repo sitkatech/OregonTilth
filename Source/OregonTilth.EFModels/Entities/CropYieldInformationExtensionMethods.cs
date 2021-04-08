@@ -243,8 +243,9 @@ namespace OregonTilth.EFModels.Entities
 
             if (tpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantFarmProduced)
             {
-                return cropSpecificInfo.TotalInputCostPerTransplant() *
-                       cropSpecificInfo.UnitsUsed(FieldUnitTypeEnum.Transplants);
+                var totalInputCostPerTransplant = cropSpecificInfo.TotalInputCostPerTransplant();
+                var unitsUsed = cropSpecificInfo.UnitsUsed(FieldUnitTypeEnum.Transplants);
+                return totalInputCostPerTransplant * unitsUsed;
             }
 
             if (tpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantOutsourced)
