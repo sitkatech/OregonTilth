@@ -122,8 +122,9 @@ namespace OregonTilth.EFModels.Entities
                 {
                     return helperLaborHoursPerTransplant;
                 }
-                
-                return tpInfo?.CropPhaseTotalLaborHoursPerTransplant(allTpInfosForCrop) ?? 0;
+
+                var cropPhaseTotalLaborHoursPerTransplant = tpInfo?.CropPhaseTotalLaborHoursPerTransplant(allTpInfosForCrop);
+                return cropPhaseTotalLaborHoursPerTransplant ?? 0;
             }
 
             return 0;
@@ -138,7 +139,8 @@ namespace OregonTilth.EFModels.Entities
             
             if (transplantProductionInformation != null)
             {
-                return transplantProductionInformation.CropPhaseTotalLaborHoursPerTransplant(allTpInfosForCrop);
+                var cropPhaseTotalLaborHoursPerTransplant = transplantProductionInformation.CropPhaseTotalLaborHoursPerTransplant(allTpInfosForCrop);
+                return cropPhaseTotalLaborHoursPerTransplant;
             }
 
             return 0;

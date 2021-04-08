@@ -103,6 +103,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Field Labor Category', 
@@ -121,9 +122,13 @@ export class FieldLaborActivitiesComponent implements OnInit {
           });
           return true;
         },
+        valueGetter: function (params) {
+          return params.data.FieldLaborActivityCategory.FieldLaborActivityCategoryDisplayName;
+        },
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Crew', 
@@ -149,6 +154,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Operator', 
@@ -174,6 +180,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Delete', field: 'FieldLaborActivityID', valueGetter: function (params: any) {

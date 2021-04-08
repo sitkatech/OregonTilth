@@ -169,8 +169,8 @@ export class TimeStudyModal implements OnInit {
       }
 
       timeStudyUpsertDto.Notes = '';
-      timeStudyUpsertDto.Duration = 0;
-      timeStudyUpsertDto.Units = 0;
+      timeStudyUpsertDto.Duration = null;
+      timeStudyUpsertDto.Units = null;
       timeStudyUpsertDto.TimeStudyID = -1;
 
     this.model.TimeStudies.push(timeStudyUpsertDto);

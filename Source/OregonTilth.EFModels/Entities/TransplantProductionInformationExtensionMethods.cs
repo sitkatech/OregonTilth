@@ -37,7 +37,7 @@ namespace OregonTilth.EFModels.Entities
             {
                 var totalLaborHoursPerTray = transplantProductionInformation.CropPhaseTotalLaborHoursPerTray();
 
-                return totalLaborHoursPerTray / (transplantProductionInformation.SeedsPerTray * transplantProductionInformation.UsageRate);
+                return totalLaborHoursPerTray / (transplantProductionInformation.SeedsPerTray * (transplantProductionInformation.UsageRate / 100));
             }
 
             // todo: check back on this calculation specifically
@@ -48,7 +48,7 @@ namespace OregonTilth.EFModels.Entities
                     seedingTp.CropPhaseTotalLaborHoursPerTransplant(allTpInfosForCrop) *
                     transplantProductionInformation.SeedsPerTray +
                     transplantProductionInformation.CropPhaseTotalLaborHoursPerTray()
-                    / (transplantProductionInformation.SeedsPerTray * transplantProductionInformation.UsageRate);
+                    / (transplantProductionInformation.SeedsPerTray * (transplantProductionInformation.UsageRate / 100));
                 return value;
             }
 
@@ -74,9 +74,10 @@ namespace OregonTilth.EFModels.Entities
             var phase = phaseEnum ?? (PhaseEnum) transplantProductionInformation.PhaseID;
 
 
-            return transplantProductionInformation.SeedCostPerTray(phase) +
-                   transplantProductionInformation.StandardInputCostsPerTray() +
-                   transplantProductionInformation.CropSpecificInputCostsPerTray ?? 0;
+            var seedCostPerTray = transplantProductionInformation.SeedCostPerTray(phase);
+            var standardInputCostsPerTray = transplantProductionInformation.StandardInputCostsPerTray();
+            var cropSpecificInputCostsPerTray = transplantProductionInformation.CropSpecificInputCostsPerTray ?? 0;
+            return seedCostPerTray + standardInputCostsPerTray + cropSpecificInputCostsPerTray;
 
         }
 
@@ -110,9 +111,9 @@ namespace OregonTilth.EFModels.Entities
         {
             // =[@[CROP/PHASE TOTAL INPUT COSTS PER TRAY]]/([@[Seeds/Seedlings per Tray]]*[@[Usage Rate]])
 
-            return transplantProductionInformation.CropPhaseTotalInputCostsPerTray(PhaseEnum.Seeding) /
-                   (transplantProductionInformation.SeedsPerTray * transplantProductionInformation.UsageRate);
-
+            var cropPhaseTotalInputCostsPerTray = transplantProductionInformation.CropPhaseTotalInputCostsPerTray(PhaseEnum.Seeding);
+            return cropPhaseTotalInputCostsPerTray /
+                   (transplantProductionInformation.SeedsPerTray * (transplantProductionInformation.UsageRate / 100));
         }
 
         public static decimal StandardInputCostsPerTray(

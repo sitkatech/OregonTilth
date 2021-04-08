@@ -216,7 +216,7 @@ export class CropYieldInformationComponent implements OnInit {
         sortable: true, 
         filter: true,
         cellStyle: params => {
-          if (params.value) {
+          if (params.value || params.value == 0) {
               return { backgroundColor: '#ccf5cc'};
           } 
           return {backgroundColor: '#ffdfd6'};

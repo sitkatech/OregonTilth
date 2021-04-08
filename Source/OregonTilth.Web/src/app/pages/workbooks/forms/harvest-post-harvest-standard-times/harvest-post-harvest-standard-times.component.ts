@@ -198,7 +198,8 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         sortable: true, 
         filter: true,
         resizable: true,
-        width:150
+        width:150,
+        pinned: 'left'
       },
       {
         headerName: 'Crop Unit', 
@@ -224,7 +225,8 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         sortable: true, 
         filter: true,
         resizable: true,
-        width:150
+        width:150,
+        pinned: 'left'
       },
       {
         headerName: 'Harvest/Post-Harvest', 
@@ -250,7 +252,8 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         sortable: true, 
         filter: true,
         resizable: true,
-        width:150
+        width:150,
+        pinned: 'left'
       },
       {
         headerName: 'Avg Min Per Unit', 

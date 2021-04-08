@@ -17,12 +17,12 @@
             <h5>#{{i + 1}}</h5>
           </div>
           <div class="col-md-3">
-            <label for="">{{this.durationLabel}}</label>
-            <input name="Duration_{{i}}" class="form-control" type="number" [(ngModel)]="timeStudy.Duration" />
+            <label class="required">{{this.durationLabel}}</label>
+            <input name="Duration_{{i}}" class="form-control" type="number" [(ngModel)]="timeStudy.Duration" required />
           </div>
           <div class="col-md-3">
-            <label for="">{{this.unitsLabel}}</label>
-            <input name="Units_{{i}}" class="form-control" type="number" [(ngModel)]="timeStudy.Units" />
+            <label class="required">{{this.unitsLabel}}</label>
+            <input name="Units_{{i}}" class="form-control" type="number" [(ngModel)]="timeStudy.Units" required />
           </div>
           <div class="col-md-4">
             <label for="">Notes</label>

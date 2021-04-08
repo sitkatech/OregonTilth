@@ -243,8 +243,9 @@ namespace OregonTilth.EFModels.Entities
 
             if (tpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantFarmProduced)
             {
-                return cropSpecificInfo.TotalInputCostPerTransplant() *
-                       cropSpecificInfo.UnitsUsed(FieldUnitTypeEnum.Transplants);
+                var totalInputCostPerTransplant = cropSpecificInfo.TotalInputCostPerTransplant();
+                var unitsUsed = cropSpecificInfo.UnitsUsed(FieldUnitTypeEnum.Transplants);
+                return totalInputCostPerTransplant * unitsUsed;
             }
 
             if (tpOrDsType.TpOrDsTypeID == (int)TpOrDsTypeEnum.TransplantOutsourced)
@@ -275,7 +276,8 @@ namespace OregonTilth.EFModels.Entities
         {
             //=[@[TOTAL LABOR HOURS]]*INDEX(Table1[Average Hourly Wage],1)
 
-            return cropYieldInformation.TotalLaborHours() * (decimal) cropYieldInformation.Workbook.AverageHourlyWage;
+            var totalLaborHours = cropYieldInformation.TotalLaborHours();
+            return totalLaborHours * (decimal) cropYieldInformation.Workbook.AverageHourlyWage;
         }
 
         public static decimal TotalLaborHours(this CropYieldInformation cropYieldInformation)
@@ -324,7 +326,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (harvestStandardTime?.StandardTimePerUnit != null)
             {
-                return harvestYieldPerStandardSpace * (decimal)harvestStandardTime.StandardTimePerUnit;
+                return harvestYieldPerStandardSpace / (decimal)harvestStandardTime.StandardTimePerUnit;
 
             }
 

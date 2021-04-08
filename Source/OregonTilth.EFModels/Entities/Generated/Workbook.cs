@@ -44,11 +44,11 @@ namespace OregonTilth.EFModels.Entities
         [StringLength(255)]
         public string WorkbookName { get; set; }
         [Column(TypeName = "money")]
-        public decimal? AverageHourlyWage { get; set; }
+        public decimal AverageHourlyWage { get; set; }
         [Column(TypeName = "decimal(18, 4)")]
-        public decimal? StandardUnitOfSpaceLength { get; set; }
+        public decimal StandardUnitOfSpaceLength { get; set; }
         [Column(TypeName = "decimal(18, 4)")]
-        public decimal? StandardUnitOfSpaceWidth { get; set; }
+        public decimal StandardUnitOfSpaceWidth { get; set; }
 
         [ForeignKey(nameof(UserID))]
         [InverseProperty("Workbooks")]

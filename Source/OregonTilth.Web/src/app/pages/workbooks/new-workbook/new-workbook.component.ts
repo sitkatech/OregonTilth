@@ -31,7 +31,7 @@ export class NewWorkbookComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   public columnDefs: ColDef[];
-  public richTextTypeID : number = CustomRichTextType.PlatformOverview;
+  public richTextTypeID : number = CustomRichTextType.WorkbookAddEdit;
   public model: WorkbookDto;
   public roles: Array<RoleDto>;
   public isLoadingSubmit: boolean = false;

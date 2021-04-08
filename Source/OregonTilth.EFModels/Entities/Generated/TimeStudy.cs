@@ -15,8 +15,9 @@ namespace OregonTilth.EFModels.Entities
         public int TimeStudyID { get; set; }
         public int WorkbookID { get; set; }
         public int? FieldStandardTimeID { get; set; }
-        public int Duration { get; set; }
-        [Column(TypeName = "decimal(18, 0)")]
+        [Column(TypeName = "decimal(18, 4)")]
+        public decimal Duration { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal Units { get; set; }
         [StringLength(8000)]
         public string Notes { get; set; }

@@ -18,6 +18,7 @@ import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { FieldStandardTimeDto } from 'src/app/shared/models/generated/field-standard-time-dto';
+import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-summary-dto';
 
 @Component({
   selector: 'field-labor-by-crop',
@@ -51,7 +52,7 @@ export class FieldLaborByCropComponent implements OnInit {
   public cropDtos: CropDto[];
   private getCropDtosRequest: any;
 
-  public fieldStandardTimeDtos: FieldStandardTimeDto[];
+  public fieldStandardTimeDtos: FieldStandardTimeSummaryDto[];
   private getFieldStandardTimeDtosRequest: any;
 
   private updateFieldLaborByCropRequest: any;
@@ -77,10 +78,10 @@ export class FieldLaborByCropComponent implements OnInit {
     this.getFieldStandardTimeDtosRequest = this.workbookService.getFieldStandardTimes(this.workbookID);
     this.getFieldLaborByCropsRequest = this.workbookService.getFieldLaborByCrops(this.workbookID);
 
-    forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldStandardTimeDtosRequest, this.getFieldLaborByCropsRequest]).subscribe(([workbookDto, cropDtos, fieldStandardTimeDtos, fieldLaborByCrops]: [WorkbookDto, CropDto[], FieldStandardTimeDto[], FieldLaborByCropDto[]]) => {
+    forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldStandardTimeDtosRequest, this.getFieldLaborByCropsRequest]).subscribe(([workbookDto, cropDtos, fieldStandardTimeDtos, fieldLaborByCrops]: [WorkbookDto, CropDto[], FieldStandardTimeSummaryDto[], FieldLaborByCropDto[]]) => {
       this.workbook = workbookDto;
       this.cropDtos = cropDtos;
-      this.fieldStandardTimeDtos = fieldStandardTimeDtos;
+      this.fieldStandardTimeDtos = fieldStandardTimeDtos.filter(x => {return x.TimeStudies.length > 0});
       this.fieldLaborByCropDtos = fieldLaborByCrops;
       this.defineColumnDefs();
       this.cdr.markForCheck();
@@ -132,23 +133,6 @@ export class FieldLaborByCropComponent implements OnInit {
         headerName: 'Field Labor Activity', 
         field: 'FieldStandardTime.FieldLaborActivity.FieldLaborActivityName',
         editable: false,
-        /* valueFormatter: function (params) {
-          return params.value.FieldLaborActivity.FieldLaborActivityName;
-        }, */
-        /* valueSetter: params => {
-          params.data.FieldLaborActivity = this.fieldLaborActivityDtos.find(element => {
-            return element.FieldLaborActivityName == params.newValue;
-          });
-          return true;
-        }, */
-        /* valueGetter: params => {
-          return params.data.FieldLaborActivity ? params.data.FieldLaborActivity.FieldLaborActivityName : '';
-        }, */
-/*         cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: this.fieldLaborActivityDtos.map(x => x.FieldLaborActivityName)
-        },
-        cellRendererFramework: EditableRendererComponent, */
         sortable: true, 
         filter: true,
       },
@@ -156,23 +140,6 @@ export class FieldLaborByCropComponent implements OnInit {
         headerName: 'Labor Type', 
         field: 'FieldStandardTime.LaborType.LaborTypeDisplayName',
         editable: false,
-        /* valueFormatter: function (params) {
-          return params.value.LaborType.LaborTypeName;
-        }, */
-/*         valueSetter: params => {
-          params.data.LaborType = this.laborTypeDtos.find(element => {
-            return element.LaborTypeDisplayName == params.newValue;
-          });
-          return true;
-        }, */
-        /* valueGetter: params => {
-          return params.data.LaborType ? params.data.LaborType.LaborTypeDisplayName : '';
-        }, */
-/*         cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: this.laborTypeDtos.map(x => x.LaborTypeName)
-        },
-        cellRendererFramework: EditableRendererComponent, */
         sortable: true, 
         filter: true,
       },

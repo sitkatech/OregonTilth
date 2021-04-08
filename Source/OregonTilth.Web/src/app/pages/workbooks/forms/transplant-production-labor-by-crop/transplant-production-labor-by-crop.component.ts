@@ -80,8 +80,8 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
 
     forkJoin([this.getWorkbookRequest, this.getTransplantProductionInformationDtosRequest, this.getTransplantProductionLaborActivityDtosRequest, this.getTransplantProductionLaborByCropsRequest]).subscribe(([workbookDto, transplantProductionInformationDtos, transplantProductionLaborActivityDtos, transplantProductionLaborByCrops]: [WorkbookDto, TransplantProductionInformationDto[], TransplantProductionLaborActivityDto[], TransplantProductionLaborActivityByCropDto[]]) => {
       this.workbook = workbookDto;
-      this.transplantProductionInformationDtos = transplantProductionInformationDtos;
-      this.transplantProductionLaborActivityDtos = transplantProductionLaborActivityDtos;
+      this.transplantProductionInformationDtos =  transplantProductionInformationDtos;
+      this.transplantProductionLaborActivityDtos = this.getUniqueTransplantProductionLaborActivityDtos(transplantProductionLaborActivityDtos);
       this.transplantProductionLaborByCropDtos = transplantProductionLaborByCrops;
       this.defineColumnDefs();
       this.cdr.markForCheck();
@@ -98,6 +98,18 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
     };
   }
 
+  getUniqueTransplantProductionLaborActivityDtos(transplantProductionLaborActivityDtos: TransplantProductionLaborActivityDto[]) {
+    let returnArray: TransplantProductionLaborActivityDto[] = [];
+    transplantProductionLaborActivityDtos.forEach((x, i) => {
+      if(returnArray.findIndex(y => {
+        return y.TransplantProductionLaborActivityID == x.TransplantProductionLaborActivityID
+      }) < 0) {
+        returnArray.push(x);
+      }
+    });
+    return returnArray;
+  }
+
   defineColumnDefs() {
     var componentScope = this;
     this.columnDefs = [
@@ -105,23 +117,6 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         headerName: 'Crop', 
         field: 'TransplantProductionInformation.Crop.CropName',
         editable: false,
-/*         valueFormatter: function (params) {
-          return params.value.CropName;
-        },
-        valueSetter: params => {
-          params.data.Crop = this.transplantProductionInformationDtos.find(element => {
-            return element.CropName == params.newValue;
-          });
-          return true;
-        },
-        valueGetter: params => {
-          return params.data.Crop.CropName;
-        },
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: this.transplantProductionInformationDtos.map(x => x.CropName)
-        },
-        cellRendererFramework: EditableRendererComponent, */
         sortable: true, 
         filter: true,
       },
@@ -153,23 +148,6 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         headerName: 'Phase', 
         field: 'TransplantProductionInformation.Phase.PhaseDisplayName',
         editable: false,
-/*         valueFormatter: function (params) {
-          return params.value.PhaseDisplayName;
-        },
-        valueSetter: params => {
-          params.data.Phase = this.phaseDtos.find(element => {
-            return element.PhaseDisplayName == params.newValue;
-          });
-          return true;
-        },
-        valueGetter: params => {
-          return params.data.Phase.PhaseDisplayName;
-        },
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: this.phaseDtos.map(x => x.PhaseDisplayName)
-        },
-        cellRendererFramework: EditableRendererComponent, */
         sortable: true, 
         filter: true,
       },

@@ -31,7 +31,8 @@ USING (VALUES
 (29, 'HarvestPostHarvestStandardTimesForm', 'Harvest Post Harvest Standard Times Form'),
 (30, 'ResultsCropCropUnit', 'Crop/Crop Unit'),
 (31, 'ResultsCropCropUnitLaborHours', 'Crop/Crop Unit Labor Hours per Labor Activity Category'),
-(32, 'ResultsCropCropUnitCostsPerCostCategory', 'Crop/Crop Unit Costs per Cost Category')
+(32, 'ResultsCropCropUnitCostsPerCostCategory', 'Crop/Crop Unit Costs per Cost Category'),
+(33, 'WorkbookAddEdit', 'Workbook Add/Edit')
 )
 AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID
