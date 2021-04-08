@@ -121,6 +121,9 @@ export class FieldLaborActivitiesComponent implements OnInit {
           });
           return true;
         },
+        valueGetter: function (params) {
+          return params.data.FieldLaborActivityCategory.FieldLaborActivityCategoryDisplayName;
+        },
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
