@@ -37,7 +37,7 @@ namespace OregonTilth.EFModels.Entities
             {
                 var totalLaborHoursPerTray = transplantProductionInformation.CropPhaseTotalLaborHoursPerTray();
 
-                return totalLaborHoursPerTray / (transplantProductionInformation.SeedsPerTray * transplantProductionInformation.UsageRate);
+                return totalLaborHoursPerTray / (transplantProductionInformation.SeedsPerTray * (transplantProductionInformation.UsageRate / 100));
             }
 
             // todo: check back on this calculation specifically
@@ -48,7 +48,7 @@ namespace OregonTilth.EFModels.Entities
                     seedingTp.CropPhaseTotalLaborHoursPerTransplant(allTpInfosForCrop) *
                     transplantProductionInformation.SeedsPerTray +
                     transplantProductionInformation.CropPhaseTotalLaborHoursPerTray()
-                    / (transplantProductionInformation.SeedsPerTray * transplantProductionInformation.UsageRate);
+                    / (transplantProductionInformation.SeedsPerTray * (transplantProductionInformation.UsageRate / 100));
                 return value;
             }
 
