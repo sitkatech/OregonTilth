@@ -80,8 +80,8 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
 
     forkJoin([this.getWorkbookRequest, this.getTransplantProductionInformationDtosRequest, this.getTransplantProductionLaborActivityDtosRequest, this.getTransplantProductionLaborByCropsRequest]).subscribe(([workbookDto, transplantProductionInformationDtos, transplantProductionLaborActivityDtos, transplantProductionLaborByCrops]: [WorkbookDto, TransplantProductionInformationDto[], TransplantProductionLaborActivityDto[], TransplantProductionLaborActivityByCropDto[]]) => {
       this.workbook = workbookDto;
-      this.transplantProductionInformationDtos = this.getUniqueTransplantProductionInformationDtosByCropAndPhase(transplantProductionInformationDtos);
-      this.transplantProductionLaborActivityDtos = transplantProductionLaborActivityDtos;
+      this.transplantProductionInformationDtos =  transplantProductionInformationDtos;
+      this.transplantProductionLaborActivityDtos = this.getUniqueTransplantProductionLaborActivityDtos(transplantProductionLaborActivityDtos);
       this.transplantProductionLaborByCropDtos = transplantProductionLaborByCrops;
       this.defineColumnDefs();
       this.cdr.markForCheck();
@@ -98,11 +98,11 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
     };
   }
 
-  getUniqueTransplantProductionInformationDtosByCropAndPhase(transplantProductionInformationDtos: TransplantProductionInformationDto[]) {
-    let returnArray: TransplantProductionInformationDto[] = [];
-    transplantProductionInformationDtos.forEach((x, i) => {
+  getUniqueTransplantProductionLaborActivityDtos(transplantProductionLaborActivityDtos: TransplantProductionLaborActivityDto[]) {
+    let returnArray: TransplantProductionLaborActivityDto[] = [];
+    transplantProductionLaborActivityDtos.forEach((x, i) => {
       if(returnArray.findIndex(y => {
-        return y.Crop.CropID == x.Crop.CropID && y.Phase.PhaseID == x.Phase.PhaseID
+        return y.TransplantProductionLaborActivityID == x.TransplantProductionLaborActivityID
       }) < 0) {
         returnArray.push(x);
       }
