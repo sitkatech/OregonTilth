@@ -41,7 +41,7 @@ $button-hover-background: #ff3a05;
 $button-toggle-hover: #637ca1;
 $footer: #dfdfdf;  
 $body-background: #f1f1f1;
-$header-background: #f1f1f1;
+$header-background: #dfdfdf;
 $header-gradient-start: transparent;
 $header-gradient-end: transparent;
 $header-nav-after-height: 0px;
@@ -62,3 +62,5 @@ $card-cap-bg: #dfdfdf;
 
 $modal-header-background: #dfdfdf;
 $link-color: #205c90;
+
+$navbar-toggler-background: $primary;
