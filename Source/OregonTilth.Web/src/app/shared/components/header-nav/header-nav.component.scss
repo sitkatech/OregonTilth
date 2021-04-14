@@ -21,6 +21,22 @@
   .navbar.navbar-fresca
   {
     background-color: $header-background;
+    @media screen and (max-width: 990px){
+      .navbar-collapse {
+        border-top:1px solid #fff;
+        margin-top:10px;
+      }
+    }
+    @media screen and (max-width: 767px){
+      flex-direction:column;
+      .navbar-toggler {
+        align-self:flex-end;
+      }
+      .navbar-collapse {
+        width:100%;
+        
+      }
+    }
   }
 
   .navbar.navbar-fresca a.nav-link,
@@ -48,5 +64,18 @@
     }
     @media screen and (max-width: 990px){
       text-align:left;
+    }
+  }
+
+  .navbar-toggler {
+    background-color:$navbar-toggler-background;
+  }
+
+  .brand-container {
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    .logo-container {
+      white-space:nowrap;
     }
   }

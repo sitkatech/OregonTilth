@@ -72,6 +72,7 @@ import { LaborHoursComponent } from './pages/workbooks/results/labor-hours/labor
 import { ChartsModule } from 'ng2-charts';
 import { EditableRendererComponent } from './shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { VariableCostsComponent } from './pages/workbooks/results/variable-costs/variable-costs.component';
+import { ClickOutsideModule } from 'ng-click-outside';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -144,7 +145,8 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     MyDatePickerModule,
     CKEditorModule,
     ReactiveFormsModule,
-    ChartsModule
+    ChartsModule,
+    ClickOutsideModule
   ],  
   providers: [
     CookieService,

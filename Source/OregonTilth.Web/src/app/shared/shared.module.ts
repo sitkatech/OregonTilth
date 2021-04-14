@@ -21,6 +21,7 @@ import { AlertDisplayComponent } from './components/alert-display/alert-display.
 import { FieldDefinitionGridHeaderComponent } from './components/field-definition-grid-header/field-definition-grid-header.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { TimeStudyCellRendererComponent } from './components/ag-grid/time-study-cell-renderer/time-study-cell-renderer.component';
+import { ClickOutsideModule } from 'ng-click-outside';
 
 @NgModule({
     declarations: [
@@ -47,7 +48,8 @@ import { TimeStudyCellRendererComponent } from './components/ag-grid/time-study-
         RouterModule,
         NgMultiSelectDropDownModule.forRoot(),
         CKEditorModule,
-        NgbModule
+        NgbModule,
+        ClickOutsideModule
     ],
     exports: [
         AlertDisplayComponent,

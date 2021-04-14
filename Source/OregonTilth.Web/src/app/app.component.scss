@@ -37,6 +37,9 @@ header-nav::after{
             image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming) */
             image-rendering: crisp-edges;
             -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
+            @media screen and (max-width: 767px){
+               max-width:100%;
+              }
         }
     } 
 }
