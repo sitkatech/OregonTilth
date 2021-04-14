@@ -104,6 +104,10 @@ export class TransplantProductionInformationComponent implements OnInit {
 
   displayPottingUpMessage() {
 
+    if(!this.gridApi) {
+      return;
+    }
+
     var seedingAlreadyExists = false;
     this.gridApi.forEachNode((rowNode, index) => {
       if(rowNode.data.Crop.CropID == this.model.CropID && rowNode.data.Phase.PhaseID == PhaseEnum.Seeding){
