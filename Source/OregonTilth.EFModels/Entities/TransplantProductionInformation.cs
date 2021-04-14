@@ -21,14 +21,14 @@ namespace OregonTilth.EFModels.Entities
 
             var userTransplantProductionInformationsForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionInformationCreateDto.WorkbookID).ToList();
             
-            // unique by WorkbookID, CropID, PhaseID, TransplantProductionTrayTypeID
+            // unique by WorkbookID, CropID, PhaseID
             if (userTransplantProductionInformationsForWorkbook.Any(x => 
                 x.Workbook.WorkbookID == transplantProductionInformationCreateDto.WorkbookID
                 && x.Crop.CropID == transplantProductionInformationCreateDto.CropID
                 && x.Phase.PhaseID == transplantProductionInformationCreateDto.PhaseID
-                && x.TransplantProductionTrayType.TransplantProductionTrayTypeID == transplantProductionInformationCreateDto.TransplantProductionTrayTypeID))
+                ))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Information", Message = "Transplant Production Information must be unique per Crop, Phase, and Tray Type." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Information", Message = "Transplant Production Information must be unique per Crop, and Phase." });
             }
 
             // usage rate between 0 - 100
@@ -51,15 +51,15 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userTransplantProductionInformationsForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionInformationDto.Workbook.WorkbookID).ToList();
-            // unique by WorkbookID, CropID, PhaseID, TransplantProductionTrayTypeID
+            // unique by WorkbookID, CropID, PhaseID
             if (userTransplantProductionInformationsForWorkbook.Any(x =>
                 x.Workbook.WorkbookID == transplantProductionInformationDto.Workbook.WorkbookID
                 && x.Crop.CropID == transplantProductionInformationDto.Crop.CropID
                 && x.Phase.PhaseID == transplantProductionInformationDto.Phase.PhaseID
                 && x.TransplantProductionTrayType.TransplantProductionTrayTypeID == transplantProductionInformationDto.TransplantProductionTrayType.TransplantProductionTrayTypeID
-                && x.TransplantProductionInformationID != transplantProductionInformationDto.TransplantProductionInformationID))
+                ))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Information", Message = "Transplant Production Information must be unique per Crop, Phase, and Tray Type." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Information", Message = "Transplant Production Information must be unique per Crop, and Phase." });
             }
 
             // usage rate between 0 - 100
