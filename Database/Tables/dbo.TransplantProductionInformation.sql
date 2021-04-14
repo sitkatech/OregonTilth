@@ -16,12 +16,11 @@ CREATE TABLE [dbo].[TransplantProductionInformation](
 (
 	[TransplantProductionInformationID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
- CONSTRAINT [AK_TransplantProductionInformation_WorkbookID_CropID_PhaseID_TransplantProductionTrayTypeID] UNIQUE NONCLUSTERED 
+ CONSTRAINT [AK_TransplantProductionInformation_WorkbookID_CropID_PhaseID] UNIQUE NONCLUSTERED 
 (
 	[WorkbookID] ASC,
 	[CropID] ASC,
-	[PhaseID] ASC,
-	[TransplantProductionTrayTypeID] ASC
+	[PhaseID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 

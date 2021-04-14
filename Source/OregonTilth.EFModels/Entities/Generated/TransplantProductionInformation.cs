@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace OregonTilth.EFModels.Entities
 {
     [Table("TransplantProductionInformation")]
-    [Index(nameof(WorkbookID), nameof(CropID), nameof(PhaseID), nameof(TransplantProductionTrayTypeID), Name = "AK_TransplantProductionInformation_WorkbookID_CropID_PhaseID_TransplantProductionTrayTypeID", IsUnique = true)]
+    [Index(nameof(WorkbookID), nameof(CropID), nameof(PhaseID), Name = "AK_TransplantProductionInformation_WorkbookID_CropID_PhaseID", IsUnique = true)]
     public partial class TransplantProductionInformation
     {
         public TransplantProductionInformation()
