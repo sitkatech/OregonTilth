@@ -22,4 +22,39 @@
             pointer-events: none;
         }
     }
+    
+}
+.workbook-nav-toggler {
+    display:none;
+    .navbar-toggler-icon {
+        
+    }
+}
+
+:host {
+    @media screen and (max-width: 990px){
+        
+        z-index:1;
+        .side-nav {
+            transition:all .3s;
+            position:fixed;
+            overflow-y:auto;
+            top:0;
+            bottom:0;
+            left:-100%;
+            background:#fff;
+            box-shadow:1px 1px 3px #000;
+            padding:30px;
+        }
+        .side-nav.open {
+            
+            left:0;
+        }
+        .workbook-nav-toggler {
+            display:block;
+        }
+    }
+    &+ * {
+      margin-top:100px;  
+    }
 }

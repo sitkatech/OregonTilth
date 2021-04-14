@@ -1,4 +1,5 @@
-<nav class="side-nav">
+<button class="workbook-nav-toggler btn btn-primary navbar-dark" (click)="toggleWorkbookNavigation()">Workbook Navigation <span class="navbar-toggler-icon"></span></button>
+<nav class="side-nav" [class.open]="navigationOpen" (clickOutside)="onClickedOutside($event)" [exclude]="'.workbook-nav-toggler'">
     
     <div class="nav-group mb-3">
         <h4>Workbook</h4>
