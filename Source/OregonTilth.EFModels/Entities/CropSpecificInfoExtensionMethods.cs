@@ -169,14 +169,15 @@ namespace OregonTilth.EFModels.Entities
                 return 0;
             }
 
-            if (cropSpecificInfo.HelperForTotalInputCostPerTransplant() == null)
+            var helperForTotalInputCostPerTransplant = cropSpecificInfo.HelperForTotalInputCostPerTransplant();
+            if (helperForTotalInputCostPerTransplant == null)
             {
                 return seedingTpInfo.CropPhaseTotalInputCostsPerTransplant();
             }
 
-            if (cropSpecificInfo.HelperForTotalInputCostPerTransplant() > 0)
+            if (helperForTotalInputCostPerTransplant > 0)
             {
-                return (decimal) cropSpecificInfo.HelperForTotalInputCostPerTransplant();
+                return (decimal) helperForTotalInputCostPerTransplant;
             }
 
             return seedingTpInfo.CropPhaseTotalInputCostsPerTransplant();
