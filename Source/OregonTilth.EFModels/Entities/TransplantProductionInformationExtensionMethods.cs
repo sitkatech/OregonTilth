@@ -67,7 +67,7 @@ namespace OregonTilth.EFModels.Entities
         }
 
         public static decimal CropPhaseTotalInputCostsPerTray(
-            this TransplantProductionInformation transplantProductionInformation, PhaseEnum? phaseEnum)
+            this TransplantProductionInformation transplantProductionInformation)
         {
             // =([@[SEED(LING) COST PER TRAY]]+[@[STANDARD INPUT COSTS PER TRAY]]+[@[Crop Specific Input Costs per Tray]])
 
@@ -76,17 +76,15 @@ namespace OregonTilth.EFModels.Entities
                 return 0;
             }
 
-            var phase = phaseEnum ?? (PhaseEnum) transplantProductionInformation.PhaseID;
 
-
-            var seedCostPerTray = transplantProductionInformation.SeedCostPerTray(phase);
+            var seedCostPerTray = transplantProductionInformation.SeedCostPerTray();
             var standardInputCostsPerTray = transplantProductionInformation.StandardInputCostsPerTray();
             var cropSpecificInputCostsPerTray = transplantProductionInformation.CropSpecificInputCostsPerTray ?? 0;
             return seedCostPerTray + standardInputCostsPerTray + cropSpecificInputCostsPerTray;
 
         }
 
-        public static decimal SeedCostPerTray(this TransplantProductionInformation transplantProductionInformation, PhaseEnum phaseEnum)
+        public static decimal SeedCostPerTray(this TransplantProductionInformation transplantProductionInformation)
         {
             // =IF([@Phase]="Seeding",[@[Cost per Seed]],
             //IF([@Phase] = "Potting Up",INDEX(
@@ -99,18 +97,23 @@ namespace OregonTilth.EFModels.Entities
                 return 0;
             }
 
+            var phaseEnum = (PhaseEnum) transplantProductionInformation.PhaseID;
+            
             if (phaseEnum == PhaseEnum.Seeding)
             {
                 if (transplantProductionInformation.CostPerSeed != null)
                 {
                     return (decimal) transplantProductionInformation.CostPerSeed * transplantProductionInformation.SeedsPerTray;
                 }
-                
             }
 
             if (phaseEnum == PhaseEnum.PottingUp)
             {
-                return transplantProductionInformation.CropPhaseTotalInputCostsPerTransplant() *
+                var seedingTPInfo =
+                    transplantProductionInformation.Crop.TransplantProductionInformations.SingleOrDefault(x =>
+                        (PhaseEnum) x.Phase.PhaseID == PhaseEnum.Seeding);
+
+                return seedingTPInfo.CropPhaseTotalInputCostsPerTransplant() *
                        transplantProductionInformation.SeedsPerTray;
             }
 
@@ -121,7 +124,8 @@ namespace OregonTilth.EFModels.Entities
         {
             // =[@[CROP/PHASE TOTAL INPUT COSTS PER TRAY]]/([@[Seeds/Seedlings per Tray]]*[@[Usage Rate]])
 
-            var cropPhaseTotalInputCostsPerTray = transplantProductionInformation.CropPhaseTotalInputCostsPerTray(PhaseEnum.Seeding);
+            var cropPhaseTotalInputCostsPerTray = transplantProductionInformation.CropPhaseTotalInputCostsPerTray();
+
             return cropPhaseTotalInputCostsPerTray /
                    (transplantProductionInformation.SeedsPerTray * (transplantProductionInformation.UsageRate / 100));
         }
