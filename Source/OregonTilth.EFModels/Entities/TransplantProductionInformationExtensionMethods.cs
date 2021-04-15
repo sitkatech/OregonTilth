@@ -71,6 +71,11 @@ namespace OregonTilth.EFModels.Entities
         {
             // =([@[SEED(LING) COST PER TRAY]]+[@[STANDARD INPUT COSTS PER TRAY]]+[@[Crop Specific Input Costs per Tray]])
 
+            if (transplantProductionInformation == null)
+            {
+                return 0;
+            }
+
             var phase = phaseEnum ?? (PhaseEnum) transplantProductionInformation.PhaseID;
 
 
@@ -88,6 +93,11 @@ namespace OregonTilth.EFModels.Entities
             //[CROP / PHASE TOTAL INPUT COSTS PER TRANSPLANT],MATCH(1, ([Crop] =[@Crop]) * ([Phase] = "Seeding") *{ 1},0)
             //),NA()))
             //*[@[Seeds / Seedlings per Tray]]
+
+            if (transplantProductionInformation == null)
+            {
+                return 0;
+            }
 
             if (phaseEnum == PhaseEnum.Seeding)
             {
@@ -123,8 +133,8 @@ namespace OregonTilth.EFModels.Entities
             //table1518 = TPInputCosts
 
             var tpInputCosts =
-                transplantProductionInformation.TransplantProductionTrayType.TransplantProductionInputCosts.Sum(x =>
-                    x.CostPerTray);
+                transplantProductionInformation?.TransplantProductionTrayType.TransplantProductionInputCosts.Sum(x =>
+                    x.CostPerTray) ?? 0;
             return tpInputCosts;
 
         }

@@ -56,7 +56,7 @@ namespace OregonTilth.EFModels.Entities
                 x.Workbook.WorkbookID == transplantProductionInformationDto.Workbook.WorkbookID
                 && x.Crop.CropID == transplantProductionInformationDto.Crop.CropID
                 && x.Phase.PhaseID == transplantProductionInformationDto.Phase.PhaseID
-                && x.TransplantProductionTrayType.TransplantProductionTrayTypeID == transplantProductionInformationDto.TransplantProductionTrayType.TransplantProductionTrayTypeID
+                && x.TransplantProductionInformationID != transplantProductionInformationDto.TransplantProductionInformationID
                 ))
             {
                 result.Add(new ErrorMessage() { Type = "Transplant Production Information", Message = "Transplant Production Information must be unique per Crop, and Phase." });

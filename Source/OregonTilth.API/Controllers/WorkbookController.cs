@@ -943,7 +943,7 @@ namespace OregonTilth.API.Controllers
         [LoggedInUnclassifiedFeature]
         public ActionResult<IEnumerable<TransplantProductionInputCostDto>> GetFieldStandardTimes([FromRoute] int workbookID)
         {
-            var fieldStandardTimes = FieldStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID);
+            var fieldStandardTimes = FieldStandardTime.GetDtoListByWorkbookID(_dbContext, workbookID).OrderBy(x => x.FieldLaborActivity.FieldLaborActivityName);
             return Ok(fieldStandardTimes);
         }
 
