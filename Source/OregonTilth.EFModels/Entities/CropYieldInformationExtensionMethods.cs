@@ -342,7 +342,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (harvestStandardTime?.StandardTimePerUnit != null)
             {
-                return harvestYieldPerStandardSpace * (decimal)harvestStandardTime.StandardTimePerUnit;
+                return (harvestYieldPerStandardSpace * (decimal)harvestStandardTime.StandardTimePerUnit) / 60;
 
             }
 
