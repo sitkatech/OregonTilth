@@ -114,7 +114,7 @@ namespace OregonTilth.EFModels.Entities
             if (cropSpecificInfo.TpOrDsTypeID == (int) TpOrDsTypeEnum.TransplantFarmProduced)
             {
                 var tpInfo = cropSpecificInfo.Crop.TransplantProductionInformations.SingleOrDefault(x =>
-                    x.PhaseID == (int)PhaseEnum.Seeding);
+                    x.PhaseID == (int)PhaseEnum.PottingUp);
                 var allTpInfosForCrop = cropSpecificInfo.Crop.TransplantProductionInformations;
 
                 var helperLaborHoursPerTransplant = cropSpecificInfo.HelperForLaborHoursPerTransplant(tpInfo, allTpInfosForCrop);
@@ -197,10 +197,7 @@ namespace OregonTilth.EFModels.Entities
             }
 
             return tpInfo.CropPhaseTotalInputCostsPerTransplant();
-
-            
         }
-
 
     }
 }
