@@ -13,12 +13,29 @@ export class SideNavComponent implements OnInit {
     private watchUserChangeSubscription: any;
     private currentUser: UserDetailedDto;
     public workbookID: number;
+    public navigationOpen: boolean = true;
+    private sideNavMinWidth: number = 990;
+    private screenWidth: number = null;
+
+    @HostListener('window:resize', ['$event.target.innerWidth'])
+    onResize(width) {
+        this.navigationOpen = width > this.sideNavMinWidth;
+        this.screenWidth = width;
+    }
+
+    onClickedOutside(e: Event) {
+      if(this.navigationOpen && this.screenWidth < this.sideNavMinWidth){
+        this.navigationOpen = false;
+      }
+    }
 
     constructor(
         private authenticationService: AuthenticationService,
         private route: ActivatedRoute,
         private router: Router,
         private cdr: ChangeDetectorRef) {
+            this.navigationOpen = window.innerWidth > this.sideNavMinWidth;
+            
     }
 
     ngOnInit() {
@@ -33,6 +50,10 @@ export class SideNavComponent implements OnInit {
     this.watchUserChangeSubscription.unsubscribe();
     this.authenticationService.dispose();
     this.cdr.detach();
+  }
+
+  toggleWorkbookNavigation() {
+    this.navigationOpen = !this.navigationOpen;
   }
 
 }

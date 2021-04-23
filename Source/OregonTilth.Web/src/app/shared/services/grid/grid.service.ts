@@ -16,15 +16,19 @@ import { AlertContext } from '../../models/enums/alert-context.enum';
 export class GridService {
 
     constructor() {
+        
     }
 
-
     currencyFormatter(params): string {
-        return '$' + params.value;
+        return isNumber(params.value) ? '$' + params.value : params.value;
     }
 
     currencyFormatterToFixed(params): string {
-        return '$' + params.value.toFixed(2);
+        return isNumber(params.value) ? '$' + params.value.toFixed(2) : params.value;
     }
 
+}
+
+function isNumber(n): boolean { 
+    return !isNaN(parseFloat(n)) && !isNaN(n - 0) ;
 }

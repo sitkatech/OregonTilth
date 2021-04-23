@@ -163,18 +163,24 @@ namespace OregonTilth.EFModels.Entities
 
             var seedingTpInfo = cropSpecificInfo.Crop.TransplantProductionInformations.SingleOrDefault(x =>
                 x.PhaseID == (int)PhaseEnum.Seeding);
-            
-            if (cropSpecificInfo.HelperForTotalInputCostPerTransplant() == null)
+
+            if (seedingTpInfo == null)
+            {
+                return 0;
+            }
+
+            var helperForTotalInputCostPerTransplant = cropSpecificInfo.HelperForTotalInputCostPerTransplant();
+            if (helperForTotalInputCostPerTransplant == null)
             {
                 return seedingTpInfo.CropPhaseTotalInputCostsPerTransplant();
             }
 
-            if (cropSpecificInfo.HelperForTotalInputCostPerTransplant() > 0)
+            if (helperForTotalInputCostPerTransplant > 0)
             {
-                return (decimal) cropSpecificInfo.HelperForTotalInputCostPerTransplant();
+                return (decimal) helperForTotalInputCostPerTransplant;
             }
 
-            return seedingTpInfo.CropPhaseTotalInputCostsPerTransplant(); ;
+            return seedingTpInfo.CropPhaseTotalInputCostsPerTransplant();
         }
 
         public static decimal? HelperForTotalInputCostPerTransplant(this CropSpecificInfo cropSpecificInfo)
@@ -190,7 +196,7 @@ namespace OregonTilth.EFModels.Entities
                 return null;
             }
 
-            return tpInfo.CropPhaseTotalInputCostsPerTray((PhaseEnum) tpInfo.PhaseID);
+            return tpInfo.CropPhaseTotalInputCostsPerTransplant();
 
             
         }

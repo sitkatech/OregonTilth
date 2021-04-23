@@ -103,7 +103,19 @@ export class TransplantProductionInformationComponent implements OnInit {
   }
 
   displayPottingUpMessage() {
-    return this.model.PhaseID == PhaseEnum.PottingUp;
+
+    if(!this.gridApi) {
+      return;
+    }
+
+    var seedingAlreadyExists = false;
+    this.gridApi.forEachNode((rowNode, index) => {
+      if(rowNode.data.Crop.CropID == this.model.CropID && rowNode.data.Phase.PhaseID == PhaseEnum.Seeding){
+        seedingAlreadyExists = true;
+      }
+    });
+
+    return this.model.PhaseID == PhaseEnum.PottingUp && !seedingAlreadyExists;
   }
 
   onGridReady(params: any) {

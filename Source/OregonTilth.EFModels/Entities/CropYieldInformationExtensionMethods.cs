@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.VisualBasic;
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
@@ -314,9 +315,9 @@ namespace OregonTilth.EFModels.Entities
             // =[@[Yield per Standard Unit of Space]]/[@[Harvest Crop Units per Hour (Manual)]]
             /*
              *
-             * NEEDS A FORMULA:
-             * Divides the Harvest Yield per Standard of Space for the Crop/Unit
-             * by the (AVERAGE TIME (Crop Units per Minute) from Table 29 divided by 60) where there’s a match at Crop and Unit and H or PH = “Harvest”
+             * SMG 4/15/21 - if we harvest 57 lbs of broccoli and it takes 1.3953 minutes to harvest 1lb we can multiply those to get the total number of minutes
+             * to harvest a standard bed. We can then divide by 60 to get the total hours to harvest a standard bed.
+             *
              */
 
             var harvestYieldPerStandardSpace = cropYieldInformation.HarvestedYieldPerStandardUnitOfSpace;
@@ -326,12 +327,10 @@ namespace OregonTilth.EFModels.Entities
 
             if (harvestStandardTime?.StandardTimePerUnit != null)
             {
-                return harvestYieldPerStandardSpace / (decimal)harvestStandardTime.StandardTimePerUnit;
-
+                return (harvestYieldPerStandardSpace * (decimal)harvestStandardTime.StandardTimePerUnit) / 60;
             }
 
             return 0;
-
         }
 
         public static decimal PostHarvestLaborHoursPerStandardBed(this CropYieldInformation cropYieldInformation)
@@ -343,7 +342,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (harvestStandardTime?.StandardTimePerUnit != null)
             {
-                return harvestYieldPerStandardSpace * (decimal)harvestStandardTime.StandardTimePerUnit;
+                return (harvestYieldPerStandardSpace * (decimal)harvestStandardTime.StandardTimePerUnit) / 60;
 
             }
 
