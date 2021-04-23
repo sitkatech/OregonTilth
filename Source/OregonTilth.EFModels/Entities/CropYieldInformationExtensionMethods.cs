@@ -367,7 +367,7 @@ namespace OregonTilth.EFModels.Entities
             }
 
             var cropInfo = cropYieldInformation.Crop.CropSpecificInfos.SingleOrDefault();
-            var totalLaborHoursPerTransplant = cropInfo.TotalLaborHoursPerTransplant();
+            var totalLaborHoursPerTransplant = cropInfo.TotalLaborHoursPerTransplant(); 
             // else get Units Used * TotalLaborHoursPerTransplant for the crop
             var unitsUsed = cropInfo.UnitsUsed(FieldUnitTypeEnum.Transplants);
 
