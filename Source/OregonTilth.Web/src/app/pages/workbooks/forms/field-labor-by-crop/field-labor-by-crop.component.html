@@ -67,7 +67,7 @@
         <div class="row mt-4">
           <div class="col">
             <ag-grid-angular #fieldLaborByCropGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="fieldLaborByCropDtos"
-              [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (gridReady)="onGridReady($event)" (cellValueChanged)="onCellValueChanged($event)">
+              [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (gridReady)="onGridReady($event)" (cellValueChanged)="onCellValueChanged($event)" [suppressDragLeaveHidesColumns]="true">
             </ag-grid-angular>
           </div>
         </div>
