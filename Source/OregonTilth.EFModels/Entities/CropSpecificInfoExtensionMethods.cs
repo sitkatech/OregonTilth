@@ -113,17 +113,25 @@ namespace OregonTilth.EFModels.Entities
 
             if (cropSpecificInfo.TpOrDsTypeID == (int) TpOrDsTypeEnum.TransplantFarmProduced)
             {
-                var tpInfo = cropSpecificInfo.Crop.TransplantProductionInformations.SingleOrDefault(x =>
-                    x.PhaseID == (int)PhaseEnum.PottingUp);
+
                 var allTpInfosForCrop = cropSpecificInfo.Crop.TransplantProductionInformations;
 
-                var helperLaborHoursPerTransplant = cropSpecificInfo.HelperForLaborHoursPerTransplant(tpInfo, allTpInfosForCrop);
-                if (helperLaborHoursPerTransplant > 0)
+                decimal helperLaborHoursPerTransplantWithPottingUpPhase = 0;
+                if (allTpInfosForCrop.Any(x => x.PhaseID == (int) PhaseEnum.PottingUp))
                 {
-                    return helperLaborHoursPerTransplant;
+                    var tpInfo = allTpInfosForCrop.SingleOrDefault(x =>
+                        x.PhaseID == (int)PhaseEnum.PottingUp);
+                    helperLaborHoursPerTransplantWithPottingUpPhase = cropSpecificInfo.HelperForLaborHoursPerTransplant(tpInfo, allTpInfosForCrop);
                 }
 
-                var cropPhaseTotalLaborHoursPerTransplant = tpInfo?.CropPhaseTotalLaborHoursPerTransplant(allTpInfosForCrop);
+                if (helperLaborHoursPerTransplantWithPottingUpPhase > 0)
+                {
+                    return helperLaborHoursPerTransplantWithPottingUpPhase;
+                }
+
+                var seedingTpInfo = allTpInfosForCrop.SingleOrDefault(x => x.PhaseID == (int) PhaseEnum.Seeding);
+
+                var cropPhaseTotalLaborHoursPerTransplant = seedingTpInfo?.CropPhaseTotalLaborHoursPerTransplant(allTpInfosForCrop);
                 return cropPhaseTotalLaborHoursPerTransplant ?? 0;
             }
 
