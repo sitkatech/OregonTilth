@@ -17,12 +17,13 @@ namespace OregonTilth.API.Controllers
         [HttpGet("/health-check")]
         public IActionResult HealthCheck()
         {
-            var users = _dbContext.Users;
-
             var results = new HealthCheckResults();
+
+            // assume OK initially
             var result = new HealthCheckResult("AdminExists");
             result.HealthCheckStatus = HealthCheckStatus.OK;
 
+            var users = _dbContext.Users;
             if (!users.Any(x => x.RoleID == (int)RoleEnum.Admin))
             {
                 result.HealthCheckStatus = HealthCheckStatus.Critical;
@@ -30,7 +31,7 @@ namespace OregonTilth.API.Controllers
             }
             results.Add(result);
 
-            return Ok(results.GetHealthCheckResultsAsCompleteNagiosOutputText());
+            return Ok(results.GetCompleteNagiosOutputText());
         }
 
     }

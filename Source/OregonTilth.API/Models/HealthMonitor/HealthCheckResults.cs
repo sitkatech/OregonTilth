@@ -42,6 +42,17 @@ namespace OregonTilth.API.Models.HealthMonitor
             }
         }
 
+        public string GetCompleteNagiosOutputText()
+        {
+            return $"{GetNagiosReturnCodeAsCompleteNagiosOutputText()}{GetHealthCheckResultsAsCompleteNagiosOutputText()}";
+        }
+
+        public string GetNagiosReturnCodeAsCompleteNagiosOutputText()
+        {
+            var nagiosReturnCode = GetNagiosReturnCode();
+            return $"[BeginNagiosReturnCode]\r\n{nagiosReturnCode}\r\n[EndNagiosReturnCode]\r\n";
+        }
+
         /// <summary>
         /// Get HealthCheckStatus
         /// </summary>
@@ -110,7 +121,8 @@ namespace OregonTilth.API.Models.HealthMonitor
             var shortPerfData = GetHealthCheckResultsAsPerformanceDataShort();
             var longServiceOutput = GetHealthCheckResultsAsLongNagiosServiceOutputText();
             var longPerfOutput = GetHealthCheckResultsAsPerformanceDataLong();
-            var fullNagiosOutput = $"{serviceOutput}{NagiosOutputSectionSeparator}{shortPerfData}{NagiosPluginOutputLineEnding}{longServiceOutput}{NagiosOutputSectionSeparator}{longPerfOutput}";
+            var fullNagiosOutput = $"[BeginNagiosPluginOutput]\r\n{serviceOutput}{NagiosOutputSectionSeparator}{shortPerfData}{NagiosPluginOutputLineEnding}{longServiceOutput}{NagiosOutputSectionSeparator}{longPerfOutput}\r\n[EndNagiosPluginOutput]\r\n";
+
             return fullNagiosOutput;
         }
 
