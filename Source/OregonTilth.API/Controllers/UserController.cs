@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using OregonTilth.API.Models;
 using OregonTilth.Models.DataTransferObjects;
 using User = OregonTilth.EFModels.Entities.User;
 
