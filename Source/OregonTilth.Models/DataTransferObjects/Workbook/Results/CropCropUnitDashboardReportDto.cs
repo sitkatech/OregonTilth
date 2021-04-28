@@ -19,6 +19,7 @@
     public class VariableCostsDashboardReportDto
     {
         public CropSummaryDto Crop { get; set; }
+        public CropUnitSummaryDto CropUnit { get; set; }
         public decimal TotalLaborCosts { get; set; }
         public decimal TotalFieldInputCosts { get; set; }
         public decimal TotalMachineryCosts { get; set; }
