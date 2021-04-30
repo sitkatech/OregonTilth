@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -18,6 +18,8 @@ import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/butto
 import { TransplantProductionLaborActivityCreateDto } from 'src/app/shared/models/forms/transplant-production-labor-activities/transplant-production-labor-activity-create-dto';
 import { TransplantProductionLaborActivityDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-dto';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
+import { AgGridAngular } from 'ag-grid-angular';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 
 @Component({
   selector: 'transplant-production-labor-activities',
@@ -25,12 +27,13 @@ import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/edi
   styleUrls: ['./transplant-production-labor-activities.component.scss']
 })
 export class TransplantProductionLaborActivitiesComponent implements OnInit {
-
+  @ViewChild('transplantProductionLaborActivitiesGrid') transplantProductionLaborActivitiesGrid: AgGridAngular;
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
+    private utilityFunctionsService: UtilityFunctionsService, 
     private router: Router,
     private route: ActivatedRoute) { }
 
@@ -177,5 +180,16 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
     this.gridApi = params.api;
   }
 
+  public exportToCsv() {
+    let columnsKeys = this.transplantProductionLaborActivitiesGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+    columnIds.splice(-1, 1); // remove the delete column from the download
+    this.utilityFunctionsService.exportGridToCsv(this.transplantProductionLaborActivitiesGrid, 'Transplant-Production-Labor-Activities.csv', columnIds);
+  }  
 }
 
