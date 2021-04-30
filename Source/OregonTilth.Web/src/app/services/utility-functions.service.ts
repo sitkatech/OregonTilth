@@ -23,7 +23,7 @@ export class UtilityFunctionsService {
         suppressQuotes: false,
         fileName: fileName,
         processCellCallback: function (p) {
-          if (p.column.getColDef().cellRendererFramework) {
+          if (p.column.getColDef().cellRendererFramework && (p.value.DownloadDisplay || p.value.LinkDisplay)) {
             if (p.value.DownloadDisplay) {
               return p.value.DownloadDisplay;
             } else {

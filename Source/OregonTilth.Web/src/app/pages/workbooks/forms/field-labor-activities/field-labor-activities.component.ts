@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -21,6 +21,7 @@ import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-table
 import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
+import { AgGridAngular } from 'ag-grid-angular';
 
 @Component({
   selector: 'field-labor-activities',
@@ -28,6 +29,7 @@ import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/edi
   styleUrls: ['./field-labor-activities.component.scss']
 })
 export class FieldLaborActivitiesComponent implements OnInit {
+  @ViewChild('fieldLaborActivitiesGrid') fieldLaborActivitiesGrid: AgGridAngular;
 
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
@@ -35,6 +37,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
     private router: Router,
+    private utilityFunctionsService: UtilityFunctionsService, 
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -270,5 +273,16 @@ export class FieldLaborActivitiesComponent implements OnInit {
     this.model = new FieldLaborActivityCreateDto({WorkbookID: this.workbookID});
   }
 
+  public exportToCsv() {
+    let columnsKeys = this.fieldLaborActivitiesGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+    columnIds.splice(-1, 1); // remove the delete column from the download
+    this.utilityFunctionsService.exportGridToCsv(this.fieldLaborActivitiesGrid, 'Field-Labor-Activities.csv', columnIds);
+  }  
 }
 
