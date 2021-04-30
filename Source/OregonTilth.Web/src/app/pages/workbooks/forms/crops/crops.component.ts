@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -17,6 +17,7 @@ import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/butto
 import { CropCreateDto } from 'src/app/shared/models/forms/crops/crop-create-dto';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
+import { AgGridAngular } from 'ag-grid-angular';
 
 @Component({
   selector: 'crops',
@@ -24,10 +25,11 @@ import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/edi
   styleUrls: ['./crops.component.scss']
 })
 export class CropsComponent implements OnInit {
-
+  @ViewChild('cropsGrid') cropsGrid: AgGridAngular;
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
+    private utilityFunctionsService: UtilityFunctionsService, 
     private alertService: AlertService,
     private route: ActivatedRoute) { }
 
@@ -173,6 +175,18 @@ export class CropsComponent implements OnInit {
   onGridReady(params: any) {
     this.gridApi = params.api;
   }
+
+  public exportToCsv() {
+    let columnsKeys = this.cropsGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+    columnIds.splice(-1, 1); // remove the delete column from the download
+    this.utilityFunctionsService.exportGridToCsv(this.cropsGrid, 'Crops.csv', columnIds);
+  } 
 
 }
 
