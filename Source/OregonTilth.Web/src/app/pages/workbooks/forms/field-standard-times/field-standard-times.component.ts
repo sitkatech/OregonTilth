@@ -449,10 +449,7 @@ export class FieldStandardTimesComponent implements OnInit {
         let columnName: string = keys.getColId(); 
         columnIds.push(columnName); 
       });
-
-    var timeStudiesIndex = columnIds.findIndex(x => {
-      return x == 'TimeStudies';
-    });
+    
     columnIds.splice(-1, 1);
     this.utilityFunctionsService.exportGridToCsv(this.fieldStandardTimesGrid, 'Field-Time-Studies.csv', columnIds);
   }  

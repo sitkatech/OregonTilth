@@ -304,7 +304,8 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         headerName: 'Time Study Progress', 
         field: 'TimeStudies',
         valueGetter: function (params: any) {
-          return { HarvestPostHarvestStandardTime: params.data, count: params.data.TimeStudies.length };
+          var downloadDisplay = TimeStudyCellRendererComponent.downloadDisplay(params.data)
+          return { HarvestPostHarvestStandardTime: params.data, count: params.data.TimeStudies.length, DownloadDisplay: downloadDisplay };
         }, 
         cellRendererFramework: TimeStudyCellRendererComponent,
         cellRendererParams: { 
@@ -413,10 +414,8 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         let columnName: string = keys.getColId(); 
         columnIds.push(columnName); 
       });
-    var timeStudiesIndex = columnIds.findIndex(x => {
-      return x == 'TimeStudies';
-    });
-    columnIds.splice(timeStudiesIndex, 1);
+    
+    columnIds.splice(-1, 1);
     this.utilityFunctionsService.exportGridToCsv(this.harvestPostHarvestStandardTimesGrid, 'Harvest-Post-Harvest-Time-Studies.csv', columnIds);
   }  
 
