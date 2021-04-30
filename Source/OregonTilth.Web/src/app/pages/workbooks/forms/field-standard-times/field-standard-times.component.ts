@@ -321,7 +321,8 @@ export class FieldStandardTimesComponent implements OnInit {
         headerName: 'Time Study Progress', 
         field: 'TimeStudies',
         valueGetter: function (params: any) {
-          return { FieldStandardTime: params.data, count: params.data.TimeStudies.length };
+          var downloadDisplay = TimeStudyCellRendererComponent.downloadDisplay(params.data)
+          return { FieldStandardTime: params.data, count: params.data.TimeStudies.length, DownloadDisplay: downloadDisplay };
         }, 
         cellRendererFramework: TimeStudyCellRendererComponent,
         cellRendererParams: { 
@@ -452,7 +453,7 @@ export class FieldStandardTimesComponent implements OnInit {
     var timeStudiesIndex = columnIds.findIndex(x => {
       return x == 'TimeStudies';
     });
-    columnIds.splice(timeStudiesIndex, 1);
+    columnIds.splice(-1, 1);
     this.utilityFunctionsService.exportGridToCsv(this.fieldStandardTimesGrid, 'Field-Time-Studies.csv', columnIds);
   }  
 

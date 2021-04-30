@@ -126,7 +126,6 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   private refreshView(){
-    debugger;
     this.unassignedUsersGrid.api.refreshView();
   }
 
