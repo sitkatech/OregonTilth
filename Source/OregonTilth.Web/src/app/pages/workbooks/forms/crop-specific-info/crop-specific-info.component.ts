@@ -189,7 +189,8 @@ export class CropSpecificInfoComponent implements OnInit {
         editable: false,
         sortable: true, 
         filter: true,
-        pinned: 'left'
+        pinned: 'left',
+        width: 100
       },
       {
         headerName: 'TP or DS Type', 
