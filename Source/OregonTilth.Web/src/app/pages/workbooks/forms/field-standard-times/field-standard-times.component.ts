@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -93,7 +93,13 @@ export class FieldStandardTimesComponent implements OnInit {
   public closeResult: string;
 
   public updateFieldStandardTimeRequest: any;
+  public screenWidth: number;
   
+  @HostListener('window:resize', ['$event.target.innerWidth'])
+  onResize(width) {
+      this.screenWidth = width;
+  }
+
   getRowNodeId(data)  {
     return data.FieldStandardTimeID.toString();
   }
@@ -207,7 +213,7 @@ export class FieldStandardTimesComponent implements OnInit {
         filter: true,
         resizable: true,
         width:150,
-        pinned: 'left'
+        pinned: this.screenWidth > 767 ? 'left' : null,
       },
       {
         headerName: 'Labor Type', 
@@ -215,8 +221,8 @@ export class FieldStandardTimesComponent implements OnInit {
         sortable: true, 
         filter: true,
         resizable: true,
-        width:150,
-        pinned: 'left'
+        width:75,
+        pinned: this.screenWidth > 767 ? 'left' : null,
       },
       {
         headerName: 'Machinery', 
