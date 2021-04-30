@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -90,7 +90,14 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
   public updateStandardTimeRequest: any;
 
   private deleteHarvestPostHarvestStandardTimeRequest: any;
+
+  public screenWidth: number;
   
+  @HostListener('window:resize', ['$event.target.innerWidth'])
+  onResize(width) {
+      this.screenWidth = width;
+  }
+
   getRowNodeId(data)  {
     return data.HarvestPostHarvestStandardTimeID.toString();
   }
@@ -199,7 +206,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         filter: true,
         resizable: true,
         width:150,
-        pinned: 'left'
+        pinned: this.screenWidth > 767 ? 'left' : null,
       },
       {
         headerName: 'Crop Unit', 
@@ -226,7 +233,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         filter: true,
         resizable: true,
         width:150,
-        pinned: 'left'
+        pinned: this.screenWidth > 767 ? 'left' : null,
       },
       {
         headerName: 'Harvest/Post-Harvest', 
@@ -253,7 +260,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         filter: true,
         resizable: true,
         width:150,
-        pinned: 'left'
+        pinned: this.screenWidth > 767 ? 'left' : null,
       },
       {
         headerName: 'Avg Min Per Unit', 
