@@ -96,7 +96,8 @@ export class VariableCostsComponent implements OnInit {
   public availableCrops: CropDto[];
   public selectedCrop: CropDto;
 
-  
+  public availableCropUnits: CropUnitDto[];
+  public selectedCropUnit: CropUnitDto;
 
 
   ngOnInit() {
@@ -132,6 +133,13 @@ export class VariableCostsComponent implements OnInit {
       []);
     this.selectedCrop = this.availableCrops.length > 0 ? this.availableCrops[0] : null;
 
+
+    var allCropUnits = this.variableCostsDashboardReportDtos.map(x => x.CropUnit);
+    this.availableCropUnits = [];
+    this.availableCropUnits = allCropUnits.reduce((acc, x) => acc.concat(acc.find(y => y.CropUnitID === x.CropUnitID) ? [] : [x]),
+      []);
+    this.selectedCropUnit = this.availableCropUnits.length > 0 ? this.availableCropUnits[0] : null;
+
   }
 
   dropdownChanged(newValue: any) {
@@ -141,7 +149,7 @@ export class VariableCostsComponent implements OnInit {
 
   updateGridData() {
     this.variableCostsDashboardReportDtosForGrid = this.variableCostsDashboardReportDtos.filter(x => {
-      return x.Crop.CropID == this.selectedCrop.CropID;
+      return x.Crop.CropID == this.selectedCrop.CropID && x.CropUnit.CropUnitID == this.selectedCropUnit.CropUnitID;
     })
 
     this.variableCostsPivotedForSelectedCrop = [];

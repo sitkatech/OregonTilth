@@ -22,9 +22,9 @@
                     <select class="form-control" [(ngModel)]="selectedCrop" (ngModelChange)="dropdownChanged($event)">
                       <option *ngFor="let option of availableCrops" [ngValue]="option" [selected]="option.CropID == selectedCrop.CropID">{{option.CropName}}</option>
                     </select>
-                    <!-- <select class="form-control" [(ngModel)]="selectedCropUnit" (ngModelChange)="dropdownChanged($event)">
+                    <select class="form-control" [(ngModel)]="selectedCropUnit" (ngModelChange)="dropdownChanged($event)">
                       <option *ngFor="let option of availableCropUnits" [ngValue]="option" [selected]="option == selectedCropUnit">{{option.CropUnitName}}</option>
-                    </select> -->
+                    </select>
                     <button class="btn btn-secondary btn-sm" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
                       <i class="fas fa-download"></i>
                       Download

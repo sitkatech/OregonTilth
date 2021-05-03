@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -23,6 +23,7 @@ import { forkJoin } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
+import { AgGridAngular } from 'ag-grid-angular';
 
 @Component({
   selector: 'field-input-costs',
@@ -30,6 +31,7 @@ import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/edi
   styleUrls: ['./field-input-costs.component.scss']
 })
 export class FieldInputCostsComponent implements OnInit {
+  @ViewChild('fieldInputCostGrid') fieldInputCostGrid: AgGridAngular;
 
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
@@ -37,6 +39,7 @@ export class FieldInputCostsComponent implements OnInit {
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
     private gridService: GridService,
+    private utilityFunctionsService: UtilityFunctionsService, 
     private router: Router,
     private route: ActivatedRoute) { }
 
@@ -235,6 +238,18 @@ export class FieldInputCostsComponent implements OnInit {
   getRowNodeId(data)  {
     return data.FieldInputCostID.toString();
   }
+
+  public exportToCsv() {
+    let columnsKeys = this.fieldInputCostGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+    columnIds.splice(-1, 1); // remove the delete column from the download
+    this.utilityFunctionsService.exportGridToCsv(this.fieldInputCostGrid, 'Field-Input-Costs.csv', columnIds);
+  }  
 
 }
 

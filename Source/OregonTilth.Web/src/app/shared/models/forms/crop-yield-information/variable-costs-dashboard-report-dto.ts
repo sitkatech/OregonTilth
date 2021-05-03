@@ -1,7 +1,9 @@
 import { CropDto } from "../../generated/crop-dto";
+import { CropUnitDto } from "../../generated/crop-unit-dto";
 
 export class VariableCostsDashboardReportDto {
     Crop: CropDto;
+    CropUnit: CropUnitDto;
     TotalFieldInputCosts: number;
     TotalLaborCosts: number;
     TotalMachineryCosts: number;

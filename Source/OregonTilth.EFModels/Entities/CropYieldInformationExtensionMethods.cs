@@ -50,6 +50,7 @@ namespace OregonTilth.EFModels.Entities
             return new VariableCostsDashboardReportDto()
             {
                 Crop = cropYieldInformation.Crop.AsSummaryDto(),
+                CropUnit = cropYieldInformation.CropUnit.AsSummaryDto(),
                 TotalFieldInputCosts = cropYieldInformation.TotalFieldInputCosts(),
                 TotalLaborCosts = cropYieldInformation.TotalLaborCosts(),
                 TotalMachineryCosts = cropYieldInformation.TotalMachineryCosts(),

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -25,6 +25,7 @@ import { TransplantProductionInputDto } from 'src/app/shared/models/generated/tr
 import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
 import { element } from 'protractor';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
+import { AgGridAngular } from 'ag-grid-angular';
 
 @Component({
   selector: 'transplant-production-input-costs',
@@ -32,7 +33,7 @@ import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/edi
   styleUrls: ['./transplant-production-input-costs.component.scss']
 })
 export class TransplantProductionInputCostsComponent implements OnInit {
-
+  @ViewChild('transplantProductionInputCostsGrid') transplantProductionInputCostsGrid: AgGridAngular;
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
@@ -40,6 +41,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     private alertService: AlertService,
     private gridService: GridService,
     private router: Router,
+    private utilityFunctionsService: UtilityFunctionsService, 
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -268,6 +270,17 @@ export class TransplantProductionInputCostsComponent implements OnInit {
   getRowNodeId(data)  {
     return data.TransplantProductionInputCostID.toString();
   }
-
+  
+  public exportToCsv() {
+    let columnsKeys = this.transplantProductionInputCostsGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+    columnIds.splice(-1, 1); // remove the delete column from the download
+    this.utilityFunctionsService.exportGridToCsv(this.transplantProductionInputCostsGrid, 'Transplant-Production-Input-Costs.csv', columnIds);
+  }  
 }
 

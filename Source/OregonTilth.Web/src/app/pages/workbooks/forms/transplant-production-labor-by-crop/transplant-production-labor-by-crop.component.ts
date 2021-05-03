@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -20,18 +20,21 @@ import { TransplantProductionLaborByCropCreateDto } from 'src/app/shared/models/
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { TransplantProductionInformationDto } from 'src/app/shared/models/generated/transplant-production-information-dto';
+import { AgGridAngular } from 'ag-grid-angular';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 @Component({
   selector: 'transplant-production-labor-by-crop',
   templateUrl: './transplant-production-labor-by-crop.component.html',
   styleUrls: ['./transplant-production-labor-by-crop.component.scss']
 })
 export class TransplantProductionLaborByCropComponent implements OnInit {
-  
+  @ViewChild('tpLaborByCropGrid') tpLaborByCropGrid: AgGridAngular;
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
+    private utilityFunctionsService: UtilityFunctionsService, 
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -267,4 +270,15 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
     this.model = new TransplantProductionLaborByCropCreateDto({WorkbookID: this.workbookID});
   }
 
+  public exportToCsv() {
+    let columnsKeys = this.tpLaborByCropGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+    columnIds.splice(-1, 1); // remove the delete column from the download
+    this.utilityFunctionsService.exportGridToCsv(this.tpLaborByCropGrid, 'Transplant-Production-Labor-By-Crop.csv', columnIds);
+  }  
 }

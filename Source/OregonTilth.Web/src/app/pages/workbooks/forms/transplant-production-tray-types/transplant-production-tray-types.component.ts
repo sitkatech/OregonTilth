@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -16,6 +16,8 @@ import { TransplantProductionInputCreateDto } from 'src/app/shared/models/forms/
 import { TransplantProductionTrayTypeCreateDto } from 'src/app/shared/models/forms/transplant-production-tray-types/transplant-production-tray-type-create-dto';
 import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated/transplant-production-tray-type-dto';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
+import { AgGridAngular } from 'ag-grid-angular';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 
 @Component({
   selector: 'transplant-production-tray-types',
@@ -23,12 +25,13 @@ import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/edi
   styleUrls: ['./transplant-production-tray-types.component.scss']
 })
 export class TransplantProductionTrayTypesComponent implements OnInit {
-
+  @ViewChild('transplantProductionTrayTypesGrid') transplantProductionTrayTypesGrid: AgGridAngular;
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
     private alertService: AlertService,
     private router: Router,
+    private utilityFunctionsService: UtilityFunctionsService, 
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -174,6 +177,18 @@ export class TransplantProductionTrayTypesComponent implements OnInit {
   onGridReady(params: any) {
     this.gridApi = params.api;
   }
+
+  public exportToCsv() {
+    let columnsKeys = this.transplantProductionTrayTypesGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+    columnIds.splice(-1, 1); // remove the delete column from the download
+    this.utilityFunctionsService.exportGridToCsv(this.transplantProductionTrayTypesGrid, 'Transplant-Production-Tray-Types.csv', columnIds);
+  }  
 
 }
 

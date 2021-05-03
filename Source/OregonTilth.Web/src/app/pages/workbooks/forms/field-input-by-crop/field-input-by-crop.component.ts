@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -18,18 +18,21 @@ import { FieldInputByCropCreateDto } from 'src/app/shared/models/forms/field-inp
 import { FieldInputCostDto } from 'src/app/shared/models/generated/field-input-cost-dto';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { AgGridAngular } from 'ag-grid-angular';
 @Component({
   selector: 'field-input-labor-by-crop',
   templateUrl: './field-input-by-crop.component.html',
   styleUrls: ['./field-input-by-crop.component.scss']
 })
 export class FieldInputByCropComponent implements OnInit {
-  
+  @ViewChild('fieldInputByCropGrid') fieldInputByCropGrid: AgGridAngular;
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
+    private utilityFunctionsService: UtilityFunctionsService, 
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -263,5 +266,16 @@ export class FieldInputByCropComponent implements OnInit {
   resetForm() {
     this.model = new FieldInputByCropCreateDto({WorkbookID: this.workbookID});
   }
+  public exportToCsv() {
+    let columnsKeys = this.fieldInputByCropGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+    columnIds.splice(-1, 1); // remove the delete column from the download
+    this.utilityFunctionsService.exportGridToCsv(this.fieldInputByCropGrid, 'Field-Input-By-Crop.csv', columnIds);
+  }  
 
 }

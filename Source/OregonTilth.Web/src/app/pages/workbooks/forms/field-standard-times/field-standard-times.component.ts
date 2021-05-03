@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -93,7 +93,13 @@ export class FieldStandardTimesComponent implements OnInit {
   public closeResult: string;
 
   public updateFieldStandardTimeRequest: any;
+  public screenWidth: number;
   
+  @HostListener('window:resize', ['$event.target.innerWidth'])
+  onResize(width) {
+      this.screenWidth = width;
+  }
+
   getRowNodeId(data)  {
     return data.FieldStandardTimeID.toString();
   }
@@ -207,7 +213,7 @@ export class FieldStandardTimesComponent implements OnInit {
         filter: true,
         resizable: true,
         width:150,
-        pinned: 'left'
+        pinned: this.screenWidth > 767 ? 'left' : null,
       },
       {
         headerName: 'Labor Type', 
@@ -215,8 +221,8 @@ export class FieldStandardTimesComponent implements OnInit {
         sortable: true, 
         filter: true,
         resizable: true,
-        width:150,
-        pinned: 'left'
+        width:75,
+        pinned: this.screenWidth > 767 ? 'left' : null,
       },
       {
         headerName: 'Machinery', 
@@ -315,7 +321,8 @@ export class FieldStandardTimesComponent implements OnInit {
         headerName: 'Time Study Progress', 
         field: 'TimeStudies',
         valueGetter: function (params: any) {
-          return { FieldStandardTime: params.data, count: params.data.TimeStudies.length };
+          var downloadDisplay = TimeStudyCellRendererComponent.downloadDisplay(params.data)
+          return { FieldStandardTime: params.data, count: params.data.TimeStudies.length, DownloadDisplay: downloadDisplay };
         }, 
         cellRendererFramework: TimeStudyCellRendererComponent,
         cellRendererParams: { 
@@ -442,11 +449,8 @@ export class FieldStandardTimesComponent implements OnInit {
         let columnName: string = keys.getColId(); 
         columnIds.push(columnName); 
       });
-
-    var timeStudiesIndex = columnIds.findIndex(x => {
-      return x == 'TimeStudies';
-    });
-    columnIds.splice(timeStudiesIndex, 1);
+    
+    columnIds.splice(-1, 1);
     this.utilityFunctionsService.exportGridToCsv(this.fieldStandardTimesGrid, 'Field-Time-Studies.csv', columnIds);
   }  
 

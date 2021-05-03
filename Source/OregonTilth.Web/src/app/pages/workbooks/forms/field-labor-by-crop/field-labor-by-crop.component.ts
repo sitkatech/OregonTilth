@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -19,6 +19,8 @@ import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { FieldStandardTimeDto } from 'src/app/shared/models/generated/field-standard-time-dto';
 import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-summary-dto';
+import { AgGridAngular } from 'ag-grid-angular';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 
 @Component({
   selector: 'field-labor-by-crop',
@@ -26,13 +28,14 @@ import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-s
   styleUrls: ['./field-labor-by-crop.component.scss']
 })
 export class FieldLaborByCropComponent implements OnInit {
-
+  @ViewChild('fieldLaborByCropGrid') fieldLaborByCropGrid: AgGridAngular;
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
     private router: Router,
+    private utilityFunctionsService: UtilityFunctionsService, 
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -257,5 +260,16 @@ export class FieldLaborByCropComponent implements OnInit {
     this.model = new FieldLaborByCropCreateDto({WorkbookID: this.workbookID});
   }
 
+  public exportToCsv() {
+    let columnsKeys = this.fieldLaborByCropGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+    columnIds.splice(-1, 1); // remove the delete column from the download
+    this.utilityFunctionsService.exportGridToCsv(this.fieldLaborByCropGrid, 'Field-Labor-By-Crop.csv', columnIds);
+  }  
 }
 
