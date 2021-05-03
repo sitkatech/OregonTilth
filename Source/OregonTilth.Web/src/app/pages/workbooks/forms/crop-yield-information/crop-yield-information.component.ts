@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -17,6 +17,8 @@ import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
 import { CropYieldInformationSummaryDto } from 'src/app/shared/models/forms/crop-yield-information/crop-yield-information-summary-dto';
 import { CropYieldInformationCreateDto } from 'src/app/shared/models/forms/crop-yield-information/crop-yield-information-create-dto';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
+import { AgGridAngular } from 'ag-grid-angular';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 
 @Component({
   selector: 'crop-yield-information',
@@ -24,7 +26,7 @@ import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/edi
   styleUrls: ['./crop-yield-information.component.scss']
 })
 export class CropYieldInformationComponent implements OnInit {
-
+  @ViewChild('cropYieldInformationGrid') cropYieldInformationGrid: AgGridAngular;
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
@@ -32,6 +34,7 @@ export class CropYieldInformationComponent implements OnInit {
     private alertService: AlertService,
     private gridService: GridService,
     private router: Router,
+    private utilityFunctionsService: UtilityFunctionsService, 
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -319,5 +322,16 @@ export class CropYieldInformationComponent implements OnInit {
   getRowNodeId(data)  {
     return data.CropYieldInformationID.toString();
   }
+  public exportToCsv() {
+    let columnsKeys = this.cropYieldInformationGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+    columnIds.splice(-1, 1); // remove the delete column from the download
+    this.utilityFunctionsService.exportGridToCsv(this.cropYieldInformationGrid, 'Crop-Yield-Information.csv', columnIds);
+  }  
 }
 
