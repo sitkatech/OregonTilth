@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -29,6 +29,7 @@ import { CropSpecificInfoSummaryDto } from 'src/app/shared/models/forms/crop-spe
 import { IntegerEditor } from 'src/app/shared/components/ag-grid/integer-editor/integer-editor.component';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
+import { AgGridAngular } from 'ag-grid-angular';
 
 @Component({
   selector: 'crop-specific-info',
@@ -36,7 +37,7 @@ import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/edi
   styleUrls: ['./crop-specific-info.component.scss']
 })
 export class CropSpecificInfoComponent implements OnInit {
-
+  @ViewChild('cropSpecificInfoGrid') cropSpecificInfoGrid: AgGridAngular;
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
@@ -44,6 +45,7 @@ export class CropSpecificInfoComponent implements OnInit {
     private alertService: AlertService,
     private gridService: GridService,
     private router: Router,
+    private utilityFunctionsService: UtilityFunctionsService,
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -435,6 +437,16 @@ export class CropSpecificInfoComponent implements OnInit {
     this.model = new CropSpecificInfoCreateDto({WorkbookID: this.workbookID});
     this.refreshCropsRequired();
   }
-
+  public exportToCsv() {
+    let columnsKeys = this.cropSpecificInfoGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+    columnIds.splice(-1, 1); // remove the delete column from the download
+    this.utilityFunctionsService.exportGridToCsv(this.cropSpecificInfoGrid, 'Crop-Specific-Information.csv', columnIds);
+  }  
 }
 
