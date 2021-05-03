@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -25,6 +25,7 @@ import { IntegerEditor } from 'src/app/shared/components/ag-grid/integer-editor/
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { PhaseEnum } from 'src/app/shared/models/enums/phase.enum';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
+import { AgGridAngular } from 'ag-grid-angular';
 
 @Component({
   selector: 'transplant-production-information',
@@ -32,12 +33,13 @@ import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/edi
   styleUrls: ['./transplant-production-information.component.scss']
 })
 export class TransplantProductionInformationComponent implements OnInit {
-
+  @ViewChild('tpInfoGrid') tpInfoGrid: AgGridAngular;
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
+    private utilityFunctionsService: UtilityFunctionsService, 
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -362,6 +364,18 @@ export class TransplantProductionInformationComponent implements OnInit {
   resetForm() {
     this.model = new TransplantProductionInformationCreateDto({WorkbookID: this.workbookID});
   }
+
+  public exportToCsv() {
+    let columnsKeys = this.tpInfoGrid.columnApi.getAllDisplayedColumns(); 
+    let columnIds: Array<any> = []; 
+    columnsKeys.forEach(keys => 
+      { 
+        let columnName: string = keys.getColId(); 
+        columnIds.push(columnName); 
+      });
+    columnIds.splice(-1, 1); // remove the delete column from the download
+    this.utilityFunctionsService.exportGridToCsv(this.tpInfoGrid, 'Transplant-Production-Info.csv', columnIds);
+  }  
 
 }
 
