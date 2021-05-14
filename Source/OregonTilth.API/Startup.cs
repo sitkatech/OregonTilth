@@ -21,6 +21,7 @@ using Serilog;
 using Serilog.Sinks.ApplicationInsights.Sinks.ApplicationInsights.TelemetryConverters;
 using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using ILogger = Serilog.ILogger;
 
@@ -83,6 +84,15 @@ namespace OregonTilth.API
             var keystoneHost = frescaConfiguration.KEYSTONE_HOST;
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme).AddIdentityServerAuthentication(options =>
             {
+                if (_environment.IsDevelopment())
+                {
+                    // NOTE: CG 3/22 - This allows the self-signed cert on Keystone to work locally.
+                    options.JwtBackChannelHandler = new HttpClientHandler()
+                    {
+                        ServerCertificateCustomValidationCallback = (message, certificate2, arg3, arg4) => true
+                    };
+                }
+
                 options.Authority = keystoneHost;
                 options.RequireHttpsMetadata = false;
                 options.LegacyAudienceValidation = true;

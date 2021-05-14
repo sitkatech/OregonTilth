@@ -37,13 +37,14 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
         this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
             this.currentUser = currentUser;
 
-            if (currentUser && this.isAdministrator()){
-                this.userService.getUnassignedUserReport().subscribe(report =>{
-                    if (report.Count > 0){
-                        this.alertService.pushAlert(new Alert(`There are ${report.Count} users who are waiting for you to configure their account. <a href='/users'>Manage Users</a>.`, AlertContext.Info, true, AlertService.USERS_AWAITING_CONFIGURATION));
-                    }
-                })
-            }
+            // if (currentUser && this.isAdministrator()){
+            //     debugger;
+            //     this.userService.getUnassignedUserReport().subscribe(report =>{
+            //         if (report.Count > 0){
+            //             this.alertService.pushAlert(new Alert(`There are ${report.Count} users who are waiting for you to configure their account. <a href='/users'>Manage Users</a>.`, AlertContext.Info, true, AlertService.USERS_AWAITING_CONFIGURATION));
+            //         }
+            //     })
+            // }
         });
     }
 
