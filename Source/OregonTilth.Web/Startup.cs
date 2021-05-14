@@ -159,5 +159,9 @@ namespace Fresca.Web
         public string PostLogoutRedirectUri { get; set; }
         [JsonProperty("waitForTokenInMsec")]
         public int WaitForTokenInMsec { get; set; }
+        [JsonProperty("waitForTokenInMsec")]
+        public string ResponseType { get; set; }
+        [JsonProperty("disablePKCE")]
+        public bool DisablePKCE { get; set; }
     }
 }
