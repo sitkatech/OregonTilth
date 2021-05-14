@@ -139,6 +139,8 @@ namespace Fresca.Web
             LogoutUrl = configuration["Keystone_LogoutUrl"];
             PostLogoutRedirectUri = configuration["Keystone_PostLogoutRedirectUri"];
             WaitForTokenInMsec = int.Parse(configuration["WaitForTokenInMsec"]);
+            ResponseType = configuration["Keystone_ResponseType"];
+            DisablePKCE = bool.Parse(configuration["Keystone_DisablePKCE"]);
         }
 
         [JsonProperty("clientId")]
