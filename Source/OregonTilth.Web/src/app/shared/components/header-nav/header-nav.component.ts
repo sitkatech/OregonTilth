@@ -18,6 +18,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
     private watchUserChangeSubscription: any;
     private currentUser: UserDetailedDto;
 
+    private getUnassignedUserReportRequest: any;
     windowWidth: number;
 
     @HostListener('window:resize', ['$event'])
@@ -37,20 +38,22 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
         this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
             this.currentUser = currentUser;
 
-            // if (currentUser && this.isAdministrator()){
-            //     debugger;
-            //     this.userService.getUnassignedUserReport().subscribe(report =>{
-            //         if (report.Count > 0){
-            //             this.alertService.pushAlert(new Alert(`There are ${report.Count} users who are waiting for you to configure their account. <a href='/users'>Manage Users</a>.`, AlertContext.Info, true, AlertService.USERS_AWAITING_CONFIGURATION));
-            //         }
-            //     })
-            // }
+            if (currentUser && this.isAdministrator()){
+                this.getUnassignedUserReportRequest = this.userService.getUnassignedUserReport().subscribe(report =>{
+                    if (report.Count > 0){
+                        this.alertService.pushAlert(new Alert(`There are ${report.Count} users who are waiting for you to configure their account. <a href='/users'>Manage Users</a>.`, AlertContext.Info, true, AlertService.USERS_AWAITING_CONFIGURATION));
+                    }
+                })
+            }
         });
     }
 
     ngOnDestroy() {
         this.watchUserChangeSubscription.unsubscribe();
         this.authenticationService.dispose();
+        if (this.getUnassignedUserReportRequest && this.getUnassignedUserReportRequest.unsubscribe) {
+            this.getUnassignedUserReportRequest.unsubscribe();
+        }
         this.cdr.detach();
     }
 
