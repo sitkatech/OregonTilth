@@ -24,6 +24,9 @@ export class LoginCallbackComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.watchUserChangeSubscription.unsubscribe();
-    this.updateLastActivityDateRequest.unsubscribe();
+    if(this.updateLastActivityDateRequest && this.updateLastActivityDateRequest.unsubscribe){
+      this.updateLastActivityDateRequest.unsubscribe();
+    }
+    
   }
 }

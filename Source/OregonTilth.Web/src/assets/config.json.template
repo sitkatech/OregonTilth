@@ -21,10 +21,12 @@
     "keystoneAuthConfiguration": {
       "clientId": [TODO],
       "issuer": [TODO],
+      "responseType": [TODO],
+      "disablePKCE": [TODO],
       "redirectUriRelative": [TODO],
-      "scope": [TODO],
+      "scope": [TODO]",
       "sessionChecksEnabled": [TODO],
-      "logoutUrl": [TODO],
+      "logoutUrl": [TODO]",
       "postLogoutRedirectUri": [TODO],
       "waitForTokenInMsec": [TODO]
     }

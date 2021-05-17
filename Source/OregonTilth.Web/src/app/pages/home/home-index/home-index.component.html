@@ -8,12 +8,9 @@
 
     <ngb-alert *ngIf="userIsUnassigned()" [type]="'info'" [dismissible]="false">
         <span>
-            Welcome {{currentUser.FullName}}. You have successfully logged in to the {{platformLongName()}},
-            but your
-            account is not yet configured. You will receive an email from the {{leadOrganizationShortName()}}
-            Administrators when your account is
-            ready to
-            use. 
+            Welcome {{currentUser.FullName}}. You have successfully logged in to {{platformLongName()}}, but your
+            account is not yet configured. You will receive an email from the {{platformLongName()}}
+            Administrators when your account is ready to use. 
         </span>
     </ngb-alert>
 
