@@ -185,7 +185,7 @@ You have received this email because you are assigned to receive support notific
 
         public MailAddress GetDefaultEmailFrom()
         {
-            return new MailAddress("donotreply @sitkatech.com", $"{_frescaConfiguration.PlatformLongName}");
+            return new MailAddress("donotreply@sitkatech.com", $"{_frescaConfiguration.PlatformLongName}");
         }
 
         public static void AddBccRecipientsToEmail(MailMessage mailMessage, IEnumerable<string> recipients)

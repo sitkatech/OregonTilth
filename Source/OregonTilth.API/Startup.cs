@@ -116,7 +116,7 @@ namespace OregonTilth.API
             var logger = GetSerilogLogger();
             services.AddSingleton(logger);
 
-            services.AddTransient(s => new KeystoneService(s.GetService<IHttpContextAccessor>(), keystoneHost.Replace("core", "")));
+            services.AddTransient(s => new KeystoneService(s.GetService<IHttpContextAccessor>(), keystoneHost));
 
             services.AddSingleton(x => new SitkaSmtpClientService(frescaConfiguration));
             
