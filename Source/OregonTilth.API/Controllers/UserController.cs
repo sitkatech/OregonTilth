@@ -186,6 +186,16 @@ namespace OregonTilth.API.Controllers
             }
 
             var updatedUserDto = EFModels.Entities.User.UpdateUserEntity(_dbContext, userID, userUpsertDto);
+
+            if (userDto.Role.RoleID == (int)RoleEnum.Unassigned && userUpsertDto.RoleID != (int)RoleEnum.Unassigned)
+            {
+                var smtpClient = HttpContext.RequestServices.GetRequiredService<SitkaSmtpClientService>();
+                var mailMessage = GenerateUserActivatedEmail(_frescaConfiguration.WEB_URL, updatedUserDto, _dbContext, smtpClient);
+                SitkaSmtpClientService.AddCcRecipientsToEmail(mailMessage,
+                    EFModels.Entities.User.GetEmailAddressesForAdminsThatReceiveSupportEmails(_dbContext));
+                SendEmailMessage(smtpClient, mailMessage);
+            }
+
             return Ok(updatedUserDto);
         }
 
@@ -220,7 +230,7 @@ namespace OregonTilth.API.Controllers
         {
             var messageBody = $@"A new user has signed up to the {_frescaConfiguration.PlatformLongName}: <br/><br/>
  {user.FullName} ({user.Email}) <br/><br/>
-As an administrator of the {_frescaConfiguration.PlatformShortName}, you can assign them a role and associate them with a Billing Account by following <a href='{frescaUrl}/users/{user.UserID}'>this link</a>. <br/><br/>
+As an administrator of the {_frescaConfiguration.PlatformShortName}, you can assign them a role  by following <a href='{frescaUrl}/users/{user.UserID}'>this link</a>. <br/><br/>
 {smtpClient.GetSupportNotificationEmailSignature()}";
 
             var mailMessage = new MailMessage
@@ -230,6 +240,25 @@ As an administrator of the {_frescaConfiguration.PlatformShortName}, you can ass
             };
 
             mailMessage.To.Add(smtpClient.GetDefaultEmailFrom());
+            return mailMessage;
+        }
+
+        private MailMessage GenerateUserActivatedEmail(string frescaUrl, UserDto user, OregonTilthDbContext dbContext,
+            SitkaSmtpClientService smtpClient)
+        {
+            var messageBody = $@"Your account has been activated for {_frescaConfiguration.PlatformLongName}: <br/><br/>
+ {user.FullName} ({user.Email}) <br/><br/>
+<a href='{frescaUrl}'>{_frescaConfiguration.PlatformLongName}</a>. <br/><br/>
+{smtpClient.GetDefaultEmailSignature()}";
+
+            var mailMessage = new MailMessage
+            {
+                Subject = $"User Activation for {_frescaConfiguration.PlatformLongName}",
+                Body = $"Hello,<br /><br />{messageBody}",
+            };
+
+            mailMessage.To.Add(new MailAddress(user.Email));
+            mailMessage.From = smtpClient.GetDefaultEmailFrom();
             return mailMessage;
         }
 

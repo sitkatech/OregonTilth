@@ -164,7 +164,7 @@ Respectfully, the {_frescaConfiguration.PlatformLongName} team
 <br /><br />
 ***
 <br /><br />
-You have received this email because you are a registered user of the {_frescaConfiguration.PlatformLongName}. 
+You have received this email because you are a registered user of {_frescaConfiguration.PlatformLongName}. 
 <br /><br />
 <a href=""mailto:{_frescaConfiguration.LeadOrganizationEmail}"">{_frescaConfiguration.LeadOrganizationEmail}</a>";
             return defaultEmailSignature;
