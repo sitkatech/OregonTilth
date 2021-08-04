@@ -50,7 +50,7 @@ export class WorkbooksComponent implements OnInit {
       let _datePipe = this.datePipe;
       this.columnDefs = [
         {
-          headerName: 'Name',
+          headerName: 'Workbook Name',
           field: 'WorkbookName',
           valueGetter: function (params: any) {
             return { LinkValue: params.data.WorkbookID, LinkDisplay: params.data.WorkbookName };
