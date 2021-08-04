@@ -26,5 +26,6 @@ namespace OregonTilth.EFModels.Entities
         }
 
         static partial void DoCustomMappings(Workbook workbook, WorkbookDto workbookDto);
+
     }
 }

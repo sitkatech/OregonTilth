@@ -24,5 +24,6 @@ namespace OregonTilth.EFModels.Entities
         }
 
         static partial void DoCustomMappings(FieldLaborByCrop fieldLaborByCrop, FieldLaborByCropDto fieldLaborByCropDto);
+
     }
 }
