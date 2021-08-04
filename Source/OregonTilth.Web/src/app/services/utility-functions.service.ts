@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
-import { CsvExportParams } from 'ag-grid-community';
+import { CsvExportParams, ValueFormatterParams } from 'ag-grid-community';
 
 @Injectable({
   providedIn: 'root'
@@ -22,16 +22,29 @@ export class UtilityFunctionsService {
         onlySelected: false,
         suppressQuotes: false,
         fileName: fileName,
-        processCellCallback: function (p) {
-          if (p.column.getColDef().cellRendererFramework && p.value && (p.value.DownloadDisplay || p.value.LinkDisplay)) {
-            if (p.value.DownloadDisplay) {
-              return p.value.DownloadDisplay;
+        processCellCallback: function (params) {
+
+          // If the column has a value formatter we want to use that to export to the grid (currency value formatter will work for grid download)
+          var colDef : any = params.column.getColDef();
+          if (colDef.valueFormatter) {
+            const valueFormatterParams: ValueFormatterParams = {
+              ...params,
+              data: params.node.data,
+              node: params.node!,
+              colDef: params.column.getColDef()
+            };
+            return colDef.valueFormatter(valueFormatterParams);
+          }
+          
+          if (params.column.getColDef().cellRendererFramework && params.value && (params.value.DownloadDisplay || params.value.LinkDisplay)) {
+            if (params.value.DownloadDisplay) {
+              return params.value.DownloadDisplay;
             } else {
-              return p.value.LinkDisplay;
+              return params.value.LinkDisplay;
             }
           }
           else {
-            return p.value ? p.value : "";
+            return params.value ? params.value : "";
           }
         }
       } as CsvExportParams
