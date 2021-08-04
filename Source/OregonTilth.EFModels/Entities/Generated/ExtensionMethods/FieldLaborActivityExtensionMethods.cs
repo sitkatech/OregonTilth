@@ -25,5 +25,6 @@ namespace OregonTilth.EFModels.Entities
         }
 
         static partial void DoCustomMappings(FieldLaborActivity fieldLaborActivity, FieldLaborActivityDto fieldLaborActivityDto);
+
     }
 }

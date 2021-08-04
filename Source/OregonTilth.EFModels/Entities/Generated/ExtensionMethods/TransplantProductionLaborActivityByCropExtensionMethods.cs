@@ -24,5 +24,6 @@ namespace OregonTilth.EFModels.Entities
         }
 
         static partial void DoCustomMappings(TransplantProductionLaborActivityByCrop transplantProductionLaborActivityByCrop, TransplantProductionLaborActivityByCropDto transplantProductionLaborActivityByCropDto);
+
     }
 }

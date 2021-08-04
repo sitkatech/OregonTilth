@@ -22,5 +22,6 @@ namespace OregonTilth.EFModels.Entities
         }
 
         static partial void DoCustomMappings(CropUnit cropUnit, CropUnitDto cropUnitDto);
+
     }
 }

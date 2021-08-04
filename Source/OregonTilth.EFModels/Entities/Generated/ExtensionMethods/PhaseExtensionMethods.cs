@@ -22,5 +22,6 @@ namespace OregonTilth.EFModels.Entities
         }
 
         static partial void DoCustomMappings(Phase phase, PhaseDto phaseDto);
+
     }
 }

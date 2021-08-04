@@ -27,5 +27,6 @@ namespace OregonTilth.EFModels.Entities
         }
 
         static partial void DoCustomMappings(TimeStudy timeStudy, TimeStudyDto timeStudyDto);
+
     }
 }

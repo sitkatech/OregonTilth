@@ -22,5 +22,6 @@ namespace OregonTilth.EFModels.Entities
         }
 
         static partial void DoCustomMappings(HarvestType harvestType, HarvestTypeDto harvestTypeDto);
+
     }
 }
