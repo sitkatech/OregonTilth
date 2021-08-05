@@ -32,6 +32,8 @@ export class TimeStudyModal implements OnInit {
   @Input() fieldStandardTime: FieldStandardTimeSummaryDto;
   @Input() harvestPostHarvestStandardTime: HarvestPostHarvestStandardTimeSummaryDto;
   @Input() transplantProductionStandardTime: TransplantProductionStandardTimeSummaryDto;
+  @Input() unitDisplayString: string;
+  @Input() unitsLabel: string;
 
   constructor(private cdr: ChangeDetectorRef, 
     public activeModal: NgbActiveModal,
@@ -43,7 +45,6 @@ export class TimeStudyModal implements OnInit {
 
   private submitTimeStudiesRequest: any;
   public durationLabel: string;
-  public unitsLabel: string;
 
 
   onSubmit(timeStudiesForm: HTMLFormElement): void {
@@ -80,7 +81,6 @@ export class TimeStudyModal implements OnInit {
     if(this.fieldStandardTime) {
       this.model = this.createModelFromFieldStandardTime(this.fieldStandardTime);
       this.durationLabel = "Total Minutes";
-      this.unitsLabel = "Total Field Units";
     }
 
     if(this.harvestPostHarvestStandardTime) {

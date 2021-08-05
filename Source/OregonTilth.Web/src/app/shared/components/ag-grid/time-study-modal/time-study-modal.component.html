@@ -2,7 +2,7 @@
 
 
   <div class="modal-header w-100">
-    <h4 class="modal-title">Time Studies</h4>
+    <h4 class="modal-title">Time Studies for <strong>{{unitDisplayString}}</strong></h4>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -21,7 +21,7 @@
             <input name="Duration_{{i}}" class="form-control" type="number" [(ngModel)]="timeStudy.Duration" required />
           </div>
           <div class="col-md-3">
-            <label class="required">{{this.unitsLabel}}</label>
+            <label class="required">Total {{this.unitsLabel}}</label>
             <input name="Units_{{i}}" class="form-control" type="number" [(ngModel)]="timeStudy.Units" required />
           </div>
           <div class="col-md-4">

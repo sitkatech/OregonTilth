@@ -366,8 +366,11 @@ export class FieldStandardTimesComponent implements OnInit {
 
 
   public launchModal(modalContent: any, modalTitle: string, fieldStandardTime: FieldStandardTimeSummaryDto) {
+    
     this.modalReference = this.modalService.open(modalContent, { size:'xl', windowClass : "time-studies-modal", ariaLabelledBy: modalTitle, backdrop: 'static', keyboard: false });
     this.modalReference.componentInstance.fieldStandardTime = fieldStandardTime;
+    this.modalReference.componentInstance.unitsLabel = fieldStandardTime.FieldUnitType.FieldUnitTypeDisplayName;
+    this.modalReference.componentInstance.unitDisplayString = this.getDisplayNameForTimeStudy(fieldStandardTime);
     this.modalReference.result.then((result) => {
       if(result.FieldStandardTimeID) {
         var rowNode = this.gridApi.getRowNode(result.FieldStandardTimeID);
@@ -377,6 +380,14 @@ export class FieldStandardTimesComponent implements OnInit {
     }, (reason) => {
       this.closeResult = `Dismissed`;
     });
+  }
+
+  public getDisplayNameForTimeStudy(fieldStandardTime: FieldStandardTimeSummaryDto): string {
+    var returnString = fieldStandardTime.FieldLaborActivity.FieldLaborActivityName;
+    if(fieldStandardTime.Machinery) {
+      returnString += " - " + fieldStandardTime.Machinery.MachineryName;
+    }
+    return returnString;
   }
 
   initializeTimeStudy(createDto: FieldStandardTimeCreateDto) {
