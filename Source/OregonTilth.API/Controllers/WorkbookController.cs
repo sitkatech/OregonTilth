@@ -1276,6 +1276,20 @@ namespace OregonTilth.API.Controllers
             return Ok(returnDtos);
         }
         #endregion
+
+        #region Duplicate Workbook
+
+        [HttpPost("workbooks/{workbookID}/duplicate")]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<FieldStandardTimeDto>> DuplicateWorkbookByID([FromRoute] int workbookID, [FromBody] WorkbookDuplicateDto workbookDuplicateDto)
+        {
+
+            DuplicateWorkbook.DuplicateWorkbookByID(_dbContext, workbookID, workbookDuplicateDto.WorkbookCopyName);
+            return Ok();
+
+        }
+
+        #endregion
     }
 
 
