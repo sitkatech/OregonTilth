@@ -349,8 +349,9 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
   public launchModal(modalContent: any, modalTitle: string, harvestPostHarvestStandardTime: HarvestPostHarvestStandardTimeSummaryDto) {
     this.modalReference = this.modalService.open(modalContent, { size:'xl', windowClass : "time-studies-modal", ariaLabelledBy: modalTitle, backdrop: 'static', keyboard: false });
     this.modalReference.componentInstance.harvestPostHarvestStandardTime = harvestPostHarvestStandardTime;
+    this.modalReference.componentInstance.activityDisplayString = this.getDisplayNameForTimeStudy(harvestPostHarvestStandardTime);
+    this.modalReference.componentInstance.unitsLabel = harvestPostHarvestStandardTime.CropUnit.CropUnitName;
     this.modalReference.result.then((result) => {
-      // debugger;
       if(result.HarvestPostHarvestStandardTimeID) {
         var rowNode = this.gridApi.getRowNode(result.HarvestPostHarvestStandardTimeID);
         rowNode.setData(result);
@@ -359,6 +360,11 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
     }, (reason) => {
       this.closeResult = `Dismissed`;
     });
+  }
+
+  public getDisplayNameForTimeStudy(harvestPostHarvestStandardTime: HarvestPostHarvestStandardTimeSummaryDto): string {
+    var returnString = harvestPostHarvestStandardTime.Crop.CropName + " - " + harvestPostHarvestStandardTime.HarvestType.HarvestTypeDisplayName;
+    return returnString;
   }
 
   onCellValueChanged(data: any) {

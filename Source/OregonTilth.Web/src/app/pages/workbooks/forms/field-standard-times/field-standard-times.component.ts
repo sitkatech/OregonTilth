@@ -370,7 +370,7 @@ export class FieldStandardTimesComponent implements OnInit {
     this.modalReference = this.modalService.open(modalContent, { size:'xl', windowClass : "time-studies-modal", ariaLabelledBy: modalTitle, backdrop: 'static', keyboard: false });
     this.modalReference.componentInstance.fieldStandardTime = fieldStandardTime;
     this.modalReference.componentInstance.unitsLabel = fieldStandardTime.FieldUnitType.FieldUnitTypeDisplayName;
-    this.modalReference.componentInstance.unitDisplayString = this.getDisplayNameForTimeStudy(fieldStandardTime);
+    this.modalReference.componentInstance.activityDisplayString = this.getDisplayNameForTimeStudy(fieldStandardTime);
     this.modalReference.result.then((result) => {
       if(result.FieldStandardTimeID) {
         var rowNode = this.gridApi.getRowNode(result.FieldStandardTimeID);

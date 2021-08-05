@@ -32,7 +32,7 @@ export class TimeStudyModal implements OnInit {
   @Input() fieldStandardTime: FieldStandardTimeSummaryDto;
   @Input() harvestPostHarvestStandardTime: HarvestPostHarvestStandardTimeSummaryDto;
   @Input() transplantProductionStandardTime: TransplantProductionStandardTimeSummaryDto;
-  @Input() unitDisplayString: string;
+  @Input() activityDisplayString: string;
   @Input() unitsLabel: string;
 
   constructor(private cdr: ChangeDetectorRef, 
@@ -86,13 +86,12 @@ export class TimeStudyModal implements OnInit {
     if(this.harvestPostHarvestStandardTime) {
       this.model = this.createModelFromHarvestPostHarvestStandardTime(this.harvestPostHarvestStandardTime);
       this.durationLabel = "Total Minutes";
-      this.unitsLabel = "Total Crop Units";
     }
 
     if(this.transplantProductionStandardTime) {
       this.model = this.createModelFromTransplantProductionStandardTime(this.transplantProductionStandardTime);
       this.durationLabel = "Total Minutes";
-      this.unitsLabel = "Total Number of Trays";
+      this.unitsLabel = "Number of Trays";
     }
   }
 
