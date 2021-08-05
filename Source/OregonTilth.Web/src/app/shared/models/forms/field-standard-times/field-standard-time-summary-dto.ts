@@ -18,5 +18,6 @@ export class FieldStandardTimeSummaryDto {
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
+
 }
 

@@ -291,8 +291,9 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
   public launchModal(modalContent: any, modalTitle: string, transplantProductionStandardTime: TransplantProductionStandardTimeSummaryDto) {
     this.modalReference = this.modalService.open(modalContent, { size:'xl', windowClass : "time-studies-modal", ariaLabelledBy: modalTitle, backdrop: 'static', keyboard: false });
     this.modalReference.componentInstance.transplantProductionStandardTime = transplantProductionStandardTime;
+    this.modalReference.componentInstance.activityDisplayString = this.getDisplayNameForTimeStudy(transplantProductionStandardTime);
+    this.modalReference.componentInstance.unitsLabel = "Number of Trays";
     this.modalReference.result.then((result) => {
-      // debugger;
       if(result.TransplantProductionStandardTimeID) {
         var rowNode = this.gridApi.getRowNode(result.TransplantProductionStandardTimeID);
         rowNode.setData(result);
@@ -301,6 +302,11 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
     }, (reason) => {
       this.closeResult = `Dismissed`;
     });
+  }
+
+  public getDisplayNameForTimeStudy(transplantProductionStandardTime: TransplantProductionStandardTimeSummaryDto): string {
+    var returnString = transplantProductionStandardTime.TransplantProductionLaborActivity.TransplantProductionLaborActivityName + ' - ' + transplantProductionStandardTime.TransplantProductionTrayType.TransplantProductionTrayTypeName;
+    return returnString;
   }
 
   onCellValueChanged(data: any) {
