@@ -158,7 +158,8 @@ export class WorkbooksComponent implements OnInit {
           sortable: true, filter: true, width: 100, autoHeight:true
         },
         {
-          headerName: 'Duplicate', field: 'WorkbookID', valueGetter: function (params: any) {
+          headerName: 'Duplicate', 
+          valueGetter: function (params: any) {
             return { ButtonText: 'Duplicate', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.WorkbookID, ObjectDisplayName: params.data.WorkbookName };
           }, cellRendererFramework: ButtonRendererComponent,
           cellRendererParams: { 
@@ -167,7 +168,7 @@ export class WorkbooksComponent implements OnInit {
               });
             }
            },
-          sortable: true, filter: true, width: 100, autoHeight:true
+          sortable: true, filter: true, width: 125, autoHeight:true
         }
       ];
         

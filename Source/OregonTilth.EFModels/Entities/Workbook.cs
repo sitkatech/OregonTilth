@@ -130,6 +130,18 @@ namespace OregonTilth.EFModels.Entities
             return result;
         }
 
+        public static List<ErrorMessage> ValidateDuplicate(OregonTilthDbContext dbContext, string duplicateWorkbookName, UserDto userDto)
+        {
+            var result = new List<ErrorMessage>();
+            var userWorkbooks = GetByUserID(dbContext, userDto.UserID).ToList();
+            if (userWorkbooks.Any(x => x.WorkbookName.ToLower() == duplicateWorkbookName.ToLower()))
+            {
+                result.Add(new ErrorMessage() { Type = "Workbook Name", Message = "Workbook names must be unique." });
+            }
+
+            return result;
+        }
+
         public static void Delete(OregonTilthDbContext dbContext, int workbookID)
         {
             var existingWorkbook = dbContext
