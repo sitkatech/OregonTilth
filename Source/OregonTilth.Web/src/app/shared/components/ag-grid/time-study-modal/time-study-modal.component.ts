@@ -91,7 +91,6 @@ export class TimeStudyModal implements OnInit {
     if(this.transplantProductionStandardTime) {
       this.model = this.createModelFromTransplantProductionStandardTime(this.transplantProductionStandardTime);
       this.durationLabel = "Total Minutes";
-      this.unitsLabel = "Number of Trays";
     }
   }
 
