@@ -1,7 +1,11 @@
 IF EXISTS(SELECT 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.procDuplicateWorkbook'))
     drop procedure dbo.procDuplicateWorkbook
 go
-create procedure dbo.procDuplicateWorkbook(@WorkbookIDToCopy int, @WorkbookCopyName varchar(100))
+create procedure dbo.procDuplicateWorkbook(
+	@WorkbookIDToCopy int, 
+	@WorkbookCopyName varchar(100),
+	@NewWorkbookID int OUTPUT
+)
 as
 begin
     set xact_abort on
@@ -11,7 +15,6 @@ begin
 			select UserID, CURRENT_TIMESTAMP, @WorkbookCopyName, AverageHourlyWage, StandardUnitOfSpaceLength, StandardUnitOfSpaceWidth
 			from dbo.Workbook where WorkbookID = @WorkbookIDToCopy
         
-		DECLARE @NewWorkbookID int;
 		SET @NewWorkbookID = SCOPE_IDENTITY();
 		
 		-- FIELD LABOR ACTIVITIES
