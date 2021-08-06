@@ -46,6 +46,21 @@ begin
 			VALUES (@NewWorkbookID, [MachineryName], [StandardMachineryCost])
 			OUTPUT src.MachineryID, inserted.MachineryID into @tempMachinery;
 
+		-- FIELD INPUT COSTS
+		Declare @tempFieldInputCost table(
+			oID int
+			,nID int
+		);
+
+		merge dbo.FieldInputCost 
+		USING (
+			select [FieldInputCostID], [WorkbookID], [FieldUnitTypeID], [FieldInputCostName], [CostPerFieldUnit], [Notes] from dbo.FieldInputCost where WorkbookID = @WorkbookIDToCopy
+		) as src on 1=0
+		WHEN NOT MATCHED THEN 
+			INSERT([WorkbookID], [FieldUnitTypeID], [FieldInputCostName], [CostPerFieldUnit], [Notes])
+			VALUES (@NewWorkbookID, [FieldUnitTypeID], [FieldInputCostName], [CostPerFieldUnit], [Notes])
+			OUTPUT src.FieldInputCostID, inserted.FieldInputCostID into @tempFieldInputCost;
+
 		-- CROPS
 		Declare @tempCrop table(
 			oID int
@@ -233,17 +248,131 @@ begin
 			OUTPUT src.TimeStudyID, inserted.TimeStudyID into @tempTimeStudy;
 
 		-- FIELD LABOR BY CROP
+		Declare @tempFieldLaborByCrop table(
+			oID int
+			,nID int
+		);
+
+		merge dbo.FieldLaborByCrop 
+		USING (
+			select [FieldLaborByCropID], [WorkbookID], [CropID], [Occurrences], [FieldStandardTimeID] from dbo.FieldLaborByCrop where WorkbookID = @WorkbookIDToCopy
+		) as src on 1=0
+		WHEN NOT MATCHED THEN 
+			INSERT([WorkbookID], [CropID], [Occurrences], [FieldStandardTimeID])
+			VALUES (@NewWorkbookID, 
+			(select nID from @tempCrop where oID = src.CropID),
+			Occurrences,
+			(select nID from @tempFieldStandardTime where oID = src.FieldStandardTimeID))
+			OUTPUT src.FieldLaborByCropID, inserted.FieldLaborByCropID into @tempFieldLaborByCrop;
 		
 		-- FIELD INPUT BY CROP
+		Declare @tempFieldInputByCrop table(
+			oID int
+			,nID int
+		);
 
+		merge dbo.FieldInputByCrop 
+		USING (
+			select [FieldInputByCropID], [WorkbookID], [CropID], [FieldInputCostID], [Occurrences] from dbo.FieldInputByCrop where WorkbookID = @WorkbookIDToCopy
+		) as src on 1=0
+		WHEN NOT MATCHED THEN 
+			INSERT( [WorkbookID], [CropID], [FieldInputCostID], [Occurrences])
+			VALUES (@NewWorkbookID, 
+			(select nID from @tempCrop where oID = src.CropID),
+			(select nID from @tempFieldInputCost where oID = src.FieldInputCostID),
+			Occurrences
+			)
+			OUTPUT src.FieldInputByCropID, inserted.FieldInputByCropID into @tempFieldInputByCrop;
+		
 		-- TP INFO
+		Declare @tempTransplantProductionInformation table(
+			oID int
+			,nID int
+		);
+
+		merge dbo.TransplantProductionInformation 
+		USING (
+			select [TransplantProductionInformationID], [WorkbookID], [CropID], [PhaseID], [TransplantProductionTrayTypeID], [SeedsPerTray], [UsageRate], [CostPerSeed], [CropSpecificInputCostsPerTray] from dbo.TransplantProductionInformation where WorkbookID = @WorkbookIDToCopy
+		) as src on 1=0
+		WHEN NOT MATCHED THEN 
+			INSERT([WorkbookID], [CropID], [PhaseID], [TransplantProductionTrayTypeID], [SeedsPerTray], [UsageRate], [CostPerSeed], [CropSpecificInputCostsPerTray] )
+			VALUES (@NewWorkbookID, 
+			(select nID from @tempCrop where oID = src.CropID),
+			PhaseID,
+			(select nID from @tempTransplantProductionTrayType where oID = src.TransplantProductionTrayTypeID),
+			SeedsPerTray,
+			UsageRate,
+			CostPerSeed,
+			CropSpecificInputCostsPerTray
+			)
+			OUTPUT src.TransplantProductionInformationID, inserted.TransplantProductionInformationID into @tempTransplantProductionInformation;
 
 		-- TP LABOR BY CROP
+		Declare @tempTransplantProductionLaborActivityByCrop table(
+			oID int
+			,nID int
+		);
+
+		merge dbo.TransplantProductionLaborActivityByCrop 
+		USING (
+			select [TransplantProductionLaborActivityByCropID], [WorkbookID], [TransplantProductionLaborActivityID], [Occurrences], [TransplantProductionInformationID] from dbo.TransplantProductionLaborActivityByCrop where WorkbookID = @WorkbookIDToCopy
+		) as src on 1=0
+		WHEN NOT MATCHED THEN 
+			INSERT([WorkbookID], [TransplantProductionLaborActivityID], [Occurrences], [TransplantProductionInformationID] )
+			VALUES (@NewWorkbookID, 
+			(select nID from @tempTransplantProductionLaborActivity where oID = src.TransplantProductionLaborActivityID),
+			[Occurrences],
+			(select nID from @tempTransplantProductionInformation where oID = src.TransplantProductionInformationID)
+			
+			)
+			OUTPUT src.TransplantProductionLaborActivityByCropID, inserted.TransplantProductionLaborActivityByCropID into @tempTransplantProductionLaborActivityByCrop;
 
 		-- CROP SPECIFIC INFO
+		Declare @tempCropSpecificInfo table(
+			oID int
+			,nID int
+		);
+
+		merge dbo.CropSpecificInfo 
+		USING (
+			select [CropSpecificInfoID], [CropID], [WorkbookID], [TpOrDsTypeID], [RowsPerStandardWidth], [DripTapeRowsPerStandardWidth], [InRowSpacing], [SeedCostPerStandardUnitOfSpace], [TransplantProductionCostOutsourced]  from dbo.CropSpecificInfo where WorkbookID = @WorkbookIDToCopy
+		) as src on 1=0
+		WHEN NOT MATCHED THEN 
+			INSERT( [CropID], [WorkbookID], [TpOrDsTypeID], [RowsPerStandardWidth], [DripTapeRowsPerStandardWidth], [InRowSpacing], [SeedCostPerStandardUnitOfSpace], [TransplantProductionCostOutsourced])
+			VALUES (
+			(select nID from @tempCrop where oID = src.CropID),
+			@NewWorkbookID, 
+			[TpOrDsTypeID],
+			[RowsPerStandardWidth],
+			[DripTapeRowsPerStandardWidth],
+			[InRowSpacing],
+			[SeedCostPerStandardUnitOfSpace],
+			[TransplantProductionCostOutsourced]
+			)
+			OUTPUT src.CropSpecificInfoID, inserted.CropSpecificInfoID into @tempCropSpecificInfo;
 
 		-- CROP YIELD INFO
+		Declare @tempCropYieldInformation table(
+			oID int
+			,nID int
+		);
 
+		merge dbo.CropYieldInformation 
+		USING (
+			select [CropYieldInformationID], [WorkbookID], [CropID], [CropUnitID], [HarvestedYieldPerStandardUnitOfSpace], [MarketableYieldPerStandardUnitOfSpace], [PackagingCostPerCropUnit], [PricePerCropUnit] from dbo.CropYieldInformation where WorkbookID = @WorkbookIDToCopy
+		) as src on 1=0
+		WHEN NOT MATCHED THEN 
+			INSERT( [WorkbookID], [CropID], [CropUnitID], [HarvestedYieldPerStandardUnitOfSpace], [MarketableYieldPerStandardUnitOfSpace], [PackagingCostPerCropUnit], [PricePerCropUnit] )
+			VALUES (
+			@NewWorkbookID, 
+			(select nID from @tempCrop where oID = src.CropID),
+			(select nID from @tempCropUnit where oID = src.CropUnitID),
+			[HarvestedYieldPerStandardUnitOfSpace], 
+			[MarketableYieldPerStandardUnitOfSpace], 
+			[PackagingCostPerCropUnit], 
+			[PricePerCropUnit]
+			)
+			OUTPUT src.CropYieldInformationID, inserted.CropYieldInformationID into @tempCropYieldInformation;
 
 
         
@@ -251,4 +380,4 @@ begin
 end
 go
 
--- exec dbo.procDuplicateWorkbook @WorkbookIDToCopy = 2, @WorkbookCopyName = 'best'
+-- exec dbo.procDuplicateWorkbook @WorkbookIDToCopy = 2, @WorkbookCopyName = 'best2'
