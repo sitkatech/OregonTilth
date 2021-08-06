@@ -75,6 +75,11 @@ export class WorkbookService {
         return this.apiService.deleteToApi(route);
     }
 
+    duplicateWorkbook(workbookID: number, workbookCopyName: string): Observable<any> {
+        let route = `/workbooks/${workbookID}/duplicate`;
+        return this.apiService.postToApi(route, {WorkbookCopyName: workbookCopyName});
+    }
+
     // Field Labor Activity Form
     addFieldLaborActivity(fieldLaborActivityCreateDto: FieldLaborActivityCreateDto): Observable<FieldLaborActivityDto> {
         let route = `/workbooks/${fieldLaborActivityCreateDto.WorkbookID}/forms/field-labor-activities`;

@@ -156,6 +156,19 @@ export class WorkbooksComponent implements OnInit {
             }
            },
           sortable: true, filter: true, width: 100, autoHeight:true
+        },
+        {
+          headerName: 'Duplicate', 
+          valueGetter: function (params: any) {
+            return { ButtonText: 'Duplicate', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.WorkbookID, ObjectDisplayName: params.data.WorkbookName };
+          }, cellRendererFramework: ButtonRendererComponent,
+          cellRendererParams: { 
+            clicked: function(field: any) {
+                workbookComponentScope.router.navigateByUrl(`/workbooks/${field.PrimaryKey}/duplicate`).then(x => {
+              });
+            }
+           },
+          sortable: true, filter: true, width: 125, autoHeight:true
         }
       ];
         

@@ -1276,6 +1276,28 @@ namespace OregonTilth.API.Controllers
             return Ok(returnDtos);
         }
         #endregion
+
+        #region Duplicate Workbook
+
+        [HttpPost("workbooks/{workbookID}/duplicate")]
+        [ValidateWorkbookIDFromRouteExistsAndBelongsToUser]
+        public ActionResult<IEnumerable<FieldStandardTimeDto>> DuplicateWorkbookByID([FromRoute] int workbookID, [FromBody] WorkbookDuplicateDto workbookDuplicateDto)
+        {
+            var user = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+            var validationMessages = Workbook.ValidateDuplicate(_dbContext, workbookDuplicateDto.WorkbookCopyName, user);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var newWorkbookID = DuplicateWorkbook.DuplicateWorkbookByID(_dbContext, workbookID, workbookDuplicateDto.WorkbookCopyName);
+
+            return Ok();
+        }
+
+        #endregion
     }
 
 
