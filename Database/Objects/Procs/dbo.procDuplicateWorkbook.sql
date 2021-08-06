@@ -47,7 +47,7 @@ begin
 			OUTPUT src.MachineryID, inserted.MachineryID into @tempMachinery;
 
 		-- CROPS
-		Declare @tempCrops table(
+		Declare @tempCrop table(
 			oID int
 			,nID int
 		);
@@ -59,10 +59,10 @@ begin
 		WHEN NOT MATCHED THEN 
 			INSERT([WorkbookID], CropName)
 			VALUES (@NewWorkbookID, CropName)
-			OUTPUT src.CropID, inserted.CropID into @tempCrops;
+			OUTPUT src.CropID, inserted.CropID into @tempCrop;
 			
 		-- CROP UNITS
-		Declare @tempCropUnits table(
+		Declare @tempCropUnit table(
 			oID int
 			,nID int
 		);
@@ -74,7 +74,7 @@ begin
 		WHEN NOT MATCHED THEN 
 			INSERT([WorkbookID], CropUnitName)
 			VALUES (@NewWorkbookID, CropUnitName)
-			OUTPUT src.CropUnitID, inserted.CropUnitID into @tempCropUnits;
+			OUTPUT src.CropUnitID, inserted.CropUnitID into @tempCropUnit;
 
 		
 
@@ -149,11 +149,8 @@ begin
 			OUTPUT src.TransplantProductionInputCostID, inserted.TransplantProductionInputCostID into @tempTransplantProductionInputCost;
 
 
-		
-
-
 		-- FIELD STANDARD TIME
-		/*
+		
 		Declare @tempFieldStandardTime table(
 			oID int
 			,nID int
@@ -166,16 +163,16 @@ begin
 		WHEN NOT MATCHED THEN 
 			INSERT([WorkbookID], [FieldLaborActivityID], [LaborTypeID], [MachineryID], [FieldUnitTypeID], [StandardTimePerUnit])
 			VALUES (@NewWorkbookID, 
-			(select nID from @tempFieldLaborActivity where oID = FieldLaborActivityID),
+			(select nID from @tempFieldLaborActivity where oID = src.FieldLaborActivityID),
 			[LaborTypeID], 
-			(select nID from @tempMachinery where oID = MachineryID),
-			[FieldUnitTypeID], [StandardTimePerUnit])
+			(select nID from @tempMachinery where oID = src.MachineryID),
+			[FieldUnitTypeID], 
+			[StandardTimePerUnit])
 			OUTPUT src.FieldStandardTimeID, inserted.FieldStandardTimeID into @tempFieldStandardTime;
 
-		*/
+		
 
 		-- HARVEST TIME STUDIES
-		/*
 		Declare @tempHarvestPostHarvestStandardTime table(
 			oID int
 			,nID int
@@ -188,16 +185,52 @@ begin
 		WHEN NOT MATCHED THEN 
 			INSERT([WorkbookID], [CropID], [CropUnitID], [HarvestTypeID], [StandardTimePerUnit])
 			VALUES (@NewWorkbookID, 
-			(select nID from @tempFieldLaborActivity where oID = FieldLaborActivityID),
-			[LaborTypeID], 
-			(select nID from @tempMachinery where oID = MachineryID),
-			[FieldUnitTypeID], [StandardTimePerUnit])
+			(select nID from @tempCrop where oID = src.CropID),
+			(select nID from @tempCropUnit where oID = src.CropUnitID),
+			[HarvestTypeID], 
+			[StandardTimePerUnit])
 			OUTPUT src.HarvestPostHarvestStandardTimeID, inserted.HarvestPostHarvestStandardTimeID into @tempHarvestPostHarvestStandardTime;
-			*/
 
 		-- TP TIME STUDIES
+		Declare @tempTransplantProductionStandardTime table(
+			oID int
+			,nID int
+		);
+
+		merge dbo.TransplantProductionStandardTime 
+		USING (
+			select [TransplantProductionStandardTimeID], [WorkbookID], [TransplantProductionLaborActivityID], [TransplantProductionTrayTypeID], [StandardTimePerUnit] from dbo.TransplantProductionStandardTime where WorkbookID = @WorkbookIDToCopy
+		) as src on 1=0
+		WHEN NOT MATCHED THEN 
+			INSERT([WorkbookID], [TransplantProductionLaborActivityID], [TransplantProductionTrayTypeID], [StandardTimePerUnit])
+			VALUES (@NewWorkbookID, 
+			(select nID from @tempTransplantProductionLaborActivity where oID = src.TransplantProductionLaborActivityID),
+			(select nID from @tempTransplantProductionTrayType where oID = src.TransplantProductionTrayTypeID),
+			[StandardTimePerUnit])
+			OUTPUT src.TransplantProductionStandardTimeID, inserted.TransplantProductionStandardTimeID into @tempTransplantProductionStandardTime;
+
 
 		-- ALL TIME STUDIES
+		Declare @tempTimeStudy table(
+			oID int
+			,nID int
+		);
+
+		merge dbo.TimeStudy 
+		USING (
+			select [TimeStudyID], [WorkbookID], [FieldStandardTimeID], [Duration], [Units], [Notes], [HarvestPostHarvestStandardTimeID], [TransplantProductionStandardTimeID] from dbo.TimeStudy where WorkbookID = @WorkbookIDToCopy
+		) as src on 1=0
+		WHEN NOT MATCHED THEN 
+			INSERT([WorkbookID], [FieldStandardTimeID], [Duration], [Units], [Notes], [HarvestPostHarvestStandardTimeID], [TransplantProductionStandardTimeID])
+			VALUES (@NewWorkbookID, 
+			(select nID from @tempFieldStandardTime where oID = src.FieldStandardTimeID),
+			Duration,
+			Units,
+			Notes,
+			(select nID from @tempHarvestPostHarvestStandardTime where oID = src.HarvestPostHarvestStandardTimeID),
+			(select nID from @tempTransplantProductionStandardTime where oID = src.TransplantProductionStandardTimeID)
+			)
+			OUTPUT src.TimeStudyID, inserted.TimeStudyID into @tempTimeStudy;
 
 		-- FIELD LABOR BY CROP
 		
