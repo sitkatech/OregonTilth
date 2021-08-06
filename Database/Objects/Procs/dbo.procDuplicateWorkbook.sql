@@ -8,7 +8,7 @@ begin
     begin transaction
 
 		insert into dbo.Workbook (UserID, CreateDate, WorkbookName, AverageHourlyWage, StandardUnitOfSpaceLength, StandardUnitOfSpaceWidth)
-			select UserID, CreateDate, @WorkbookCopyName, AverageHourlyWage, StandardUnitOfSpaceLength, StandardUnitOfSpaceWidth
+			select UserID, CURRENT_TIMESTAMP, @WorkbookCopyName, AverageHourlyWage, StandardUnitOfSpaceLength, StandardUnitOfSpaceWidth
 			from dbo.Workbook where WorkbookID = @WorkbookIDToCopy
         
 		DECLARE @NewWorkbookID int;
