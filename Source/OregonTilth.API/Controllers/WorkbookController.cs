@@ -1292,7 +1292,8 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            DuplicateWorkbook.DuplicateWorkbookByID(_dbContext, workbookID, workbookDuplicateDto.WorkbookCopyName);
+            var newWorkbookID = DuplicateWorkbook.DuplicateWorkbookByID(_dbContext, workbookID, workbookDuplicateDto.WorkbookCopyName);
+
             return Ok();
         }
 
