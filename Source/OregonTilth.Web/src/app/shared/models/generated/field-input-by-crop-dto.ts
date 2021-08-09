@@ -12,6 +12,7 @@ export class FieldInputByCropDto {
 	Crop : CropDto
 	FieldInputCost : FieldInputCostDto
 	Occurrences : number
+	Notes : string
 
     constructor(obj?: any) {
         Object.assign(this, obj);

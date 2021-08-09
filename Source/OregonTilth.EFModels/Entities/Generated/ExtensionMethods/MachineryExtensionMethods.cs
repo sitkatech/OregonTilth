@@ -16,7 +16,8 @@ namespace OregonTilth.EFModels.Entities
                 MachineryID = machinery.MachineryID,
                 Workbook = machinery.Workbook.AsDto(),
                 MachineryName = machinery.MachineryName,
-                StandardMachineryCost = machinery.StandardMachineryCost
+                StandardMachineryCost = machinery.StandardMachineryCost,
+                Notes = machinery.Notes
             };
             DoCustomMappings(machinery, machineryDto);
             return machineryDto;

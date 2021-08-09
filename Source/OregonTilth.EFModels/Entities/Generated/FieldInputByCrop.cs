@@ -18,6 +18,8 @@ namespace OregonTilth.EFModels.Entities
         public int FieldInputCostID { get; set; }
         [Column(TypeName = "decimal(18, 4)")]
         public decimal? Occurrences { get; set; }
+        [StringLength(2000)]
+        public string Notes { get; set; }
 
         [ForeignKey(nameof(CropID))]
         [InverseProperty("FieldInputByCrops")]

@@ -19,6 +19,8 @@ namespace OregonTilth.EFModels.Entities
         [Column(TypeName = "decimal(18, 4)")]
         public decimal? Occurrences { get; set; }
         public int FieldStandardTimeID { get; set; }
+        [StringLength(2000)]
+        public string Notes { get; set; }
 
         [ForeignKey(nameof(CropID))]
         [InverseProperty("FieldLaborByCrops")]

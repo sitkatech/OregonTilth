@@ -9,6 +9,7 @@ export class MachineryDto {
 	Workbook : WorkbookDto
 	MachineryName : string
 	StandardMachineryCost : number
+	Notes : string
 
     constructor(obj?: any) {
         Object.assign(this, obj);

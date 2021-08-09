@@ -12,6 +12,7 @@ export class TransplantProductionLaborActivityByCropDto {
 	TransplantProductionLaborActivity : TransplantProductionLaborActivityDto
 	Occurrences : number
 	TransplantProductionInformation : TransplantProductionInformationDto
+	Notes : string
 
     constructor(obj?: any) {
         Object.assign(this, obj);

@@ -172,6 +172,8 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<FieldInputByCrop>(entity =>
             {
+                entity.Property(e => e.Notes).IsUnicode(false);
+
                 entity.HasOne(d => d.Crop)
                     .WithMany(p => p.FieldInputByCrops)
                     .HasForeignKey(d => d.CropID)
@@ -231,6 +233,8 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<FieldLaborByCrop>(entity =>
             {
+                entity.Property(e => e.Notes).IsUnicode(false);
+
                 entity.HasOne(d => d.Crop)
                     .WithMany(p => p.FieldLaborByCrops)
                     .HasForeignKey(d => d.CropID)
@@ -352,6 +356,8 @@ namespace OregonTilth.EFModels.Entities
             {
                 entity.Property(e => e.MachineryName).IsUnicode(false);
 
+                entity.Property(e => e.Notes).IsUnicode(false);
+
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.Machineries)
                     .HasForeignKey(d => d.WorkbookID)
@@ -463,6 +469,8 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<TransplantProductionLaborActivityByCrop>(entity =>
             {
+                entity.Property(e => e.Notes).IsUnicode(false);
+
                 entity.HasOne(d => d.TransplantProductionInformation)
                     .WithMany(p => p.TransplantProductionLaborActivityByCrops)
                     .HasForeignKey(d => d.TransplantProductionInformationID)

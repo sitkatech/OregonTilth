@@ -12,6 +12,7 @@ export class FieldLaborByCropDto {
 	Crop : CropDto
 	Occurrences : number
 	FieldStandardTime : FieldStandardTimeDto
+	Notes : string
 
     constructor(obj?: any) {
         Object.assign(this, obj);
