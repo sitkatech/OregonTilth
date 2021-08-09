@@ -93,7 +93,8 @@ namespace OregonTilth.EFModels.Entities
             {
                MachineryName = machineryUpsertDto.MachineryName,
                StandardMachineryCost = machineryUpsertDto.StandardMachineryCost,
-               WorkbookID = machineryUpsertDto.WorkbookID
+               WorkbookID = machineryUpsertDto.WorkbookID,
+               Notes = machineryUpsertDto.Notes
             };
 
             dbContext.Machineries.Add(machinery);
@@ -110,6 +111,7 @@ namespace OregonTilth.EFModels.Entities
 
             machinery.StandardMachineryCost = machineryDto.StandardMachineryCost;
             machinery.MachineryName = machineryDto.MachineryName;
+            machinery.Notes = machineryDto.Notes;
 
             dbContext.SaveChanges();
             dbContext.Entry(machinery).Reload();

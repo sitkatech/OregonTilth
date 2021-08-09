@@ -11,5 +11,7 @@ namespace OregonTilth.Models.DataTransferObjects
         public decimal StandardMachineryCost { get; set; }
         [Required] 
         public int WorkbookID { get; set; }
+        [MaxLength(2000)]
+        public string Notes { get; set; }
     }
 }
