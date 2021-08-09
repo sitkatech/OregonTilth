@@ -5,6 +5,7 @@ export class FieldLaborByCropCreateDto {
     CropID: number;
     FieldStandardTimes: FieldStandardTimeDto[];
     FieldStandardTimeID: number;
+    Notes: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

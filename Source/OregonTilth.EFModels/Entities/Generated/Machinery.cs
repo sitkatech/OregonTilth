@@ -24,6 +24,8 @@ namespace OregonTilth.EFModels.Entities
         public string MachineryName { get; set; }
         [Column(TypeName = "money")]
         public decimal StandardMachineryCost { get; set; }
+        [StringLength(2000)]
+        public string Notes { get; set; }
 
         [ForeignKey(nameof(WorkbookID))]
         [InverseProperty("Machineries")]

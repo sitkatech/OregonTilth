@@ -8,6 +8,7 @@ CREATE TABLE [dbo].[FieldLaborByCrop](
 	[CropID] [int] NOT NULL,
 	[Occurrences] [decimal](18, 4) NULL,
 	[FieldStandardTimeID] [int] NOT NULL,
+	[Notes] [varchar](2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
  CONSTRAINT [PK_FieldLaborByCrop_FieldLaborByCropID] PRIMARY KEY CLUSTERED 
 (
 	[FieldLaborByCropID] ASC

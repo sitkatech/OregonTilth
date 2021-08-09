@@ -7,6 +7,7 @@ CREATE TABLE [dbo].[Machinery](
 	[WorkbookID] [int] NOT NULL,
 	[MachineryName] [varchar](200) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[StandardMachineryCost] [money] NOT NULL,
+	[Notes] [varchar](2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
  CONSTRAINT [PK_Machinery_MachineryID] PRIMARY KEY CLUSTERED 
 (
 	[MachineryID] ASC

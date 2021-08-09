@@ -106,6 +106,17 @@ export class MachineryComponent implements OnInit {
         resizable: true,
       },
       {
+        headerName: 'Notes', 
+        field: 'Notes',
+        editable: true,
+        cellEditor: 'agLargeTextCellEditor',
+        cellRendererFramework: EditableRendererComponent,
+        resizable: true,
+        cellEditorParams: {
+          maxLength: 2000,
+        }
+      },
+      {
         headerName: 'Delete', field: 'MachineryID', valueGetter: function (params: any) {
           return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.MachineryID, ObjectDisplayName: params.data.MachineryName };
         }, cellRendererFramework: ButtonRendererComponent,

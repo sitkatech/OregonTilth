@@ -9,6 +9,7 @@ namespace OregonTilth.Models.DataTransferObjects
         public TransplantProductionLaborActivitySummaryDto TransplantProductionLaborActivity { get; set; }
         public TransplantProductionInformationSummaryDto TransplantProductionInformation { get; set; }
         public decimal? Occurrences { get; set; }
+        public string Notes { get; set; }
     }
 
     

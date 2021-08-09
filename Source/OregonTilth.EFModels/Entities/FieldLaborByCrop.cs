@@ -92,6 +92,7 @@ namespace OregonTilth.EFModels.Entities
                         WorkbookID = fieldLaborByCropCreateDto.WorkbookID,
                         CropID = fieldLaborByCropCreateDto.CropID,
                         FieldStandardTimeID = fieldStandardTimeDto.FieldStandardTimeID,
+                        Notes = fieldLaborByCropCreateDto.Notes
                     };
                     dbContext.FieldLaborByCrops.Add(fieldLaborByCrop);
                     addedFieldStandardTimes.Add(fieldStandardTimeDto.FieldStandardTimeID);
@@ -118,6 +119,7 @@ namespace OregonTilth.EFModels.Entities
             fieldLaborByCrop.CropID = fieldLaborByCropDto.Crop.CropID;
             fieldLaborByCrop.FieldStandardTimeID = fieldLaborByCropDto.FieldStandardTime.FieldStandardTimeID;
             fieldLaborByCrop.Occurrences = fieldLaborByCropDto.Occurrences;
+            fieldLaborByCrop.Notes = fieldLaborByCropDto.Notes;
 
             dbContext.SaveChanges();
             dbContext.Entry(fieldLaborByCrop).Reload();
