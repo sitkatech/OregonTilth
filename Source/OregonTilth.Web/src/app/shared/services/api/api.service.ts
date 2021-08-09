@@ -120,7 +120,6 @@ export class ApiService {
         if (clearBusyGlobally) {
             this.busyService.setBusy(false);
         }
-debugger;
         if (!supressErrorMessage) {
             if (error && (error.status === 401)) {
                 this.alertService.pushAlert(new Alert("Access token expired..."));

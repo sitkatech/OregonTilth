@@ -16,7 +16,8 @@ namespace OregonTilth.EFModels.Entities
                 Workbook = fieldLaborByCrop.Workbook.AsSummaryDto(),
                 FieldStandardTime = fieldLaborByCrop.FieldStandardTime.AsSummaryDto(),
                 Crop = fieldLaborByCrop.Crop.AsSummaryDto(),
-                Occurrences = fieldLaborByCrop.Occurrences
+                Occurrences = fieldLaborByCrop.Occurrences,
+                Notes = fieldLaborByCrop.Notes
             };
 
 

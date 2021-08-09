@@ -9,5 +9,6 @@ namespace OregonTilth.Models.DataTransferObjects
         public FieldStandardTimeSummaryDto FieldStandardTime { get; set; }
         public CropSummaryDto Crop { get; set; }
         public decimal? Occurrences { get; set; }
+        public string Notes { get; set; }
     }
 }

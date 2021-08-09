@@ -14,7 +14,8 @@ namespace OregonTilth.EFModels.Entities
                 Workbook = tpLaborByCrop.Workbook.AsSummaryDto(),
                 TransplantProductionLaborActivity = tpLaborByCrop.TransplantProductionLaborActivity.AsSummaryDto(),
                 TransplantProductionInformation = tpLaborByCrop.TransplantProductionInformation.AsSummaryDto(),
-                Occurrences = tpLaborByCrop.Occurrences
+                Occurrences = tpLaborByCrop.Occurrences,
+                Notes = tpLaborByCrop.Notes
             };
 
 

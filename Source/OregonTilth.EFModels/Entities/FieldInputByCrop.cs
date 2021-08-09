@@ -91,7 +91,8 @@ namespace OregonTilth.EFModels.Entities
                     {
                         WorkbookID = fieldInputByCropCreateDto.WorkbookID,
                         CropID = fieldInputByCropCreateDto.CropID,
-                        FieldInputCostID = fieldInputCostDto.FieldInputCostID
+                        FieldInputCostID = fieldInputCostDto.FieldInputCostID,
+                        Notes = fieldInputByCropCreateDto.Notes,
                     };
                     dbContext.FieldInputByCrops.Add(fieldInputByCrop);
                     addedFieldInputCostIDs.Add(fieldInputByCrop.FieldInputCostID);
@@ -119,6 +120,7 @@ namespace OregonTilth.EFModels.Entities
             fieldInputByCrop.CropID = fieldInputByCropDto.Crop.CropID;
             fieldInputByCrop.FieldInputCostID = fieldInputByCropDto.FieldInputCost.FieldInputCostID;
             fieldInputByCrop.Occurrences = fieldInputByCropDto.Occurrences;
+            fieldInputByCrop.Notes = fieldInputByCropDto.Notes;
 
             dbContext.SaveChanges();
             dbContext.Entry(fieldInputByCrop).Reload();

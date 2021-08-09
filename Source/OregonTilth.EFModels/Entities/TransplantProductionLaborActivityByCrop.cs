@@ -96,6 +96,7 @@ namespace OregonTilth.EFModels.Entities
                         WorkbookID = transplantProductionLaborByCropCreateDto.WorkbookID,
                         TransplantProductionInformationID = transplantProductionLaborByCropCreateDto.TransplantProductionInformationID,
                         TransplantProductionLaborActivityID = transplantProductionLaborActivityDto.TransplantProductionLaborActivityID,
+                        Notes = transplantProductionLaborByCropCreateDto.Notes,
                     };
                     dbContext.TransplantProductionLaborActivityByCrops.Add(tpLaborByCrop);
                     addedTpLaborActivityIDs.Add(tpLaborByCrop.TransplantProductionLaborActivityID);
@@ -114,18 +115,19 @@ namespace OregonTilth.EFModels.Entities
         public static TransplantProductionLaborActivityByCropSummaryDto UpdateTransplantProductionLaborActivityByCrop(OregonTilthDbContext dbContext, TransplantProductionLaborActivityByCropDto transplantProductionLaborActivityByCropDto)
         {
 
-            var fieldLaborByCrop = dbContext.TransplantProductionLaborActivityByCrops
+            var transplantProductionLaborActivityByCrop = dbContext.TransplantProductionLaborActivityByCrops
                 .SingleOrDefault(x => x.TransplantProductionLaborActivityByCropID == transplantProductionLaborActivityByCropDto.TransplantProductionLaborActivityByCropID);
 
 
-            fieldLaborByCrop.TransplantProductionInformationID = transplantProductionLaborActivityByCropDto.TransplantProductionInformation.TransplantProductionInformationID;
-            fieldLaborByCrop.TransplantProductionLaborActivityID = transplantProductionLaborActivityByCropDto.TransplantProductionLaborActivity.TransplantProductionLaborActivityID;
-            fieldLaborByCrop.Occurrences = transplantProductionLaborActivityByCropDto.Occurrences;
+            transplantProductionLaborActivityByCrop.TransplantProductionInformationID = transplantProductionLaborActivityByCropDto.TransplantProductionInformation.TransplantProductionInformationID;
+            transplantProductionLaborActivityByCrop.TransplantProductionLaborActivityID = transplantProductionLaborActivityByCropDto.TransplantProductionLaborActivity.TransplantProductionLaborActivityID;
+            transplantProductionLaborActivityByCrop.Occurrences = transplantProductionLaborActivityByCropDto.Occurrences;
+            transplantProductionLaborActivityByCrop.Notes = transplantProductionLaborActivityByCropDto.Notes;
 
             dbContext.SaveChanges();
-            dbContext.Entry(fieldLaborByCrop).Reload();
+            dbContext.Entry(transplantProductionLaborActivityByCrop).Reload();
 
-            return GetDtoByID(dbContext, fieldLaborByCrop.TransplantProductionLaborActivityByCropID);
+            return GetDtoByID(dbContext, transplantProductionLaborActivityByCrop.TransplantProductionLaborActivityByCropID);
         }
 
         // todo: validate deletion

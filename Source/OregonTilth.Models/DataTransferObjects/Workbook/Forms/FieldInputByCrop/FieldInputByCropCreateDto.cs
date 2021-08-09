@@ -8,6 +8,7 @@ namespace OregonTilth.Models.DataTransferObjects
         [Required] public int WorkbookID { get; set; }
         [Required] public int CropID { get; set; }
         [Required] public List<FieldInputCostDto> FieldInputCosts { get; set; }
+        [MaxLength(2000)] public string Notes { get; set; }
 
     }
 }

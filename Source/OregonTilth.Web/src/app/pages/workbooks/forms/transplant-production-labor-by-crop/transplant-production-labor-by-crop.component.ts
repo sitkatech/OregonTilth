@@ -155,6 +155,17 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         filter: true,
       },
       {
+        headerName: 'Notes', 
+        field: 'Notes',
+        editable: true,
+        cellEditor: 'agLargeTextCellEditor',
+        cellRendererFramework: EditableRendererComponent,
+        resizable: true,
+        cellEditorParams: {
+          maxLength: 2000,
+        }
+      },
+      {
         headerName: 'Occurrences', 
         field: 'Occurrences',
         editable: true,
