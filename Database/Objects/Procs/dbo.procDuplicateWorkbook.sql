@@ -42,11 +42,11 @@ begin
 
 		merge dbo.Machinery 
 		USING (
-			select MachineryID, [WorkbookID], [MachineryName], [StandardMachineryCost] from dbo.Machinery where WorkbookID = @WorkbookIDToCopy
+			select MachineryID, [WorkbookID], [MachineryName], [StandardMachineryCost], [Notes] from dbo.Machinery where WorkbookID = @WorkbookIDToCopy
 		) as src on 1=0
 		WHEN NOT MATCHED THEN 
-			INSERT([WorkbookID], [MachineryName], [StandardMachineryCost])
-			VALUES (@NewWorkbookID, [MachineryName], [StandardMachineryCost])
+			INSERT([WorkbookID], [MachineryName], [StandardMachineryCost], [Notes])
+			VALUES (@NewWorkbookID, [MachineryName], [StandardMachineryCost], [Notes])
 			OUTPUT src.MachineryID, inserted.MachineryID into @tempMachinery;
 
 		-- FIELD INPUT COSTS
@@ -258,14 +258,17 @@ begin
 
 		merge dbo.FieldLaborByCrop 
 		USING (
-			select [FieldLaborByCropID], [WorkbookID], [CropID], [Occurrences], [FieldStandardTimeID] from dbo.FieldLaborByCrop where WorkbookID = @WorkbookIDToCopy
+			select [FieldLaborByCropID], [WorkbookID], [CropID], [Occurrences], [FieldStandardTimeID], [Notes] from dbo.FieldLaborByCrop where WorkbookID = @WorkbookIDToCopy
 		) as src on 1=0
 		WHEN NOT MATCHED THEN 
-			INSERT([WorkbookID], [CropID], [Occurrences], [FieldStandardTimeID])
-			VALUES (@NewWorkbookID, 
-			(select nID from @tempCrop where oID = src.CropID),
-			Occurrences,
-			(select nID from @tempFieldStandardTime where oID = src.FieldStandardTimeID))
+			INSERT([WorkbookID], [CropID], [Occurrences], [FieldStandardTimeID], [Notes])
+			VALUES (
+				@NewWorkbookID, 
+				(select nID from @tempCrop where oID = src.CropID),
+				Occurrences,
+				(select nID from @tempFieldStandardTime where oID = src.FieldStandardTimeID),
+				[Notes]
+			)
 			OUTPUT src.FieldLaborByCropID, inserted.FieldLaborByCropID into @tempFieldLaborByCrop;
 		
 		-- FIELD INPUT BY CROP
@@ -276,14 +279,15 @@ begin
 
 		merge dbo.FieldInputByCrop 
 		USING (
-			select [FieldInputByCropID], [WorkbookID], [CropID], [FieldInputCostID], [Occurrences] from dbo.FieldInputByCrop where WorkbookID = @WorkbookIDToCopy
+			select [FieldInputByCropID], [WorkbookID], [CropID], [FieldInputCostID], [Occurrences], [Notes] from dbo.FieldInputByCrop where WorkbookID = @WorkbookIDToCopy
 		) as src on 1=0
 		WHEN NOT MATCHED THEN 
-			INSERT( [WorkbookID], [CropID], [FieldInputCostID], [Occurrences])
+			INSERT( [WorkbookID], [CropID], [FieldInputCostID], [Occurrences], [Notes])
 			VALUES (@NewWorkbookID, 
 			(select nID from @tempCrop where oID = src.CropID),
 			(select nID from @tempFieldInputCost where oID = src.FieldInputCostID),
-			Occurrences
+			Occurrences, 
+			[Notes]
 			)
 			OUTPUT src.FieldInputByCropID, inserted.FieldInputByCropID into @tempFieldInputByCrop;
 		
@@ -318,14 +322,15 @@ begin
 
 		merge dbo.TransplantProductionLaborActivityByCrop 
 		USING (
-			select [TransplantProductionLaborActivityByCropID], [WorkbookID], [TransplantProductionLaborActivityID], [Occurrences], [TransplantProductionInformationID] from dbo.TransplantProductionLaborActivityByCrop where WorkbookID = @WorkbookIDToCopy
+			select [TransplantProductionLaborActivityByCropID], [WorkbookID], [TransplantProductionLaborActivityID], [Occurrences], [TransplantProductionInformationID], [Notes] from dbo.TransplantProductionLaborActivityByCrop where WorkbookID = @WorkbookIDToCopy
 		) as src on 1=0
 		WHEN NOT MATCHED THEN 
-			INSERT([WorkbookID], [TransplantProductionLaborActivityID], [Occurrences], [TransplantProductionInformationID] )
+			INSERT([WorkbookID], [TransplantProductionLaborActivityID], [Occurrences], [TransplantProductionInformationID], [Notes] )
 			VALUES (@NewWorkbookID, 
 			(select nID from @tempTransplantProductionLaborActivity where oID = src.TransplantProductionLaborActivityID),
 			[Occurrences],
-			(select nID from @tempTransplantProductionInformation where oID = src.TransplantProductionInformationID)
+			(select nID from @tempTransplantProductionInformation where oID = src.TransplantProductionInformationID), 
+			[Notes]
 			
 			)
 			OUTPUT src.TransplantProductionLaborActivityByCropID, inserted.TransplantProductionLaborActivityByCropID into @tempTransplantProductionLaborActivityByCrop;
