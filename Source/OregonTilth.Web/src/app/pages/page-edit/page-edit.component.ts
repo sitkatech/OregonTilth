@@ -8,7 +8,7 @@ import { UserDetailedDto } from 'src/app/shared/models';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { RoleDto } from 'src/app/shared/models/generated/role-dto';
-import { PageTreeDto } from 'src/app/shared/models/page/page-create-dto';
+import { PageTreeDto } from 'src/app/shared/models/page/page-tree-dto';
 import { PageUpdateDto } from 'src/app/shared/models/page/page-update-dto';
 import { UserUpdateDto } from 'src/app/shared/models/user/user-update-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
@@ -60,6 +60,10 @@ export class PageEditComponent implements OnInit {
       ).subscribe(([page, allPages]) => {
         this.page = page;
         this.allPages = allPages;
+        
+        var thisPageIndex = allPages.findIndex(x => x.PageID == this.page.PageID)
+        this.allPages.splice(thisPageIndex,1);
+
         this.model = new PageUpdateDto();
         this.model.PageID = page.PageID;
         this.model.PageContent = page.Pagecontent;
