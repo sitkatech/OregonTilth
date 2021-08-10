@@ -74,6 +74,8 @@ import { EditableRendererComponent } from './shared/components/ag-grid/editable-
 import { VariableCostsComponent } from './pages/workbooks/results/variable-costs/variable-costs.component';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { DuplicateComponent } from './pages/workbooks/duplicate/duplicate.component';
+import { PageListComponent } from './pages/page-list/page-list.component';
+import { PageEditComponent } from './pages/page-edit/page-edit.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -129,7 +131,9 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     TimeStudyModal,
     CropSpecificInfoComponent,
     VariableCostsComponent,
-    DuplicateComponent
+    DuplicateComponent,
+    PageListComponent,
+    PageEditComponent
   ],
   imports: [
     AppRoutingModule,

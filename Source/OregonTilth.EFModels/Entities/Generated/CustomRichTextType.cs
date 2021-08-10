@@ -16,6 +16,7 @@ namespace OregonTilth.EFModels.Entities
         public CustomRichTextType()
         {
             CustomRichTexts = new HashSet<CustomRichText>();
+            Pages = new HashSet<Page>();
         }
 
         [Key]
@@ -29,5 +30,7 @@ namespace OregonTilth.EFModels.Entities
 
         [InverseProperty(nameof(CustomRichText.CustomRichTextType))]
         public virtual ICollection<CustomRichText> CustomRichTexts { get; set; }
+        [InverseProperty(nameof(Page.CustomRichTextType))]
+        public virtual ICollection<Page> Pages { get; set; }
     }
 }
