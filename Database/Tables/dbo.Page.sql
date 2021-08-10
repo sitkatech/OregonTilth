@@ -4,20 +4,16 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Page](
 	[PageID] [int] IDENTITY(1,1) NOT NULL,
-	[CustomRichTextTypeID] [int] NOT NULL,
+	[PageName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[PageContent] [dbo].[html] NULL,
 	[SortOrder] [int] NOT NULL,
 	[ParentPageID] [int] NULL,
  CONSTRAINT [PK_Page_PageID] PRIMARY KEY CLUSTERED 
 (
 	[PageID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
-GO
-ALTER TABLE [dbo].[Page]  WITH CHECK ADD  CONSTRAINT [FK_Page_CustomRichTextType_CustomRichTextTypeID] FOREIGN KEY([CustomRichTextTypeID])
-REFERENCES [dbo].[CustomRichTextType] ([CustomRichTextTypeID])
-GO
-ALTER TABLE [dbo].[Page] CHECK CONSTRAINT [FK_Page_CustomRichTextType_CustomRichTextTypeID]
 GO
 ALTER TABLE [dbo].[Page]  WITH CHECK ADD  CONSTRAINT [FK_Page_Page_ParentPageID] FOREIGN KEY([ParentPageID])
 REFERENCES [dbo].[Page] ([PageID])

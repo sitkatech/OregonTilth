@@ -43,10 +43,14 @@ import { CropCropUnitComponent } from './pages/workbooks/results/crop-crop-unit/
 import { LaborHoursComponent } from './pages/workbooks/results/labor-hours/labor-hours.component';
 import { VariableCostsComponent } from './pages/workbooks/results/variable-costs/variable-costs.component';
 import { DuplicateComponent } from './pages/workbooks/duplicate/duplicate.component';
+import { PageListComponent } from './pages/page-list/page-list.component';
+import { PageEditComponent } from './pages/page-edit/page-edit.component';
 
 const routes: Routes = [
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "labels-and-definitions", component: FieldDefinitionListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "pages", component: PageListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
+  { path: "pages/:id", component: PageEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "users", component: UserListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "users/:id", component: UserDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "users/:id/edit", component: UserEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },

@@ -14,7 +14,8 @@ namespace OregonTilth.EFModels.Entities
             var pageDto = new PageDto()
             {
                 PageID = page.PageID,
-                CustomRichTextType = page.CustomRichTextType.AsDto(),
+                PageName = page.PageName,
+                PageContent = page.PageContent,
                 SortOrder = page.SortOrder,
                 ParentPageID = page.ParentPageID
             };

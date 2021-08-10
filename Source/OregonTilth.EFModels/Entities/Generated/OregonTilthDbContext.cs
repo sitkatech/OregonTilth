@@ -367,10 +367,9 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<Page>(entity =>
             {
-                entity.HasOne(d => d.CustomRichTextType)
-                    .WithMany(p => p.Pages)
-                    .HasForeignKey(d => d.CustomRichTextTypeID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
+                entity.Property(e => e.PageContent).IsUnicode(false);
+
+                entity.Property(e => e.PageName).IsUnicode(false);
             });
 
             modelBuilder.Entity<Phase>(entity =>
