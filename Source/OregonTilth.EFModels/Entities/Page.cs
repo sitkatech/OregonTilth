@@ -45,28 +45,33 @@ namespace OregonTilth.EFModels.Entities
             //return pages.Select(x => PageExtensionMethods.AsDto(x)).ToList();
         }
 
-        //public static PageDto GetByPageTypeID(OregonTilthDbContext dbContext, int PageTypeID)
-        //{
-        //    var fieldDefinition = dbContext.Pages
-        //        .Include(x => x.PageType)
-        //        .SingleOrDefault(x => x.PageTypeID == PageTypeID);
+        public static PageDto Update(OregonTilthDbContext dbContext, PageUpdateDto pageUpdateDto)
+        {
+            var pageToUpdate = dbContext.Pages.SingleOrDefault(x => x.PageID == pageUpdateDto.PageID);
 
-        //    return fieldDefinition?.AsDto();
-        //}
+            if (pageToUpdate != null)
+            {
+                pageToUpdate.PageName = pageUpdateDto.PageName;
+                pageToUpdate.PageContent = pageUpdateDto.PageContent;
+                pageToUpdate.ParentPageID = pageUpdateDto.ParentPageID;
+            }
 
-        //public static PageDto UpdatePage(OregonTilthDbContext dbContext, int PageTypeID,
-        //    PageDto PageUpdateDto)
-        //{
-        //    var fieldDefinition = dbContext.Pages
-        //        .Include(x => x.PageType)
-        //        .SingleOrDefault(x => x.PageTypeID == PageTypeID);
+            dbContext.SaveChanges();
+            
+            dbContext.Entry(pageToUpdate).Reload();
+            return pageToUpdate.AsDto();
 
-        //    // null check occurs in calling endpoint method.
-        //    fieldDefinition.PageValue = PageUpdateDto.PageValue;
+            
+        }
 
-        //    dbContext.SaveChanges();
+        public static List<ErrorMessage> ValidateUpdate(OregonTilthDbContext dbContext, PageUpdateDto pageUpdateDto)
+        {
+            var result = new List<ErrorMessage>();
 
-        //    return fieldDefinition.AsDto();
-        //}
+            var currentPage = dbContext.Pages.AsNoTracking().SingleOrDefault(x => x.PageID == pageUpdateDto.PageID);
+            
+
+            return result;
+        }
     }
 }

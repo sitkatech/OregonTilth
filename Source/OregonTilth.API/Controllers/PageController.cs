@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -28,6 +29,17 @@ namespace OregonTilth.API.Controllers
 
         }
 
+        [HttpGet("/pages/{pageID}")]
+        public ActionResult<PageTreeDto> GetPage([FromRoute] int pageID)
+        {
+            //var fieldDefinitionDtos = FieldDefinition.List(_dbContext);
+            //return fieldDefinitionDtos;
+
+            var pageDtos = Page.List(_dbContext);
+            return pageDtos.Single(x => x.PageID == pageID);
+
+        }
+
         [HttpPost("/pages")]
         public ActionResult<PageDto> CreatePage([FromBody] PageCreateDto pageCreateDto)
         {
@@ -36,8 +48,24 @@ namespace OregonTilth.API.Controllers
 
             var pageDtos = Page.Create(_dbContext, pageCreateDto);
             return pageDtos;
-
         }
+
+        [HttpPut("/pages/{pageID}")]
+        public ActionResult<PageDto> UpdatePage([FromBody] PageUpdateDto pageUpdateDto)
+        {
+            //var fieldDefinitionDtos = FieldDefinition.List(_dbContext);
+            //return fieldDefinitionDtos;
+            var validationMessages = Page.ValidateUpdate(_dbContext, pageUpdateDto);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var pageDtos = Page.Update(_dbContext, pageUpdateDto);
+            return pageDtos;
+        }
+
 
         //[HttpGet("fieldDefinitions/{fieldDefinitionTypeID}")]
         //public ActionResult<FieldDefinitionDto> GetFieldDefinition([FromRoute] int fieldDefinitionTypeID)
