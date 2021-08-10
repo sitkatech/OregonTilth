@@ -131,19 +131,19 @@ export class WorkbooksComponent implements OnInit {
           sortable: true, filter: 'agDateColumnFilter', width: 145,
           cellClass: 'not-editable'
         },
-        // {
-        //   headerName: 'Delete', field: 'WorkbookID', valueGetter: function (params: any) {
-        //     return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.WorkbookID, ObjectDisplayName: params.data.WorkbookName };
-        //   }, cellRendererFramework: ButtonRendererComponent,
-        //   cellRendererParams: { 
-        //     clicked: function(field: any) {
-        //       if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Workbook?`)) {
-        //         workbookComponentScope.deleteWorkbook(field.PrimaryKey)
-        //       }
-        //     }
-        //    },
-        //   sortable: true, filter: true, width: 100, autoHeight:true
-        // },
+        {
+          headerName: 'Delete', field: 'WorkbookID', valueGetter: function (params: any) {
+            return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.WorkbookID, ObjectDisplayName: params.data.WorkbookName };
+          }, cellRendererFramework: ButtonRendererComponent,
+          cellRendererParams: { 
+            clicked: function(field: any) {
+              if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Workbook?`)) {
+                workbookComponentScope.deleteWorkbook(field.PrimaryKey)
+              }
+            }
+           },
+          sortable: true, filter: true, width: 100, autoHeight:true
+        },
         {
           headerName: 'Edit', field: 'WorkbookID', valueGetter: function (params: any) {
             return { ButtonText: 'Edit', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.WorkbookID, ObjectDisplayName: params.data.WorkbookName };

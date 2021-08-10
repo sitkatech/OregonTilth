@@ -144,8 +144,27 @@ namespace OregonTilth.EFModels.Entities
 
         public static void Delete(OregonTilthDbContext dbContext, int workbookID)
         {
-            var existingWorkbook = dbContext
-                .Workbooks
+            var existingWorkbook = dbContext.Workbooks.AsSplitQuery()
+                .Include(x => x.Crops)
+                .Include(x => x.CropUnits)
+                .Include(x => x.CropSpecificInfos)
+                .Include(x => x.CropYieldInformations)
+                .Include(x => x.FieldInputByCrops)
+                .Include(x => x.FieldInputCosts)
+                .Include(x => x.FieldInputCosts)
+                .Include(x => x.FieldLaborActivities)
+                .Include(x => x.FieldLaborByCrops)
+                .Include(x => x.FieldStandardTimes)
+                .Include(x => x.HarvestPostHarvestStandardTimes)
+                .Include(x => x.Machineries)
+                .Include(x => x.TimeStudies)
+                .Include(x => x.TransplantProductionInformations)
+                .Include(x => x.TransplantProductionInputs)
+                .Include(x => x.TransplantProductionInputCosts)
+                .Include(x => x.TransplantProductionLaborActivities)
+                .Include(x => x.TransplantProductionLaborActivityByCrops)
+                .Include(x => x.TransplantProductionStandardTimes)
+                .Include(x => x.TransplantProductionTrayTypes)
                 .FirstOrDefault(x => x.WorkbookID == workbookID);
 
             if (existingWorkbook != null)
