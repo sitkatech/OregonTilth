@@ -2,12 +2,17 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { UserDetailedDto } from 'src/app/shared/models';
+import { Alert } from 'src/app/shared/models/alert';
+import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { FieldDefinitionDto } from 'src/app/shared/models/generated/field-definition-dto';
 import { PageDto } from 'src/app/shared/models/generated/page-dto';
 import { PageCreateDto } from 'src/app/shared/models/page/page-create-dto';
+import { PageTreeDto } from 'src/app/shared/models/page/page-tree-dto';
+import { AlertService } from 'src/app/shared/services/alert.service';
 import { FieldDefinitionService } from 'src/app/shared/services/field-definition-service';
 import { PageService } from 'src/app/shared/services/page-service';
 
@@ -25,6 +30,7 @@ export class PageListComponent implements OnInit {
   public richTextTypeID : number = CustomRichTextType.LabelsAndDefinitionsList;
 
   public model : PageCreateDto;
+  public rootPages: PageTreeDto[];
 
   public rowData = [];
   public columnDefs: ColDef[];
@@ -32,21 +38,21 @@ export class PageListComponent implements OnInit {
   constructor(
     private pageService: PageService,
     private authenticationService: AuthenticationService,
-    private cdr: ChangeDetectorRef) { }
+    private cdr: ChangeDetectorRef,
+    private alertService: AlertService) { }
 
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-     // this.fieldDefinitionsGrid.api.showLoadingOverlay();
+     
       this.model = new PageCreateDto();
       this.pageService.listAllPages().subscribe(pages => {
-        console.log(pages);
-        // this.fieldDefinitions = fieldDefinitions;
         this.rowData = pages;
-        // this.fieldDefinitionsGrid.api.hideOverlay();
-        // this.cdr.detectChanges();
+        this.rootPages = pages.filter(x => x.ParentPage == null)
       });
 
+      
+      var componentScope = this;
 
       this.columnDefs = [
         {
@@ -80,7 +86,20 @@ export class PageListComponent implements OnInit {
           cellRenderer:function (params: any) { 
             return params.data.ParentPage ? params.data.ParentPage.PageName : ''
           },
-           autoHeight:true, sortable: true, filter: true, width:100, cellStyle: {'white-space': 'normal'}
+           autoHeight:true, sortable: true, filter: true, width:150, cellStyle: {'white-space': 'normal'}
+        },
+        {
+          headerName: 'Delete', field: 'PageID', valueGetter: function (params: any) {
+            return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.PageID, ObjectDisplayName: params.data.PageName };
+          }, cellRendererFramework: ButtonRendererComponent,
+          cellRendererParams: { 
+            clicked: function(field: any) {
+              if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Page?`)) {
+                componentScope.deletePage(field.PrimaryKey)
+              }
+            }
+            },
+          sortable: true, filter: true, width: 100, autoHeight:true
         },
       ];
 
@@ -90,14 +109,26 @@ export class PageListComponent implements OnInit {
     });
   }
 
+  deletePage(pageID: number): void {
+    
+    this.pageService.deletePage(pageID).subscribe(pages => {
+      this.rowData = pages;
+      this.rootPages = pages.filter(x => x.ParentPage == null)
+      this.alertService.pushAlert(new Alert("Successfully deleted Crop", AlertContext.Success));
+      this.cdr.detectChanges();
+    }, error => {
+
+    })
+    
+  }
+
   onSubmit(pageForm: HTMLFormElement): void {
     
     this.pageService.createPage(this.model).subscribe(response => {
-      // this.isLoadingSubmit = false;
-      // var transactionRows = this.gridApi.applyTransaction({add: [response]});
-      // this.gridApi.flashCells({ rowNodes: transactionRows.add });
-      // this.resetForm();
-      // this.cdr.detectChanges();
+      this.rowData = response;
+      this.model = new PageCreateDto();
+      this.rootPages = response.filter(x => x.ParentPage == null)
+      this.cdr.detectChanges();
       
     }, error => { 
       // this.isLoadingSubmit = false;

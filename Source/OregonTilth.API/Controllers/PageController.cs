@@ -40,21 +40,42 @@ namespace OregonTilth.API.Controllers
 
         }
 
-        [HttpPost("/pages")]
-        public ActionResult<PageDto> CreatePage([FromBody] PageCreateDto pageCreateDto)
+        [HttpDelete("/pages/{pageID}")]
+        public ActionResult<List<PageTreeDto>> DeletePage([FromRoute] int pageID)
         {
-            //var fieldDefinitionDtos = FieldDefinition.List(_dbContext);
-            //return fieldDefinitionDtos;
+            
+            var validationMessages = Page.ValidateDelete(_dbContext, pageID);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
 
-            var pageDtos = Page.Create(_dbContext, pageCreateDto);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            Page.Delete(_dbContext, pageID);
+            var pageDtos = Page.List(_dbContext);
+            return pageDtos;
+        }
+
+        [HttpPost("/pages")]
+        public ActionResult<List<PageTreeDto>> CreatePage([FromBody] PageCreateDto pageCreateDto)
+        {
+            var validationMessages = Page.ValidateCreate(_dbContext, pageCreateDto);
+            validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Page.Create(_dbContext, pageCreateDto);
+            var pageDtos = Page.List(_dbContext);
             return pageDtos;
         }
 
         [HttpPut("/pages/{pageID}")]
         public ActionResult<PageDto> UpdatePage([FromBody] PageUpdateDto pageUpdateDto)
         {
-            //var fieldDefinitionDtos = FieldDefinition.List(_dbContext);
-            //return fieldDefinitionDtos;
             var validationMessages = Page.ValidateUpdate(_dbContext, pageUpdateDto);
             validationMessages.ForEach(x => ModelState.AddModelError("Validation", x.Message));
 

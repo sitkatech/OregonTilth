@@ -22,10 +22,13 @@ export class PageService {
     return this.apiService.getFromApi(`/pages/${pageID}`);
   }
 
-  public createPage(pageCreateDto: PageCreateDto): Observable<PageDto> {
+  public createPage(pageCreateDto: PageCreateDto): Observable<Array<PageTreeDto>> {
     return this.apiService.postToApi(`pages`, pageCreateDto);
   }
   public updatePage(pageUpdateDto: PageUpdateDto): Observable<PageDto> {
     return this.apiService.putToApi(`pages/${pageUpdateDto.PageID}`, pageUpdateDto);
+  }
+  public deletePage(pageID: number): Observable<Array<PageTreeDto>> {
+    return this.apiService.deleteToApi(`pages/${pageID}`);
   }
 }
