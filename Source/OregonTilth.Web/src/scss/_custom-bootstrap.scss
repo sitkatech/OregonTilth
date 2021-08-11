@@ -140,3 +140,19 @@ a:hover {
 {
   top:150px;
 }
+
+.side-nav {
+  .card {
+    border:none;
+    padding:0;
+    .card-header {
+      padding:0;
+      button {
+        padding:0;
+      }
+    }
+    .card-body {
+      border:none;
+    }
+  }
+}

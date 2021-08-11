@@ -18,7 +18,9 @@ export class SideNavComponent implements OnInit {
     public navigationOpen: boolean = true;
     private sideNavMinWidth: number = 990;
     private screenWidth: number = null;
-    public pages: PageTreeDto[];
+    public allPages: PageTreeDto[];
+    public rootPages: PageTreeDto[];
+    public activePanelID: any;
 
     @HostListener('window:resize', ['$event.target.innerWidth'])
     onResize(width) {
@@ -44,10 +46,19 @@ export class SideNavComponent implements OnInit {
 
     ngOnInit() {
         this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
+        
+        
         this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
             this.currentUser = currentUser;
             this.pageService.listAllPages().subscribe(pages => {
-              this.pages = pages.filter(x => !x.ParentPage);
+              this.allPages = pages;
+              this.rootPages = pages.filter(x => !x.ParentPage);
+
+              var pageID = parseInt(this.route.snapshot.paramMap.get("pageId"));
+              if(pageID) {
+                var rootPage = this.allPages.find(x => x.PageID == pageID)
+                this.activePanelID = rootPage.ParentPage ? ['page_' + rootPage.ParentPage.PageID] : ['page_' + pageID];
+              }
             })
         });
     }

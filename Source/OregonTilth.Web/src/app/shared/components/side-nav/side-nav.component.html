@@ -1,24 +1,40 @@
 <button class="workbook-nav-toggler btn btn-primary navbar-dark" (click)="toggleWorkbookNavigation()">Workbook Navigation <span class="navbar-toggler-icon"></span></button>
 <nav class="side-nav" [class.open]="navigationOpen" (clickOutside)="onClickedOutside($event)" [exclude]="'.workbook-nav-toggler'">
     
-    <div class="nav-group-container" *ngIf="pages">
+    <div class="nav-group-container" *ngIf="rootPages">
+
+        <ngb-accordion type="light" [closeOthers]="true" activeIds="{{activePanelID}}">
+            <ngb-panel id="page_{{page.PageID}}" *ngFor="let page of rootPages" >
+                <ng-template ngbPanelHeader let-opened="opened">
+                    <button ngbPanelToggle class="btn btn-link">
+                        {{page.PageName}}
+                    </button>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <div class="feedback-container">
+                        <a class="nav-link"
+                            [routerLink]="['/pages', page.PageID ]"
+                            routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: page.PageID }">
+                            About This Module
+                        </a>
+                        <div class="sub-page" *ngFor="let subPage of page.Children">
+                            <a class="nav-link"
+                                [routerLink]="['/pages', subPage.PageID ]"
+                                routerLinkActive="active"
+                                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: subPage.PageID }">
+                                {{subPage.PageName}}
+                            </a>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
 
         <div class="nav-group page-group" *ngFor="let page of pages">
-            <a class="nav-link"
-                [routerLink]="['/pages', page.PageID ]"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: page.PageID }">
-                {{page.PageName}}
-            </a>
             
-            <div class="sub-page" *ngFor="let subPage of page.Children">
-                <a class="nav-link"
-                    [routerLink]="['/pages', subPage.PageID ]"
-                    routerLinkActive="active"
-                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: subPage.PageID }">
-                    {{subPage.PageName}}
-                </a>
-            </div>
+            
+            
         </div>
 
     </div>
