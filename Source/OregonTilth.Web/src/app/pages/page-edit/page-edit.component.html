@@ -19,7 +19,6 @@
         </div>
         <div class="form-group col-md-12">
           <label class="">Parent Page</label>
-          
           <select name="ParentPageID" class="form-control" [(ngModel)]="model.ParentPageID" [disabled]="!model.ParentPageID">
               <option [ngValue]="undefined" [selected]="!model.ParentPageID" *ngIf="!model.ParentPageID">A root page cannot have a parent.</option>
               <option *ngFor="let option of allPages" [value]="option.PageID">
@@ -27,12 +26,21 @@
               </option>
           </select>
         </div>
+        <div class="form-group col-md-12">
+          <div [ngClass]="{'ckEditorDisabled':isUploadingImage()}">
+            <div *ngIf="isUploadingImage()">
+                <em>Please wait while the image is uploaded...</em>
+                <span class="mt-1 fa fa-spinner loading-spinner" style="float:right;"></span>
+            </div>
+            <ckeditor [editor]="Editor" [(ngModel)]="model.PageContent" (ready)="ckEditorReady($event)" [config]="ckConfig" [ngModelOptions]="{standalone: true}"></ckeditor>
+          </div>
+        </div>
         <div class="row">
           <div class="col-sm">
             <i class="fas fa-bolt"></i> Required field
           </div>
           <div class="col-sm text-right">
-            <button type="submit" class="btn btn-fresca" [disabled]="!editPageForm.form.valid || isLoadingSubmit">
+            <button type="submit" class="btn btn-fresca" [disabled]="!editPageForm.form.valid || isLoadingSubmit || isUploadingImage()">
               <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
               Submit
             </button>

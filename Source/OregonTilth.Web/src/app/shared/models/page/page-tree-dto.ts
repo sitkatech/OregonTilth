@@ -5,5 +5,5 @@ export class PageTreeDto {
     Children: PageDto[];
     PageID: number;
     PageName: string;
-    Pagecontent: string;
+    PageContent: string;
 }
