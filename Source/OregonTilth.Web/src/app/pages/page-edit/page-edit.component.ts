@@ -34,7 +34,6 @@ export class PageEditComponent implements OnInit {
   
   public isLoadingSubmit: boolean = false;
   public editor;
-  public editedContent: string;
   public Editor = ClassicEditor;
 
   //For media embed https://ckeditor.com/docs/ckeditor5/latest/api/module_media-embed_mediaembed-MediaEmbedConfig.html

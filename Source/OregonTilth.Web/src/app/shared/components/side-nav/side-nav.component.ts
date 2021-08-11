@@ -2,6 +2,8 @@ import { Component, OnInit, HostListener, ChangeDetectorRef, OnDestroy, Input } 
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserDetailedDto } from '../../models';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PageService } from '../../services/page-service';
+import { PageTreeDto } from '../../models/page/page-tree-dto';
 
 @Component({
     selector: 'side-nav',
@@ -16,6 +18,7 @@ export class SideNavComponent implements OnInit {
     public navigationOpen: boolean = true;
     private sideNavMinWidth: number = 990;
     private screenWidth: number = null;
+    public pages: PageTreeDto[];
 
     @HostListener('window:resize', ['$event.target.innerWidth'])
     onResize(width) {
@@ -33,7 +36,8 @@ export class SideNavComponent implements OnInit {
         private authenticationService: AuthenticationService,
         private route: ActivatedRoute,
         private router: Router,
-        private cdr: ChangeDetectorRef) {
+        private cdr: ChangeDetectorRef,
+        private pageService: PageService) {
             this.navigationOpen = window.innerWidth > this.sideNavMinWidth;
             
     }
@@ -42,6 +46,9 @@ export class SideNavComponent implements OnInit {
         this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
         this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
             this.currentUser = currentUser;
+            this.pageService.listAllPages().subscribe(pages => {
+              this.pages = pages.filter(x => !x.ParentPage);
+            })
         });
     }
 

@@ -85,7 +85,7 @@ namespace OregonTilth.EFModels.Entities
                 .SingleOrDefault(x => x.PageID == pageUpdateDto.PageID).AsTreeDto();
 
 
-            if (currentPage.ParentPageID == null)
+            if (currentPage.ParentPageID == null && pageUpdateDto.ParentPageID != null)
             {
                 result.Add(new ErrorMessage() { Type = "Page", Message = "A root page cannot be assigned a parent page." });
             }

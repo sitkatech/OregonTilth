@@ -59,7 +59,7 @@ export class PageListComponent implements OnInit {
           headerName: 'Page Name', valueGetter: function (params: any) {
             return { LinkValue: params.data.PageID, LinkDisplay: params.data.PageName };
           }, cellRendererFramework: LinkRendererComponent,
-          cellRendererParams: { inRouterLink: "/pages/" },
+          cellRendererParams: { inRouterLink: "/pages/edit" },
           filterValueGetter: function (params: any) {
             return params.data.PageName;
           },

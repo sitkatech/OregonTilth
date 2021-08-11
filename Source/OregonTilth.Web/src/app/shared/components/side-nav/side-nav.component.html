@@ -1,236 +1,260 @@
 <button class="workbook-nav-toggler btn btn-primary navbar-dark" (click)="toggleWorkbookNavigation()">Workbook Navigation <span class="navbar-toggler-icon"></span></button>
 <nav class="side-nav" [class.open]="navigationOpen" (clickOutside)="onClickedOutside($event)" [exclude]="'.workbook-nav-toggler'">
     
-    <div class="nav-group mb-3">
-        <h4>Workbook</h4>
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID ]"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    Workbook Detail
-                </a>
-            </li>
-        </ul>
-    </div>
+    <div class="nav-group-container" *ngIf="pages">
 
-    <div class="nav-group mb-3">
-        <h4>Pre-Season <field-definition [fieldDefinitionType]="'PreSeason'" [labelOverride]="''"></field-definition></h4>
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item" >
-                <a class="nav-link" 
-                [routerLink]="['/workbooks', workbookID, 'forms', 'field-labor-activities']"        
+        <div class="nav-group page-group" *ngFor="let page of pages">
+            <a class="nav-link"
+                [routerLink]="['/pages', page.PageID ]"
                 routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    Field Labor Activities 
-                    <field-definition [fieldDefinitionType]="'FieldLaborActivityForm'" [labelOverride]="''"></field-definition>
+                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: page.PageID }">
+                {{page.PageName}}
             </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'machinery']"        
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                Machinery Costs
-                    <field-definition [fieldDefinitionType]="'MachineryCostForm'" [labelOverride]="''"></field-definition>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'field-input-costs']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    Field Input Costs
-                    <field-definition [fieldDefinitionType]="'FieldInputCostForm'" [labelOverride]="''"></field-definition>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'crops']"        
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                Crops
-                    <field-definition [fieldDefinitionType]="'CropForm'" [labelOverride]="''"></field-definition>
-            </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'crop-units']"        
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                Crop Units
-                    <field-definition [fieldDefinitionType]="'CropUnitForm'" [labelOverride]="''"></field-definition>
-            </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-labor-activities']"        
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    TP Labor Activities
-                    <field-definition [fieldDefinitionType]="'TPLaborActivityForm'" [labelOverride]="''"></field-definition>
-            </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-tray-types']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    TP Tray Types
-                    <field-definition [fieldDefinitionType]="'TPTrayTypeForm'" [labelOverride]="''"></field-definition>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-inputs']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    TP Inputs
-                    <field-definition [fieldDefinitionType]="'TPInputForm'" [labelOverride]="''"></field-definition>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-input-costs']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    TP Input Costs
-                    <field-definition [fieldDefinitionType]="'TPInputCostForm'" [labelOverride]="''"></field-definition>
-                </a>
-            </li>
             
-        </ul>
-    </div>
-    
+            <div class="sub-page" *ngFor="let subPage of page.Children">
+                <a class="nav-link"
+                    [routerLink]="['/pages', subPage.PageID ]"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: subPage.PageID }">
+                    {{subPage.PageName}}
+                </a>
+            </div>
+        </div>
 
-    
+    </div>
 
-    <div class="nav-group mb-3">
-        <h4>Time Studies <field-definition [fieldDefinitionType]="'TimeStudies'" [labelOverride]="''"></field-definition></h4>
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'field-standard-times']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    Field Labor
-                    <field-definition [fieldDefinitionType]="'FieldLaborTimeStudies'" [labelOverride]="''"></field-definition>
+    <div class="nav-group-container" *ngIf="workbookID">   
+        <div class="nav-group mb-3">
+            <h4>Workbook</h4>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID ]"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        Workbook Detail
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nav-group mb-3">
+            <h4>Pre-Season <field-definition [fieldDefinitionType]="'PreSeason'" [labelOverride]="''"></field-definition></h4>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item" >
+                    <a class="nav-link" 
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'field-labor-activities']"        
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        Field Labor Activities 
+                        <field-definition [fieldDefinitionType]="'FieldLaborActivityForm'" [labelOverride]="''"></field-definition>
                 </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'harvest-post-harvest-standard-times']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    Harvest/Post-Harvest
-                    <field-definition [fieldDefinitionType]="'HarvestPostHarvestTimeStudies'" [labelOverride]="''"></field-definition>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'machinery']"        
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                    Machinery Costs
+                        <field-definition [fieldDefinitionType]="'MachineryCostForm'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'field-input-costs']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        Field Input Costs
+                        <field-definition [fieldDefinitionType]="'FieldInputCostForm'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'crops']"        
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                    Crops
+                        <field-definition [fieldDefinitionType]="'CropForm'" [labelOverride]="''"></field-definition>
                 </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-standard-times']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    Transplant Production
-                    <field-definition [fieldDefinitionType]="'TPTimeStudies'" [labelOverride]="''"></field-definition>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'crop-units']"        
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                    Crop Units
+                        <field-definition [fieldDefinitionType]="'CropUnitForm'" [labelOverride]="''"></field-definition>
                 </a>
-            </li>
-        </ul>
-    </div>
-    
-    <div class="nav-group mb-3">
-        <h4>Post-Season <field-definition [fieldDefinitionType]="'PostSeason'" [labelOverride]="''"></field-definition></h4>
-        <!-- all other forms-->
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'field-labor-by-crop']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    Field Labor By Crop
-                    <field-definition [fieldDefinitionType]="'FieldLaborByCropForm'" [labelOverride]="''"></field-definition>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-labor-activities']"        
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        TP Labor Activities
+                        <field-definition [fieldDefinitionType]="'TPLaborActivityForm'" [labelOverride]="''"></field-definition>
                 </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'field-input-by-crop']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    Field Input By Crop
-                    <field-definition [fieldDefinitionType]="'FieldInputByCropForm'" [labelOverride]="''"></field-definition>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-information']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    TP Info
-                    <field-definition [fieldDefinitionType]="'TPInfoForm'" [labelOverride]="''"></field-definition>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-labor-by-crop']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                TP Labor By Crop
-                    <field-definition [fieldDefinitionType]="'TPLaborByCropForm'" [labelOverride]="''"></field-definition>
-                </a>
-             </li>
-             <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'crop-specific-info']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    Crop Specific Info
-                    <field-definition [fieldDefinitionType]="'CropSpecificInfoForm'" [labelOverride]="''"></field-definition>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'forms', 'crop-yield-information']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                Crop Yield Info
-                    <field-definition [fieldDefinitionType]="'CropYieldInfoForm'" [labelOverride]="''"></field-definition>
-                </a>
-            </li>
-            
-        </ul>
-    </div>
-    <div class="nav-group mb-3">
-        <h4>Results <field-definition [fieldDefinitionType]="'Results'" [labelOverride]="''"></field-definition></h4>
-        <!-- dashboards -->
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'results', 'crop-crop-unit']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    Crop/Crop Unit
-                    <field-definition [fieldDefinitionType]="'ResultsCropCropUnit'" [labelOverride]="''"></field-definition>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'results', 'labor-hours']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    Labor Breakdown
-                    <field-definition [fieldDefinitionType]="'ResultsCropCropUnitLaborHours'" [labelOverride]="''"></field-definition>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                [routerLink]="['/workbooks', workbookID, 'results', 'variable-costs']"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
-                    Cost Breakdown
-                    <field-definition [fieldDefinitionType]="'ResultsCropCropUnitCostsPerCostCategory'" [labelOverride]="''"></field-definition>
-                </a>
-            </li>
-        </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-tray-types']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        TP Tray Types
+                        <field-definition [fieldDefinitionType]="'TPTrayTypeForm'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-inputs']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        TP Inputs
+                        <field-definition [fieldDefinitionType]="'TPInputForm'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-input-costs']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        TP Input Costs
+                        <field-definition [fieldDefinitionType]="'TPInputCostForm'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+        
+
+        
+
+        <div class="nav-group mb-3">
+            <h4>Time Studies <field-definition [fieldDefinitionType]="'TimeStudies'" [labelOverride]="''"></field-definition></h4>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'field-standard-times']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        Field Labor
+                        <field-definition [fieldDefinitionType]="'FieldLaborTimeStudies'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'harvest-post-harvest-standard-times']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        Harvest/Post-Harvest
+                        <field-definition [fieldDefinitionType]="'HarvestPostHarvestTimeStudies'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-standard-times']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        Transplant Production
+                        <field-definition [fieldDefinitionType]="'TPTimeStudies'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="nav-group mb-3">
+            <h4>Post-Season <field-definition [fieldDefinitionType]="'PostSeason'" [labelOverride]="''"></field-definition></h4>
+            <!-- all other forms-->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'field-labor-by-crop']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        Field Labor By Crop
+                        <field-definition [fieldDefinitionType]="'FieldLaborByCropForm'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'field-input-by-crop']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        Field Input By Crop
+                        <field-definition [fieldDefinitionType]="'FieldInputByCropForm'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-information']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        TP Info
+                        <field-definition [fieldDefinitionType]="'TPInfoForm'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'transplant-production-labor-by-crop']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                    TP Labor By Crop
+                        <field-definition [fieldDefinitionType]="'TPLaborByCropForm'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'crop-specific-info']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        Crop Specific Info
+                        <field-definition [fieldDefinitionType]="'CropSpecificInfoForm'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'forms', 'crop-yield-information']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                    Crop Yield Info
+                        <field-definition [fieldDefinitionType]="'CropYieldInfoForm'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+        <div class="nav-group mb-3">
+            <h4>Results <field-definition [fieldDefinitionType]="'Results'" [labelOverride]="''"></field-definition></h4>
+            <!-- dashboards -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'results', 'crop-crop-unit']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        Crop/Crop Unit
+                        <field-definition [fieldDefinitionType]="'ResultsCropCropUnit'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'results', 'labor-hours']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        Labor Breakdown
+                        <field-definition [fieldDefinitionType]="'ResultsCropCropUnitLaborHours'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                    [routerLink]="['/workbooks', workbookID, 'results', 'variable-costs']"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbookID }">
+                        Cost Breakdown
+                        <field-definition [fieldDefinitionType]="'ResultsCropCropUnitCostsPerCostCategory'" [labelOverride]="''"></field-definition>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
