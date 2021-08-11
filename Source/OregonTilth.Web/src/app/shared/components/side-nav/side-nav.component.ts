@@ -20,7 +20,7 @@ export class SideNavComponent implements OnInit {
     private screenWidth: number = null;
     public allPages: PageTreeDto[];
     public rootPages: PageTreeDto[];
-    public activePanelID: any;
+    public activePanelID: any = 'workbook';
 
     @HostListener('window:resize', ['$event.target.innerWidth'])
     onResize(width) {
