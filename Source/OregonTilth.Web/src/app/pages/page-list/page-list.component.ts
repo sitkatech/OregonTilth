@@ -114,7 +114,7 @@ export class PageListComponent implements OnInit {
     this.pageService.deletePage(pageID).subscribe(pages => {
       this.rowData = pages;
       this.rootPages = pages.filter(x => x.ParentPage == null)
-      this.alertService.pushAlert(new Alert("Successfully deleted Crop", AlertContext.Success));
+      this.alertService.pushAlert(new Alert("Successfully deleted Page", AlertContext.Success));
       this.cdr.detectChanges();
     }, error => {
 

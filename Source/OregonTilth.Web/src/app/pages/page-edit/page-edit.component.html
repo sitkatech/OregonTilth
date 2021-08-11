@@ -18,12 +18,14 @@
             <input class="form-control" type="text" name="PageName" [(ngModel)]="model.PageName">
         </div>
         <div class="form-group col-md-12">
-            <select name="ParentPageID" class="form-control" [(ngModel)]="model.ParentPageID" >
-                <option value="" (selected)="model.ParentPageID == null">-None-</option>
-                <option *ngFor="let option of allPages" [value]="option.PageID">
-                    {{option.PageName}}
-                </option>
-            </select>
+          <label class="">Parent Page</label>
+          
+          <select name="ParentPageID" class="form-control" [(ngModel)]="model.ParentPageID" [disabled]="!model.ParentPageID">
+              <option [ngValue]="undefined" [selected]="!model.ParentPageID" *ngIf="!model.ParentPageID">A root page cannot have a parent.</option>
+              <option *ngFor="let option of allPages" [value]="option.PageID">
+                  {{option.PageName}}
+              </option>
+          </select>
         </div>
         <div class="row">
           <div class="col-sm">

@@ -32,6 +32,7 @@
                 <input class="form-control" type="text" name="PageName" [(ngModel)]="model.PageName">
               </div>
               <div class="form-group col-md-12">
+                <label class="">Parent Page</label>
                 <select name="ParentPageID" class="form-control" [(ngModel)]="model.ParentPageID" >
                     <option [ngValue]="undefined" [selected]="!model.ParentPageID">-None-</option>
                     <option *ngFor="let option of rootPages" [value]="option.PageID">
