@@ -3,14 +3,6 @@
         <div class="col-sm homepageJumbotronImage" id="homepageJumbotronImage1"></div>
     </div>
 </div>
-
-<div class="container mt-4">
-
-    
-
-    
-
-</div>
 <div class="container-fluid">
     <div class="row mb-2 min-vh-100">
         <side-nav class="col-lg-2"></side-nav>
@@ -29,8 +21,6 @@
                 </span>
             </ngb-alert>
 
-
-
             <custom-rich-text *ngIf="!currentUser" [customRichTextTypeID]="notLoggedInRichTextID"></custom-rich-text>
             <custom-rich-text *ngIf="userRoleIsEnabled()" [customRichTextTypeID]="loggedInRichTextID"></custom-rich-text>
             
@@ -39,9 +29,7 @@
                 <div [class.hidden]="!displayNotLoggedInRichTextForAdmin" >
                     <custom-rich-text [customRichTextTypeID]="notLoggedInRichTextID"></custom-rich-text>
                 </div>
-                
             </div>
-
         </div>
     </div>
 </div>
