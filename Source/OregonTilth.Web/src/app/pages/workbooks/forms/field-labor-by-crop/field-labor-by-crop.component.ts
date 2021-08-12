@@ -128,6 +128,8 @@ export class FieldLaborByCropComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true,
+        
       },
       {
         headerName: 'Field Labor Activity', 
@@ -135,6 +137,7 @@ export class FieldLaborByCropComponent implements OnInit {
         editable: false,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Labor Type', 
@@ -142,6 +145,7 @@ export class FieldLaborByCropComponent implements OnInit {
         editable: false,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Notes', 
@@ -152,7 +156,7 @@ export class FieldLaborByCropComponent implements OnInit {
         resizable: true,
         cellEditorParams: {
           maxLength: 2000,
-        }
+        },
       },
       {
         headerName: 'Occurrences', 
@@ -167,7 +171,8 @@ export class FieldLaborByCropComponent implements OnInit {
               return { backgroundColor: '#ccf5cc'};
           } 
           return {backgroundColor: '#ffdfd6'};
-        }
+        },
+        resizable: true
       },
       {
         headerName: 'Delete', valueGetter: function (params: any) {
@@ -180,7 +185,7 @@ export class FieldLaborByCropComponent implements OnInit {
             }
           }
           },
-        sortable: true, filter: true, width: 100, autoHeight:true
+        sortable: true, filter: true, width: 100, autoHeight:true, resizable: true
       },
     ]
   }

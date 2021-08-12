@@ -147,6 +147,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Phase', 
@@ -168,6 +169,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'TP Tray Type', 
@@ -189,6 +191,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Seeds/Seedlings Per Tray', 
@@ -204,6 +207,7 @@ export class TransplantProductionInformationComponent implements OnInit {
           return {backgroundColor: '#ffdfd6'};
         },
         cellRendererFramework: EditableRendererComponent,
+        resizable: true
       },
       {
         headerName: 'Percentage Plantable', 
@@ -216,6 +220,7 @@ export class TransplantProductionInformationComponent implements OnInit {
           return params.value + '%';
         },
         cellRendererFramework: EditableRendererComponent,
+        resizable: true
       },
       {
         headerName: 'Cost Per Seed', 
@@ -246,6 +251,7 @@ export class TransplantProductionInformationComponent implements OnInit {
           return {backgroundColor: '#ccf5cc'};
         },
         cellRendererFramework: EditableRendererComponent,
+        resizable: true
       },
       {
         headerName: 'Crop Specific Input Costs per Tray', 
@@ -255,10 +261,11 @@ export class TransplantProductionInformationComponent implements OnInit {
         sortable: true, 
         filter: true,
         valueFormatter: params => {
-          return params.value ? '$' + params.value : '';
+          return params.value ? '$' + params.value : '$0';
         },
         cellRendererFramework: EditableRendererComponent,
-        width:250
+        width:250,
+        resizable: true
       },
       {
         headerName: 'Delete', field: 'TransplantProductionInformationID', valueGetter: function (params: any) {
@@ -271,7 +278,7 @@ export class TransplantProductionInformationComponent implements OnInit {
             }
           }
           },
-        sortable: true, filter: true, width: 100, autoHeight:true
+        sortable: true, filter: true, width: 100, autoHeight:true, resizable: true
       },
     ];
     this.gridApi.sizeColumnsToFit();

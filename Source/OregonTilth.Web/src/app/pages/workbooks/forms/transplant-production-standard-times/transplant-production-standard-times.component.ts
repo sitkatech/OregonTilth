@@ -215,7 +215,7 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
             });
             var sumOfAvgs = avgArray.map(element => element.x).reduce((a, b) => a + b, 0)
             var avgOfAvgs = sumOfAvgs / avgArray.length;
-            return avgOfAvgs;
+            return avgOfAvgs.toFixed(4);
           }
           return 'N/A';
         },

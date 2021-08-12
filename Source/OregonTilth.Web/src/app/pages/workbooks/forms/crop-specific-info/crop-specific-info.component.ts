@@ -192,7 +192,8 @@ export class CropSpecificInfoComponent implements OnInit {
         sortable: true, 
         filter: true,
         pinned: 'left',
-        width: 100
+        width: 100,
+        resizable: true
       },
       {
         headerName: 'TP or DS Type', 
@@ -268,7 +269,7 @@ export class CropSpecificInfoComponent implements OnInit {
         editable: params => {
           return params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.DirectSeeded;
         },
-        cellEditorFramework: IntegerEditor,
+        cellEditorFramework: DecimalEditor,
         valueFormatter: this.gridService.currencyFormatter,
         sortable: true, 
         filter: true,
@@ -358,7 +359,7 @@ export class CropSpecificInfoComponent implements OnInit {
             }
           }
           },
-        sortable: true, filter: true, width: 100, autoHeight:true
+        sortable: true, filter: true, width: 100, autoHeight:true, resizable: true
       },
     ]
   }
