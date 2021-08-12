@@ -45,9 +45,14 @@ export class PageListComponent implements OnInit {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
      
-      this.model = new PageCreateDto();
+      
       this.pageService.listAllPages().subscribe(pages => {
+        this.model = new PageCreateDto();
+
+        this.model.SortOrder = pages.length > 0 ? Math.max(...pages.map(x => x.SortOrder)) + 10 : 10;
+
         this.rowData = pages;
+        
         this.rootPages = pages.filter(x => x.ParentPage == null)
       });
 
@@ -76,12 +81,15 @@ export class PageListComponent implements OnInit {
           },
           sortable: true, filter: true, width: 170
         },
-        // { headerName: 'Page Name', field: 'PageName',  
-        //   cellRenderer:function (params: any) { 
-        //     return params.data.PageName ? params.data.PageName : ''
-        //   },
-        //    autoHeight:true, sortable: true, filter: true, width:100, cellStyle: {'white-space': 'normal'}
-        // },
+        { 
+          headerName: 'Sort Order', 
+          field: 'SortOrder',
+          autoHeight:true, 
+          sortable: true, 
+          filter: true, 
+          width:100, 
+          cellStyle: {'white-space': 'normal'}
+        },
         { headerName: 'Parent Page', field: 'ParentPage.PageName',  
           cellRenderer:function (params: any) { 
             return params.data.ParentPage ? params.data.ParentPage.PageName : ''
@@ -127,6 +135,7 @@ export class PageListComponent implements OnInit {
     this.pageService.createPage(this.model).subscribe(response => {
       this.rowData = response;
       this.model = new PageCreateDto();
+      this.model.SortOrder = response.length > 0 ? Math.max(...response.map(x => x.SortOrder)) + 10 : 10;
       this.rootPages = response.filter(x => x.ParentPage == null)
       this.cdr.detectChanges();
       

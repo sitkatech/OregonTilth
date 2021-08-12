@@ -5,6 +5,7 @@ export class PageUpdateDto {
     PageName: string;
     ParentPageID: number;
     PageContent: string;
+    SortOrder: number;
 
     constructor(obj?: any) {
         Object.assign(this, obj);

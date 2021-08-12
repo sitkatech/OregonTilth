@@ -27,11 +27,11 @@
           <form *ngIf=(model) (ngSubmit)="onSubmit(pageForm)" #pageForm="ngForm">
             <div class="row">
               
-              <div class="form-group col-md-12">
+              <div class="form-group col-md-4">
                 <label class="required">Page Name</label>
                 <input class="form-control" type="text" name="PageName" [(ngModel)]="model.PageName">
               </div>
-              <div class="form-group col-md-12">
+              <div class="form-group col-md-4">
                 <label class="">Parent Page</label>
                 <select name="ParentPageID" class="form-control" [(ngModel)]="model.ParentPageID" >
                     <option [ngValue]="undefined" [selected]="!model.ParentPageID">-None-</option>
@@ -39,7 +39,11 @@
                         {{option.PageName}}
                     </option>
                 </select>
-            </div>
+              </div>
+              <div class="form-group col-md-4">
+                <label class="required">Sort Order</label>
+                <input class="form-control" type="number" name="SortOrder" [(ngModel)]="model.SortOrder">
+              </div>
             </div>
             
             <div class="row">

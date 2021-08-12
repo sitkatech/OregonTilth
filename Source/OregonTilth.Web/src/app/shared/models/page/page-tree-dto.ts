@@ -6,4 +6,5 @@ export class PageTreeDto {
     PageID: number;
     PageName: string;
     PageContent: string;
+    SortOrder: number;
 }

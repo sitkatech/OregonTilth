@@ -9,5 +9,6 @@ namespace OregonTilth.Models.DataTransferObjects.Page
     {
         public string PageName { get; set; }
         public int? ParentPageID { get; set; }
+        public int SortOrder { get; set; }
     }
 }

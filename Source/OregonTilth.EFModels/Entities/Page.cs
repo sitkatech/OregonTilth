@@ -20,7 +20,7 @@ namespace OregonTilth.EFModels.Entities
             var pages = dbContext.Pages
                 .Include(x => x.ParentPage)
                 .Include(x => x.InverseParentPage)
-                .AsNoTracking().ToList();
+                .AsNoTracking().OrderBy(x=> x.SortOrder).ToList();
 
             return pages.Select(x => PageExtensionMethods.AsTreeDto(x)).ToList();
         }
@@ -30,7 +30,7 @@ namespace OregonTilth.EFModels.Entities
             var page = new Page()
             {
                 PageName = pageCreateDto.PageName,
-                SortOrder = 10,
+                SortOrder = pageCreateDto.SortOrder,
                 ParentPageID = pageCreateDto.ParentPageID
             };
             dbContext.Pages.Add(page);
@@ -49,6 +49,7 @@ namespace OregonTilth.EFModels.Entities
                 pageToUpdate.PageName = pageUpdateDto.PageName;
                 pageToUpdate.PageContent = pageUpdateDto.PageContent;
                 pageToUpdate.ParentPageID = pageUpdateDto.ParentPageID;
+                pageToUpdate.SortOrder = pageUpdateDto.SortOrder;
             }
 
             dbContext.SaveChanges();

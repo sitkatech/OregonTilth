@@ -12,12 +12,12 @@
       <h2 class="d-inline-block">{{user?.FullName ||  ((user?.FirstName || user?.LastName) ? (user?.FirstName + ' ' + user?.LastName) : null)}}</h2>
       <app-alert-display></app-alert-display>
     <div class="col-sm-12">
-      <form (ngSubmit)="onSubmit(editPageForm)" #editPageForm="ngForm">
-        <div class="form-group col-md-12">
+      <form (ngSubmit)="onSubmit(editPageForm)" #editPageForm="ngForm" class="row">
+        <div class="form-group col-md-4">
             <label class="required">Page Name</label>
             <input class="form-control" type="text" name="PageName" [(ngModel)]="model.PageName">
         </div>
-        <div class="form-group col-md-12">
+        <div class="form-group col-md-4">
           <label class="">Parent Page</label>
           <select name="ParentPageID" class="form-control" [(ngModel)]="model.ParentPageID" [disabled]="!model.ParentPageID">
               <option [ngValue]="undefined" [selected]="!model.ParentPageID" *ngIf="!model.ParentPageID">A root page cannot have a parent.</option>
@@ -26,7 +26,12 @@
               </option>
           </select>
         </div>
+        <div class="form-group col-md-4">
+          <label class="required">Sort Order</label>
+          <input class="form-control" type="number" name="SortOrder" [(ngModel)]="model.SortOrder">
+        </div>
         <div class="form-group col-md-12">
+          <label class="">Page Content</label>
           <div [ngClass]="{'ckEditorDisabled':isUploadingImage()}">
             <div *ngIf="isUploadingImage()">
                 <em>Please wait while the image is uploaded...</em>
@@ -35,18 +40,21 @@
             <ckeditor [editor]="Editor" [(ngModel)]="model.PageContent" (ready)="ckEditorReady($event)" [config]="ckConfig" [ngModelOptions]="{standalone: true}"></ckeditor>
           </div>
         </div>
-        <div class="row">
-          <div class="col-sm">
-            <i class="fas fa-bolt"></i> Required field
-          </div>
-          <div class="col-sm text-right">
-            <button type="submit" class="btn btn-fresca" [disabled]="!editPageForm.form.valid || isLoadingSubmit || isUploadingImage()">
-              <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
-              Submit
-            </button>
-            <a class="btn btn-secondary ml-1" routerLink="/pages">Cancel</a>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-sm">
+              <i class="fas fa-bolt"></i> Required field
+            </div>
+            <div class="col-sm text-right">
+              <button type="submit" class="btn btn-fresca" [disabled]="!editPageForm.form.valid || isLoadingSubmit || isUploadingImage()">
+                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                Submit
+              </button>
+              <a class="btn btn-secondary ml-1" routerLink="/pages">Cancel</a>
+            </div>
           </div>
         </div>
+        
       </form>
     </div>
   </div>

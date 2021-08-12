@@ -13,15 +13,11 @@ namespace OregonTilth.EFModels.Entities
                 PageID = page.PageID,
                 ParentPage = page.ParentPage?.AsDto(),
                 ParentPageID = page.ParentPageID,
-                Children = page.InverseParentPage?.Select(x => x.AsDto()).ToList(),
+                Children = page.InverseParentPage?.Select(x => x.AsDto()).OrderBy(x => x.SortOrder).ToList(),
                 PageName = page.PageName,
-                PageContent = page.PageContent
+                PageContent = page.PageContent,
+                SortOrder = page.SortOrder,
             };
         }
-
-
-
-
-
     }
 }

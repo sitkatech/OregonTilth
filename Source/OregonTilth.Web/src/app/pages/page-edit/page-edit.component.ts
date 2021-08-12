@@ -79,6 +79,7 @@ export class PageEditComponent implements OnInit {
         this.model.PageContent = this.page.PageContent ? this.page.PageContent : '';
         this.model.PageName = page.PageName;
         this.model.ParentPageID = page.ParentPage?.PageID;
+        this.model.SortOrder = page.SortOrder;
         this.cdr.detectChanges();
 
       });
