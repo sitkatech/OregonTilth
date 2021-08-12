@@ -31,5 +31,6 @@ export enum CustomRichTextType{
     ResultsCropCropUnit = 30, 
     ResultsCropCropUnitLaborHours = 31,
     ResultsCropCropUnitCostsPerCostCategory = 32,
-    WorkbookAddEdit = 33
+    WorkbookAddEdit = 33,
+    HomePageLoggedIn = 34
 }

@@ -32,7 +32,8 @@ USING (VALUES
 (30, 'ResultsCropCropUnit', 'Crop/Crop Unit'),
 (31, 'ResultsCropCropUnitLaborHours', 'Crop/Crop Unit Labor Hours per Labor Activity Category'),
 (32, 'ResultsCropCropUnitCostsPerCostCategory', 'Crop/Crop Unit Costs per Cost Category'),
-(33, 'WorkbookAddEdit', 'Workbook Add/Edit')
+(33, 'WorkbookAddEdit', 'Workbook Add/Edit'),
+(34, 'HomePageLoggedIn', 'Homepage User Logged In')
 )
 AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID
