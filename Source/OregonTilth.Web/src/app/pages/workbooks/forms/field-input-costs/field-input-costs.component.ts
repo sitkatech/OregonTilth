@@ -101,6 +101,7 @@ export class FieldInputCostsComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Field Unit', 
@@ -122,6 +123,7 @@ export class FieldInputCostsComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Cost Per Field Unit', 
@@ -129,7 +131,8 @@ export class FieldInputCostsComponent implements OnInit {
         editable: true,
         cellEditorFramework: DecimalEditor,
         cellRendererFramework: EditableRendererComponent,
-        valueFormatter: this.gridService.currencyFormatter
+        valueFormatter: this.gridService.currencyFormatter,
+        resizable: true
       },
       {
         headerName: 'Notes', 
@@ -138,6 +141,7 @@ export class FieldInputCostsComponent implements OnInit {
         cellEditor: 'agTextCellEditor',
         cellRendererFramework: EditableRendererComponent,
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Delete', field: 'FieldInputCostID', valueGetter: function (params: any) {
@@ -150,7 +154,7 @@ export class FieldInputCostsComponent implements OnInit {
             }
           }
           },
-        sortable: true, filter: true, width: 100, autoHeight:true
+        sortable: true, filter: true, width: 100, autoHeight:true, resizable: true
       },
     ]
   }

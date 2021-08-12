@@ -255,7 +255,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         sortable: true, 
         filter: true,
         valueFormatter: params => {
-          return params.value ? '$' + params.value : '';
+          return params.value ? '$' + params.value : '$0';
         },
         cellRendererFramework: EditableRendererComponent,
         width:250
