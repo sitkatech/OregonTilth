@@ -123,6 +123,7 @@ export class FieldInputByCropComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Field Input', 
@@ -144,6 +145,7 @@ export class FieldInputByCropComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Notes', 
@@ -154,7 +156,7 @@ export class FieldInputByCropComponent implements OnInit {
         resizable: true,
         cellEditorParams: {
           maxLength: 2000,
-        }
+        },
       },
       {
         headerName: 'Occurrences', 
@@ -170,6 +172,7 @@ export class FieldInputByCropComponent implements OnInit {
           return {backgroundColor: '#ffdfd6'};
         },
         cellRendererFramework: EditableRendererComponent,
+        resizable: true
       },
       {
         headerName: 'Delete', valueGetter: function (params: any) {
@@ -182,7 +185,7 @@ export class FieldInputByCropComponent implements OnInit {
             }
           }
           },
-        sortable: true, filter: true, width: 100, autoHeight:true
+        sortable: true, filter: true, width: 100, autoHeight:true, resizable: true
       },
     ]
   }

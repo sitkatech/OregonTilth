@@ -87,6 +87,7 @@ export class TransplantProductionTrayTypesComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Delete', field: 'TransplantProductionTrayTypeID', valueGetter: function (params: any) {
@@ -99,7 +100,7 @@ export class TransplantProductionTrayTypesComponent implements OnInit {
             }
           }
           },
-        sortable: true, filter: true, width: 100, autoHeight:true
+        sortable: true, filter: true, width: 100, autoHeight:true, resizable: true
       },
     ]
   }

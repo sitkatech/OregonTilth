@@ -120,6 +120,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'TP Tray Type', 
@@ -141,6 +142,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Cost Per Tray', 
@@ -158,6 +160,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Notes', 
@@ -167,6 +170,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         filter: true,
         sortable: true, 
+        resizable: true
       },
       {
         headerName: 'Delete', field: 'TransplantProductionInputCostID', valueGetter: function (params: any) {
@@ -179,7 +183,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
             }
           }
           },
-        sortable: true, filter: true, width: 100, autoHeight:true
+        sortable: true, filter: true, width: 100, autoHeight:true, resizable: true
       },
     ]
   }

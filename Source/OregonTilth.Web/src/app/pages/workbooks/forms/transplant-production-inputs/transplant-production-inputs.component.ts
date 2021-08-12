@@ -85,6 +85,7 @@ export class TransplantProductionInputsComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
+        resizable: true
       },
       {
         headerName: 'Delete', field: 'TransplantProductionInputID', valueGetter: function (params: any) {
@@ -97,7 +98,7 @@ export class TransplantProductionInputsComponent implements OnInit {
             }
           }
           },
-        sortable: true, filter: true, width: 100, autoHeight:true
+        sortable: true, filter: true, width: 100, autoHeight:true, resizable: true
       },
     ]
   }
