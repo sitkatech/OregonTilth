@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditWorkbookComponent } from './edit-workbook.component';
+import { PageDetailComponent } from './page-detail.component';
 
-describe('EditWorkbookComponent', () => {
-  let component: EditWorkbookComponent;
-  let fixture: ComponentFixture<EditWorkbookComponent>;
+describe('PageDetailComponent', () => {
+  let component: PageDetailComponent;
+  let fixture: ComponentFixture<PageDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditWorkbookComponent ]
+      declarations: [ PageDetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditWorkbookComponent);
+    fixture = TestBed.createComponent(PageDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

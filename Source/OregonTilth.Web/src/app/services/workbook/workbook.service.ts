@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { ApiService } from 'src/app/shared/services';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { WorkbookDto } from 'src/app/shared/models/generated/workbook-dto';
 import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-labor-activity-dto';
 import { FieldLaborActivityCreateDto } from 'src/app/shared/models/forms/field-labor-activities/field-labor-activity-create-dto';
@@ -48,6 +48,9 @@ import { CropSpecificInfoSummaryDto } from 'src/app/shared/models/forms/crop-spe
     providedIn: 'root'
 })
 export class WorkbookService {
+
+    public workbookSubject: BehaviorSubject<WorkbookDto> = new BehaviorSubject(null);
+
     constructor(private apiService: ApiService) { }
 
     getWorkbooks(currentUser: UserDetailedDto): Observable<WorkbookDto[]> {
@@ -75,7 +78,7 @@ export class WorkbookService {
         return this.apiService.deleteToApi(route);
     }
 
-    duplicateWorkbook(workbookID: number, workbookCopyName: string): Observable<any> {
+    duplicateWorkbook(workbookID: number, workbookCopyName: string): Observable<WorkbookDto> {
         let route = `/workbooks/${workbookID}/duplicate`;
         return this.apiService.postToApi(route, {WorkbookCopyName: workbookCopyName});
     }

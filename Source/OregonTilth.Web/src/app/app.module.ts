@@ -33,7 +33,6 @@ import { CreateUserCallbackComponent } from './pages/create-user-callback/create
 import { AboutComponent } from './pages/about/about.component';
 import { WorkbooksComponent } from './pages/workbooks/workbooks.component';
 import { NewWorkbookComponent } from './pages/workbooks/new-workbook/new-workbook.component';
-import { EditWorkbookComponent } from './pages/workbooks/edit-workbook/edit-workbook.component';
 import { WorkbookDetailComponent } from './pages/workbooks/workbook-detail/workbook-detail.component';
 import { FieldLaborActivitiesComponent } from './pages/workbooks/forms/field-labor-activities/field-labor-activities.component';
 import { TransplantProductionLaborActivitiesComponent } from './pages/workbooks/forms/transplant-production-labor-activities/transplant-production-labor-activities.component';
@@ -74,6 +73,9 @@ import { EditableRendererComponent } from './shared/components/ag-grid/editable-
 import { VariableCostsComponent } from './pages/workbooks/results/variable-costs/variable-costs.component';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { DuplicateComponent } from './pages/workbooks/duplicate/duplicate.component';
+import { PageListComponent } from './pages/page-list/page-list.component';
+import { PageEditComponent } from './pages/page-edit/page-edit.component';
+import { PageDetailComponent } from './pages/page-detail/page-detail.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -117,7 +119,6 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     CropUnitsComponent,
     CropCropUnitComponent,
     LaborHoursComponent,
-    EditWorkbookComponent,
     DisclaimerComponent,
     FieldDefinitionListComponent,
     FieldDefinitionEditComponent,
@@ -129,7 +130,10 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     TimeStudyModal,
     CropSpecificInfoComponent,
     VariableCostsComponent,
-    DuplicateComponent
+    DuplicateComponent,
+    PageListComponent,
+    PageEditComponent,
+    PageDetailComponent
   ],
   imports: [
     AppRoutingModule,

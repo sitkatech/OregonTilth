@@ -19,7 +19,6 @@ import { FieldDefinitionEditComponent } from './pages/field-definition-edit/fiel
 import { TrainingComponent } from './pages/training/training.component';
 import { WorkbooksComponent } from './pages/workbooks/workbooks.component';
 import { NewWorkbookComponent } from './pages/workbooks/new-workbook/new-workbook.component';
-import { EditWorkbookComponent } from './pages/workbooks/edit-workbook/edit-workbook.component';
 import { WorkbookDetailComponent } from './pages/workbooks/workbook-detail/workbook-detail.component';
 import { FieldLaborActivitiesComponent } from './pages/workbooks/forms/field-labor-activities/field-labor-activities.component';
 import { MachineryComponent } from './pages/workbooks/forms/machinery/machinery.component';
@@ -43,10 +42,16 @@ import { CropCropUnitComponent } from './pages/workbooks/results/crop-crop-unit/
 import { LaborHoursComponent } from './pages/workbooks/results/labor-hours/labor-hours.component';
 import { VariableCostsComponent } from './pages/workbooks/results/variable-costs/variable-costs.component';
 import { DuplicateComponent } from './pages/workbooks/duplicate/duplicate.component';
+import { PageListComponent } from './pages/page-list/page-list.component';
+import { PageEditComponent } from './pages/page-edit/page-edit.component';
+import { PageDetailComponent } from './pages/page-detail/page-detail.component';
 
 const routes: Routes = [
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "labels-and-definitions", component: FieldDefinitionListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "pages", component: PageListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
+  { path: "pages/edit/:id", component: PageEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
+  { path: "pages/:pageId", component: PageDetailComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "users", component: UserListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "users/:id", component: UserDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "users/:id/edit", component: UserEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -58,7 +63,6 @@ const routes: Routes = [
   { path: "about", component: AboutComponent},
   { path: "workbooks", component: WorkbooksComponent},
   { path: "workbooks/new", component: NewWorkbookComponent},
-  { path: "workbooks/:id/edit", component: EditWorkbookComponent},
   { path: "workbooks/:id/forms/field-labor-activities", component: FieldLaborActivitiesComponent},
   { path: "workbooks/:id/forms/transplant-production-labor-activities", component: TransplantProductionLaborActivitiesComponent},
   { path: "workbooks/:id/forms/transplant-production-inputs", component: TransplantProductionInputsComponent},

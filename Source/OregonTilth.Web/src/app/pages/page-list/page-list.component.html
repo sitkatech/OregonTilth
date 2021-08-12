@@ -1,0 +1,69 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Pages</li>
+    </ol>
+</nav>
+<div class="container">
+    <app-alert-display></app-alert-display>
+
+    <div class="row">
+        <div class="col">
+            <h2 class="d-inline-block">Pages</h2>
+        </div>
+    </div>
+    <div class="row mt-1 mb-2">
+        <div class="col">
+            <!-- <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text> -->
+        </div>
+    </div>
+    
+</div>
+<div class="container">
+    <div class="card mt-4">
+        <div class="card-header">
+          Add new Page
+        </div>
+        <div class="card-body">
+          <form *ngIf=(model) (ngSubmit)="onSubmit(pageForm)" #pageForm="ngForm">
+            <div class="row">
+              
+              <div class="form-group col-md-4">
+                <label class="required">Page Name</label>
+                <input class="form-control" type="text" name="PageName" [(ngModel)]="model.PageName">
+              </div>
+              <div class="form-group col-md-4">
+                <label class="">Parent Page</label>
+                <select name="ParentPageID" class="form-control" [(ngModel)]="model.ParentPageID" >
+                    <option [ngValue]="undefined" [selected]="!model.ParentPageID">-None-</option>
+                    <option *ngFor="let option of rootPages" [value]="option.PageID">
+                        {{option.PageName}}
+                    </option>
+                </select>
+              </div>
+              <div class="form-group col-md-4">
+                <label class="required">Sort Order</label>
+                <input class="form-control" type="number" name="SortOrder" [(ngModel)]="model.SortOrder">
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-sm">
+                <i class="fas fa-bolt"></i> Required field
+              </div>
+              <div class="col-sm text-right">
+                <button type="submit" class="btn btn-fresca" [disabled]="!pageForm.form.valid || isLoadingSubmit">
+                  <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                  Submit
+                </button>
+                
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    <div class="table-responsive mt-4">
+        <ag-grid-angular #fieldDefinitionsGrid style="width: 100%; height: 800px;" class="ag-theme-balham" [rowData]="rowData"
+            [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" [suppressDragLeaveHidesColumns]="true">
+        </ag-grid-angular>
+    </div>
+</div>

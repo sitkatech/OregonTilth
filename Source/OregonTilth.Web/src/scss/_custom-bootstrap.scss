@@ -140,3 +140,41 @@ a:hover {
 {
   top:150px;
 }
+
+.side-nav {
+  .card {
+    border:none;
+    padding:0;
+    background:#fff;
+    .card-header {
+      padding:0px;
+      background:none;
+      &:hover {
+        background:#e8e8e8;
+      }
+      button {
+        padding:5px;
+        font-size:22px;
+        color:$primary;
+        width:100%;
+        text-align:left;
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        &:hover, &:active, &:focus {
+          text-decoration: none;
+        }
+        i {
+          font-size:14px;
+        }
+      }
+    }
+    .card-body {
+      border:none;
+      border-top:1px solid #e1e1e1;
+      
+      background:#fff;
+      padding:5px;
+    }
+  }
+}
