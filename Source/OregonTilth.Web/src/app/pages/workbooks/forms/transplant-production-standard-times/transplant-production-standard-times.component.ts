@@ -156,7 +156,7 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
         headerName: 'TP Labor Activity', 
         field: 'TransplantProductionLaborActivity',
         valueFormatter: function (params) {
-          return params.value ? params.value.TransplantProductionLaborActivityName : '';
+          return params.value ? params.value : '';
         },
         valueSetter: params => {
           params.data.TransplantProductionLaborActivity = this.transplantProductionLaborActivities.find(element => {
@@ -182,7 +182,7 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
         headerName: 'Tray Type', 
         field: 'TrayType',
         valueFormatter: function (params) {
-          return params.value ? params.value.TransplantProductionTrayTypeName : '';
+          return params.value ? params.value : '';
         },
         valueSetter: params => {
           params.data.TransplantProductionTrayType = this.trayTypes.find(element => {

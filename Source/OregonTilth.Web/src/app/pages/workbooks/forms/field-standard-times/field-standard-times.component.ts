@@ -231,7 +231,7 @@ export class FieldStandardTimesComponent implements OnInit {
           return params.data.LaborType.LaborTypeID == LaborTypeEnum.Operator;
         },
         valueFormatter: function (params) {
-          return params.value ? params.value.MachineryName : 'N/A';
+          return params.value ? params.value : 'N/A';
         },
         valueSetter: params => {
           params.data.Machinery = this.machinery.find(element => {
@@ -252,14 +252,10 @@ export class FieldStandardTimesComponent implements OnInit {
         resizable: true,
         width:150
       },
-      
       {
         headerName: 'Field Unit', 
         field: 'FieldUnitType',
         editable:true,
-        valueFormatter: function (params) {
-          return params.value.FieldUnitTypeDisplayName;
-        },
         valueSetter: params => {
           params.data.FieldUnitType = this.fieldUnits.find(element => {
             return element.FieldUnitTypeDisplayName == params.newValue;

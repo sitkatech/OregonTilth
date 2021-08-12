@@ -112,9 +112,6 @@ export class FieldLaborByCropComponent implements OnInit {
         headerName: 'Crop', 
         field: 'Crop',
         editable: true,
-        valueFormatter: function (params) {
-          return params.value.CropName;
-        },
         valueSetter: params => {
           params.data.Crop = this.cropDtos.find(element => {
             return element.CropName == params.newValue;

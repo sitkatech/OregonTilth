@@ -185,7 +185,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         headerName: 'Crop', 
         field: 'Crop',
         valueFormatter: function (params) {
-          return params.value ? params.value.CropName : '';
+          return params.value ? params.value : '';
         },
         valueSetter: params => {
           params.data.Crop = this.crops.find(element => {
@@ -212,7 +212,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         headerName: 'Crop Unit', 
         field: 'Crop',
         valueFormatter: function (params) {
-          return params.value ? params.value.CropUnitName : '';
+          return params.value ? params.value : '';
         },
         valueSetter: params => {
           params.data.CropUnit = this.cropUnits.find(element => {
@@ -239,7 +239,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         headerName: 'Harvest/Post-Harvest', 
         field: 'HarvestType',
         valueFormatter: function (params) {
-          return params.value ? params.value.HarvestTypeDisplayName : '';
+          return params.value ? params.value : '';
         },
         valueSetter: params => {
           params.data.HarvestType = this.harvestTypes.find(element => {

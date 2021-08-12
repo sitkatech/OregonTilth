@@ -107,9 +107,6 @@ export class FieldInputByCropComponent implements OnInit {
         headerName: 'Crop', 
         field: 'Crop',
         editable: true,
-        valueFormatter: function (params) {
-          return params.value.CropName;
-        },
         valueSetter: params => {
           params.data.Crop = this.cropDtos.find(element => {
             return element.CropName == params.newValue;
@@ -131,9 +128,6 @@ export class FieldInputByCropComponent implements OnInit {
         headerName: 'Field Input', 
         field: 'FieldInputCost',
         editable: true,
-        valueFormatter: function (params) {
-          return params.value.FieldInputCostName;
-        },
         valueSetter: params => {
           params.data.FieldInputCost = this.fieldInputCostDtos.find(element => {
             return element.FieldInputCostName == params.newValue;

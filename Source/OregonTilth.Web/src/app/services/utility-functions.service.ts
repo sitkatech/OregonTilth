@@ -33,7 +33,8 @@ export class UtilityFunctionsService {
               node: params.node!,
               colDef: params.column.getColDef()
             };
-            return colDef.valueFormatter(valueFormatterParams);
+            var value = colDef.valueFormatter(valueFormatterParams);
+            return value;
           }
           
           if (params.column.getColDef().cellRendererFramework && params.value && (params.value.DownloadDisplay || params.value.LinkDisplay)) {

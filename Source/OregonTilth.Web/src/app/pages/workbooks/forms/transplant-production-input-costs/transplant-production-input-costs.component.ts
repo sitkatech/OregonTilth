@@ -107,9 +107,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         cellEditorParams: {
           values: this.transplantProductionInputs.map(x => x.TransplantProductionInputName)
         },
-        valueFormatter: function (params) {
-          return params.value.TransplantProductionInputName;
-        },
+        
         valueSetter: params => {
           params.data.TransplantProductionInput = this.transplantProductionInputs.find(element => {
             return element.TransplantProductionInputName == params.newValue;
@@ -130,9 +128,6 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: this.transplantProductionTrayTypes.map(x => x.TransplantProductionTrayTypeName)
-        },
-        valueFormatter: function (params) {
-          return params.value.TransplantProductionTrayTypeName;
         },
         valueSetter: params => {
           params.data.TransplantProductionTrayType = this.transplantProductionTrayTypes.find(element => {

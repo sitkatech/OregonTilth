@@ -131,9 +131,6 @@ export class TransplantProductionInformationComponent implements OnInit {
         headerName: 'Crop', 
         field: 'Crop',
         editable: true,
-        valueFormatter: function (params) {
-          return params.value.CropName;
-        },
         valueSetter: params => {
           params.data.Crop = this.cropDtos.find(element => {
             return element.CropName == params.newValue;
@@ -155,9 +152,6 @@ export class TransplantProductionInformationComponent implements OnInit {
         headerName: 'Phase', 
         field: 'Phase',
         editable: true,
-        valueFormatter: function (params) {
-          return params.value.PhaseDisplayName;
-        },
         valueSetter: params => {
           params.data.Phase = this.phaseDtos.find(element => {
             return element.PhaseDisplayName == params.newValue;
@@ -179,9 +173,6 @@ export class TransplantProductionInformationComponent implements OnInit {
         headerName: 'Tray Type', 
         field: 'TransplantProductionTrayType',
         editable: true,
-        valueFormatter: function (params) {
-          return params.value.TransplantProductionTrayTypeName;
-        },
         valueSetter: params => {
           params.data.TransplantProductionTrayType = this.tpTrayTypeDtos.find(element => {
             return element.TransplantProductionTrayTypeName == params.newValue;

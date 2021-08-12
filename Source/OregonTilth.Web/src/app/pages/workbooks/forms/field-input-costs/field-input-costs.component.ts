@@ -110,9 +110,6 @@ export class FieldInputCostsComponent implements OnInit {
         cellEditorParams: {
           values: this.fieldUnitTypes.map(x => x.FieldUnitTypeDisplayName)
         },
-        valueFormatter: function (params) {
-          return params.value.FieldUnitTypeDisplayName;
-        },
         valueSetter: params => {
           params.data.FieldUnitType = this.fieldUnitTypes.find(element => {
             return element.FieldUnitTypeDisplayName == params.newValue;

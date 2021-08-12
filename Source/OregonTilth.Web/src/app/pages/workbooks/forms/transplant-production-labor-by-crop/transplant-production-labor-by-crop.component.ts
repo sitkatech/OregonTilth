@@ -127,9 +127,6 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         headerName: 'TP Labor Activity', 
         field: 'TransplantProductionLaborActivity',
         editable: true,
-        valueFormatter: function (params) {
-          return params.value.TransplantProductionLaborActivityName;
-        },
         valueSetter: params => {
           params.data.TransplantProductionLaborActivity = this.transplantProductionLaborActivityDtos.find(element => {
             return element.TransplantProductionLaborActivityName == params.newValue;
