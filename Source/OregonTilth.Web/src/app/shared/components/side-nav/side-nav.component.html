@@ -3,11 +3,14 @@
     
     <div class="nav-group-container" *ngIf="rootPages">
 
-        <ngb-accordion  [closeOthers]="true" activeIds="{{activePanelID}}">
+        <ngb-accordion  activeIds="{{activePanelID}}">
             <ngb-panel id="page_{{page.PageID}}" *ngFor="let page of rootPages" >
                 <ng-template ngbPanelHeader let-opened="opened">
                     <button ngbPanelToggle class="btn btn-link">
-                        {{page.PageName}}
+                        <span>{{page.PageName}}</span>
+                        <i *ngIf="!opened" class="fa fa-plus"></i>
+                        <i *ngIf="opened" class="fa fa-minus"></i>
+                        
                     </button>
                 </ng-template>
                 <ng-template ngbPanelContent>
@@ -29,14 +32,43 @@
                     </div>
                 </ng-template>
             </ngb-panel>
-            <ngb-panel id="workbook" *ngIf="workbookID">
+            <ngb-panel id="workbook" >
                 <ng-template ngbPanelHeader let-opened="opened">
                     <button ngbPanelToggle class="btn btn-link">
-                       Workbook
+                        <span>My Costing Workbook(s)</span>
+                        <i *ngIf="!opened" class="fa fa-plus"></i>
+                        <i *ngIf="opened" class="fa fa-minus"></i>
+                       
                     </button>
                 </ng-template>
                 <ng-template ngbPanelContent>
-                    <div class="nav-group-container" >   
+                    <div class="nav-group-container" *ngIf="!workbookID"> 
+                        <div *ngIf="userWorkbooks.length == 0">
+                            <a class="btn btn-primary" 
+                                [routerLink]="['/workbooks', 'new' ]"
+                                routerLinkActive="active"
+                                >
+                                New Workbook
+                            </a>
+                        </div>
+                        
+                        
+                    </div>  
+                    <div *ngIf="userWorkbooks">
+                        <select name="selectedworkbook" id="" class="form-control" (change)="switchWorkbooks($event.target.value)">
+                            <option [ngValue]="undefined" [selected]="!workbookID" *ngIf="!workbookID" disabled>Select a Workbook.</option>
+                            
+                            <option [value]="workbook.WorkbookID" *ngFor="let workbook of userWorkbooks" [selected]="workbook.WorkbookID == workbookID">{{workbook.WorkbookName}}</option>
+                        </select>
+
+                        <!-- <a class="nav-link" *ngFor="let workbook of userWorkbooks"
+                            [routerLink]="['/workbooks', workbook.WorkbookID ]"
+                            routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true, __change_detection_hack__: workbook.WorkbookID }">
+                            {{workbook.WorkbookName}}
+                        </a> -->
+                    </div>
+                    <div class="nav-group-container" *ngIf="workbookID">   
                         <div class="nav-group mb-3">
                             <ul class="navbar-nav mr-auto">
                                 <li class="nav-item">

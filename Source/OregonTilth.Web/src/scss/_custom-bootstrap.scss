@@ -145,19 +145,36 @@ a:hover {
   .card {
     border:none;
     padding:0;
-    background:none;
+    background:#fff;
     .card-header {
-      padding:0;
+      padding:0px;
       background:none;
+      &:hover {
+        background:#e8e8e8;
+      }
       button {
-        padding:0;
+        padding:5px;
         font-size:22px;
+        color:$primary;
+        width:100%;
+        text-align:left;
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        &:hover, &:active, &:focus {
+          text-decoration: none;
+        }
+        i {
+          font-size:14px;
+        }
       }
     }
     .card-body {
       border:none;
+      border-top:1px solid #e1e1e1;
+      
       background:#fff;
-      padding:5px 0 0 5px;
+      padding:5px;
     }
   }
 }

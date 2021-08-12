@@ -69,10 +69,10 @@ export class PageEditComponent implements OnInit {
         this.pageService.listAllPages()
       ).subscribe(([page, allPages]) => {
         this.page = page;
-        this.allPages = allPages;
+        this.allPages = allPages.filter(x => !x.ParentPage);
         
-        var thisPageIndex = allPages.findIndex(x => x.PageID == this.page.PageID)
-        this.allPages.splice(thisPageIndex,1);
+        // var thisPageIndex = allPages.findIndex(x => x.PageID == this.page.PageID)
+        // this.allPages.splice(thisPageIndex,1);
 
         this.model = new PageUpdateDto();
         this.model.PageID = page.PageID;
