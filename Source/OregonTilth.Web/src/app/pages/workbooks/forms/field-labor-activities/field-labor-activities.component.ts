@@ -116,9 +116,6 @@ export class FieldLaborActivitiesComponent implements OnInit {
         cellEditorParams: {
           values: this.fieldLaborActivityCategories.map(x => x.FieldLaborActivityCategoryDisplayName)
         },
-        valueFormatter: function (params) {
-          return params.value.FieldLaborActivityCategoryDisplayName;
-        },
         valueSetter: params => {
           params.data.FieldLaborActivityCategory = this.fieldLaborActivityCategories.find(element => {
             return element.FieldLaborActivityCategoryDisplayName == params.newValue;
