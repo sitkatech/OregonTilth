@@ -3,32 +3,33 @@
         <div class="col-sm homepageJumbotronImage" id="homepageJumbotronImage1"></div>
     </div>
 </div>
-
-<div class="container mt-4">
-
-    <ngb-alert *ngIf="userIsUnassigned()" [type]="'info'" [dismissible]="false">
-        <span>
-            Welcome {{currentUser.FullName}}. You have successfully logged in to {{platformLongName()}}, but your
-            account is not yet configured. You will receive an email from the {{platformLongName()}}
-            Administrators when your account is ready to use. 
-        </span>
-    </ngb-alert>
-
-    <ngb-alert *ngIf="userRoleIsDisabled()" [type]="'info'" [dismissible]="false">
-        <span>
-            Your account is currently disabled. 
-        </span>
-    </ngb-alert>
-
-</div>
 <div class="container-fluid">
     <div class="row mb-2 min-vh-100">
         <side-nav class="col-lg-2"></side-nav>
         <div class="col-lg-10">
             <app-alert-display></app-alert-display>
-            <h1 class="text-primary mb-4">{{platformLongName()}}</h1>
-            <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+            <ngb-alert *ngIf="userIsUnassigned()" [type]="'info'" [dismissible]="false">
+                <span>
+                    Welcome {{currentUser.FullName}}. You have successfully logged in to {{platformLongName()}}, but your
+                    account is not yet configured. You will receive an email from the {{platformLongName()}}
+                    Administrators when your account is ready to use. 
+                </span>
+            </ngb-alert>
+            <ngb-alert *ngIf="userRoleIsDisabled()" [type]="'info'" [dismissible]="false">
+                <span>
+                    Your account is currently disabled. 
+                </span>
+            </ngb-alert>
+
+            <custom-rich-text *ngIf="!currentUser" [customRichTextTypeID]="notLoggedInRichTextID"></custom-rich-text>
+            <custom-rich-text *ngIf="userRoleIsEnabled()" [customRichTextTypeID]="loggedInRichTextID"></custom-rich-text>
             
+            <div *ngIf="userRoleIsAdmin()" class="admin-display-homepage mt-4">
+                <em>You are logged in as an admin. Other users <strong>do not</strong> see this section. You can edit the not-logged-in homepage content by <button class="btn btn-primary btn-sm" (click)="displayNotLoggedInRichTextForAdmin = !displayNotLoggedInRichTextForAdmin">clicking here</button>.</em>
+                <div [class.hidden]="!displayNotLoggedInRichTextForAdmin" >
+                    <custom-rich-text [customRichTextTypeID]="notLoggedInRichTextID"></custom-rich-text>
+                </div>
+            </div>
         </div>
     </div>
 </div>

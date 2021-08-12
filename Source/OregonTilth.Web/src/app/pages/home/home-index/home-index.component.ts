@@ -15,7 +15,10 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
     public watchUserChangeSubscription: any;
     public currentUser: UserDetailedDto;
 
-    public richTextTypeID : number = CustomRichTextType.Homepage;
+    public notLoggedInRichTextID : number = CustomRichTextType.Homepage;
+    public loggedInRichTextID : number = CustomRichTextType.HomePageLoggedIn;
+
+    public displayNotLoggedInRichTextForAdmin : boolean = false;
 
     constructor(private authenticationService: AuthenticationService) {
     }
@@ -48,6 +51,22 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
         }
         
         return this.currentUser.Role.RoleID === RoleEnum.Disabled;
+    }
+
+    public userRoleIsEnabled() {
+        if (!this.currentUser){
+            return false; // doesn't exist != unassigned
+        }
+        
+        return this.currentUser.Role.RoleID === RoleEnum.Admin || this.currentUser.Role.RoleID == RoleEnum.Normal;
+    }
+
+    public userRoleIsAdmin() {
+        if (!this.currentUser){
+            return false; // doesn't exist != unassigned
+        }
+        
+        return this.currentUser.Role.RoleID === RoleEnum.Admin;
     }
 
     public isUserAnAdministrator(){
