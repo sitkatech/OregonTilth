@@ -43,7 +43,7 @@ export class NewWorkbookComponent implements OnInit {
 
     this.createWorkbookRequest = this.workbookService.createWorkbook(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.router.navigateByUrl("/workbooks").then(x => {
+      this.router.navigate(["/workbooks", response.WorkbookID]).then(x => {
         this.alertService.pushAlert(new Alert("Successfully created Workbook.", AlertContext.Success));
       });
     }, error => { 

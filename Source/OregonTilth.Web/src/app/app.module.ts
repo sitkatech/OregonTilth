@@ -33,7 +33,6 @@ import { CreateUserCallbackComponent } from './pages/create-user-callback/create
 import { AboutComponent } from './pages/about/about.component';
 import { WorkbooksComponent } from './pages/workbooks/workbooks.component';
 import { NewWorkbookComponent } from './pages/workbooks/new-workbook/new-workbook.component';
-import { EditWorkbookComponent } from './pages/workbooks/edit-workbook/edit-workbook.component';
 import { WorkbookDetailComponent } from './pages/workbooks/workbook-detail/workbook-detail.component';
 import { FieldLaborActivitiesComponent } from './pages/workbooks/forms/field-labor-activities/field-labor-activities.component';
 import { TransplantProductionLaborActivitiesComponent } from './pages/workbooks/forms/transplant-production-labor-activities/transplant-production-labor-activities.component';
@@ -120,7 +119,6 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     CropUnitsComponent,
     CropCropUnitComponent,
     LaborHoursComponent,
-    EditWorkbookComponent,
     DisclaimerComponent,
     FieldDefinitionListComponent,
     FieldDefinitionEditComponent,

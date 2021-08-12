@@ -88,6 +88,13 @@ export class SideNavComponent implements OnInit {
   }
 
   switchWorkbooks(workbookID: number) {
+
+    if(workbookID == -1){
+      this.router.navigate(['workbooks','new'])
+      return
+    }
+
+
     if(this.isNavigatingWorkbook){
       var path = this.route.snapshot.routeConfig.path.replace(":id", workbookID.toString())
       this.router.navigate([path]);

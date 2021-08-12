@@ -19,7 +19,6 @@ import { FieldDefinitionEditComponent } from './pages/field-definition-edit/fiel
 import { TrainingComponent } from './pages/training/training.component';
 import { WorkbooksComponent } from './pages/workbooks/workbooks.component';
 import { NewWorkbookComponent } from './pages/workbooks/new-workbook/new-workbook.component';
-import { EditWorkbookComponent } from './pages/workbooks/edit-workbook/edit-workbook.component';
 import { WorkbookDetailComponent } from './pages/workbooks/workbook-detail/workbook-detail.component';
 import { FieldLaborActivitiesComponent } from './pages/workbooks/forms/field-labor-activities/field-labor-activities.component';
 import { MachineryComponent } from './pages/workbooks/forms/machinery/machinery.component';
@@ -64,7 +63,6 @@ const routes: Routes = [
   { path: "about", component: AboutComponent},
   { path: "workbooks", component: WorkbooksComponent},
   { path: "workbooks/new", component: NewWorkbookComponent},
-  { path: "workbooks/:id/edit", component: EditWorkbookComponent},
   { path: "workbooks/:id/forms/field-labor-activities", component: FieldLaborActivitiesComponent},
   { path: "workbooks/:id/forms/transplant-production-labor-activities", component: TransplantProductionLaborActivitiesComponent},
   { path: "workbooks/:id/forms/transplant-production-inputs", component: TransplantProductionInputsComponent},

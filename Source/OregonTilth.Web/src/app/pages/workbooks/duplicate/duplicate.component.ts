@@ -41,7 +41,7 @@ export class DuplicateComponent implements OnInit {
 
     this.duplicateWorkbookRequest = this.workbookService.duplicateWorkbook(this.workbook.WorkbookID, this.workbookCopyName).subscribe(response => {
       this.isLoadingSubmit = false;
-      this.router.navigateByUrl("/workbooks").then(x => {
+      this.router.navigate(["/workbooks", response.WorkbookID]).then(x => {
         this.alertService.pushAlert(new Alert("Successfully duplicated Workbook.", AlertContext.Success));
       });
     }, error => { 

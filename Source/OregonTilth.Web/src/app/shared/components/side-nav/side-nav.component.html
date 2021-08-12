@@ -44,21 +44,21 @@
                 <ng-template ngbPanelContent>
                     <div class="nav-group-container" *ngIf="!workbookID"> 
                         <div *ngIf="userWorkbooks.length == 0">
-                            <a class="btn btn-primary" 
+                            <a class="btn btn-success w-100" 
                                 [routerLink]="['/workbooks', 'new' ]"
                                 routerLinkActive="active"
                                 >
-                                New Workbook
+                                Create Your First Workbook
                             </a>
                         </div>
                         
                         
                     </div>  
-                    <div *ngIf="userWorkbooks">
+                    <div *ngIf="userWorkbooks.length > 0">
                         <select name="selectedworkbook" id="" class="form-control" (change)="switchWorkbooks($event.target.value)">
                             <option [ngValue]="undefined" [selected]="!workbookID" *ngIf="!workbookID" disabled>Select a Workbook.</option>
-                            
                             <option [value]="workbook.WorkbookID" *ngFor="let workbook of userWorkbooks" [selected]="workbook.WorkbookID == workbookID">{{workbook.WorkbookName}}</option>
+                            <option [value]="-1" class="new-workbook-option">- Create New Workbook -</option>
                         </select>
 
                         <!-- <a class="nav-link" *ngFor="let workbook of userWorkbooks"
