@@ -287,7 +287,7 @@ export class CropSpecificInfoComponent implements OnInit {
         resizable: true
       },
       {
-        headerName: 'In Row Spacing', 
+        headerName: 'In Row Spacing (inches)', 
         field:'InRowSpacing',
         valueGetter: function(params:any) {
           if(params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantFarmProduced || params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantOutsourced){

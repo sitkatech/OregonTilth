@@ -15,7 +15,7 @@
     <side-nav class="col-lg-2"></side-nav>
     <div class="col-lg-10">
         <app-alert-display></app-alert-display>
-        <h1>Crop Specific Info</h1>
+        <h1>Crop Specific Information</h1>
         <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
         <div class="card mt-4">
           <div class="card-header">
@@ -54,7 +54,7 @@
                   <input class="form-control" min="0" type="number" name="SeedCostPerStandardUnitOfSpace" [(ngModel)]="model.SeedCostPerStandardUnitOfSpace" [disabled]="!seedCostRequired()" [required]="seedCostRequired()">                  
                 </div>
                 <div class="col-md-4">
-                  <label [class.required]="inRowSpacingRequired()">In Row Spacing</label>
+                  <label [class.required]="inRowSpacingRequired()">In Row Spacing (inches)</label>
                   <input class="form-control" type="number" name="InRowSpacing" [(ngModel)]="model.InRowSpacing" [disabled]="!inRowSpacingRequired()" [required]="inRowSpacingRequired()">                  
                 </div>
                 <div class="col-md-4">

@@ -263,7 +263,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         pinned: this.screenWidth > 767 ? 'left' : null,
       },
       {
-        headerName: 'Avg Min Per Unit', 
+        headerName: 'Avg Min Per Crop Unit', 
         valueGetter: function(params:any) {
           if(params.data.TimeStudies.length > 0) {
             var avgArray = params.data.TimeStudies.map(element => {

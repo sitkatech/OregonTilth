@@ -80,7 +80,7 @@ export class TransplantProductionTrayTypesComponent implements OnInit {
     var componentScope = this;
     this.columnDefs = [
       {
-        headerName: 'Tray Type', 
+        headerName: 'TP Tray Type', 
         field: 'TransplantProductionTrayTypeName',
         editable: true,
         cellEditor: 'agTextCellEditor',
