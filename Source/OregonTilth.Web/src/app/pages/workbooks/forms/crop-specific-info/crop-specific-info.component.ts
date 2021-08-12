@@ -268,7 +268,7 @@ export class CropSpecificInfoComponent implements OnInit {
         editable: params => {
           return params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.DirectSeeded;
         },
-        cellEditorFramework: IntegerEditor,
+        cellEditorFramework: DecimalEditor,
         valueFormatter: this.gridService.currencyFormatter,
         sortable: true, 
         filter: true,
