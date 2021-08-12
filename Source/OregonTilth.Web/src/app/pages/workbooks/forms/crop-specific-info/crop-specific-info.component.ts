@@ -192,7 +192,8 @@ export class CropSpecificInfoComponent implements OnInit {
         sortable: true, 
         filter: true,
         pinned: 'left',
-        width: 100
+        width: 100,
+        resizable: true
       },
       {
         headerName: 'TP or DS Type', 
@@ -358,7 +359,7 @@ export class CropSpecificInfoComponent implements OnInit {
             }
           }
           },
-        sortable: true, filter: true, width: 100, autoHeight:true
+        sortable: true, filter: true, width: 100, autoHeight:true, resizable: true
       },
     ]
   }
