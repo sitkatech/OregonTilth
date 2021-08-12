@@ -100,7 +100,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     var componentScope = this;
     this.columnDefs = [
       {
-        headerName: 'Transplant Production Input', 
+        headerName: 'TP Input', 
         field: 'TransplantProductionInput',
         editable: true,
         cellEditor: 'agSelectCellEditor',
@@ -122,7 +122,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
         filter: true,
       },
       {
-        headerName: 'Tray Type', 
+        headerName: 'TP Tray Type', 
         field: 'TransplantProductionTrayType',
         editable: true,
         cellEditor: 'agSelectCellEditor',

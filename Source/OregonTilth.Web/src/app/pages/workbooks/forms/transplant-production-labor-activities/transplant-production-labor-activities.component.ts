@@ -83,7 +83,7 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
     var componentScope = this;
     this.columnDefs = [
       {
-        headerName: 'Transplant Production Labor Activity', 
+        headerName: 'TP Labor Activity', 
         field: 'TransplantProductionLaborActivityName',
         editable: true,
         cellEditor: 'agTextCellEditor',
@@ -97,7 +97,7 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
-            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Transplant Production Labor Activity?`)) {
+            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} TP Labor Activity?`)) {
               componentScope.deleteTransplantProductionLaborActivity(field.PrimaryKey)
             }
           }

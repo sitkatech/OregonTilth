@@ -109,7 +109,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
         resizable: true
       },
       {
-        headerName: 'Field Labor Category', 
+        headerName: 'Labor Activity Category', 
         field: 'FieldLaborActivityCategory',
         editable: true,
         cellEditor: 'agSelectCellEditor',

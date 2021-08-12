@@ -78,7 +78,7 @@ export class TransplantProductionInputsComponent implements OnInit {
     var componentScope = this;
     this.columnDefs = [
       {
-        headerName: 'Transplant Production Input', 
+        headerName: 'TP Input', 
         field: 'TransplantProductionInputName',
         editable: true,
         cellEditor: 'agTextCellEditor',

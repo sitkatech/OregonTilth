@@ -179,7 +179,7 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
         width:150
       },
       {
-        headerName: 'Tray Type', 
+        headerName: 'TP Tray Type', 
         field: 'TrayType',
         valueFormatter: function (params) {
           return params.value ? params.value : '';

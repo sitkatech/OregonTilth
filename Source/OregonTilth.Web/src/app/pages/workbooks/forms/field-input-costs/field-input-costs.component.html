@@ -30,7 +30,7 @@
                   <input class="form-control" type="text" name="FieldInputCostName" [(ngModel)]="model.FieldInputCostName">
                 </div>
                 <div class="form-group col-md-4">
-                  <label class="required">Field Unit Type</label>
+                  <label class="required">Field Unit</label>
                   <select name="FieldUnitTypeID" class="form-control" [(ngModel)]="model.FieldUnitTypeID" required>
                     <option value=""></option>
                     <option *ngFor="let category of fieldUnitTypes" [value]="category.FieldUnitTypeID">

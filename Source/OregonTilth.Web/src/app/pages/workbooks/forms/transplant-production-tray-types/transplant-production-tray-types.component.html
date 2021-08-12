@@ -19,14 +19,14 @@
         <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
         <div class="card mt-4">
           <div class="card-header">
-            Add new Tray Type
+            Add new TP Tray Type
           </div>
           <div class="card-body">
             <form *ngIf=(model) (ngSubmit)="onSubmit(transplantProductionTrayTypesForm)" #transplantProductionTrayTypesForm="ngForm">
               <div class="row">
                 
                 <div class="form-group col-md-12">
-                  <label class="required">Transplant Production Tray Type</label>
+                  <label class="required">TP Tray Type</label>
                   <input class="form-control" type="text" name="TransplantProductionTrayTypeName" [(ngModel)]="model.TransplantProductionTrayTypeName" required>
                 </div>
               </div>

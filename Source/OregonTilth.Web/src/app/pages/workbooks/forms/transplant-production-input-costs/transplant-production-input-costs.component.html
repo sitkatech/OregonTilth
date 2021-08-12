@@ -19,14 +19,14 @@
         <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
         <div class="card mt-4">
           <div class="card-header">
-            Add new Transplant Production Input Cost
+            Add new TP Input Cost
           </div>
           <div class="card-body">
             <form *ngIf=(model) (ngSubmit)="onSubmit(transplantProductionInputCostForm)" #transplantProductionInputCostForm="ngForm">
               <div class="row">
                 
                 <div class="form-group col-md-4">
-                  <label class="required">Transplant Production Input</label>
+                  <label class="required">TP Input</label>
                   <select name="TransplantProductionInputID" class="form-control" [(ngModel)]="model.TransplantProductionInputID" required>
                     <option value=""></option>
                     <option *ngFor="let category of transplantProductionInputs" [value]="category.TransplantProductionInputID">
@@ -35,7 +35,7 @@
                   </select>
                 </div>
                 <div class="form-group col-md-4">
-                  <label class="required">Transplant Production Tray Type</label>
+                  <label class="required">TP Tray Type</label>
                   <select name="TransplantProductionTrayTypeID" class="form-control" [(ngModel)]="model.TransplantProductionTrayTypeID" required>
                     <option value=""></option>
                     <option *ngFor="let category of transplantProductionTrayTypes" [value]="category.TransplantProductionTrayTypeID">

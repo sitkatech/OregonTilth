@@ -170,7 +170,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         filter: true,
       },
       {
-        headerName: 'Tray Type', 
+        headerName: 'TP Tray Type', 
         field: 'TransplantProductionTrayType',
         editable: true,
         valueSetter: params => {

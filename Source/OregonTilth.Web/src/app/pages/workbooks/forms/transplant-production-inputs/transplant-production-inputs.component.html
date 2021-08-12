@@ -19,14 +19,14 @@
         <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
         <div class="card mt-4">
           <div class="card-header">
-            Add new Transplant Production Inputs
+            Add new TP Input
           </div>
           <div class="card-body">
             <form *ngIf=(model) (ngSubmit)="onSubmit(transplantProductionInputsForm)" #transplantProductionInputsForm="ngForm">
               <div class="row">
                 
                 <div class="form-group col-md-12">
-                  <label class="required">Transplant Production Input</label>
+                  <label class="required">TP Input</label>
                   <input class="form-control" type="text" name="TransplantProductionInputName" [(ngModel)]="model.TransplantProductionInputName">
                 </div>
               </div>
