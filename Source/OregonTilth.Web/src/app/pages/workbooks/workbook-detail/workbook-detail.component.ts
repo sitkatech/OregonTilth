@@ -14,6 +14,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'workbook-detail',
@@ -21,6 +22,8 @@ import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
   styleUrls: ['./workbook-detail.component.scss']
 })
 export class WorkbookDetailComponent implements OnInit {
+
+  private workbookChanged: Subject<WorkbookDto> = new Subject<WorkbookDto>();
 
   constructor(private cdr: ChangeDetectorRef, 
     private authenticationService: AuthenticationService, 
@@ -38,22 +41,40 @@ export class WorkbookDetailComponent implements OnInit {
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
+  public model: WorkbookDto;
 
+  onSubmit(editWorkbookForm: HTMLFormElement): void {
+    this.isLoadingSubmit = true;
 
+    this.workbookService.editWorkbook(this.model).subscribe(response => {
+      this.isLoadingSubmit = false;
+      this.getWorkbook()
+      this.alertService.pushAlert(new Alert("Successfully saved Workbook.", AlertContext.Success));
+      this.workbookService.workbookSubject.next(this.model);
+    }, error => { 
+      this.isLoadingSubmit = false;
+      this.cdr.detectChanges();
+    });
+  }
 
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
 
       this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID).subscribe(workbook => {
-        this.workbook = workbook;
-      }, error => {
-        
-      })
+      this.getWorkbook();
+      
       
     });
+  }
+
+  getWorkbook() {
+    this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID).subscribe(workbook => {
+      this.workbook = workbook;
+      this.model = new WorkbookDto(workbook);
+    }, error => {
+      
+    })
   }
 
   ngOnDestroy() {
@@ -78,6 +99,21 @@ export class WorkbookDetailComponent implements OnInit {
     // }
     // this.authenticationService.dispose();
     // this.cdr.detach();
+  }
+
+
+  deleteWorkbook() {
+    if(confirm(`Are you sure you want to delete this Workbook?`)) {
+      this.workbookService.deleteWorkbook(this.workbookID).subscribe(results => {
+        this.router.navigate(['']).then(()=>{
+          this.alertService.pushAlert(new Alert("Successfully deleted Workbook", AlertContext.Success));
+        });
+      })
+    }
+  }
+
+  duplicateWorkbook() {
+    this.router.navigate(['duplicate'],{relativeTo: this.route})
   }
 
 }

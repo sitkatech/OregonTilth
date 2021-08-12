@@ -31,10 +31,8 @@ export class EditWorkbookComponent implements OnInit {
 
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
-  public columnDefs: ColDef[];
   public richTextTypeID : number = CustomRichTextType.WorkbookAddEdit;
   public model: WorkbookDto;
-  public roles: Array<RoleDto>;
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;

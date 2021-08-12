@@ -17,6 +17,7 @@ import { filter } from 'rxjs/operators';
 
 export class SideNavComponent implements OnInit {
     private watchUserChangeSubscription: any;
+    private watchWorkbookChangeSubscription: any;
     private currentUser: UserDetailedDto;
     public workbookID: number;
     public navigationOpen: boolean = true;
@@ -52,19 +53,25 @@ export class SideNavComponent implements OnInit {
 
   ngOnInit() {
     this.initWorkbookIDNavigation();
-    
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
         this.currentUser = currentUser;
-        forkJoin([this.workbookService.getWorkbooks(currentUser), this.pageService.listAllPages()]).subscribe(([workbooks, pages]: [WorkbookDto[], PageTreeDto[]]) => {
-          this.userWorkbooks = workbooks;
-          this.allPages = pages;
-          this.rootPages = pages.filter(x => !x.ParentPage);
-          var pageID = parseInt(this.route.snapshot.paramMap.get("pageId"));
-          if(pageID) {
-            var rootPage = this.allPages.find(x => x.PageID == pageID)
-            this.activePanelID = rootPage.ParentPage ? ['page_' + rootPage.ParentPage.PageID] : ['page_' + pageID];
-          }
-        });
+        this.getWorkbooksInformation()
+        this.watchWorkbookChangeSubscription = this.workbookService.workbookSubject.subscribe(workbook => {
+          this.getWorkbooksInformation()
+        })
+    });
+  }
+
+  getWorkbooksInformation() {
+    forkJoin([this.workbookService.getWorkbooks(this.currentUser), this.pageService.listAllPages()]).subscribe(([workbooks, pages]: [WorkbookDto[], PageTreeDto[]]) => {
+      this.userWorkbooks = workbooks;
+      this.allPages = pages;
+      this.rootPages = pages.filter(x => !x.ParentPage);
+      var pageID = parseInt(this.route.snapshot.paramMap.get("pageId"));
+      if(pageID) {
+        var rootPage = this.allPages.find(x => x.PageID == pageID)
+        this.activePanelID = rootPage.ParentPage ? ['page_' + rootPage.ParentPage.PageID] : ['page_' + pageID];
+      }
     });
   }
 
@@ -91,6 +98,7 @@ export class SideNavComponent implements OnInit {
 
   ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();
+    this.watchWorkbookChangeSubscription.unsubscribe();
     this.authenticationService.dispose();
     this.cdr.detach();
   }
