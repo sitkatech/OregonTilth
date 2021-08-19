@@ -50,6 +50,7 @@ export class TransplantProductionInformationComponent implements OnInit {
   public isLoadingSubmit: boolean = false;
   private workbookID: number;
   private getWorkbookRequest: any;
+  public seedingPhaseEnum = PhaseEnum.Seeding;
 
   public model: TransplantProductionInformationCreateDto;
   private addTpInfoRequest: any;

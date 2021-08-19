@@ -44,6 +44,12 @@ namespace OregonTilth.EFModels.Entities
 
                     result.Add(new ErrorMessage() { Type = "Phase", Message = $"Must enter a record for a \"Seeding\" Phase for \"{cropSelected.CropName}\" before entering a \"Potting Up\" Phase." });
                 }
+
+                if (transplantProductionInformationCreateDto.CostPerSeed != 0)
+                {
+                    result.Add(new ErrorMessage() { Type = "Cost Per Seed", Message = $"\"Potting Up\" Phase entries cannot have a Cost Per Seed." });
+                }
+
             } 
                
 
@@ -131,7 +137,9 @@ namespace OregonTilth.EFModels.Entities
                 PhaseID = transplantProductionInformationCreateDto.PhaseID,
                 TransplantProductionTrayTypeID = transplantProductionInformationCreateDto.TransplantProductionTrayTypeID,
                 SeedsPerTray = transplantProductionInformationCreateDto.SeedsPerTray,
-                UsageRate = transplantProductionInformationCreateDto.UsageRate
+                UsageRate = transplantProductionInformationCreateDto.UsageRate,
+                CostPerSeed = transplantProductionInformationCreateDto.CostPerSeed,
+                CropSpecificInputCostsPerTray = transplantProductionInformationCreateDto.CropSpecificInputCostsPerTray
             };
             dbContext.TransplantProductionInformations.Add(transplantProductionInformation);
             

@@ -5,6 +5,8 @@ export class TransplantProductionInformationCreateDto {
     TransplantProductionTrayTypeID: number;
     SeedsPerTray: number;
     UsageRate: number;
+    CostPerSeed: number;
+    CropSpecificInputCostsPerTray: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

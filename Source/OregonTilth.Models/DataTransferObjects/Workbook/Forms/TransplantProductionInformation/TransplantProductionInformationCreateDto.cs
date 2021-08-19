@@ -10,5 +10,7 @@ namespace OregonTilth.Models.DataTransferObjects
         [Required] public int TransplantProductionTrayTypeID { get; set; }
         [Required] public int SeedsPerTray { get; set; }
         [Required] public decimal UsageRate { get; set; }
+        public decimal CostPerSeed { get; set; }
+        public decimal CropSpecificInputCostsPerTray { get; set; }
     }
 }

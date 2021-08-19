@@ -61,13 +61,21 @@
               </div>
 
               <div class="row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                   <label class="required">Seeds/Seedlings Per Tray</label>
                   <input class="form-control" type="text" name="SeedsPerTray" [(ngModel)]="model.SeedsPerTray" required>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                   <label class="required">Percentage Plantable</label>
                   <input class="form-control" type="number" min="0" max="100" name="UsageRate" [(ngModel)]="model.UsageRate" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="required">Cost Per Seed</label>
+                  <input class="form-control" type="number" min="0" max="100" name="CostPerSeed" [(ngModel)]="model.CostPerSeed" [required]="model.PhaseID == seedingPhaseEnum" [disabled]="model.PhaseID != seedingPhaseEnum">
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="required">Crop Specific Input Costs Per Tray</label>
+                  <input class="form-control" type="number" min="0" max="100" name="CropSpecificInputCostsPerTray" [(ngModel)]="model.CropSpecificInputCostsPerTray" required>
                 </div>
               </div>
               
