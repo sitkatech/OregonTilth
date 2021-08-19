@@ -20,6 +20,7 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userTransplantProductionInformationsForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionInformationCreateDto.WorkbookID).ToList();
+            var cropSelected = Entities.Crop.GetDtoByCropID(dbContext, transplantProductionInformationCreateDto.CropID);
             
             // unique by WorkbookID, CropID, PhaseID
             if (userTransplantProductionInformationsForWorkbook.Any(x => 
@@ -30,6 +31,21 @@ namespace OregonTilth.EFModels.Entities
             {
                 result.Add(new ErrorMessage() { Type = "Transplant Production Information", Message = "Transplant Production Information must be unique per Crop, and Phase." });
             }
+
+
+
+            if (transplantProductionInformationCreateDto.PhaseID == (int) PhaseEnum.PottingUp)
+            {
+                var hasSeedingPhase = userTransplantProductionInformationsForWorkbook.Any(x =>
+                    x.Crop.CropID == transplantProductionInformationCreateDto.CropID
+                    && x.Phase.PhaseID == (int) PhaseEnum.Seeding);
+                if (!hasSeedingPhase)
+                {
+
+                    result.Add(new ErrorMessage() { Type = "Phase", Message = $"Must enter a record for a \"Seeding\" Phase for \"{cropSelected.CropName}\" before entering a \"Potting Up\" Phase." });
+                }
+            } 
+               
 
             // usage rate between 0 - 100
             if (transplantProductionInformationCreateDto.UsageRate <= 0 ||
@@ -118,25 +134,7 @@ namespace OregonTilth.EFModels.Entities
                 UsageRate = transplantProductionInformationCreateDto.UsageRate
             };
             dbContext.TransplantProductionInformations.Add(transplantProductionInformation);
-
-            // If they select "Potting up" as the phase, we need to also create a "Seeding Phase" entry with the same information if it doesn't exist
-            var currentEntries = GetTransplantProductionInformationImpl(dbContext).Where(x => x.WorkbookID == transplantProductionInformationCreateDto.WorkbookID);
-
-            if (transplantProductionInformationCreateDto.PhaseID == (int) PhaseEnum.PottingUp 
-                && !currentEntries.Any(x => x.CropID == transplantProductionInformationCreateDto.CropID && x.PhaseID == (int)PhaseEnum.Seeding))
-            {
-                var seedingTransplantProductionInformation = new TransplantProductionInformation()
-                {
-                    WorkbookID = transplantProductionInformationCreateDto.WorkbookID,
-                    CropID = transplantProductionInformationCreateDto.CropID,
-                    PhaseID = (int) PhaseEnum.Seeding,
-                    TransplantProductionTrayTypeID = transplantProductionInformationCreateDto.TransplantProductionTrayTypeID,
-                    SeedsPerTray = transplantProductionInformationCreateDto.SeedsPerTray,
-                    UsageRate = transplantProductionInformationCreateDto.UsageRate
-                };
-                dbContext.TransplantProductionInformations.Add(seedingTransplantProductionInformation);
-            }
-
+            
             dbContext.SaveChanges();
 
             return GetDtoListByWorkbookID(dbContext, transplantProductionInformationCreateDto.WorkbookID);
