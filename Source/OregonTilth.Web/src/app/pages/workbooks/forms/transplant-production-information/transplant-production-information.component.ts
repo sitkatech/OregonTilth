@@ -148,7 +148,8 @@ export class TransplantProductionInformationComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
-        resizable: true
+        resizable: true,
+        pinned: 'left',
       },
       {
         headerName: 'Phase', 
@@ -170,7 +171,9 @@ export class TransplantProductionInformationComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
-        resizable: true
+        resizable: true,
+        width: 150,
+        pinned: 'left',
       },
       {
         headerName: 'TP Tray Type', 
@@ -192,7 +195,8 @@ export class TransplantProductionInformationComponent implements OnInit {
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
-        resizable: true
+        resizable: true,
+        width:150
       },
       {
         headerName: 'Seeds/Seedlings Per Tray', 
@@ -252,7 +256,8 @@ export class TransplantProductionInformationComponent implements OnInit {
           return {backgroundColor: '#ccf5cc'};
         },
         cellRendererFramework: EditableRendererComponent,
-        resizable: true
+        resizable: true,
+        width:150
       },
       {
         headerName: 'Crop Specific Input Costs per Tray', 
