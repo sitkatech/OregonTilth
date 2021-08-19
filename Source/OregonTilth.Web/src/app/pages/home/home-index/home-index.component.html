@@ -21,7 +21,13 @@
                 </span>
             </ngb-alert>
 
-            <custom-rich-text *ngIf="!currentUser" [customRichTextTypeID]="notLoggedInRichTextID"></custom-rich-text>
+            <div *ngIf="!currentUser">
+                <custom-rich-text [customRichTextTypeID]="notLoggedInRichTextID"></custom-rich-text>
+                <div class="cta-container mt-4">
+                    <button (click)="createAccount()" type="button" class="btn btn-primary btn-cta">Create An Account!</button>
+                </div>
+            </div>
+            
             <custom-rich-text *ngIf="userRoleIsEnabled()" [customRichTextTypeID]="loggedInRichTextID"></custom-rich-text>
             
             <div *ngIf="userRoleIsAdmin()" class="admin-display-homepage mt-4">

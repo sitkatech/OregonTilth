@@ -17,3 +17,13 @@
 .hidden {
     display:none;
 }
+
+.cta-container {
+    display:flex;
+    justify-content: center;
+    
+    .btn-cta {
+        font-size:30px;
+    }
+    text-align:center;
+}
