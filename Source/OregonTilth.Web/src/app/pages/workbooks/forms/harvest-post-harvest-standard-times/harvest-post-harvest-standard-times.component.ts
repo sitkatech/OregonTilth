@@ -285,7 +285,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         headerName: 'Standard Rate', 
         field:'StandardTimePerUnit',
         valueGetter: function(params:any) {
-          return params.data.StandardTimePerUnit
+          return params.data.StandardTimePerUnit ? params.data.StandardTimePerUnit.toFixed(4) : null
         },
         editable: true,
         cellEditorFramework: DecimalEditor,

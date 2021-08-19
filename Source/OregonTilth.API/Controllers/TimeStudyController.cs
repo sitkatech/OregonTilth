@@ -41,7 +41,7 @@ namespace OregonTilth.API.Controllers
                 var fieldStandardTime = FieldStandardTime.GetByID(_dbContext, timeStudiesUpsertDto.FieldStandardTimeID.Value);
                 var sumOfTimeStudyAverages = fieldStandardTime.TimeStudies.ToList().Sum(x => x.Duration / x.Units);
 
-                fieldStandardTime.StandardTimePerUnit = sumOfTimeStudyAverages / fieldStandardTime.TimeStudies.Count();
+                fieldStandardTime.StandardTimePerUnit = fieldStandardTime.TimeStudies.Any() ? sumOfTimeStudyAverages / fieldStandardTime.TimeStudies.Count() : null;
                 _dbContext.SaveChanges();
 
                 returnDto = fieldStandardTime.AsSummaryDto();
@@ -50,8 +50,7 @@ namespace OregonTilth.API.Controllers
             {
                 var harvestStandardTime = HarvestPostHarvestStandardTime.GetByID(_dbContext, timeStudiesUpsertDto.HarvestPostHarvestStandardTimeID.Value);
                 var sumOfTimeStudyAverages = harvestStandardTime.TimeStudies.ToList().Sum(x => x.Duration / x.Units);
-
-                harvestStandardTime.StandardTimePerUnit = sumOfTimeStudyAverages / harvestStandardTime.TimeStudies.Count();
+                harvestStandardTime.StandardTimePerUnit = harvestStandardTime.TimeStudies.Any() ? sumOfTimeStudyAverages / harvestStandardTime.TimeStudies.Count() : null;
                 _dbContext.SaveChanges();
 
                 returnDto = HarvestPostHarvestStandardTime.GetDtoListByWorkbookID(_dbContext, timeStudiesUpsertDto.WorkbookID)
@@ -63,7 +62,7 @@ namespace OregonTilth.API.Controllers
                 var tpStandardTime = TransplantProductionStandardTime.GetByID(_dbContext, timeStudiesUpsertDto.TransplantProductionStandardTimeID.Value);
                 var sumOfTimeStudyAverages = tpStandardTime.TimeStudies.ToList().Sum(x => x.Duration / x.Units);
 
-                tpStandardTime.StandardTimePerUnit = sumOfTimeStudyAverages / tpStandardTime.TimeStudies.Count();
+                tpStandardTime.StandardTimePerUnit = tpStandardTime.TimeStudies.Any() ? sumOfTimeStudyAverages / tpStandardTime.TimeStudies.Count() : null;
                 _dbContext.SaveChanges();
 
 
