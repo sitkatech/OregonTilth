@@ -105,8 +105,10 @@ export class SideNavComponent implements OnInit {
 
   ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();
-    this.watchWorkbookChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
+    if(this.watchWorkbookChangeSubscription && this.watchWorkbookChangeSubscription.unsubscribe){
+      this.watchWorkbookChangeSubscription.unsubscribe();
+    }
+    
     this.cdr.detach();
   }
 
