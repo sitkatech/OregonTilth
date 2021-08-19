@@ -239,7 +239,7 @@ export class TransplantProductionInformationComponent implements OnInit {
             return 'N/A';
           }
 
-          return params.value ? '$' + params.value : '';
+          return params.value ? '$' + params.value : '$0';
         },
         cellStyle: params => {
           if (params.data.Phase.PhaseID == PhaseEnum.Seeding && !params.value) {

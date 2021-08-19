@@ -86,7 +86,8 @@ export class CropsComponent implements OnInit {
         cellEditor: 'agTextCellEditor',
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
-        filter: true
+        filter: true,
+        resizable: true
       },
       {
         headerName: 'Delete', field: 'CropID', valueGetter: function (params: any) {
@@ -99,7 +100,7 @@ export class CropsComponent implements OnInit {
             }
           }
           },
-        sortable: true, filter: true, width: 100, autoHeight:true
+        sortable: true, filter: true, width: 100, autoHeight:true, resizable: true
       },
     ]
   }
