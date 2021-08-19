@@ -15,7 +15,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { CustomRichTextService } from 'src/app/shared/services/custom-rich-text.service';
 import { PageService } from 'src/app/shared/services/page-service';
 import { environment } from 'src/environments/environment';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import * as ClassicEditor from 'src/assets/main/ckeditor/ckeditor.js';
 import { CkEditorUploadAdapter } from 'src/app/shared/CkEditorUploadAdapter';
 @Component({
   selector: 'oregontilth-page-edit',

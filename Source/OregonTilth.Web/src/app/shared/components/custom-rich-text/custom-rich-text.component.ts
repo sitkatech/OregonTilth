@@ -6,7 +6,7 @@ import { CustomRichTextDetailedDto } from '../../models/custom-rich-text-detaile
 import { AlertService } from '../../services/alert.service';
 import { Alert } from '../../models/alert';
 import { AlertContext } from '../../models/enums/alert-context.enum';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import * as ClassicEditor from 'src/assets/main/ckeditor/ckeditor.js';
 import { environment } from 'src/environments/environment';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { CkEditorUploadAdapter } from '../../CkEditorUploadAdapter';
