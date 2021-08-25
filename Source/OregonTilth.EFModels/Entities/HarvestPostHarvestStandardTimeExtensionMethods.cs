@@ -19,5 +19,17 @@ namespace OregonTilth.EFModels.Entities
                 StandardTimePerUnit = harvestPostHarvestStandardTime.StandardTimePerUnit
             };
         }
+
+        public static AvailableCropYieldInformationDto AsAvailableCropYieldInformationDto(
+            this HarvestPostHarvestStandardTime harvestPostHarvestStandardTime)
+        {
+            return new AvailableCropYieldInformationDto()
+            {
+                CropID = harvestPostHarvestStandardTime.CropID,
+                CropName = harvestPostHarvestStandardTime.Crop.CropName,
+                CropUnitID = harvestPostHarvestStandardTime.CropUnitID,
+                CropUnitName = harvestPostHarvestStandardTime.CropUnit.CropUnitName
+            };
+        }
     }
 }

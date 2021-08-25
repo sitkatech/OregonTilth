@@ -19,6 +19,7 @@ import { CropYieldInformationCreateDto } from 'src/app/shared/models/forms/crop-
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { AgGridAngular } from 'ag-grid-angular';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { AvailableCropYieldInformationDto } from 'src/app/shared/models/forms/crop-yield-information/available-crop-yield-information-dto';
 
 @Component({
   selector: 'crop-yield-information',
@@ -51,6 +52,9 @@ export class CropYieldInformationComponent implements OnInit {
 
   public getCropYieldInformationDtosRequest: any;
   public cropYieldInformations: CropYieldInformationSummaryDto[];
+  public availableCropCropUnitCombinationsRequest: any;
+  public availableCropCropUnitCombinations: AvailableCropYieldInformationDto[];
+  public selectedAvailableCropCropUnitCombination: AvailableCropYieldInformationDto;
 
   public getCropsRequest: any;
   public crops: CropDto[];
@@ -80,15 +84,22 @@ export class CropYieldInformationComponent implements OnInit {
     this.getCropsRequest = this.workbookService.getCrops(this.workbookID);
     this.getCropUnitsRequest = this.workbookService.getCropUnits(this.workbookID);
     this.getCropYieldInformationDtosRequest = this.workbookService.getCropYieldInformation(this.workbookID);
+    this.availableCropCropUnitCombinationsRequest = this.workbookService.getAvailableCropUnitCombinationsForCropYieldInformation(this.workbookID);
 
-    forkJoin([this.getWorkbookRequest, this.getCropsRequest, this.getCropUnitsRequest, this.getCropYieldInformationDtosRequest]).subscribe(([workbook, cropDtos, cropUnitDtos, cropYieldInfoDtos]: [WorkbookDto, CropDto[], CropUnitDto[], CropYieldInformationSummaryDto[]]) => {
+    forkJoin([this.getWorkbookRequest, this.getCropsRequest, this.getCropUnitsRequest, this.getCropYieldInformationDtosRequest, this.availableCropCropUnitCombinationsRequest]).subscribe(([workbook, cropDtos, cropUnitDtos, cropYieldInfoDtos, availableCropCropUnitCombinations]: [WorkbookDto, CropDto[], CropUnitDto[], CropYieldInformationSummaryDto[], AvailableCropYieldInformationDto[]]) => {
       this.workbook = workbook;
       this.crops = cropDtos;
       this.cropUnits = cropUnitDtos;
       this.cropYieldInformations = cropYieldInfoDtos;
+      this.availableCropCropUnitCombinations = availableCropCropUnitCombinations;
       this.defineColumnDefs();
       this.cdr.markForCheck();
     });
+  }
+
+  selectedCropCropUnit() {
+    this.model.CropID = this.selectedAvailableCropCropUnitCombination.CropID;
+    this.model.CropUnitID = this.selectedAvailableCropCropUnitCombination.CropUnitID;
   }
 
   defineColumnDefs() {

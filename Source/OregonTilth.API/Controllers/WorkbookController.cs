@@ -1147,6 +1147,14 @@ namespace OregonTilth.API.Controllers
 
         #region "Crop Yield Information"
 
+        [HttpGet("workbooks/{workbookID}/forms/available-crop-yield-information")]
+        [LoggedInUnclassifiedFeature]
+        public ActionResult<IEnumerable<AvailableCropYieldInformationDto>> AvailableCropUnitCombinationsForCropYieldInformation([FromRoute] int workbookID)
+        {
+            var cropYieldInformations = CropYieldInformation.GetAvailableCropCropUnitCombinationsByWorkbookID(_dbContext, workbookID);
+            return Ok(cropYieldInformations);
+        }
+
         [HttpGet("workbooks/{workbookID}/forms/crop-yield-information")]
         [LoggedInUnclassifiedFeature]
         public ActionResult<IEnumerable<CropYieldInformationDto>> GetCropYieldInformations([FromRoute] int workbookID)

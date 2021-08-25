@@ -439,6 +439,11 @@ export class WorkbookService {
         return this.apiService.postToApi(route, createDto);
     }
 
+    getAvailableCropUnitCombinationsForCropYieldInformation(workbookID: number): Observable<CropYieldInformationSummaryDto[]> {
+        let route = `workbooks/${workbookID}/forms/available-crop-yield-information`;
+        return this.apiService.getFromApi(route);
+    }
+
     getCropYieldInformation(workbookID: number): Observable<CropYieldInformationSummaryDto[]> {
         let route = `workbooks/${workbookID}/forms/crop-yield-information`;
         return this.apiService.getFromApi(route);

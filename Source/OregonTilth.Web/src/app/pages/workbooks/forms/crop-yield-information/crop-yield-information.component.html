@@ -25,6 +25,15 @@
             <form *ngIf=(model) (ngSubmit)="onSubmit(cropYieldInformationForm)" #cropYieldInformationForm="ngForm">
               <div class="row">
                 <div class="form-group col-md-4">
+                  <label class="required">Crop, Crop Unit</label>
+                  <select name="CropCropUnit" class="form-control" [(ngModel)]="selectedAvailableCropCropUnitCombination" (change)="selectedCropCropUnit($event.target.value)" required>
+                    <option value=""></option>
+                    <option *ngFor="let option of availableCropCropUnitCombinations" [ngValue]="option">
+                      {{option.CropName}}, {{option.CropUnitName}}
+                    </option>
+                  </select>
+                </div>
+                <!-- <div class="form-group col-md-4">
                   <label class="required">Crop</label>
                   <select name="CropID" class="form-control" [(ngModel)]="model.CropID" required>
                     <option value=""></option>
@@ -41,7 +50,7 @@
                       {{option.CropUnitName}}
                     </option>
                   </select>
-                </div>
+                </div> -->
                 <div class="form-group col-md-4">
                   <label class="required" for="">Price Per Crop Unit</label>
                   <input class="form-control" type="number" name="PricePerCropUnit" [(ngModel)]="model.PricePerCropUnit" required>

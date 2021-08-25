@@ -99,6 +99,18 @@ namespace OregonTilth.EFModels.Entities
             return cropYieldInformations.Select(x => x.AsSummaryDto());
         }
 
+        public static IQueryable<AvailableCropYieldInformationDto> GetAvailableCropCropUnitCombinationsByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
+        {
+            var harvestRecordsForWorkbook = dbContext.HarvestPostHarvestStandardTimes
+                .Include(x => x.Crop)
+                .Include(x => x.CropUnit)
+                .Where(x => 
+                    x.WorkbookID == workbookID 
+                    && x.HarvestTypeID == (int) HarvestTypeEnum.Harvest);
+            
+            return harvestRecordsForWorkbook.Select(x => x.AsAvailableCropYieldInformationDto());
+        }
+
         public static IQueryable<CropYieldInformationSummaryDto> GetDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
         {
             var cropYieldInformations = GetCropYieldInformationImpl(dbContext).Where(x => x.WorkbookID == workbookID);
