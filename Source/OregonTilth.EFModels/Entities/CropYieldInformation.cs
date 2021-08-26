@@ -119,14 +119,14 @@ namespace OregonTilth.EFModels.Entities
 
         public static IQueryable<CropCropUnitDashboardReportDto> GetCropCropUnitDashboardReportDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
         {
-            var cropYieldInformations = GetCropYieldInformationForReportImpl(dbContext).Where(x => x.WorkbookID == workbookID);
+            var cropYieldInformations = GetCropYieldInformationForReportImpl(dbContext).Where(x => x.WorkbookID == workbookID && x.Crop.CropSpecificInfos.Count > 0);
             return cropYieldInformations.Select(x => x.AsDashbardReportDto());
         }
 
         // LaborHoursDashboardReportDto
         public static IEnumerable<LaborHoursDashboardReportDto> GetLaborHoursDashboardReportDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
         {
-            var cropYieldInformations = GetCropYieldInformationForReportImpl(dbContext).Where(x => x.WorkbookID == workbookID).ToList();
+            var cropYieldInformations = GetCropYieldInformationForReportImpl(dbContext).Where(x => x.WorkbookID == workbookID && x.Crop.CropSpecificInfos.Count > 0).ToList();
             var fieldLaborActivityCategories = FieldLaborActivityCategory.List(dbContext);
             var allHarvestTypes = HarvestType.List(dbContext);
 
@@ -136,7 +136,7 @@ namespace OregonTilth.EFModels.Entities
         // VariableCostsDashboardReportDto
         public static IEnumerable<VariableCostsDashboardReportDto> GetVariableCostsDashboardReportDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
         {
-            var cropYieldInformations = GetCropYieldInformationForReportImpl(dbContext).Where(x => x.WorkbookID == workbookID).ToList();
+            var cropYieldInformations = GetCropYieldInformationForReportImpl(dbContext).Where(x => x.WorkbookID == workbookID && x.Crop.CropSpecificInfos.Count > 0).ToList();
 
             return cropYieldInformations.Select(x => x.AsVariableCostsReportDto());
         }
