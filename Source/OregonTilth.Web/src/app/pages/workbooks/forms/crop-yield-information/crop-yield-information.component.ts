@@ -53,6 +53,7 @@ export class CropYieldInformationComponent implements OnInit {
   public getCropYieldInformationDtosRequest: any;
   public cropYieldInformations: CropYieldInformationSummaryDto[];
   public availableCropCropUnitCombinationsRequest: any;
+  public allAvailableCropCropUnitCombinations: AvailableCropYieldInformationDto[];
   public availableCropCropUnitCombinations: AvailableCropYieldInformationDto[];
   public selectedAvailableCropCropUnitCombination: AvailableCropYieldInformationDto;
 
@@ -91,11 +92,21 @@ export class CropYieldInformationComponent implements OnInit {
       this.crops = cropDtos;
       this.cropUnits = cropUnitDtos;
       this.cropYieldInformations = cropYieldInfoDtos;
-      this.availableCropCropUnitCombinations = availableCropCropUnitCombinations;
+      this.allAvailableCropCropUnitCombinations = availableCropCropUnitCombinations;
+      this.filterAvailableCombinations();
       this.defineColumnDefs();
       this.cdr.markForCheck();
     });
   }
+
+  filterAvailableCombinations() {
+    this.availableCropCropUnitCombinations = this.allAvailableCropCropUnitCombinations.filter(x => {
+      var alreadyAdded = this.cropYieldInformations.filter(y => y.Crop.CropID == x.CropID && y.CropUnit.CropUnitID == x.CropUnitID).length > 0;
+      return !alreadyAdded     
+    })
+    
+  }
+
 
   selectedCropCropUnit() {
     this.model.CropID = this.selectedAvailableCropCropUnitCombination.CropID;
@@ -120,12 +131,12 @@ export class CropYieldInformationComponent implements OnInit {
         valueGetter: params => {
           return params.data.Crop ? params.data.Crop.CropName : '';
         },
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: this.crops.map(x => x.CropName)
-        },
-        cellRendererFramework: EditableRendererComponent,
-        editable:true,
+        // cellEditor: 'agSelectCellEditor',
+        // cellEditorParams: {
+        //   values: this.crops.map(x => x.CropName)
+        // },
+        // cellRendererFramework: EditableRendererComponent,
+        //editable:true,
         sortable: true, 
         filter: true,
         resizable: true,
@@ -146,12 +157,12 @@ export class CropYieldInformationComponent implements OnInit {
         valueGetter: params => {
           return params.data.CropUnit ? params.data.CropUnit.CropUnitName : '';
         },
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: this.cropUnits.map(x => x.CropUnitName)
-        },
-        cellRendererFramework: EditableRendererComponent,
-        editable:true,
+        // cellEditor: 'agSelectCellEditor',
+        // cellEditorParams: {
+        //   values: this.cropUnits.map(x => x.CropUnitName)
+        // },
+        // cellRendererFramework: EditableRendererComponent,
+        // editable:true,
         sortable: true, 
         filter: true,
         resizable: true,
@@ -261,6 +272,7 @@ export class CropYieldInformationComponent implements OnInit {
     this.deleteCropYieldInfoRequest = this.workbookService.deleteCropYieldInformation(this.workbookID, cropYieldInformationID).subscribe(response => {
       var rowToRemove = this.gridApi.getRowNode(cropYieldInformationID.toString());
       this.gridApi.applyTransaction({remove:[rowToRemove.data]})
+      this.refreshData();
       this.cdr.detectChanges();
     }, error => {
 
@@ -324,6 +336,7 @@ export class CropYieldInformationComponent implements OnInit {
 
   resetForm() {
     this.model = new CropYieldInformationCreateDto({WorkbookID: this.workbookID});
+    this.refreshData();
   }
 
   onGridReady(params: any) {
