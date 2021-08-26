@@ -42,7 +42,7 @@
                   </ng-container>
 
                   <ng-container *ngIf="model.TransplantProductionInformationID && (!availableTransplantProductionLaborActivityDtos || availableTransplantProductionLaborActivityDtos.length < 1)">
-                    <p><em>No Labor Activities to enter</em></p>
+                    <p><em>No TP Labor Activities to enter. Make sure there is a Transplant Production Time Study for the TP Labor Activity and Tray Type, and that there is an entry for the Crop, Phase and Tray Type on the TP Info form.</em></p>
                   </ng-container>
 
                   <ng-container *ngIf="model.TransplantProductionInformationID && (availableTransplantProductionLaborActivityDtos && availableTransplantProductionLaborActivityDtos.length > 0)">

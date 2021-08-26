@@ -118,14 +118,15 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
             var existingTPStandardTime = dbContext
                 .TransplantProductionStandardTimes.Include(x => x.TimeStudies)
-                .Include(x => x.TransplantProductionLaborActivity).ThenInclude(x => x.TransplantProductionLaborActivityByCrops)
+                .Include(x => x.TransplantProductionLaborActivity)
+                .ThenInclude(x => x.TransplantProductionLaborActivityByCrops)
+                .Include(x => x.TransplantProductionTrayType)
                 .Single(x => x.TransplantProductionStandardTimeID == tpStandardTimeID);
 
             if (existingTPStandardTime.TransplantProductionLaborActivity.TransplantProductionLaborActivityByCrops.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Validation Error", Message = "Cannot delete a time study with a Labor Activity in use on the TP Labor Activity by Crop form." });
+                result.Add(new ErrorMessage() { Type = "Validation Error", Message = $"Cannot delete this Time Study because the TP Labor Activity \"{existingTPStandardTime.TransplantProductionLaborActivity.TransplantProductionLaborActivityName}\" and TP Tray Type \"{existingTPStandardTime.TransplantProductionTrayType.TransplantProductionTrayTypeName}\" is in use on the TP Labor by Crop form." });
             }
-
 
             return result;
         }
