@@ -151,8 +151,15 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
     var componentScope = this;
     this.columnDefs = [
       {
-        headerName: 'Crop', 
-        field: 'TransplantProductionInformation.Crop.CropName',
+        headerName: 'Crop, Phase, Tray Type', 
+        field: 'Crop',
+        valueGetter: params => {
+          var strings = [];
+          strings.push(params.data.TransplantProductionInformation.Crop.CropName )
+          strings.push(params.data.TransplantProductionInformation.Phase.PhaseDisplayName )
+          strings.push(params.data.TransplantProductionInformation.TransplantProductionTrayType.TransplantProductionTrayTypeName )
+          return strings.join(', ');
+        },
         editable: false,
         sortable: true, 
         filter: true,
@@ -161,7 +168,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
       {
         headerName: 'TP Labor Activity', 
         field: 'TransplantProductionLaborActivity',
-        editable: true,
+        
         valueSetter: params => {
           params.data.TransplantProductionLaborActivity = this.transplantProductionLaborActivityDtos.find(element => {
             return element.TransplantProductionLaborActivityName == params.newValue;
@@ -171,19 +178,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         valueGetter: params => {
           return params.data.TransplantProductionLaborActivity.TransplantProductionLaborActivityName;
         },
-        // cellEditor: 'agSelectCellEditor',
-        // cellEditorParams: {
-        //   values: this.transplantProductionLaborActivityDtos.map(x => x.TransplantProductionLaborActivityName)
-        // },
-        // cellRendererFramework: EditableRendererComponent,
-        sortable: true, 
-        filter: true,
-        resizable: true
-      },
-      {
-        headerName: 'Phase', 
-        field: 'TransplantProductionInformation.Phase.PhaseDisplayName',
-        editable: false,
+        
         sortable: true, 
         filter: true,
         resizable: true
@@ -195,6 +190,8 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         cellEditor: 'agLargeTextCellEditor',
         cellRendererFramework: EditableRendererComponent,
         resizable: true,
+        sortable: true,
+        filter: true,
         cellEditorParams: {
           maxLength: 2000,
         }
