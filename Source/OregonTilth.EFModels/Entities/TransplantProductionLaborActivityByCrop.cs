@@ -20,6 +20,9 @@ namespace OregonTilth.EFModels.Entities
 
             // very loose (non-existent even) validation here. It's mostly handled on the create event to create n number of rows based on what they are etering in bulk
 
+            
+
+
             return result;
         }
 
@@ -86,10 +89,22 @@ namespace OregonTilth.EFModels.Entities
 
             foreach (var transplantProductionLaborActivityDto in transplantProductionLaborByCropCreateDto.TransplantProductionLaborActivities)
             {
+                var tpInfo = dbContext.TransplantProductionInformations.Single(x =>
+                    x.TransplantProductionInformationID ==
+                    transplantProductionLaborByCropCreateDto.TransplantProductionInformationID);
+                
+                // get tray type from TP info for crop + phase
+                var trayTypeID = tpInfo.TransplantProductionTrayTypeID;
+                // make sure there is a TP time study for the tray type and labor activity
+                var tpTimeStudy = dbContext.TransplantProductionStandardTimes.SingleOrDefault(x =>
+                    x.TransplantProductionTrayTypeID == trayTypeID && x.TransplantProductionLaborActivityID ==
+                    transplantProductionLaborActivityDto.TransplantProductionLaborActivityID);
+                    
                 if (!currentTpLaborByCrops.Any(x =>
                     x.TransplantProductionLaborActivityID ==
                     transplantProductionLaborActivityDto.TransplantProductionLaborActivityID
-                    && x.TransplantProductionInformationID == transplantProductionLaborByCropCreateDto.TransplantProductionInformationID))
+                    && x.TransplantProductionInformationID == transplantProductionLaborByCropCreateDto.TransplantProductionInformationID 
+                    ) && tpTimeStudy != null)
                 {
                     var tpLaborByCrop = new TransplantProductionLaborActivityByCrop
                     {

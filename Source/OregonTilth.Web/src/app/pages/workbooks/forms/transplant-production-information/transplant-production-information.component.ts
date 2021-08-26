@@ -141,11 +141,11 @@ export class TransplantProductionInformationComponent implements OnInit {
         valueGetter: params => {
           return params.data.Crop.CropName;
         },
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: this.cropDtos.map(x => x.CropName)
-        },
-        cellRendererFramework: EditableRendererComponent,
+        // cellEditor: 'agSelectCellEditor',
+        // cellEditorParams: {
+        //   values: this.cropDtos.map(x => x.CropName)
+        // },
+        // cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
         resizable: true,
@@ -164,11 +164,11 @@ export class TransplantProductionInformationComponent implements OnInit {
         valueGetter: params => {
           return params.data.Phase.PhaseDisplayName;
         },
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: this.phaseDtos.map(x => x.PhaseDisplayName)
-        },
-        cellRendererFramework: EditableRendererComponent,
+        // cellEditor: 'agSelectCellEditor',
+        // cellEditorParams: {
+        //   values: this.phaseDtos.map(x => x.PhaseDisplayName)
+        // },
+        // cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
         resizable: true,
@@ -188,11 +188,11 @@ export class TransplantProductionInformationComponent implements OnInit {
         valueGetter: params => {
           return params.data.TransplantProductionTrayType.TransplantProductionTrayTypeName;
         },
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: this.tpTrayTypeDtos.map(x => x.TransplantProductionTrayTypeName)
-        },
-        cellRendererFramework: EditableRendererComponent,
+        // cellEditor: 'agSelectCellEditor',
+        // cellEditorParams: {
+        //   values: this.tpTrayTypeDtos.map(x => x.TransplantProductionTrayTypeName)
+        // },
+        // cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
         resizable: true,

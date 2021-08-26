@@ -25,23 +25,35 @@
             <form *ngIf=(model) (ngSubmit)="onSubmit(transplantProductionLaborActivityForm)" #transplantProductionLaborActivityForm="ngForm">
               <div class="row">
                 
-                <div class="form-group col-md-4">
-                  <label class="required">Crop and Phase</label>
-                  <select name="TransplantProductionInformationID" class="form-control" [(ngModel)]="model.TransplantProductionInformationID" required>
+                <div class="form-group col-md-6">
+                  <label class="required">Crop, Phase, Tray Type</label>
+                  <select name="TransplantProductionInformationID" class="form-control" [(ngModel)]="model.TransplantProductionInformationID" (change)="updateAvailableLaborActivities()" required>
                     <option value=""></option>
                     <option *ngFor="let option of transplantProductionInformationDtos" [value]="option.TransplantProductionInformationID">
-                      {{option.Crop.CropName}}, {{option.Phase.PhaseDisplayName}}
+                      {{option.Crop.CropName}}, {{option.Phase.PhaseDisplayName}}, {{option.TransplantProductionTrayType.TransplantProductionTrayTypeName}}
                     </option>
                   </select>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                   <label class="required">TP Labor Activity</label>
-                  <ng-multiselect-dropdown
-                    [settings]="dropdownSettings"
-                    [data]="transplantProductionLaborActivityDtos"
-                    [(ngModel)]="model.TransplantProductionLaborActivities"
-                    [ngModelOptions]="{standalone: true}">
-                  </ng-multiselect-dropdown>
+                  <ng-container *ngIf="!model.TransplantProductionInformationID">
+                    <p><em>Please select a Crop, Phase, Tray Type</em></p>
+                    
+                  </ng-container>
+
+                  <ng-container *ngIf="model.TransplantProductionInformationID && (!availableTransplantProductionLaborActivityDtos || availableTransplantProductionLaborActivityDtos.length < 1)">
+                    <p><em>No Labor Activities to enter</em></p>
+                  </ng-container>
+
+                  <ng-container *ngIf="model.TransplantProductionInformationID && (availableTransplantProductionLaborActivityDtos && availableTransplantProductionLaborActivityDtos.length > 0)">
+                    <ng-multiselect-dropdown
+                      [settings]="dropdownSettings"
+                      [data]="availableTransplantProductionLaborActivityDtos"
+                      [(ngModel)]="model.TransplantProductionLaborActivities"
+                      [ngModelOptions]="{standalone: true}" required>
+                    </ng-multiselect-dropdown>
+                  </ng-container>
+                  
                 </div>
               </div>
               <div class="row">
@@ -55,7 +67,7 @@
                   <i class="fas fa-bolt"></i> Required field
                 </div>
                 <div class="col-sm text-right">
-                  <button type="submit" class="btn btn-fresca" [disabled]="!transplantProductionLaborActivityForm.form.valid || isLoadingSubmit">
+                  <button type="submit" class="btn btn-fresca" [disabled]="!transplantProductionLaborActivityForm.form.valid || isLoadingSubmit || !model.TransplantProductionLaborActivities">
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                     Add <span *ngIf="model.TransplantProductionLaborActivities && model.TransplantProductionLaborActivities.length > 0">({{model.TransplantProductionLaborActivities.length}})</span>
                   </button>

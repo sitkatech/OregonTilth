@@ -176,6 +176,10 @@ namespace OregonTilth.EFModels.Entities
 
             var tpInfoToValidateDeletion = dbContext
                 .TransplantProductionInformations
+                .Include(x => x.TransplantProductionLaborActivityByCrops)
+                .Include(x => x.Crop)
+                .Include(x => x.Phase)
+                .Include(x => x.TransplantProductionTrayType)
                 .FirstOrDefault(x => x.TransplantProductionInformationID == transplantProductionInformationID);
 
 
@@ -188,6 +192,13 @@ namespace OregonTilth.EFModels.Entities
                 {
                     result.Add(new ErrorMessage() { Type = "Phase", Message = "Cannot delete an entry with the \"Seeding\" phase when there is an entry for the same crop with the \"Potting Up\" phase." });
                 }
+            }
+
+            if (tpInfoToValidateDeletion.TransplantProductionLaborActivityByCrops.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "In Use", Message = $"Cannot delete because the Crop, Phase, and Tray Type combination of " +
+                                                                           $"\"{tpInfoToValidateDeletion.Crop.CropName}, {tpInfoToValidateDeletion.Phase.PhaseDisplayName}, {tpInfoToValidateDeletion.TransplantProductionTrayType.TransplantProductionTrayTypeName}\"" +
+                                                                           $" is in use on the TP Labor By Crop form." });
             }
 
             

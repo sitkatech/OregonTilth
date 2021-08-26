@@ -22,6 +22,8 @@ import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/edi
 import { TransplantProductionInformationDto } from 'src/app/shared/models/generated/transplant-production-information-dto';
 import { AgGridAngular } from 'ag-grid-angular';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { TransplantProductionStandardTimeCreateDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-create-dto';
+import { TransplantProductionStandardTimeDto } from 'src/app/shared/models/generated/transplant-production-standard-time-dto';
 @Component({
   selector: 'transplant-production-labor-by-crop',
   templateUrl: './transplant-production-labor-by-crop.component.html',
@@ -54,7 +56,11 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
   public transplantProductionInformationDtos: TransplantProductionInformationDto[];
   private getTransplantProductionInformationDtosRequest: any;
 
+  public transplantProductionStandardTimeDtos: TransplantProductionStandardTimeDto[];
+  private getTransplantProductionStandardTimeDtosRequest: any;
+
   public transplantProductionLaborActivityDtos: TransplantProductionLaborActivityDto[];
+  public availableTransplantProductionLaborActivityDtos: TransplantProductionLaborActivityDto[];
   private getTransplantProductionLaborActivityDtosRequest: any;
 
   private updateTransplantProductionLaborByCropRequest: any;
@@ -75,17 +81,45 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
     });
   }
 
+  updateAvailableLaborActivities() {
+
+    var selectedTpInfo = this.transplantProductionInformationDtos.find(x => x.TransplantProductionInformationID == this.model.TransplantProductionInformationID);
+
+    if(!selectedTpInfo) {
+      this.availableTransplantProductionLaborActivityDtos = [];
+      return;
+    }
+
+    this.availableTransplantProductionLaborActivityDtos = this.transplantProductionLaborActivityDtos.filter(x => {
+      
+      var standardTimes = this.transplantProductionStandardTimeDtos.filter(y => {
+        return y.TransplantProductionTrayType.TransplantProductionTrayTypeID == selectedTpInfo.TransplantProductionTrayType.TransplantProductionTrayTypeID
+      })
+
+      var laborActivityIDs = standardTimes.map(y => y.TransplantProductionLaborActivity.TransplantProductionLaborActivityID);
+      var alreadyAddedLaborActivityIDsForCropAndPhase = this.transplantProductionLaborByCropDtos.filter(x => 
+        x.TransplantProductionInformation.Crop.CropID == selectedTpInfo.Crop.CropID 
+        && x.TransplantProductionInformation.Phase.PhaseID == selectedTpInfo.Phase.PhaseID)
+        .map(y => y.TransplantProductionLaborActivity.TransplantProductionLaborActivityID);
+      return laborActivityIDs.includes(x.TransplantProductionLaborActivityID) && !alreadyAddedLaborActivityIDsForCropAndPhase.includes(x.TransplantProductionLaborActivityID)
+    })
+  }
+
   private refreshData() {
     this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
     this.getTransplantProductionInformationDtosRequest = this.workbookService.getTransplantProductionInformationDtos(this.workbookID);
     this.getTransplantProductionLaborActivityDtosRequest = this.workbookService.getTransplantProductionLaborActivitiesFromTransplantProductionStandardTimes(this.workbookID);
     this.getTransplantProductionLaborByCropsRequest = this.workbookService.getTransplantProductionLaborByCrops(this.workbookID);
 
-    forkJoin([this.getWorkbookRequest, this.getTransplantProductionInformationDtosRequest, this.getTransplantProductionLaborActivityDtosRequest, this.getTransplantProductionLaborByCropsRequest]).subscribe(([workbookDto, transplantProductionInformationDtos, transplantProductionLaborActivityDtos, transplantProductionLaborByCrops]: [WorkbookDto, TransplantProductionInformationDto[], TransplantProductionLaborActivityDto[], TransplantProductionLaborActivityByCropDto[]]) => {
+    this.getTransplantProductionStandardTimeDtosRequest = this.workbookService.getTransplantProductionStandardTimes(this.workbookID);
+
+    forkJoin([this.getWorkbookRequest, this.getTransplantProductionInformationDtosRequest, this.getTransplantProductionLaborActivityDtosRequest, this.getTransplantProductionLaborByCropsRequest, this.getTransplantProductionStandardTimeDtosRequest]).subscribe(([workbookDto, transplantProductionInformationDtos, transplantProductionLaborActivityDtos, transplantProductionLaborByCrops, standardTimes]: [WorkbookDto, TransplantProductionInformationDto[], TransplantProductionLaborActivityDto[], TransplantProductionLaborActivityByCropDto[], TransplantProductionStandardTimeDto[]]) => {
       this.workbook = workbookDto;
       this.transplantProductionInformationDtos =  transplantProductionInformationDtos;
       this.transplantProductionLaborActivityDtos = this.getUniqueTransplantProductionLaborActivityDtos(transplantProductionLaborActivityDtos);
+      this.transplantProductionStandardTimeDtos = standardTimes;
       this.transplantProductionLaborByCropDtos = transplantProductionLaborByCrops;
+      this.updateAvailableLaborActivities();
       this.defineColumnDefs();
       this.cdr.markForCheck();
     });
@@ -137,11 +171,11 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         valueGetter: params => {
           return params.data.TransplantProductionLaborActivity.TransplantProductionLaborActivityName;
         },
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: this.transplantProductionLaborActivityDtos.map(x => x.TransplantProductionLaborActivityName)
-        },
-        cellRendererFramework: EditableRendererComponent,
+        // cellEditor: 'agSelectCellEditor',
+        // cellEditorParams: {
+        //   values: this.transplantProductionLaborActivityDtos.map(x => x.TransplantProductionLaborActivityName)
+        // },
+        // cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
         resizable: true
@@ -200,6 +234,8 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
   deleteTransplantProductionLaborByCrop(transplantProductionLaborByCropID: number) {
     this.deleteTransplantProductionLaborByCropRequest = this.workbookService.deleteTransplantProductionLaborByCrop(this.workbookID, transplantProductionLaborByCropID).subscribe(transplantProductionLaborByCropDtos => {
       this.transplantProductionLaborByCropDtos = transplantProductionLaborByCropDtos;
+      this.resetForm();
+      this.refreshData();
       this.alertService.pushAlert(new Alert("Successfully deleted Transplant Production Labor By Crop", AlertContext.Success));
       this.cdr.detectChanges();
       this.gridApi.redrawRows();
@@ -261,6 +297,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
   onSubmit(transplantProductionLaborActivityForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
     this.addTransplantProductionLaborByCropRequest = this.workbookService.addTransplantProductionLaborByCrop(this.model).subscribe(response => {
+      this.transplantProductionLaborByCropDtos.push(...response);
       var transactionRows = this.gridApi.applyTransaction({add: response });
       this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.isLoadingSubmit = false;
@@ -270,6 +307,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         this.alertService.pushAlert(new Alert(`No Transplant Production Labor By Crop was added.`, AlertContext.Info));
       }
       this.resetForm();
+      
       this.cdr.detectChanges();
       
     }, error => { 
@@ -280,6 +318,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
 
   resetForm() {
     this.model = new TransplantProductionLaborByCropCreateDto({WorkbookID: this.workbookID});
+    this.updateAvailableLaborActivities();
   }
 
   public exportToCsv() {
