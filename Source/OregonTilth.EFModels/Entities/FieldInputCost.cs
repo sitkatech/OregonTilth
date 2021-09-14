@@ -22,7 +22,7 @@ namespace OregonTilth.EFModels.Entities
             var userFieldInputsByCostsForWorkbook = GetDtoListByWorkbookID(dbContext, fieldInputByCostCreateDto.WorkbookID).ToList();
             if (userFieldInputsByCostsForWorkbook.Any(x => x.FieldInputCostName.ToLower() == fieldInputByCostCreateDto.FieldInputCostName.ToLower()))
             {
-                result.Add(new ErrorMessage() { Type = "Field Input By Cost Name", Message = "Field Input Cost Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Field Input By Cost Name", Message = "This Field Input name is already being used. Use a different Field Input name." });
             }
 
             if (string.IsNullOrEmpty(fieldInputByCostCreateDto.FieldInputCostName))
@@ -46,7 +46,7 @@ namespace OregonTilth.EFModels.Entities
             if (userFieldInputCostsForWorkbook.Any(x => x.FieldInputCostName.ToLower() == fieldInputByCostDto.FieldInputCostName.ToLower() 
             && fieldInputByCostDto.FieldInputCostID != x.FieldInputCostID))
             {
-                result.Add(new ErrorMessage() { Type = "Field Input By Cost Name", Message = "Field Input Cost Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Field Input By Cost Name", Message = "This Field Input name is already being used. Use a different Field Input name." });
             }
 
             if (string.IsNullOrEmpty(fieldInputByCostDto.FieldInputCostName))

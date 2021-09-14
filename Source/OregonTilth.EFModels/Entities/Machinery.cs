@@ -22,7 +22,7 @@ namespace OregonTilth.EFModels.Entities
             var userMachineryForWorkbook = GetDtoListByWorkbookID(dbContext, machineryUpsertDto.WorkbookID).ToList();
             if (userMachineryForWorkbook.Any(x => x.MachineryName.ToLower() == machineryUpsertDto.MachineryName.ToLower()))
             {
-                result.Add(new ErrorMessage() { Type = "Machinery Name", Message = "Machinery Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Machinery Name", Message = "This Machinery name is already being used. Use a different Machinery name." });
             }
 
             if (string.IsNullOrEmpty(machineryUpsertDto.MachineryName))
@@ -46,7 +46,7 @@ namespace OregonTilth.EFModels.Entities
             if (userMachineriesForWorkbook.Any(x => x.MachineryName.ToLower() == machineryDto.MachineryName.ToLower() 
             && machineryDto.MachineryID != x.MachineryID))
             {
-                result.Add(new ErrorMessage() { Type = "Machinery Name", Message = "Machinery Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Machinery Name", Message = "This Machinery name is already being used. Use a different Machinery name." });
             }
 
             if (string.IsNullOrEmpty(machineryDto.MachineryName))

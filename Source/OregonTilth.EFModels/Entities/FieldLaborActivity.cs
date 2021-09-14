@@ -23,7 +23,7 @@ namespace OregonTilth.EFModels.Entities
             var userFieldLaborActivitiesForWorkbook = GetDtoListByWorkbookID(dbContext, fieldLaborActivityUpsertDto.WorkbookID).ToList();
             if (userFieldLaborActivitiesForWorkbook.Any(x => x.FieldLaborActivityName.ToLower() == fieldLaborActivityUpsertDto.FieldLaborActivityName.ToLower()))
             {
-                result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "Field Labor Activity Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "This Field Labor Activity name is already being used. Use a different Field Labor Activity name." });
             }
 
             if (string.IsNullOrEmpty(fieldLaborActivityUpsertDto.FieldLaborActivityName))
@@ -48,7 +48,7 @@ namespace OregonTilth.EFModels.Entities
             if (userFieldLaborActivitiesForWorkbook.Any(x => x.FieldLaborActivityName.ToLower() == fieldLaborActivityDto.FieldLaborActivityName.ToLower() 
             && fieldLaborActivityDto.FieldLaborActivityID != x.FieldLaborActivityID))
             {
-                result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "Field Labor Activity Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "This Field Labor Activity name is already being used. Use a different Field Labor Activity name." });
             }
 
             if (string.IsNullOrEmpty(fieldLaborActivityDto.FieldLaborActivityName))
