@@ -120,9 +120,21 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.TimeStudies);
         }
 
-        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int fieldStandardTimeID)
+        public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int harvestPostHarvestStandardTimeID)
         {
             var result = new List<ErrorMessage>();
+
+            var currentHarvestPostHarvestStandardTime = GetByID(dbContext, harvestPostHarvestStandardTimeID);
+            var cropYieldInfos =
+                CropYieldInformation.GetDtoListByWorkbookID(dbContext,
+                    currentHarvestPostHarvestStandardTime.WorkbookID).ToList();
+
+            if (cropYieldInfos.Any(x =>
+                x.Crop.CropID == currentHarvestPostHarvestStandardTime.CropID &&
+                x.CropUnit.CropUnitID == currentHarvestPostHarvestStandardTime.CropUnitID) && currentHarvestPostHarvestStandardTime.HarvestTypeID == (int)HarvestTypeEnum.Harvest)
+            {
+                result.Add(new ErrorMessage() { Type = "Harvest Post Harvest Standard Time", Message = $"Cannot delete this Harvest Time Study because it is used on the Crop Yield Info form." });
+            }
 
             return result;
         }
