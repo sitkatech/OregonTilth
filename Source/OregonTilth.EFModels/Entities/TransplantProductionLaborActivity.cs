@@ -123,7 +123,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (tpLaborActivity.TransplantProductionLaborActivityByCrops.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity", Message = "Cannot delete a TP Labor Activity that has TP Labor By Crop entries." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity", Message = "Cannot delete a TP Labor Activity because it is used on the TP Labor by Crop form." });
             }
 
             return result;

@@ -114,7 +114,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (existingRecord.TransplantProductionInputCosts.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Input", Message = "Cannot delete an input that has Transplant Production Input Cost data." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Input", Message = $"Cannot delete '{existingRecord.TransplantProductionInputName} because is is used on the TP Input Costs form." });
             }
 
             return result;
