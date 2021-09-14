@@ -114,7 +114,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (cropUnit.HarvestPostHarvestStandardTimes.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Crop Unit", Message = "Cannot delete a Crop Unit that has Harvest/Post-Harvest time study data." });
+                result.Add(new ErrorMessage() { Type = "Crop Unit", Message = $"Cannot delete '{cropUnit.CropUnitName}' because it is used on the Harvest/Post Harvest Time Studies form." });
             }
 
             return result;
