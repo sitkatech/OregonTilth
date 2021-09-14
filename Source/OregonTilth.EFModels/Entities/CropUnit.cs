@@ -109,7 +109,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (cropUnit.CropYieldInformations.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Crop Unit", Message = "Cannot delete a Crop Unit that has Crop Yield Information." });
+                result.Add(new ErrorMessage() { Type = "Crop Unit", Message = $"Cannot delete '{cropUnit.CropUnitName}' because it is used on the Crop Yield Info form." });
             }
 
             if (cropUnit.HarvestPostHarvestStandardTimes.Any())
