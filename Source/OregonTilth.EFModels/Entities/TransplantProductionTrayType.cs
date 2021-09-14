@@ -121,15 +121,15 @@ namespace OregonTilth.EFModels.Entities
             var transplantProductionTrayType = GetByID(dbContext, transplantProductionTrayTypeID);
             if (transplantProductionTrayType.TransplantProductionInformations.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = $"Cannot delete '{transplantProductionTrayType.TransplantProductionTrayTypeName}' because it is used on the Transplant Production Information form." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = $"Cannot delete '{transplantProductionTrayType.TransplantProductionTrayTypeName}' because it is used on the TP Info form." });
             }
             if (transplantProductionTrayType.TransplantProductionInputCosts.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = $"Cannot delete '{transplantProductionTrayType.TransplantProductionTrayTypeName}' because it is used on the Transplant Production Input Costs form." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = $"Cannot delete '{transplantProductionTrayType.TransplantProductionTrayTypeName}' because it is used on the TP Input Costs form." });
             }
             if (transplantProductionTrayType.TransplantProductionStandardTimes.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = $"Cannot delete '{transplantProductionTrayType.TransplantProductionTrayTypeName}' because it is used on the Transplant Production Standard Times form." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = $"Cannot delete '{transplantProductionTrayType.TransplantProductionTrayTypeName}' because it is used on the Transplant Production Time Studies form." });
             }
 
 

@@ -135,7 +135,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (existingFieldLaborActivity.FieldStandardTimes.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Field Labor Activity", Message = "Cannot delete a Field Labor Activity that has Field Standard Time data." });
+                result.Add(new ErrorMessage() { Type = "Field Labor Activity", Message = "Cannot delete a Field Labor Activity because it is used on the Field Labor Time Studies form." });
             }
 
             return result;
