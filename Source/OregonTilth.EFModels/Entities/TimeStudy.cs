@@ -25,21 +25,21 @@ namespace OregonTilth.EFModels.Entities
                 if (upsertDto.FieldStandardTimeID.HasValue)
                 {
                     typeName = "Total Minutes";
-                    message = "Total Minutes must be greater than 0.";
+                    message = "Total Minutes must be greater than zero.";
                 }else if (upsertDto.HarvestPostHarvestStandardTimeID.HasValue)
                 {
                     typeName = "Total Minutes";
-                    message = "Total Minutes must be greater than 0.";
+                    message = "Total Minutes must be greater than zero.";
                 }
                 else if (upsertDto.TransplantProductionStandardTimeID.HasValue)
                 {
                     typeName = "Total Minutes";
-                    message = "Total Minutes must be greater than 0.";
+                    message = "Total Minutes must be greater than zero.";
                 }
                 else
                 {
                     typeName = "Duration";
-                    message = "Duration must be greater than 0.";
+                    message = "Duration must be greater than zero.";
                 }
 
                 result.Add(new ErrorMessage() { Type = typeName, Message = message });
@@ -53,22 +53,22 @@ namespace OregonTilth.EFModels.Entities
                 if (upsertDto.FieldStandardTimeID.HasValue)
                 {
                     typeName = "Total Field Units";
-                    message = "Total Field Units must be greater than 0.";
+                    message = "Total Field Units must be greater than zero.";
                 }
                 else if (upsertDto.HarvestPostHarvestStandardTimeID.HasValue)
                 {
                     typeName = "Total Field Units";
-                    message = "Total Field Units must be greater than 0.";
+                    message = "Total Field Units must be greater than zero.";
                 }
                 else if (upsertDto.TransplantProductionStandardTimeID.HasValue)
                 {
                     typeName = "Total Number Of Trays";
-                    message = "Total Number Of Trays must be greater than 0.";
+                    message = "Total Number Of Trays must be greater than zero.";
                 }
                 else
                 {
                     typeName = "Units";
-                    message = "Total Units must be greater than 0.";
+                    message = "Total Units must be greater than zero.";
                 }
                 result.Add(new ErrorMessage() { Type = typeName, Message = message });
             }

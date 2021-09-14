@@ -38,7 +38,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (fieldLaborByCropDto.Occurrences != null && Math.Round((decimal)fieldLaborByCropDto.Occurrences, 4) <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Occurrences", Message = "Occurrences must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Occurrences", Message = "Occurrences must be greater than zero." });
             }
             
             return result;

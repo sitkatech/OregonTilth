@@ -42,7 +42,7 @@ namespace OregonTilth.EFModels.Entities
             if (transplantProductionLaborActivityByCropDto.Occurrences != null 
                 && Math.Round((decimal) transplantProductionLaborActivityByCropDto.Occurrences, 4) <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Occurrences", Message = "Occurrences must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Occurrences", Message = "Occurrences must be greater than zero." });
             }
 
             return result;

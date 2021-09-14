@@ -101,17 +101,17 @@ namespace OregonTilth.EFModels.Entities
 
             if (workbookDto.AverageHourlyWage <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Average Hourly Wage", Message = "Average Hourly Wage must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Average Hourly Wage", Message = "Average Hourly Wage must be greater than zero." });
             }
 
             if (workbookDto.StandardUnitOfSpaceLength <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Standard Unit of Space Length", Message = "Standard Unit of Space Length must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Standard Unit of Space Length", Message = "Standard Unit of Space Length must be greater than zero." });
             }
 
             if (workbookDto.StandardUnitOfSpaceWidth <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Standard Unit of Space Width", Message = "Standard Unit of Space Width must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Standard Unit of Space Width", Message = "Standard Unit of Space Width must be greater than zero." });
             }
 
             return result;

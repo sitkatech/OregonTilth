@@ -32,7 +32,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (fieldInputByCostCreateDto.CostPerFieldUnit <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Cost Per Field Unit", Message = "Cost per Field Unit must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Cost Per Field Unit", Message = "Cost per Field Unit must be greater than zero." });
             }
 
             return result;
@@ -56,7 +56,7 @@ namespace OregonTilth.EFModels.Entities
 
             if(fieldInputByCostDto.CostPerFieldUnit <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Cost Per Field Unit", Message = "Cost per Field Unit must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Cost Per Field Unit", Message = "Cost per Field Unit must be greater than zero." });
             }
 
             return result;

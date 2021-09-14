@@ -32,7 +32,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (transplantProductionInputCostCreateDto.CostPerTray <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Cost Per Tray", Message = "Cost per Tray must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Cost Per Tray", Message = "Cost per Tray must be greater than zero." });
             }
 
             return result;
@@ -55,7 +55,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (transplantProductionInputCostDto.CostPerTray <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Cost Per Tray", Message = "Cost per Tray must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Cost Per Tray", Message = "Cost per Tray must be greater than zero." });
             }
 
             return result;
