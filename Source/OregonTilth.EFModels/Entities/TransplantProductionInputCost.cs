@@ -27,7 +27,7 @@ namespace OregonTilth.EFModels.Entities
                 && x.TransplantProductionInput.TransplantProductionInputID ==
                 transplantProductionInputCostCreateDto.TransplantProductionInputID))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Input Cost", Message = "Entries must be unique per Tray Type and Input within a workbook." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Input Cost", Message = "You've already entered this TP Input Costs for this TP Tray Type and TP Input combination." });
             }
 
             if (transplantProductionInputCostCreateDto.CostPerTray <= 0)
@@ -50,7 +50,7 @@ namespace OregonTilth.EFModels.Entities
                 transplantProductionInputCostDto.TransplantProductionInput.TransplantProductionInputID
                 && x.TransplantProductionInputCostID != transplantProductionInputCostDto.TransplantProductionInputCostID))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Input Cost", Message = "Entries must be unique per Tray Type and Input within a workbook." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Input Cost", Message = "You've already entered this TP Input Costs for this TP Tray Type and TP Input combination." });
             }
 
             if (transplantProductionInputCostDto.CostPerTray <= 0)

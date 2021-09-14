@@ -29,7 +29,7 @@ namespace OregonTilth.EFModels.Entities
                 && x.Phase.PhaseID == transplantProductionInformationCreateDto.PhaseID
                 ))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Information", Message = "Transplant Production Information must be unique per Crop, and Phase." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Information", Message = "You've already entered TP Info for this Crop and Phase combination." });
             }
 
 
@@ -81,7 +81,7 @@ namespace OregonTilth.EFModels.Entities
                 && x.TransplantProductionInformationID != transplantProductionInformationDto.TransplantProductionInformationID
                 ))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Information", Message = "Transplant Production Information must be unique per Crop, and Phase." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Information", Message = "You've already entered TP Info for this Crop and Phase combination." });
             }
 
             // usage rate between 0 - 100
