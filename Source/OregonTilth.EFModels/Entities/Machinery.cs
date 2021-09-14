@@ -27,7 +27,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (string.IsNullOrEmpty(machineryUpsertDto.MachineryName))
             {
-                result.Add(new ErrorMessage() { Type = "Machinery Name", Message = "Machineries must have a name." });
+                result.Add(new ErrorMessage() { Type = "Machinery Name", Message = "Machinery must have a name." });
             }
 
             if (machineryUpsertDto.StandardMachineryCost <= 0)

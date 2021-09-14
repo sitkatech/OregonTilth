@@ -27,7 +27,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (string.IsNullOrEmpty(transplantProductionLaborActivityCreateDto.TransplantProductionLaborActivityName))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity Name", Message = "Field Labor Activities must have a name." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity Name", Message = "TP Labor Activities must have a name." });
             }
 
             return result;
@@ -46,7 +46,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (string.IsNullOrEmpty(transplantProductionLaborActivityDto.TransplantProductionLaborActivityName))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity Name", Message = "Field Labor Activities must have a name." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity Name", Message = "TP Labor Activities must have a name." });
             }
 
             return result;

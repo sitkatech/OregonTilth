@@ -91,7 +91,7 @@ namespace OregonTilth.EFModels.Entities
             var userWorkbooks = GetByUserID(dbContext, userDtoUserID).ToList();
             if (userWorkbooks.Any(x => x.WorkbookName.ToLower() == workbookDto.WorkbookName.ToLower() && x.WorkbookID != workbookDto.WorkbookID))
             {
-                result.Add(new ErrorMessage() { Type = "Workbook Name", Message = "Workbook names must be unique." });
+                result.Add(new ErrorMessage() { Type = "Workbook Name", Message = "This Workbook Name is already being used. Use a different Workbook Name." });
             }
 
             if (string.IsNullOrEmpty(workbookDto.WorkbookName))
@@ -136,7 +136,7 @@ namespace OregonTilth.EFModels.Entities
             var userWorkbooks = GetByUserID(dbContext, userDto.UserID).ToList();
             if (userWorkbooks.Any(x => x.WorkbookName.ToLower() == duplicateWorkbookName.ToLower()))
             {
-                result.Add(new ErrorMessage() { Type = "Workbook Name", Message = "Workbook names must be unique." });
+                result.Add(new ErrorMessage() { Type = "Workbook Name", Message = "This Workbook Name is already being used. Use a different Workbook Name." });
             }
 
             return result;

@@ -22,7 +22,7 @@ namespace OregonTilth.EFModels.Entities
             var userTransplantProductionTrayTypesForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionTrayTypeCreateDto.WorkbookID).ToList();
             if (userTransplantProductionTrayTypesForWorkbook.Any(x => x.TransplantProductionTrayTypeName.ToLower() == transplantProductionTrayTypeCreateDto.TransplantProductionTrayTypeName.ToLower()))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "Transplant Production Tray Types must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "This TP Tray Type name is already being used. Use a different TP Tray Type name." });
             }
 
             if (string.IsNullOrEmpty(transplantProductionTrayTypeCreateDto.TransplantProductionTrayTypeName))
@@ -41,7 +41,7 @@ namespace OregonTilth.EFModels.Entities
             if (userTransplantProductionTrayTypesForWorkbook.Any(x => x.TransplantProductionTrayTypeName.ToLower() == transplantProductionTrayTypeDto.TransplantProductionTrayTypeName.ToLower()
                                                                    && transplantProductionTrayTypeDto.TransplantProductionTrayTypeID != x.TransplantProductionTrayTypeID))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "Transplant Production Tray Types must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "This TP Tray Type name is already being used. Use a different TP Tray Type name." });
             }
 
             if (string.IsNullOrEmpty(transplantProductionTrayTypeDto.TransplantProductionTrayTypeName))
