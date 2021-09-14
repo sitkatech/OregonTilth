@@ -137,7 +137,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (fieldInputCost.FieldInputByCrops.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Field Input Cost", Message = "Cannot delete this record because it is used on the Field Input By Crops form." });
+                result.Add(new ErrorMessage() { Type = "Field Input Cost", Message = $"Cannot delete '{fieldInputCost.FieldInputCostName}' because it is used on the Field Input By Crop form." });
             }
 
             return result;
