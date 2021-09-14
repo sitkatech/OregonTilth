@@ -17,9 +17,11 @@ namespace OregonTilth.EFModels.Entities
         public int CropID { get; set; }
         public int WorkbookID { get; set; }
         public int TpOrDsTypeID { get; set; }
-        public int RowsPerStandardWidth { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
+        public decimal RowsPerStandardWidth { get; set; }
         public int DripTapeRowsPerStandardWidth { get; set; }
-        public int? InRowSpacing { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
+        public decimal? InRowSpacing { get; set; }
         [Column(TypeName = "money")]
         public decimal? SeedCostPerStandardUnitOfSpace { get; set; }
         [Column(TypeName = "money")]

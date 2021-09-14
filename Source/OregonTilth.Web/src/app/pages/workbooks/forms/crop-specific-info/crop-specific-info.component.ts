@@ -240,7 +240,7 @@ export class CropSpecificInfoComponent implements OnInit {
           return params.data.RowsPerStandardWidth
         },
         editable: true,
-        cellEditorFramework: IntegerEditor,
+        cellEditorFramework: DecimalEditor,
         sortable: true, 
         filter: true,
         cellStyle: params => {
@@ -299,7 +299,7 @@ export class CropSpecificInfoComponent implements OnInit {
         editable: params => {
           return params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantFarmProduced || params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.TransplantOutsourced;
         },
-        cellEditorFramework: IntegerEditor,
+        cellEditorFramework: DecimalEditor,
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
         filter: true,
