@@ -27,7 +27,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (string.IsNullOrEmpty(transplantProductionTrayTypeCreateDto.TransplantProductionTrayTypeName))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "Transplant Production Inputs must have a name." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "TP Tray Types must have a name." });
             }
 
             return result;
@@ -46,7 +46,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (string.IsNullOrEmpty(transplantProductionTrayTypeDto.TransplantProductionTrayTypeName))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "Transplant Production Inputs must have a name." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "TP Tray Types must have a name." });
             }
 
             return result;
