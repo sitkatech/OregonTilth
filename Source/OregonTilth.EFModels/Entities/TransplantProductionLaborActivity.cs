@@ -118,7 +118,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (tpLaborActivity.TransplantProductionStandardTimes.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity", Message = "Cannot delete a TP Labor Activity that has Time Study entries." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity", Message = "Cannot delete a TP Labor Activity because it is used on the Transplant Production Time Studies form." });
             }
 
             if (tpLaborActivity.TransplantProductionLaborActivityByCrops.Any())
