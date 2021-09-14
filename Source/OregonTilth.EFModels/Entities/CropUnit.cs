@@ -14,7 +14,7 @@ namespace OregonTilth.EFModels.Entities
             var userCropUnitsForWorkbook = GetDtoListByWorkbookID(dbContext, cropUnitCreateDto.WorkbookID).ToList();
             if (userCropUnitsForWorkbook.Any(x => x.CropUnitName.ToLower() == cropUnitCreateDto.CropUnitName.ToLower()))
             {
-                result.Add(new ErrorMessage() { Type = "Crop Unit Name", Message = "Crop Unit Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Crop Unit Name", Message = "This Crop Unit name is already being used. Use  a different Crop Unit name." });
             }
 
             if (string.IsNullOrEmpty(cropUnitCreateDto.CropUnitName))
@@ -33,7 +33,7 @@ namespace OregonTilth.EFModels.Entities
             if (cropUnitsForWorkbook.Any(x => x.CropUnitName.ToLower() == cropUnitDto.CropUnitName.ToLower()
                                                              && cropUnitDto.CropUnitID != x.CropUnitID))
             {
-                result.Add(new ErrorMessage() { Type = "Crop Unit Name", Message = "Crop Unit Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Crop Unit Name", Message = "This Crop Unit name is already being used. Use  a different Crop Unit name." });
             }
 
             if (string.IsNullOrEmpty(cropUnitDto.CropUnitName))
