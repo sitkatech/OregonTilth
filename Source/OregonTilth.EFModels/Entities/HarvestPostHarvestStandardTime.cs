@@ -55,7 +55,8 @@ namespace OregonTilth.EFModels.Entities
                 && x.CropUnit.CropUnitID == createDto.CropUnitID
                 && x.HarvestType.HarvestTypeID == createDto.HarvestTypeID))
             {
-                result.Add(new ErrorMessage() { Type = "Harvest Post Harvest Standard Time", Message = "Standard times must be unique per Crop, Crop Unit Harvest Type." });
+                var selectedHarvestType = dbContext.HarvestTypes.Single(x => x.HarvestTypeID == createDto.HarvestTypeID);
+                result.Add(new ErrorMessage() { Type = "Harvest Post Harvest Standard Time", Message = $"You've already started {selectedHarvestType.HarvestTypeDisplayName} Time Studies for this Crop and Crop Unit combination." });
             }
 
 
@@ -67,7 +68,6 @@ namespace OregonTilth.EFModels.Entities
         {
             var result = new List<ErrorMessage>();
 
-
             var currentHarvestPostHarvestStandardTimes = GetDtoListByWorkbookID(dbContext, harvestPostHarvestStandardTimeDto.Workbook.WorkbookID);
 
             if (currentHarvestPostHarvestStandardTimes.Any(x =>
@@ -76,7 +76,8 @@ namespace OregonTilth.EFModels.Entities
                 && x.HarvestType.HarvestTypeID == harvestPostHarvestStandardTimeDto.HarvestType.HarvestTypeID
                 && x.HarvestPostHarvestStandardTimeID != harvestPostHarvestStandardTimeDto.HarvestPostHarvestStandardTimeID))
             {
-                result.Add(new ErrorMessage() { Type = "Harvest Post Harvest Standard Time", Message = "Standard times must be unique per Crop, Crop Unit Harvest Type." });
+                var selectedHarvestType = dbContext.HarvestTypes.Single(x => x.HarvestTypeID == harvestPostHarvestStandardTimeDto.HarvestType.HarvestTypeID);
+                result.Add(new ErrorMessage() { Type = "Harvest Post Harvest Standard Time", Message = $"You've already started {selectedHarvestType.HarvestTypeDisplayName} Time Studies for this Crop and Crop Unit combination." });
             }
 
             return result;
