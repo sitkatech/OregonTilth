@@ -33,12 +33,12 @@ namespace OregonTilth.EFModels.Entities
                                                           && x.FieldStandardTime.FieldStandardTimeID == fieldLaborByCropDto.FieldStandardTime.FieldStandardTimeID
                                                           && x.FieldLaborByCropID != fieldLaborByCropDto.FieldLaborByCropID))
             {
-                result.Add(new ErrorMessage() { Type = "Field Labor By Crop", Message = "Cannot have more than one entry per Workbook, Crop, and Field Labor Time Study." });
+                result.Add(new ErrorMessage() { Type = "Field Labor By Crop", Message = "You've aleady entered this Crop and Field Labor Time Study combination." });
             }
 
             if (fieldLaborByCropDto.Occurrences != null && Math.Round((decimal)fieldLaborByCropDto.Occurrences, 4) <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Occurrences", Message = "Occurrences must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Occurrences", Message = "Occurrences must be greater than zero." });
             }
             
             return result;

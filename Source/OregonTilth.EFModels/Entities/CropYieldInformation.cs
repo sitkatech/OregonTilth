@@ -29,7 +29,7 @@ namespace OregonTilth.EFModels.Entities
                 && x.Crop.CropID == cropYieldInformationCreateDto.CropID
                 && x.CropUnit.CropUnitID == cropYieldInformationCreateDto.CropUnitID))
             {
-                result.Add(new ErrorMessage() { Type = "Crop Yield Information", Message = "Crop Yield Information must be unique per Crop and Crop Unit." });
+                result.Add(new ErrorMessage() { Type = "Crop Yield Information", Message = "You've already entered Crop Yield Information for this Crop and Crop Unit combination." });
             }
 
             if (cropYieldInformationCreateDto.HarvestedYieldPerStandardUnitOfSpace <= 0)
@@ -67,7 +67,7 @@ namespace OregonTilth.EFModels.Entities
                 && x.CropUnit.CropUnitID == cropYieldInformationDto.CropUnit.CropUnitID
                 && x.CropYieldInformationID != cropYieldInformationDto.CropYieldInformationID))
             {
-                result.Add(new ErrorMessage() { Type = "Crop Yield Information", Message = "Crop Yield Information must be unique per Crop and Crop Unit." });
+                result.Add(new ErrorMessage() { Type = "Crop Yield Information", Message = "You've already entered Crop Yield Information for this Crop and Crop Unit combination." });
             }
 
             if (cropYieldInformationDto.HarvestedYieldPerStandardUnitOfSpace <= 0)

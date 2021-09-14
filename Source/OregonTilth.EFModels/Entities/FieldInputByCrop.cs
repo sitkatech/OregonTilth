@@ -33,13 +33,13 @@ namespace OregonTilth.EFModels.Entities
                                                           && x.FieldInputCost.FieldInputCostID == fieldInputByCropDto.FieldInputCost.FieldInputCostID
                                                           && x.FieldInputByCropID != fieldInputByCropDto.FieldInputByCropID))
             {
-                result.Add(new ErrorMessage() { Type = "Field Input By Crop", Message = "Cannot have more than one entry per Workbook, Crop, and Field Input Cost." });
+                result.Add(new ErrorMessage() { Type = "Field Input By Crop", Message = "You've aleady entered this Crop and Field Input Cost combination." });
             }
 
             if (fieldInputByCropDto.Occurrences != null 
                 && Math.Round((decimal) fieldInputByCropDto.Occurrences, 4) <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Occurrences", Message = "Occurrences must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Occurrences", Message = "Occurrences must be greater than zero." });
             }
 
             return result;

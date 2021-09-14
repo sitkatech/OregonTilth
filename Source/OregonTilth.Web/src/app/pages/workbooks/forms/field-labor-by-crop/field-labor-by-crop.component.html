@@ -56,7 +56,7 @@
                   <i class="fas fa-bolt"></i> Required field
                 </div>
                 <div class="col-sm text-right">
-                  <button type="submit" class="btn btn-fresca" [disabled]="!fieldLaborActivityForm.form.valid || isLoadingSubmit">
+                  <button type="submit" class="btn btn-fresca" [disabled]="!fieldLaborActivityForm.form.valid || isLoadingSubmit || (!model.FieldStandardTimes || model.FieldStandardTimes.length < 1)">
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                     Add <span *ngIf="model.FieldStandardTimes && model.FieldStandardTimes.length > 0">({{model.FieldStandardTimes.length}})</span>
                   </button>

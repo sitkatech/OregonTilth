@@ -14,7 +14,7 @@ namespace OregonTilth.EFModels.Entities
             var userCropsForWorkbook = GetDtoListByWorkbookID(dbContext, cropCreateDto.WorkbookID).ToList();
             if (userCropsForWorkbook.Any(x => x.CropName.ToLower() == cropCreateDto.CropName.ToLower()))
             {
-                result.Add(new ErrorMessage() { Type = "Crop Name", Message = "Crop Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Crop Name", Message = "This Crop Name is already being used. Use a different Crop name." });
             }
 
             if (string.IsNullOrEmpty(cropCreateDto.CropName))
@@ -33,7 +33,7 @@ namespace OregonTilth.EFModels.Entities
             if (cropsForWorkbook.Any(x => x.CropName.ToLower() == cropDto.CropName.ToLower()
                                                              && cropDto.CropID != x.CropID))
             {
-                result.Add(new ErrorMessage() { Type = "Crop Name", Message = "Crop Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Crop Name", Message = "This Crop Name is already being used. Use a different Crop name." });
             }
 
             if (string.IsNullOrEmpty(cropDto.CropName))
@@ -118,19 +118,19 @@ namespace OregonTilth.EFModels.Entities
 
             if (crop.HarvestPostHarvestStandardTimes.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Crop", Message = $"Cannot delete '{crop.CropName}' because it is used on the Harvest/Post Harvest Time Studies form." });
+                result.Add(new ErrorMessage() { Type = "Crop", Message = $"Cannot delete '{crop.CropName}' because it is used on the Harvest/Post-Harvest Time Studies form." });
             }
             if (crop.CropYieldInformations.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Crop", Message = $"Cannot delete '{crop.CropName}' because it is used on the Crop Yield Information form." });
+                result.Add(new ErrorMessage() { Type = "Crop", Message = $"Cannot delete '{crop.CropName}' because it is used on the Crop Yield Info form." });
             }
             if (crop.CropSpecificInfos.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Crop", Message = $"Cannot delete '{crop.CropName}' because it is used on the Crop Specific Information form." });
+                result.Add(new ErrorMessage() { Type = "Crop", Message = $"Cannot delete '{crop.CropName}' because it is used on the Crop Specific Info form." });
             }
             if (crop.TransplantProductionInformations.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Crop", Message = $"Cannot delete '{crop.CropName}' because it is used on the Transplant Production Information form." });
+                result.Add(new ErrorMessage() { Type = "Crop", Message = $"Cannot delete '{crop.CropName}' because it is used on the TP Info form." });
             }
             if (crop.FieldLaborByCrops.Any())
             {

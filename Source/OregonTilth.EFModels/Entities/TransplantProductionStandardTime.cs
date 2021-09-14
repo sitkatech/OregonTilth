@@ -52,7 +52,7 @@ namespace OregonTilth.EFModels.Entities
                 x.TransplantProductionLaborActivity.TransplantProductionLaborActivityID == createDto.TransplantProductionLaborActivityID
                 && x.TransplantProductionTrayType.TransplantProductionTrayTypeID == createDto.TransplantProductionTrayTypeID))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Standard Time", Message = "Standard times must be unique per Activity and Tray Type." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Standard Time", Message = "You've already started Time Studies for this TP Labor Activity and TP Tray Type combination." });
             }
 
 
@@ -72,7 +72,7 @@ namespace OregonTilth.EFModels.Entities
                 && x.TransplantProductionTrayType.TransplantProductionTrayTypeID == transplantProductionStandardTimeDto.TransplantProductionTrayType.TransplantProductionTrayTypeID
                 && x.TransplantProductionStandardTimeID != transplantProductionStandardTimeDto.TransplantProductionStandardTimeID))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Standard Time", Message = "Standard times must be unique per Activity and Tray Type." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Standard Time", Message = "You've already started Time Studies for this TP Labor Activity and TP Tray Type combination." });
             }
 
             return result;

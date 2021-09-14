@@ -115,7 +115,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (existingFieldStandardTime.FieldLaborByCrops.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Field Time Study", Message = "You cannot delete a Field Time Study that is being referenced through the Field Labor By Crop form." });
+                result.Add(new ErrorMessage() { Type = "Field Time Study", Message = "Cannot delete this time study because it is used on the Field Labor By Crop form." });
             }
 
             
