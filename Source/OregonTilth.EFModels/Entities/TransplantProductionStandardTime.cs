@@ -125,7 +125,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (existingTPStandardTime.TransplantProductionLaborActivity.TransplantProductionLaborActivityByCrops.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Validation Error", Message = $"Cannot delete this Time Study because the TP Labor Activity \"{existingTPStandardTime.TransplantProductionLaborActivity.TransplantProductionLaborActivityName}\" and TP Tray Type \"{existingTPStandardTime.TransplantProductionTrayType.TransplantProductionTrayTypeName}\" is in use on the TP Labor by Crop form." });
+                result.Add(new ErrorMessage() { Type = "Validation Error", Message = $"Cannot delete this Time Study because the TP Labor Activity \"{existingTPStandardTime.TransplantProductionLaborActivity.TransplantProductionLaborActivityName}\" and TP Tray Type \"{existingTPStandardTime.TransplantProductionTrayType.TransplantProductionTrayTypeName}\" are used on the TP Labor by Crop form." });
             }
 
             return result;
