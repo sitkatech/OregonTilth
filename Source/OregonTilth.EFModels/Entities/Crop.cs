@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using OregonTilth.EFModels.Util;
 using OregonTilth.Models.DataTransferObjects;
+
 
 namespace OregonTilth.EFModels.Entities
 {
@@ -12,7 +14,7 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userCropsForWorkbook = GetDtoListByWorkbookID(dbContext, cropCreateDto.WorkbookID).ToList();
-            if (userCropsForWorkbook.Any(x => x.CropName.ToLower() == cropCreateDto.CropName.ToLower()))
+            if (userCropsForWorkbook.Any(x => x.CropName.ToLowerTrim() == cropCreateDto.CropName.ToLowerTrim()))
             {
                 result.Add(new ErrorMessage() { Type = "Crop Name", Message = "This Crop Name is already being used. Use a different Crop name." });
             }
@@ -30,7 +32,7 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var cropsForWorkbook = GetDtoListByWorkbookID(dbContext, cropDto.Workbook.WorkbookID).ToList();
-            if (cropsForWorkbook.Any(x => x.CropName.ToLower() == cropDto.CropName.ToLower()
+            if (cropsForWorkbook.Any(x => x.CropName.ToLowerTrim() == cropDto.CropName.ToLowerTrim()
                                                              && cropDto.CropID != x.CropID))
             {
                 result.Add(new ErrorMessage() { Type = "Crop Name", Message = "This Crop Name is already being used. Use a different Crop name." });

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using OregonTilth.EFModels.Util;
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
@@ -20,7 +21,7 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userTransplantProductionTrayTypesForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionTrayTypeCreateDto.WorkbookID).ToList();
-            if (userTransplantProductionTrayTypesForWorkbook.Any(x => x.TransplantProductionTrayTypeName.ToLower() == transplantProductionTrayTypeCreateDto.TransplantProductionTrayTypeName.ToLower()))
+            if (userTransplantProductionTrayTypesForWorkbook.Any(x => x.TransplantProductionTrayTypeName.ToLowerTrim() == transplantProductionTrayTypeCreateDto.TransplantProductionTrayTypeName.ToLowerTrim()))
             {
                 result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "This TP Tray Type name is already being used. Use a different TP Tray Type name." });
             }
@@ -38,7 +39,7 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userTransplantProductionTrayTypesForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionTrayTypeDto.Workbook.WorkbookID).ToList();
-            if (userTransplantProductionTrayTypesForWorkbook.Any(x => x.TransplantProductionTrayTypeName.ToLower() == transplantProductionTrayTypeDto.TransplantProductionTrayTypeName.ToLower()
+            if (userTransplantProductionTrayTypesForWorkbook.Any(x => x.TransplantProductionTrayTypeName.ToLowerTrim() == transplantProductionTrayTypeDto.TransplantProductionTrayTypeName.ToLowerTrim()
                                                                    && transplantProductionTrayTypeDto.TransplantProductionTrayTypeID != x.TransplantProductionTrayTypeID))
             {
                 result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "This TP Tray Type name is already being used. Use a different TP Tray Type name." });

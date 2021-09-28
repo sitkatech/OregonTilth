@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using OregonTilth.EFModels.Util;
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
@@ -21,7 +22,7 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userFieldLaborActivitiesForWorkbook = GetDtoListByWorkbookID(dbContext, fieldLaborActivityUpsertDto.WorkbookID).ToList();
-            if (userFieldLaborActivitiesForWorkbook.Any(x => x.FieldLaborActivityName.ToLower() == fieldLaborActivityUpsertDto.FieldLaborActivityName.ToLower()))
+            if (userFieldLaborActivitiesForWorkbook.Any(x => x.FieldLaborActivityName.ToLowerTrim() == fieldLaborActivityUpsertDto.FieldLaborActivityName.ToLowerTrim()))
             {
                 result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "This Field Labor Activity name is already being used. Use a different Field Labor Activity name." });
             }
@@ -45,7 +46,7 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userFieldLaborActivitiesForWorkbook = GetDtoListByWorkbookID(dbContext, fieldLaborActivityDto.Workbook.WorkbookID).ToList();
-            if (userFieldLaborActivitiesForWorkbook.Any(x => x.FieldLaborActivityName.ToLower() == fieldLaborActivityDto.FieldLaborActivityName.ToLower() 
+            if (userFieldLaborActivitiesForWorkbook.Any(x => x.FieldLaborActivityName.ToLowerTrim() == fieldLaborActivityDto.FieldLaborActivityName.ToLowerTrim() 
             && fieldLaborActivityDto.FieldLaborActivityID != x.FieldLaborActivityID))
             {
                 result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "This Field Labor Activity name is already being used. Use a different Field Labor Activity name." });

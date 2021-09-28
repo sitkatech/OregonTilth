@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using OregonTilth.EFModels.Util;
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
@@ -20,7 +21,7 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userMachineryForWorkbook = GetDtoListByWorkbookID(dbContext, machineryUpsertDto.WorkbookID).ToList();
-            if (userMachineryForWorkbook.Any(x => x.MachineryName.ToLower() == machineryUpsertDto.MachineryName.ToLower()))
+            if (userMachineryForWorkbook.Any(x => x.MachineryName.ToLowerTrim() == machineryUpsertDto.MachineryName.ToLowerTrim()))
             {
                 result.Add(new ErrorMessage() { Type = "Machinery Name", Message = "This Machinery name is already being used. Use a different Machinery name." });
             }
@@ -43,7 +44,7 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userMachineriesForWorkbook = GetDtoListByWorkbookID(dbContext, machineryDto.Workbook.WorkbookID).ToList();
-            if (userMachineriesForWorkbook.Any(x => x.MachineryName.ToLower() == machineryDto.MachineryName.ToLower() 
+            if (userMachineriesForWorkbook.Any(x => x.MachineryName.ToLowerTrim() == machineryDto.MachineryName.ToLowerTrim() 
             && machineryDto.MachineryID != x.MachineryID))
             {
                 result.Add(new ErrorMessage() { Type = "Machinery Name", Message = "This Machinery name is already being used. Use a different Machinery name." });

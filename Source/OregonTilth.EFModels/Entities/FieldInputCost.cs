@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using OregonTilth.EFModels.Util;
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
@@ -20,7 +21,7 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userFieldInputsByCostsForWorkbook = GetDtoListByWorkbookID(dbContext, fieldInputByCostCreateDto.WorkbookID).ToList();
-            if (userFieldInputsByCostsForWorkbook.Any(x => x.FieldInputCostName.ToLower() == fieldInputByCostCreateDto.FieldInputCostName.ToLower()))
+            if (userFieldInputsByCostsForWorkbook.Any(x => x.FieldInputCostName.ToLowerTrim() == fieldInputByCostCreateDto.FieldInputCostName.ToLowerTrim()))
             {
                 result.Add(new ErrorMessage() { Type = "Field Input By Cost Name", Message = "This Field Input name is already being used. Use a different Field Input name." });
             }
@@ -43,7 +44,7 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userFieldInputCostsForWorkbook = GetDtoListByWorkbookID(dbContext, fieldInputByCostDto.Workbook.WorkbookID).ToList();
-            if (userFieldInputCostsForWorkbook.Any(x => x.FieldInputCostName.ToLower() == fieldInputByCostDto.FieldInputCostName.ToLower() 
+            if (userFieldInputCostsForWorkbook.Any(x => x.FieldInputCostName.ToLowerTrim() == fieldInputByCostDto.FieldInputCostName.ToLowerTrim() 
             && fieldInputByCostDto.FieldInputCostID != x.FieldInputCostID))
             {
                 result.Add(new ErrorMessage() { Type = "Field Input By Cost Name", Message = "This Field Input name is already being used. Use a different Field Input name." });

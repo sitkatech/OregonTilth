@@ -14,6 +14,6 @@ namespace OregonTilth.API.Services
             var ret = value.HtmlEncode();
             return string.IsNullOrWhiteSpace(ret) ? ret : ret.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", "<br/>\r\n");
         }
-
+        
     }
 }

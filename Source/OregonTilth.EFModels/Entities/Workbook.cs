@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using OregonTilth.EFModels.Util;
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
@@ -89,7 +90,7 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userWorkbooks = GetByUserID(dbContext, userDtoUserID).ToList();
-            if (userWorkbooks.Any(x => x.WorkbookName.ToLower() == workbookDto.WorkbookName.ToLower() && x.WorkbookID != workbookDto.WorkbookID))
+            if (userWorkbooks.Any(x => x.WorkbookName.ToLowerTrim() == workbookDto.WorkbookName.ToLowerTrim() && x.WorkbookID != workbookDto.WorkbookID))
             {
                 result.Add(new ErrorMessage() { Type = "Workbook Name", Message = "This Workbook Name is already being used. Use a different Workbook Name." });
             }
@@ -134,7 +135,7 @@ namespace OregonTilth.EFModels.Entities
         {
             var result = new List<ErrorMessage>();
             var userWorkbooks = GetByUserID(dbContext, userDto.UserID).ToList();
-            if (userWorkbooks.Any(x => x.WorkbookName.ToLower() == duplicateWorkbookName.ToLower()))
+            if (userWorkbooks.Any(x => x.WorkbookName.ToLowerTrim() == duplicateWorkbookName.ToLowerTrim()))
             {
                 result.Add(new ErrorMessage() { Type = "Workbook Name", Message = "This Workbook Name is already being used. Use a different Workbook Name." });
             }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using OregonTilth.EFModels.Util;
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
@@ -20,7 +21,7 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userTransplantProductionLaborActivitiesForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionLaborActivityCreateDto.WorkbookID).ToList();
-            if (userTransplantProductionLaborActivitiesForWorkbook.Any(x => x.TransplantProductionLaborActivityName.ToLower() == transplantProductionLaborActivityCreateDto.TransplantProductionLaborActivityName.ToLower()))
+            if (userTransplantProductionLaborActivitiesForWorkbook.Any(x => x.TransplantProductionLaborActivityName.ToLowerTrim().Trim() == transplantProductionLaborActivityCreateDto.TransplantProductionLaborActivityName.ToLowerTrim().Trim()))
             {
                 result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity Name", Message = "This TP  Labor Activity name is already being used. Use a different TP Labor Activity name." });
             }
@@ -38,7 +39,7 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userTransplantProductionLaborActivitiesForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionLaborActivityDto.Workbook.WorkbookID).ToList();
-            if (userTransplantProductionLaborActivitiesForWorkbook.Any(x => x.TransplantProductionLaborActivityName.ToLower() == transplantProductionLaborActivityDto.TransplantProductionLaborActivityName.ToLower() 
+            if (userTransplantProductionLaborActivitiesForWorkbook.Any(x => x.TransplantProductionLaborActivityName.ToLowerTrim() == transplantProductionLaborActivityDto.TransplantProductionLaborActivityName.ToLowerTrim() 
             && transplantProductionLaborActivityDto.TransplantProductionLaborActivityID != x.TransplantProductionLaborActivityID))
             {
                 result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity Name", Message = "This TP  Labor Activity name is already being used. Use a different TP Labor Activity name." });
