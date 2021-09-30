@@ -201,7 +201,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
           values: this.crops.map(x => x.CropName)
         },
         cellRendererFramework: EditableRendererComponent,
-        editable:true,
+        editable:false,
         sortable: true, 
         filter: true,
         resizable: true,
@@ -228,7 +228,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
           values: this.cropUnits.map(x => x.CropUnitName)
         },
         cellRendererFramework: EditableRendererComponent,
-        editable:true,
+        editable:false,
         sortable: true, 
         filter: true,
         resizable: true,
@@ -255,7 +255,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
           values: this.harvestTypes.map(x => x.HarvestTypeDisplayName)
         },
         cellRendererFramework: EditableRendererComponent,
-        editable:true,
+        editable:false,
         sortable: true, 
         filter: true,
         resizable: true,

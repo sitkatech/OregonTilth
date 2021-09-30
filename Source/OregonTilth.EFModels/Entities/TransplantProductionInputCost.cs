@@ -27,12 +27,12 @@ namespace OregonTilth.EFModels.Entities
                 && x.TransplantProductionInput.TransplantProductionInputID ==
                 transplantProductionInputCostCreateDto.TransplantProductionInputID))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Input Cost", Message = "Entries must be unique per Tray Type and Input within a workbook." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Input Cost", Message = "You've already entered a TP Input Cost  for this TP Tray Type and TP Input combination." });
             }
 
             if (transplantProductionInputCostCreateDto.CostPerTray <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Cost Per Tray", Message = "Cost per Tray must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Cost Per Tray", Message = "Cost per Tray must be greater than zero." });
             }
 
             return result;
@@ -50,12 +50,12 @@ namespace OregonTilth.EFModels.Entities
                 transplantProductionInputCostDto.TransplantProductionInput.TransplantProductionInputID
                 && x.TransplantProductionInputCostID != transplantProductionInputCostDto.TransplantProductionInputCostID))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Input Cost", Message = "Entries must be unique per Tray Type and Input within a workbook." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Input Cost", Message = "You've already entered a TP Input Cost  for this TP Tray Type and TP Input combination." });
             }
 
             if (transplantProductionInputCostDto.CostPerTray <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Cost Per Tray", Message = "Cost per Tray must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Cost Per Tray", Message = "Cost per Tray must be greater than zero." });
             }
 
             return result;

@@ -59,7 +59,7 @@
                   <i class="fas fa-bolt"></i> Required field
                 </div>
                 <div class="col-sm text-right">
-                  <button type="submit" class="btn btn-fresca" [disabled]="!fieldInputByCropForm.form.valid || isLoadingSubmit">
+                  <button type="submit" class="btn btn-fresca" [disabled]="!fieldInputByCropForm.form.valid || isLoadingSubmit || (!model.FieldInputCosts || model.FieldInputCosts.length < 1)">
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                     Add <span *ngIf="model.FieldInputCosts && model.FieldInputCosts.length > 0">({{model.FieldInputCosts.length}})</span>
                   </button>

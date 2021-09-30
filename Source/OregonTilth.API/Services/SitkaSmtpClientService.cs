@@ -160,8 +160,6 @@ Subject: {mm.Subject}
         public string GetDefaultEmailSignature()
         {
             string defaultEmailSignature = $@"<br /><br />
-Respectfully, the {_frescaConfiguration.PlatformLongName} team
-<br /><br />
 ***
 <br /><br />
 You have received this email because you are a registered user of {_frescaConfiguration.PlatformLongName}. 

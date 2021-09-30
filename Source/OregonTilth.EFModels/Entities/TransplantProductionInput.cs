@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using OregonTilth.EFModels.Util;
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
@@ -20,9 +21,9 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userTransplantProductionInputsForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionInputCreateDto.WorkbookID).ToList();
-            if (userTransplantProductionInputsForWorkbook.Any(x => x.TransplantProductionInputName.ToLower() == transplantProductionInputCreateDto.TransplantProductionInputName.ToLower()))
+            if (userTransplantProductionInputsForWorkbook.Any(x => x.TransplantProductionInputName.ToLowerTrim() == transplantProductionInputCreateDto.TransplantProductionInputName.ToLowerTrim()))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Input Name", Message = "Transplant Production Input Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Input Name", Message = "This TP Input name is already being used. Use a different TP Input name." });
             }
 
             if (string.IsNullOrEmpty(transplantProductionInputCreateDto.TransplantProductionInputName))
@@ -38,10 +39,10 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userTransplantProductionInputsForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionInputDto.Workbook.WorkbookID).ToList();
-            if (userTransplantProductionInputsForWorkbook.Any(x => x.TransplantProductionInputName.ToLower() == transplantProductionInputDto.TransplantProductionInputName.ToLower()
+            if (userTransplantProductionInputsForWorkbook.Any(x => x.TransplantProductionInputName.ToLowerTrim() == transplantProductionInputDto.TransplantProductionInputName.ToLowerTrim()
                                                                             && transplantProductionInputDto.TransplantProductionInputID != x.TransplantProductionInputID))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Input Name", Message = "Transplant Production Input Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Input Name", Message = "This TP Input name is already being used. Use a different TP Input name." });
             }
 
             if (string.IsNullOrEmpty(transplantProductionInputDto.TransplantProductionInputName))
@@ -114,7 +115,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (existingRecord.TransplantProductionInputCosts.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Input", Message = "Cannot delete an input that has Transplant Production Input Cost data." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Input", Message = $"Cannot delete '{existingRecord.TransplantProductionInputName} because is is used on the TP Input Costs form." });
             }
 
             return result;

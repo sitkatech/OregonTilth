@@ -17,31 +17,33 @@
         <app-alert-display></app-alert-display>
         <h1>Field Labor Time Studies</h1>
         <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
-        <h4>Time Studies are required for:</h4>        
-        <table class="time-studies-required-table">
-          <tbody>
-            <tr *ngFor="let item of createDtos">
-              <td>{{item.FieldLaborActivity.FieldLaborActivityName}}</td>
-              <td>{{item.LaborType.LaborTypeDisplayName}}</td>
-              <td>
-                <select class="form-control" [(ngModel)]="item.MachineryID" [disabled]="machineryDisabled(item.LaborTypeID)">
-                  <option disabled="true" [ngValue]="undefined" [selected]="!item.MachineryID">Select Machinery</option>
-                  <option *ngFor="let option of machinery" [selected]="item.MachineryID == option.MachineryID" [value]="option.MachineryID">{{option.MachineryName}}</option>
-                </select>
-              </td>
-              <td>
-                <select class="form-control" [(ngModel)]="item.FieldUnitTypeID">
-                  <option disabled="true" [ngValue]="undefined" [selected]="!item.FieldUnitTypeID">Select Field Unit</option>
-                  <option *ngFor="let option of fieldUnits" [value]="option.FieldUnitTypeID">{{option.FieldUnitTypeDisplayName}}</option>
-                </select>
-               
-              </td>
-              <td>
-                <button class="btn btn-success" (click)="initializeTimeStudy(item)" [disabled]="startButtonDisabled(item)">Start</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <ng-container *ngIf="createDtos && createDtos.length > 0">
+          <h4>Time Studies are required for:</h4>        
+          <table class="time-studies-required-table">
+            <tbody>
+              <tr *ngFor="let item of createDtos">
+                <td>{{item.FieldLaborActivity.FieldLaborActivityName}}</td>
+                <td>{{item.LaborType.LaborTypeDisplayName}}</td>
+                <td>
+                  <select class="form-control" [(ngModel)]="item.MachineryID" [disabled]="machineryDisabled(item.LaborTypeID)">
+                    <option disabled="true" [ngValue]="undefined" [selected]="!item.MachineryID">Select Machinery</option>
+                    <option *ngFor="let option of machinery" [selected]="item.MachineryID == option.MachineryID" [value]="option.MachineryID">{{option.MachineryName}}</option>
+                  </select>
+                </td>
+                <td>
+                  <select class="form-control" [(ngModel)]="item.FieldUnitTypeID">
+                    <option disabled="true" [ngValue]="undefined" [selected]="!item.FieldUnitTypeID">Select Field Unit</option>
+                    <option *ngFor="let option of fieldUnits" [value]="option.FieldUnitTypeID">{{option.FieldUnitTypeDisplayName}}</option>
+                  </select>
+                
+                </td>
+                <td>
+                  <button class="btn btn-success" (click)="initializeTimeStudy(item)" [disabled]="startButtonDisabled(item)">Start</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-container>
         <div class="row mt-4">
           <div class="col">
             <h3>Time Study Progress</h3>

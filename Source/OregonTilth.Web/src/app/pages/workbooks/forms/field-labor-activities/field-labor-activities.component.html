@@ -46,13 +46,13 @@
                         <div class="labor-type-checkbox-wrapper">
                           <label for="LaborTypeCrew">
                             <span>Crew</span>
-                            <input type="checkbox" id="LaborTypeCrew" class="labor-type-checkbox" name="LaborTypeCrew" [(ngModel)]="model.LaborTypeCrew">
+                            <input type="checkbox" id="LaborTypeCrew" class="labor-type-checkbox" name="LaborTypeCrew" [(ngModel)]="model.LaborTypeCrew" [required]="!model.LaborTypeCrew && !model.LaborTypeOperator">
                           </label>
                         </div>
                         <div class="labor-type-checkbox-wrapper">
                           <label for="LaborTypeOperator">
                             <span>Operator</span>
-                            <input type="checkbox" id="LaborTypeOperator" class="labor-type-checkbox" name="LaborTypeOperator" [(ngModel)]="model.LaborTypeOperator">
+                            <input type="checkbox" id="LaborTypeOperator" class="labor-type-checkbox" name="LaborTypeOperator" [(ngModel)]="model.LaborTypeOperator" [required]="!model.LaborTypeCrew && !model.LaborTypeOperator">
                           </label>
                         </div>
                       </div>

@@ -48,8 +48,8 @@ namespace OregonTilth.API.Controllers
                 FirstName = inviteDto.FirstName,
                 LastName = inviteDto.LastName,
                 Email = inviteDto.Email,
-                Subject = $"Invitation to the {applicationName}",
-                WelcomeText = $"You are receiving this notification because an administrator of the {applicationName}, an online service of the {leadOrganizationLongName}, has invited you to create an account.",
+                Subject = $"Invitation to {applicationName}",
+                WelcomeText = $"You are receiving this notification because an administrator of {applicationName} Program  has invited you to create an account.",
                 SiteName = applicationName,
                 SignatureBlock = $"{leadOrganizationLongName}<br /><a href='mailto:{_frescaConfiguration.LeadOrganizationEmail}'>{_frescaConfiguration.LeadOrganizationEmail}</a><a href='{_frescaConfiguration.LeadOrganizationHomeUrl}'>{_frescaConfiguration.LeadOrganizationHomeUrl}</a>",
                 RedirectURL = _frescaConfiguration.KEYSTONE_REDIRECT_URL

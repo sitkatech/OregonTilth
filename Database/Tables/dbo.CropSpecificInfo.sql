@@ -7,9 +7,9 @@ CREATE TABLE [dbo].[CropSpecificInfo](
 	[CropID] [int] NOT NULL,
 	[WorkbookID] [int] NOT NULL,
 	[TpOrDsTypeID] [int] NOT NULL,
-	[RowsPerStandardWidth] [int] NOT NULL,
+	[RowsPerStandardWidth] [decimal](18, 4) NOT NULL,
 	[DripTapeRowsPerStandardWidth] [int] NOT NULL,
-	[InRowSpacing] [int] NULL,
+	[InRowSpacing] [decimal](18, 4) NULL,
 	[SeedCostPerStandardUnitOfSpace] [money] NULL,
 	[TransplantProductionCostOutsourced] [money] NULL,
  CONSTRAINT [PK_CropSpecificInfo_CropSpecificInfoD] PRIMARY KEY CLUSTERED 

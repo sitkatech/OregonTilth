@@ -23,7 +23,7 @@
           </div>
           <div class="card-body">
             <p *ngIf="!availableCropCropUnitCombinations || availableCropCropUnitCombinations.length < 1" class="alert alert-warning">
-              No more records to add! In order to add Crop Yield Information for a Crop and Crop Unit, there must be a <a [routerLink]="['/workbooks', workbookID, 'forms', 'harvest-post-harvest-standard-times']" >harvest Time Study record</a>.
+              No more records to add! In order to add Crop Yield Information for a Crop and Crop Unit, there must be a <a [routerLink]="['/workbooks', workbookID, 'forms', 'harvest-post-harvest-standard-times']" >Harvest Time Study Record</a>.
             </p>
             <form *ngIf="model && availableCropCropUnitCombinations && availableCropCropUnitCombinations.length > 0" (ngSubmit)="onSubmit(cropYieldInformationForm)" #cropYieldInformationForm="ngForm">
               <div class="row">

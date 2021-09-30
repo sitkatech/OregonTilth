@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using OregonTilth.EFModels.Util;
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
@@ -20,14 +21,14 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userTransplantProductionLaborActivitiesForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionLaborActivityCreateDto.WorkbookID).ToList();
-            if (userTransplantProductionLaborActivitiesForWorkbook.Any(x => x.TransplantProductionLaborActivityName.ToLower() == transplantProductionLaborActivityCreateDto.TransplantProductionLaborActivityName.ToLower()))
+            if (userTransplantProductionLaborActivitiesForWorkbook.Any(x => x.TransplantProductionLaborActivityName.ToLowerTrim().Trim() == transplantProductionLaborActivityCreateDto.TransplantProductionLaborActivityName.ToLowerTrim().Trim()))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity Name", Message = "Transplant Production Labor Activity Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity Name", Message = "This TP  Labor Activity name is already being used. Use a different TP Labor Activity name." });
             }
 
             if (string.IsNullOrEmpty(transplantProductionLaborActivityCreateDto.TransplantProductionLaborActivityName))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity Name", Message = "Field Labor Activities must have a name." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity Name", Message = "TP Labor Activities must have a name." });
             }
 
             return result;
@@ -38,15 +39,15 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userTransplantProductionLaborActivitiesForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionLaborActivityDto.Workbook.WorkbookID).ToList();
-            if (userTransplantProductionLaborActivitiesForWorkbook.Any(x => x.TransplantProductionLaborActivityName.ToLower() == transplantProductionLaborActivityDto.TransplantProductionLaborActivityName.ToLower() 
+            if (userTransplantProductionLaborActivitiesForWorkbook.Any(x => x.TransplantProductionLaborActivityName.ToLowerTrim() == transplantProductionLaborActivityDto.TransplantProductionLaborActivityName.ToLowerTrim() 
             && transplantProductionLaborActivityDto.TransplantProductionLaborActivityID != x.TransplantProductionLaborActivityID))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity Name", Message = "Transplant Production Labor Activity Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity Name", Message = "This TP  Labor Activity name is already being used. Use a different TP Labor Activity name." });
             }
 
             if (string.IsNullOrEmpty(transplantProductionLaborActivityDto.TransplantProductionLaborActivityName))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity Name", Message = "Field Labor Activities must have a name." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity Name", Message = "TP Labor Activities must have a name." });
             }
 
             return result;
@@ -118,12 +119,12 @@ namespace OregonTilth.EFModels.Entities
 
             if (tpLaborActivity.TransplantProductionStandardTimes.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity", Message = "Cannot delete a TP Labor Activity that has Time Study entries." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity", Message = "Cannot delete a TP Labor Activity because it is used on the Transplant Production Time Studies form." });
             }
 
             if (tpLaborActivity.TransplantProductionLaborActivityByCrops.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity", Message = "Cannot delete a TP Labor Activity that has TP Labor By Crop entries." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Labor Activity", Message = "Cannot delete a TP Labor Activity because it is used on the TP Labor by Crop form." });
             }
 
             return result;

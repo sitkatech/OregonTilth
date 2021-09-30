@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using OregonTilth.EFModels.Util;
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
@@ -20,9 +21,9 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userFieldInputsByCostsForWorkbook = GetDtoListByWorkbookID(dbContext, fieldInputByCostCreateDto.WorkbookID).ToList();
-            if (userFieldInputsByCostsForWorkbook.Any(x => x.FieldInputCostName.ToLower() == fieldInputByCostCreateDto.FieldInputCostName.ToLower()))
+            if (userFieldInputsByCostsForWorkbook.Any(x => x.FieldInputCostName.ToLowerTrim() == fieldInputByCostCreateDto.FieldInputCostName.ToLowerTrim()))
             {
-                result.Add(new ErrorMessage() { Type = "Field Input By Cost Name", Message = "Field Input Cost Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Field Input By Cost Name", Message = "This Field Input name is already being used. Use a different Field Input name." });
             }
 
             if (string.IsNullOrEmpty(fieldInputByCostCreateDto.FieldInputCostName))
@@ -32,7 +33,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (fieldInputByCostCreateDto.CostPerFieldUnit <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Cost Per Field Unit", Message = "Cost per Field Unit must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Cost Per Field Unit", Message = "Cost per Field Unit must be greater than zero." });
             }
 
             return result;
@@ -43,10 +44,10 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userFieldInputCostsForWorkbook = GetDtoListByWorkbookID(dbContext, fieldInputByCostDto.Workbook.WorkbookID).ToList();
-            if (userFieldInputCostsForWorkbook.Any(x => x.FieldInputCostName.ToLower() == fieldInputByCostDto.FieldInputCostName.ToLower() 
+            if (userFieldInputCostsForWorkbook.Any(x => x.FieldInputCostName.ToLowerTrim() == fieldInputByCostDto.FieldInputCostName.ToLowerTrim() 
             && fieldInputByCostDto.FieldInputCostID != x.FieldInputCostID))
             {
-                result.Add(new ErrorMessage() { Type = "Field Input By Cost Name", Message = "Field Input Cost Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Field Input By Cost Name", Message = "This Field Input name is already being used. Use a different Field Input name." });
             }
 
             if (string.IsNullOrEmpty(fieldInputByCostDto.FieldInputCostName))
@@ -56,7 +57,7 @@ namespace OregonTilth.EFModels.Entities
 
             if(fieldInputByCostDto.CostPerFieldUnit <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Cost Per Field Unit", Message = "Cost per Field Unit must be greater than 0." });
+                result.Add(new ErrorMessage() { Type = "Cost Per Field Unit", Message = "Cost per Field Unit must be greater than zero." });
             }
 
             return result;
@@ -137,7 +138,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (fieldInputCost.FieldInputByCrops.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Field Input Cost", Message = "Cannot delete this record because it is used on the Field Input By Crops form." });
+                result.Add(new ErrorMessage() { Type = "Field Input Cost", Message = $"Cannot delete '{fieldInputCost.FieldInputCostName}' because it is used on the Field Input By Crop form." });
             }
 
             return result;

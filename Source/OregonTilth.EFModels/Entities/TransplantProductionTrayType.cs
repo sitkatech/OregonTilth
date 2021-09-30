@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using OregonTilth.EFModels.Util;
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
@@ -20,14 +21,14 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userTransplantProductionTrayTypesForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionTrayTypeCreateDto.WorkbookID).ToList();
-            if (userTransplantProductionTrayTypesForWorkbook.Any(x => x.TransplantProductionTrayTypeName.ToLower() == transplantProductionTrayTypeCreateDto.TransplantProductionTrayTypeName.ToLower()))
+            if (userTransplantProductionTrayTypesForWorkbook.Any(x => x.TransplantProductionTrayTypeName.ToLowerTrim() == transplantProductionTrayTypeCreateDto.TransplantProductionTrayTypeName.ToLowerTrim()))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "Transplant Production Tray Types must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "This TP Tray Type name is already being used. Use a different TP Tray Type name." });
             }
 
             if (string.IsNullOrEmpty(transplantProductionTrayTypeCreateDto.TransplantProductionTrayTypeName))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "Transplant Production Inputs must have a name." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "TP Tray Types must have a name." });
             }
 
             return result;
@@ -38,15 +39,15 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userTransplantProductionTrayTypesForWorkbook = GetDtoListByWorkbookID(dbContext, transplantProductionTrayTypeDto.Workbook.WorkbookID).ToList();
-            if (userTransplantProductionTrayTypesForWorkbook.Any(x => x.TransplantProductionTrayTypeName.ToLower() == transplantProductionTrayTypeDto.TransplantProductionTrayTypeName.ToLower()
+            if (userTransplantProductionTrayTypesForWorkbook.Any(x => x.TransplantProductionTrayTypeName.ToLowerTrim() == transplantProductionTrayTypeDto.TransplantProductionTrayTypeName.ToLowerTrim()
                                                                    && transplantProductionTrayTypeDto.TransplantProductionTrayTypeID != x.TransplantProductionTrayTypeID))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "Transplant Production Tray Types must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "This TP Tray Type name is already being used. Use a different TP Tray Type name." });
             }
 
             if (string.IsNullOrEmpty(transplantProductionTrayTypeDto.TransplantProductionTrayTypeName))
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "Transplant Production Inputs must have a name." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = "TP Tray Types must have a name." });
             }
 
             return result;
@@ -121,15 +122,15 @@ namespace OregonTilth.EFModels.Entities
             var transplantProductionTrayType = GetByID(dbContext, transplantProductionTrayTypeID);
             if (transplantProductionTrayType.TransplantProductionInformations.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = $"Cannot delete '{transplantProductionTrayType.TransplantProductionTrayTypeName}' because it is used on the Transplant Production Information form." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = $"Cannot delete '{transplantProductionTrayType.TransplantProductionTrayTypeName}' because it is used on the TP Info form." });
             }
             if (transplantProductionTrayType.TransplantProductionInputCosts.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = $"Cannot delete '{transplantProductionTrayType.TransplantProductionTrayTypeName}' because it is used on the Transplant Production Input Costs form." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = $"Cannot delete '{transplantProductionTrayType.TransplantProductionTrayTypeName}' because it is used on the TP Input Costs form." });
             }
             if (transplantProductionTrayType.TransplantProductionStandardTimes.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = $"Cannot delete '{transplantProductionTrayType.TransplantProductionTrayTypeName}' because it is used on the Transplant Production Standard Times form." });
+                result.Add(new ErrorMessage() { Type = "Transplant Production Tray Type", Message = $"Cannot delete '{transplantProductionTrayType.TransplantProductionTrayTypeName}' because it is used on the Transplant Production Time Studies form." });
             }
 
 

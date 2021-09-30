@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using OregonTilth.EFModels.Util;
 using OregonTilth.Models.DataTransferObjects;
 
 namespace OregonTilth.EFModels.Entities
@@ -12,9 +13,9 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var userCropUnitsForWorkbook = GetDtoListByWorkbookID(dbContext, cropUnitCreateDto.WorkbookID).ToList();
-            if (userCropUnitsForWorkbook.Any(x => x.CropUnitName.ToLower() == cropUnitCreateDto.CropUnitName.ToLower()))
+            if (userCropUnitsForWorkbook.Any(x => x.CropUnitName.ToLowerTrim() == cropUnitCreateDto.CropUnitName.ToLowerTrim()))
             {
-                result.Add(new ErrorMessage() { Type = "Crop Unit Name", Message = "Crop Unit Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Crop Unit Name", Message = "This Crop Unit name is already being used. Use  a different Crop Unit name." });
             }
 
             if (string.IsNullOrEmpty(cropUnitCreateDto.CropUnitName))
@@ -30,10 +31,10 @@ namespace OregonTilth.EFModels.Entities
             var result = new List<ErrorMessage>();
 
             var cropUnitsForWorkbook = GetDtoListByWorkbookID(dbContext, cropUnitDto.Workbook.WorkbookID).ToList();
-            if (cropUnitsForWorkbook.Any(x => x.CropUnitName.ToLower() == cropUnitDto.CropUnitName.ToLower()
+            if (cropUnitsForWorkbook.Any(x => x.CropUnitName.ToLowerTrim() == cropUnitDto.CropUnitName.ToLowerTrim()
                                                              && cropUnitDto.CropUnitID != x.CropUnitID))
             {
-                result.Add(new ErrorMessage() { Type = "Crop Unit Name", Message = "Crop Unit Names must be unique within this workbook." });
+                result.Add(new ErrorMessage() { Type = "Crop Unit Name", Message = "This Crop Unit name is already being used. Use  a different Crop Unit name." });
             }
 
             if (string.IsNullOrEmpty(cropUnitDto.CropUnitName))
@@ -109,12 +110,12 @@ namespace OregonTilth.EFModels.Entities
 
             if (cropUnit.CropYieldInformations.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Crop Unit", Message = "Cannot delete a Crop Unit that has Crop Yield Information." });
+                result.Add(new ErrorMessage() { Type = "Crop Unit", Message = $"Cannot delete '{cropUnit.CropUnitName}' because it is used on the Crop Yield Info form." });
             }
 
             if (cropUnit.HarvestPostHarvestStandardTimes.Any())
             {
-                result.Add(new ErrorMessage() { Type = "Crop Unit", Message = "Cannot delete a Crop Unit that has Harvest/Post-Harvest time study data." });
+                result.Add(new ErrorMessage() { Type = "Crop Unit", Message = $"Cannot delete '{cropUnit.CropUnitName}' because it is used on the Harvest/Post Harvest Time Studies form." });
             }
 
             return result;

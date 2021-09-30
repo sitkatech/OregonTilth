@@ -255,9 +255,33 @@ export class FieldLaborByCropComponent implements OnInit {
       this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.isLoadingSubmit = false;
       if(response.length > 0){
-        this.alertService.pushAlert(new Alert(`Successfully added ${response.length} Field Labor By Crop(s) for Crop '${response[0].Crop.CropName}'.`, AlertContext.Success));
+
+        var successMessage = `Successfully added ${response.length} Field Labor By Crop(s) for Crop '${response[0].Crop.CropName}'.`;
+        
+        if(response.length < this.model.FieldStandardTimes.length) {
+          var inputIDsAdded = response.map(x => x.FieldStandardTime.FieldStandardTimeID);
+          var inputsNotAdded = this.model.FieldStandardTimes.filter(x => !inputIDsAdded.includes(x.FieldStandardTimeID));
+          var inputsNotAddedString = inputsNotAdded.map(x => '<strong>\'' + x.FieldLaborActivityAndLaborTypeNameForDropdown + '\'</strong>').join(', ');
+          successMessage += `<br><strong>NOTE:</strong> Could not add the Field Inputs ${inputsNotAddedString} because they have already been entered for this Crop.`;
+        }
+
+
+
+
+        this.alertService.pushAlert(new Alert(successMessage, AlertContext.Success));
+
+
+
+
+
+
       }else{
-        this.alertService.pushAlert(new Alert(`No Field Labor By Crop was added.`, AlertContext.Info));
+        debugger;
+        var activitiesString = this.model.FieldStandardTimes.map(x => '<strong>\'' + x.FieldLaborActivityAndLaborTypeNameForDropdown + '\'</strong>').join(', ');
+
+        var infoMessage = `Could not add the Field Labor Activities ${activitiesString} because they have already been entered for this Crop.`;
+
+        this.alertService.pushAlert(new Alert(infoMessage, AlertContext.Info));
       }
       this.resetForm();
       this.cdr.detectChanges();

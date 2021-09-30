@@ -258,7 +258,16 @@ export class FieldInputByCropComponent implements OnInit {
       this.gridApi.flashCells({ rowNodes: transactionRows.add });
       this.isLoadingSubmit = false;
       if(response.length > 0){
-        this.alertService.pushAlert(new Alert(`Successfully added ${response.length} Field Input By Crop(s) for Crop '${response[0].Crop.CropName}'.`, AlertContext.Success));
+        var successMessage = `Successfully added ${response.length} Field Input By Crop(s) for Crop '${response[0].Crop.CropName}'.`;
+
+        if(response.length < this.model.FieldInputCosts.length) {
+          var inputIDsAdded = response.map(x => x.FieldInputCost.FieldInputCostID);
+          var inputsNotAdded = this.model.FieldInputCosts.filter(x => !inputIDsAdded.includes(x.FieldInputCostID));
+          var inputsNotAddedString = inputsNotAdded.map(x => '<strong>\'' + x.FieldInputCostName + '\'</strong>').join(', ');
+          successMessage += `<br><strong>NOTE:</strong> Could not add the Field Inputs ${inputsNotAddedString} because they have already been entered for this Crop.`;
+        }
+
+        this.alertService.pushAlert(new Alert(successMessage, AlertContext.Success));
       }else{
         this.alertService.pushAlert(new Alert(`No Field Input By Crop was added.`, AlertContext.Info));
       }
