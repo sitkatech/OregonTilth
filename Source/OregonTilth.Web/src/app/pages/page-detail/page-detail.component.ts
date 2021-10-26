@@ -37,12 +37,6 @@ export class PageDetailComponent implements OnInit {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
 
-      if (!this.authenticationService.isUserAnAdministrator(this.currentUser)) {
-        this.router.navigateByUrl("/not-found")
-          .then();
-        return;
-      }
-
       this.pageID = parseInt(this.route.snapshot.paramMap.get("pageId"));
       this.pageService.getPage(this.pageID).subscribe(page => {
         this.page = page;
