@@ -68,7 +68,8 @@ export class CustomRichTextComponent implements OnInit {
   }
 
   public showEditButton(): boolean {
-    return this.authenticationService.isUserAnAdministrator(this.currentUser);
+    var canShowEditButton = this.authenticationService.isCurrentUserAnAdministrator();
+    return canShowEditButton;
   }
 
   public enterEdit(): void {
