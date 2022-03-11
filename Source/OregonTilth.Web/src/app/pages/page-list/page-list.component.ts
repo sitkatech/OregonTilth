@@ -32,7 +32,7 @@ export class PageListComponent implements OnInit {
   public model : PageCreateDto;
   public rootPages: PageTreeDto[];
 
-  public rowData = [];
+  public rowData: PageTreeDto[];
   public columnDefs: ColDef[];
 
   constructor(
@@ -42,78 +42,78 @@ export class PageListComponent implements OnInit {
     private alertService: AlertService) { }
 
   ngOnInit() {
+
+    this.pageService.listAllPages().subscribe(pages => {
+      this.model = new PageCreateDto();
+      this.model.SortOrder = pages.length > 0 ? Math.max(...pages.map(x => x.SortOrder)) + 10 : 10;
+      this.rowData = pages;
+      this.rootPages = pages.filter(x => x.ParentPage == null)
+    });
+
+    this.defineColDefs()
+
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-     
-      
-      this.pageService.listAllPages().subscribe(pages => {
-        this.model = new PageCreateDto();
+    });
 
-        this.model.SortOrder = pages.length > 0 ? Math.max(...pages.map(x => x.SortOrder)) + 10 : 10;
+  }
 
-        this.rowData = pages;
-        
-        this.rootPages = pages.filter(x => x.ParentPage == null)
-      });
-
-      
-      var componentScope = this;
-
-      this.columnDefs = [
-        {
-          headerName: 'Page Name', valueGetter: function (params: any) {
-            return { LinkValue: params.data.PageID, LinkDisplay: params.data.PageName };
-          }, cellRendererFramework: LinkRendererComponent,
-          cellRendererParams: { inRouterLink: "/pages/edit" },
-          filterValueGetter: function (params: any) {
-            return params.data.PageName;
-          },
-          comparator: function (id1: any, id2: any) {
-            let link1 = id1.LinkDisplay;
-            let link2 = id2.LinkDisplay;
-            if (link1 < link2) {
-              return -1;
+  defineColDefs() : void {
+    var componentScope = this;
+    this.columnDefs = [
+      {
+        headerName: 'Page Name', valueGetter: function (params: any) {
+          return { LinkValue: params.data.PageID, LinkDisplay: params.data.PageName };
+        }, cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/pages/edit" },
+        filterValueGetter: function (params: any) {
+          return params.data.PageName;
+        },
+        comparator: function (id1: any, id2: any) {
+          let link1 = id1.LinkDisplay;
+          let link2 = id2.LinkDisplay;
+          if (link1 < link2) {
+            return -1;
+          }
+          if (link1 > link2) {
+            return 1;
+          }
+          return 0;
+        },
+        sortable: true, filter: true, width: 170
+      },
+      { 
+        headerName: 'Sort Order', 
+        field: 'SortOrder',
+        sortable: true, 
+        filter: true, 
+        width:100, 
+        cellStyle: {'white-space': 'normal'}
+      },
+      { headerName: 'Parent Page', field: 'ParentPage.PageName',  
+        cellRenderer:function (params: any) { 
+          return params.data.ParentPage ? params.data.ParentPage.PageName : ''
+        },
+         sortable: true, filter: true, width:150, cellStyle: {'white-space': 'normal'}
+      },
+      {
+        headerName: 'Delete', field: 'PageID',
+        valueGetter: function (params: any) {
+          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.PageID, ObjectDisplayName: params.data.PageName };
+        }, 
+        cellRendererFramework: ButtonRendererComponent,
+        cellRendererParams: {
+          clicked: function(field: any) {
+            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Page?`)) {
+              componentScope.deletePage(field.PrimaryKey)
             }
-            if (link1 > link2) {
-              return 1;
-            }
-            return 0;
-          },
-          sortable: true, filter: true, width: 170
-        },
-        { 
-          headerName: 'Sort Order', 
-          field: 'SortOrder',
-          autoHeight:true, 
-          sortable: true, 
-          filter: true, 
-          width:100, 
-          cellStyle: {'white-space': 'normal'}
-        },
-        { headerName: 'Parent Page', field: 'ParentPage.PageName',  
-          cellRenderer:function (params: any) { 
-            return params.data.ParentPage ? params.data.ParentPage.PageName : ''
-          },
-           autoHeight:true, sortable: true, filter: true, width:150, cellStyle: {'white-space': 'normal'}
-        },
-        {
-          headerName: 'Delete', field: 'PageID', valueGetter: function (params: any) {
-            return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.PageID, ObjectDisplayName: params.data.PageName };
-          }, cellRendererFramework: ButtonRendererComponent,
-          cellRendererParams: { 
-            clicked: function(field: any) {
-              if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Page?`)) {
-                componentScope.deletePage(field.PrimaryKey)
-              }
-            }
-            },
-          sortable: true, filter: true, width: 100, autoHeight:true
-        },
-      ];
+          }
+        }
+      },
+    ];
 
-      this.columnDefs.forEach(x => {
-        x.resizable = true;
-      });
+    this.columnDefs.forEach(x => {
+      x.resizable = true;
     });
   }
 
@@ -144,6 +144,7 @@ export class PageListComponent implements OnInit {
       this.cdr.detectChanges();
     });
   }
+
   ngOnDestroy(): void {
     this.watchUserChangeSubscription.unsubscribe();
     this.authenticationService.dispose();

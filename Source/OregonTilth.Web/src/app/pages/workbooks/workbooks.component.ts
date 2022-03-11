@@ -142,7 +142,7 @@ export class WorkbooksComponent implements OnInit {
               }
             }
            },
-          sortable: true, filter: true, width: 100, autoHeight:true
+          sortable: true, filter: true, width: 100
         },
         {
           headerName: 'Edit', field: 'WorkbookID', valueGetter: function (params: any) {
@@ -155,7 +155,7 @@ export class WorkbooksComponent implements OnInit {
               });
             }
            },
-          sortable: true, filter: true, width: 100, autoHeight:true
+          sortable: true, filter: true, width: 100
         },
         {
           headerName: 'Duplicate', 
@@ -168,7 +168,7 @@ export class WorkbooksComponent implements OnInit {
               });
             }
            },
-          sortable: true, filter: true, width: 125, autoHeight:true
+          sortable: true, filter: true, width: 125
         }
       ];
         

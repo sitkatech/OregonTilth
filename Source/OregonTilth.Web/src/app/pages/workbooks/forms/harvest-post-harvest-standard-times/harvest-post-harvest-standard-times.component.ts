@@ -316,7 +316,6 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
         },
         sortable: false, 
         filter: true,
-        autoHeight:true,
         resizable: false,
         width:300
       },
@@ -331,7 +330,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
             }
           }
           },
-        sortable: true, filter: true, width: 100, autoHeight:true
+        sortable: true, filter: true, width: 100
       },
     ]
   }
