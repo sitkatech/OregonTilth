@@ -100,7 +100,6 @@ export class PageListComponent implements OnInit {
       {
         headerName: 'Delete', field: 'PageID',
         valueGetter: function (params: any) {
-          console.log('value getter')
           return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.PageID, ObjectDisplayName: params.data.PageName };
         }, 
         cellRendererFramework: ButtonRendererComponent,
