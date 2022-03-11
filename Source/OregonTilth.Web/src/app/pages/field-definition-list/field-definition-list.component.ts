@@ -66,7 +66,7 @@ export class FieldDefinitionListComponent implements OnInit {
           cellRenderer:function (params: any) { 
             return params.data.FieldDefinitionValue ? params.data.FieldDefinitionValue : ''
           },
-           autoHeight:true, sortable: true, filter: true, width:900, cellStyle: {'white-space': 'normal'}},
+           sortable: true, filter: true, width:900, cellStyle: {'white-space': 'normal'}},
       ];
 
       this.columnDefs.forEach(x => {

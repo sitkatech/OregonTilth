@@ -127,7 +127,7 @@ export class MachineryComponent implements OnInit {
             }
           }
           },
-        sortable: true, filter: true, width: 100, autoHeight:true
+        sortable: true, filter: true, width: 100
       },
     ]
   }

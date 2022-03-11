@@ -329,7 +329,6 @@ export class FieldStandardTimesComponent implements OnInit {
         },
         sortable: false, 
         filter: true,
-        autoHeight:true,
         resizable: false,
         width:300
       },
@@ -344,7 +343,7 @@ export class FieldStandardTimesComponent implements OnInit {
             }
           }
           },
-        sortable: true, filter: true, width: 100, autoHeight:true
+        sortable: true, filter: true, width: 100
       },
       
     ]

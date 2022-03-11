@@ -183,7 +183,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
             }
           }
           },
-        sortable: true, filter: true, width: 100, autoHeight:true, resizable: true
+        sortable: true, filter: true, width: 100, resizable: true
       },
     ]
   }

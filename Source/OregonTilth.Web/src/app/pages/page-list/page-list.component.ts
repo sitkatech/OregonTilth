@@ -85,7 +85,6 @@ export class PageListComponent implements OnInit {
       { 
         headerName: 'Sort Order', 
         field: 'SortOrder',
-        autoHeight:true, 
         sortable: true, 
         filter: true, 
         width:100, 
@@ -95,7 +94,7 @@ export class PageListComponent implements OnInit {
         cellRenderer:function (params: any) { 
           return params.data.ParentPage ? params.data.ParentPage.PageName : ''
         },
-         autoHeight:true, sortable: true, filter: true, width:150, cellStyle: {'white-space': 'normal'}
+         sortable: true, filter: true, width:150, cellStyle: {'white-space': 'normal'}
       },
       {
         headerName: 'Delete', field: 'PageID',
