@@ -117,8 +117,7 @@ namespace OregonTilth.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = EFModels.Entities.User.CreateNewUser(_dbContext, userCreateDto, userCreateDto.LoginName,
-                userCreateDto.UserGuid);
+            var user = EFModels.Entities.User.CreateUnassignedUser(_dbContext, userCreateDto);
 
             var smtpClient = HttpContext.RequestServices.GetRequiredService<SitkaSmtpClientService>();
             var mailMessage = GenerateUserCreatedEmail(_frescaConfiguration.WEB_URL, user, _dbContext, smtpClient);

@@ -8,6 +8,21 @@ namespace OregonTilth.EFModels.Entities
 {
     public partial class User
     {
+        public static UserDto CreateUnassignedUser(OregonTilthDbContext dbContext, UserCreateDto userCreateDto)
+        {
+            var userUpsertDto = new UserUpsertDto()
+            {
+                FirstName = userCreateDto.FirstName,
+                LastName = userCreateDto.LastName,
+                OrganizationName = userCreateDto.OrganizationName,
+                Email = userCreateDto.Email,
+                PhoneNumber = userCreateDto.PhoneNumber,
+                RoleID = 3,  // don't allow non-admin user to set their role to something other than Unassigned
+                ReceiveSupportEmails = false  // don't allow non-admin users to hijack support emails
+            };
+            return CreateNewUser(dbContext, userUpsertDto, userCreateDto.LoginName, userCreateDto.UserGuid);
+        }
+
         public static UserDto CreateNewUser(OregonTilthDbContext dbContext, UserUpsertDto userToCreate, string loginName, Guid userGuid)
         {
             if (!userToCreate.RoleID.HasValue)
