@@ -166,5 +166,24 @@ namespace OregonTilth.EFModels.Entities
 
             return result;
         }
+
+        public static List<ErrorMessage> ValidateCreateUnassignedUser(OregonTilthDbContext dbContext, UserCreateDto userCreateDto)
+        {
+            var result = new List<ErrorMessage>();
+
+            var userByGuidDto = GetByUserGuid(dbContext, userCreateDto.UserGuid);  // A duplicate Guid not only leads to 500s, it allows someone to hijack another user's account
+            if (userByGuidDto != null)
+            {
+                result.Add(new ErrorMessage() { Type = "User Creation", Message = "Invalid user information." });  // purposely vague; we don't want a naughty person realizing they figured out someone else's Guid
+            }
+
+            var userByEmailDto = GetByEmail(dbContext, userCreateDto.Email);  // A duplicate email leads to 500s, so need to prevent duplicates
+            if (userByEmailDto != null)
+            {
+                result.Add(new ErrorMessage() { Type = "User Creation", Message = "There is already a user account with this email address." });
+            }
+
+            return result;
+        }
     }
 }
