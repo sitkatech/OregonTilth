@@ -17,7 +17,7 @@ namespace OregonTilth.EFModels.Entities
                 OrganizationName = userCreateDto.OrganizationName,
                 Email = userCreateDto.Email,
                 PhoneNumber = userCreateDto.PhoneNumber,
-                RoleID = 3,  // don't allow non-admin user to set their role to something other than Unassigned
+                RoleID = (int) RoleEnum.Unassigned,  // don't allow non-admin user to set their role to something other than Unassigned
                 ReceiveSupportEmails = false  // don't allow non-admin users to hijack support emails
             };
             return CreateNewUser(dbContext, userUpsertDto, userCreateDto.LoginName, userCreateDto.UserGuid);
