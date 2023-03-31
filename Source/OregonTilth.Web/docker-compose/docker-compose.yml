@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   oregontilth.web:
-    image: sitkacontainers.azurecr.io/oregontilth/web
+    image: oregontilth/web
     build:
       args:
         env: ${ENVIRONMENT}
