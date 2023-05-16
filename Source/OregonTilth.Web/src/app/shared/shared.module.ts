@@ -61,8 +61,6 @@ import { NgClickOutsideModule } from 'ng-click-outside2';
         SideNavComponent,
         FieldDefinitionComponent,
         FieldDefinitionGridHeaderComponent
-    ],
-    entryComponents:[
     ]
 })
 export class SharedModule {
