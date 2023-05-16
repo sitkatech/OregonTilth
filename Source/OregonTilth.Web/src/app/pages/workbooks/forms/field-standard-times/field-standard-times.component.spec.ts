@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FieldStandardTimesComponent } from './field-standard-times.component';
 
@@ -6,7 +6,7 @@ describe('FieldStandardTimesComponent', () => {
   let component: FieldStandardTimesComponent;
   let fixture: ComponentFixture<FieldStandardTimesComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FieldStandardTimesComponent ]
     })

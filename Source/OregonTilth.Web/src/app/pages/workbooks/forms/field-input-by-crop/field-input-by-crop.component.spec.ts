@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FieldInputByCropComponent } from './field-input-by-crop.component';
 
@@ -6,7 +6,7 @@ describe('TransplantProductionLaborByCropComponent', () => {
   let component: FieldInputByCropComponent;
   let fixture: ComponentFixture<FieldInputByCropComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FieldInputByCropComponent ]
     })
