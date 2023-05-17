@@ -54,7 +54,7 @@ export class AppComponent {
         this.oauthService.loadDiscoveryDocument();
         this.oauthService.events
             .subscribe((e) => {
-                console.log(e.type);
+                // console.log(e.type);
                 switch (e.type) {
                     case 'discovery_document_loaded':
                         console.log("discovery_document_loaded");

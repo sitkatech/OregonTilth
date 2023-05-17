@@ -27,7 +27,6 @@ import { ComboSeriesVerticalComponent } from './shared/components/combo-chart/co
 import { FontAwesomeIconLinkRendererComponent } from './shared/components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { LoginCallbackComponent } from './pages/login-callback/login-callback.component';
 import { HelpComponent } from './pages/help/help.component';
-import { MyDatePickerModule } from 'mydatepicker';
 import { MultiLinkRendererComponent } from './shared/components/ag-grid/multi-link-renderer/multi-link-renderer.component';
 import { CreateUserCallbackComponent } from './pages/create-user-callback/create-user-callback.component';
 import { AboutComponent } from './pages/about/about.component';
@@ -71,7 +70,7 @@ import { LaborHoursComponent } from './pages/workbooks/results/labor-hours/labor
 import { ChartsModule } from 'ng2-charts';
 import { EditableRendererComponent } from './shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { VariableCostsComponent } from './pages/workbooks/results/variable-costs/variable-costs.component';
-import { ClickOutsideModule } from 'ng-click-outside';
+import { NgClickOutsideModule } from 'ng-click-outside2';
 import { DuplicateComponent } from './pages/workbooks/duplicate/duplicate.component';
 import { PageListComponent } from './pages/page-list/page-list.component';
 import { PageEditComponent } from './pages/page-edit/page-edit.component';
@@ -86,87 +85,85 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeIndexComponent,
-    UserListComponent,
-    UserInviteComponent,
-    UserDetailComponent,
-    UserEditComponent,
-    ComboSeriesVerticalComponent,
-    LoginCallbackComponent,
-    HelpComponent,
-    CreateUserCallbackComponent,
-    AboutComponent,
-    WorkbooksComponent,
-    NewWorkbookComponent,
-    WorkbookDetailComponent,
-    FieldLaborActivitiesComponent,
-    TransplantProductionLaborActivitiesComponent,
-    MachineryComponent,
-    FieldInputCostsComponent,
-    TransplantProductionInputCostsComponent,
-    FieldLaborByCropComponent,
-    TransplantProductionLaborByCropComponent,
-    TransplantProductionInputsComponent,
-    TransplantProductionTrayTypesComponent,
-    TransplantProductionInformationComponent,
-    FieldStandardTimesComponent,
-    HarvestPostHarvestStandardTimesComponent,
-    TransplantProductionStandardTimesComponent,
-    CropYieldInformationComponent,
-    CropsComponent,
-    CropUnitsComponent,
-    CropCropUnitComponent,
-    LaborHoursComponent,
-    DisclaimerComponent,
-    FieldDefinitionListComponent,
-    FieldDefinitionEditComponent,
-    TrainingComponent,
-    DecimalEditor,
-    EditableRendererComponent,
-    IntegerEditor,
-    FieldInputByCropComponent,
-    TimeStudyModal,
-    CropSpecificInfoComponent,
-    VariableCostsComponent,
-    DuplicateComponent,
-    PageListComponent,
-    PageEditComponent,
-    PageDetailComponent
-  ],
-  imports: [
-    AppRoutingModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    NgbModule,
-    RouterModule,
-    OAuthModule.forRoot(),
-    SharedModule.forRoot(),
-    FormsModule,
-    NgxChartsModule,
-    BrowserAnimationsModule,
-    AgGridModule.withComponents([DecimalEditor, IntegerEditor, EditableRendererComponent]),
-    NgMultiSelectDropDownModule.forRoot(),
-    MyDatePickerModule,
-    CKEditorModule,
-    ReactiveFormsModule,
-    ChartsModule,
-    ClickOutsideModule
-  ],  
-  providers: [
-    CookieService,
-    AppInitService,
-    { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppInitService, AppInsightsService], multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
-    {
-      provide: ErrorHandler,
-      useClass: GlobalErrorHandlerService
-    },
-    DecimalPipe, CurrencyPipe, DatePipe
-  ],
-  entryComponents: [LinkRendererComponent, FontAwesomeIconLinkRendererComponent, MultiLinkRendererComponent, ButtonRendererComponent, TimeStudyCellRendererComponent],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HomeIndexComponent,
+        UserListComponent,
+        UserInviteComponent,
+        UserDetailComponent,
+        UserEditComponent,
+        ComboSeriesVerticalComponent,
+        LoginCallbackComponent,
+        HelpComponent,
+        CreateUserCallbackComponent,
+        AboutComponent,
+        WorkbooksComponent,
+        NewWorkbookComponent,
+        WorkbookDetailComponent,
+        FieldLaborActivitiesComponent,
+        TransplantProductionLaborActivitiesComponent,
+        MachineryComponent,
+        FieldInputCostsComponent,
+        TransplantProductionInputCostsComponent,
+        FieldLaborByCropComponent,
+        TransplantProductionLaborByCropComponent,
+        TransplantProductionInputsComponent,
+        TransplantProductionTrayTypesComponent,
+        TransplantProductionInformationComponent,
+        FieldStandardTimesComponent,
+        HarvestPostHarvestStandardTimesComponent,
+        TransplantProductionStandardTimesComponent,
+        CropYieldInformationComponent,
+        CropsComponent,
+        CropUnitsComponent,
+        CropCropUnitComponent,
+        LaborHoursComponent,
+        DisclaimerComponent,
+        FieldDefinitionListComponent,
+        FieldDefinitionEditComponent,
+        TrainingComponent,
+        DecimalEditor,
+        EditableRendererComponent,
+        IntegerEditor,
+        FieldInputByCropComponent,
+        TimeStudyModal,
+        CropSpecificInfoComponent,
+        VariableCostsComponent,
+        DuplicateComponent,
+        PageListComponent,
+        PageEditComponent,
+        PageDetailComponent
+    ],
+    imports: [
+        AppRoutingModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        NgbModule,
+        RouterModule,
+        OAuthModule.forRoot(),
+        SharedModule.forRoot(),
+        FormsModule,
+        NgxChartsModule,
+        BrowserAnimationsModule,
+        AgGridModule,
+        NgMultiSelectDropDownModule.forRoot(),
+        CKEditorModule,
+        ReactiveFormsModule,
+        ChartsModule,
+        NgClickOutsideModule
+    ],
+    providers: [
+        CookieService,
+        AppInitService,
+        { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppInitService, AppInsightsService], multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
+        {
+            provide: ErrorHandler,
+            useClass: GlobalErrorHandlerService
+        },
+        DecimalPipe, CurrencyPipe, DatePipe
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

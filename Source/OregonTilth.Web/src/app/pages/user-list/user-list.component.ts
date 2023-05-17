@@ -125,9 +125,6 @@ export class UserListComponent implements OnInit, OnDestroy {
     });
   }
 
-  private refreshView(){
-    this.unassignedUsersGrid.api.refreshView();
-  }
 
   ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();
