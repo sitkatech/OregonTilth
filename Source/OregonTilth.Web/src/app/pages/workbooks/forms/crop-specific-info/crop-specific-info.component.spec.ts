@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CropSpecificInfoComponent } from './crop-specific-info.component';
 
 describe('CropSpecificInfoComponent', () => {
   let component: CropSpecificInfoComponent;
   let fixture: ComponentFixture<CropSpecificInfoComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CropSpecificInfoComponent ]
     })

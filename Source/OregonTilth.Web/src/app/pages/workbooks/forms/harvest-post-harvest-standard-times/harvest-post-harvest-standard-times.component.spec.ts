@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HarvestPostHarvestStandardTimesComponent } from './harvest-post-harvest-standard-times.component';
 
@@ -6,7 +6,7 @@ describe('HarvestPostHarvestStandardTimesComponent', () => {
   let component: HarvestPostHarvestStandardTimesComponent;
   let fixture: ComponentFixture<HarvestPostHarvestStandardTimesComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ HarvestPostHarvestStandardTimesComponent ]
     })
