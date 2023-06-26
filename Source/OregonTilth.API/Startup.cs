@@ -105,7 +105,6 @@ namespace OregonTilth.API
                 c.UseSqlServer(frescaConfiguration.DB_CONNECTION_STRING, x =>
                 {
                     x.CommandTimeout((int)TimeSpan.FromMinutes(3).TotalSeconds);
-                    x.UseNetTopologySuite();
                 });
             });
 

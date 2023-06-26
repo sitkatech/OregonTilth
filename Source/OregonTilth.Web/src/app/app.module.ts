@@ -49,7 +49,6 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { HttpErrorInterceptor } from './shared/interceptors/httpErrorInterceptor';
 import { TrainingComponent } from './pages/training/training.component';
 import { environment } from 'src/environments/environment';
-import { AppInsightsService } from './shared/services/app-insights.service';
 import { GlobalErrorHandlerService } from './shared/services/global-error-handler.service';
 import { DecimalEditor } from './shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { TransplantProductionInputsComponent } from './pages/workbooks/forms/transplant-production-inputs/transplant-production-inputs.component';
@@ -76,11 +75,9 @@ import { PageListComponent } from './pages/page-list/page-list.component';
 import { PageEditComponent } from './pages/page-edit/page-edit.component';
 import { PageDetailComponent } from './pages/page-detail/page-detail.component';
 
-export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
+export function init_app(appLoadService: AppInitService) {
   return () => appLoadService.init().then(() => {
-    if (environment.appInsightsInstrumentationKey) {
-      appInsightsService.initAppInsights();
-    }
+    
   });
 }
 
@@ -155,7 +152,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     providers: [
         CookieService,
         AppInitService,
-        { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppInitService, AppInsightsService], multi: true },
+        { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppInitService], multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
         {
