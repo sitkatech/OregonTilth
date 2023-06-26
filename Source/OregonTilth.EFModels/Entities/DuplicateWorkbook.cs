@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace OregonTilth.EFModels.Entities
