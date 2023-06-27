@@ -1,7 +1,7 @@
 MERGE INTO dbo.LaborType AS Target
 USING (VALUES
-(1, 'Crew', 'Crew'),
-(2, 'Operator', 'Operator')
+(1, 'Manual', 'Manual'),
+(2, 'Machinery', 'Machinery')
 )
 AS Source (LaborTypeID, LaborTypeName, LaborTypeDisplayName)
 ON Target.LaborTypeID = Source.LaborTypeID
