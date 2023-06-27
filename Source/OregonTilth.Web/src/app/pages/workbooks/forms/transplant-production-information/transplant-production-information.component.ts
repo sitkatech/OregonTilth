@@ -228,7 +228,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         resizable: true
       },
       {
-        headerName: 'Cost Per Seed', 
+        headerName: 'Seed Cost per Cell/Plug', 
         field: 'CostPerSeed',
         editable: params => {
           if(params.data.Phase.PhaseID == PhaseEnum.PottingUp) {
@@ -257,7 +257,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         },
         cellRendererFramework: EditableRendererComponent,
         resizable: true,
-        width:150
+        width:175
       },
       {
         headerName: 'Crop Specific Input Costs per Tray', 
