@@ -330,11 +330,11 @@ export class FieldStandardTimesComponent implements OnInit {
         sortable: false, 
         filter: true,
         resizable: false,
-        width:300
+        width:400
       },
       {
         headerName: 'Delete', valueGetter: function (params: any) {
-          return { ButtonText: 'Delete', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.FieldStandardTimeID, ObjectDisplayName: null };
+          return { ButtonText: 'Delete Record', CssClasses: "btn btn-fresca btn-sm", PrimaryKey: params.data.FieldStandardTimeID, ObjectDisplayName: null };
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
@@ -343,7 +343,7 @@ export class FieldStandardTimesComponent implements OnInit {
             }
           }
           },
-        sortable: true, filter: true, width: 100
+        sortable: true, filter: true, width: 140
       },
       
     ]
