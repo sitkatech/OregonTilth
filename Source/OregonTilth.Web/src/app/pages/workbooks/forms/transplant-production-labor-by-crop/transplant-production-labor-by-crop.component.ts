@@ -24,6 +24,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { TransplantProductionStandardTimeCreateDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-create-dto';
 import { TransplantProductionStandardTimeDto } from 'src/app/shared/models/generated/transplant-production-standard-time-dto';
+import { TransplantProductionStandardTimeSummaryDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-summary-dto';
 @Component({
   selector: 'transplant-production-labor-by-crop',
   templateUrl: './transplant-production-labor-by-crop.component.html',
@@ -56,7 +57,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
   public transplantProductionInformationDtos: TransplantProductionInformationDto[];
   private getTransplantProductionInformationDtosRequest: any;
 
-  public transplantProductionStandardTimeDtos: TransplantProductionStandardTimeDto[];
+  public transplantProductionStandardTimeDtos: TransplantProductionStandardTimeSummaryDto[];
   private getTransplantProductionStandardTimeDtosRequest: any;
 
   public transplantProductionLaborActivityDtos: TransplantProductionLaborActivityDto[];
@@ -93,7 +94,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
     this.availableTransplantProductionLaborActivityDtos = this.transplantProductionLaborActivityDtos.filter(x => {
       
       var standardTimes = this.transplantProductionStandardTimeDtos.filter(y => {
-        return y.TransplantProductionTrayType.TransplantProductionTrayTypeID == selectedTpInfo.TransplantProductionTrayType.TransplantProductionTrayTypeID
+        return y.TransplantProductionTrayType.TransplantProductionTrayTypeID == selectedTpInfo.TransplantProductionTrayType.TransplantProductionTrayTypeID && y.TimeStudies.length > 0
       })
 
       var laborActivityIDs = standardTimes.map(y => y.TransplantProductionLaborActivity.TransplantProductionLaborActivityID);
@@ -101,7 +102,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
         x.TransplantProductionInformation.Crop.CropID == selectedTpInfo.Crop.CropID 
         && x.TransplantProductionInformation.Phase.PhaseID == selectedTpInfo.Phase.PhaseID)
         .map(y => y.TransplantProductionLaborActivity.TransplantProductionLaborActivityID);
-      return laborActivityIDs.includes(x.TransplantProductionLaborActivityID) && !alreadyAddedLaborActivityIDsForCropAndPhase.includes(x.TransplantProductionLaborActivityID)
+      return laborActivityIDs.includes(x.TransplantProductionLaborActivityID) && !alreadyAddedLaborActivityIDsForCropAndPhase.includes(x.TransplantProductionLaborActivityID) 
     })
   }
 
@@ -113,7 +114,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
 
     this.getTransplantProductionStandardTimeDtosRequest = this.workbookService.getTransplantProductionStandardTimes(this.workbookID);
 
-    forkJoin([this.getWorkbookRequest, this.getTransplantProductionInformationDtosRequest, this.getTransplantProductionLaborActivityDtosRequest, this.getTransplantProductionLaborByCropsRequest, this.getTransplantProductionStandardTimeDtosRequest]).subscribe(([workbookDto, transplantProductionInformationDtos, transplantProductionLaborActivityDtos, transplantProductionLaborByCrops, standardTimes]: [WorkbookDto, TransplantProductionInformationDto[], TransplantProductionLaborActivityDto[], TransplantProductionLaborActivityByCropDto[], TransplantProductionStandardTimeDto[]]) => {
+    forkJoin([this.getWorkbookRequest, this.getTransplantProductionInformationDtosRequest, this.getTransplantProductionLaborActivityDtosRequest, this.getTransplantProductionLaborByCropsRequest, this.getTransplantProductionStandardTimeDtosRequest]).subscribe(([workbookDto, transplantProductionInformationDtos, transplantProductionLaborActivityDtos, transplantProductionLaborByCrops, standardTimes]: [WorkbookDto, TransplantProductionInformationDto[], TransplantProductionLaborActivityDto[], TransplantProductionLaborActivityByCropDto[], TransplantProductionStandardTimeSummaryDto[]]) => {
       this.workbook = workbookDto;
       this.transplantProductionInformationDtos =  transplantProductionInformationDtos;
       this.transplantProductionLaborActivityDtos = this.getUniqueTransplantProductionLaborActivityDtos(transplantProductionLaborActivityDtos);
