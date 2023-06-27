@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace OregonTilth.EFModels.Entities
 {
     [Table("Page")]
@@ -20,15 +18,17 @@ namespace OregonTilth.EFModels.Entities
         public int PageID { get; set; }
         [Required]
         [StringLength(100)]
+        [Unicode(false)]
         public string PageName { get; set; }
+        [Unicode(false)]
         public string PageContent { get; set; }
         public int SortOrder { get; set; }
         public int? ParentPageID { get; set; }
 
-        [ForeignKey(nameof(ParentPageID))]
-        [InverseProperty(nameof(Page.InverseParentPage))]
+        [ForeignKey("ParentPageID")]
+        [InverseProperty("InverseParentPage")]
         public virtual Page ParentPage { get; set; }
-        [InverseProperty(nameof(Page.ParentPage))]
+        [InverseProperty("ParentPage")]
         public virtual ICollection<Page> InverseParentPage { get; set; }
     }
 }

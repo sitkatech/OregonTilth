@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace OregonTilth.EFModels.Entities
 {
     [Table("FieldLaborActivity")]
-    [Index(nameof(FieldLaborActivityName), nameof(WorkbookID), Name = "AK_FieldLaborActivity_FieldLaborActivityName_WorkbookID", IsUnique = true)]
+    [Index("FieldLaborActivityName", "WorkbookID", Name = "AK_FieldLaborActivity_FieldLaborActivityName_WorkbookID", IsUnique = true)]
     public partial class FieldLaborActivity
     {
         public FieldLaborActivity()
@@ -22,18 +20,19 @@ namespace OregonTilth.EFModels.Entities
         public int WorkbookID { get; set; }
         [Required]
         [StringLength(100)]
+        [Unicode(false)]
         public string FieldLaborActivityName { get; set; }
         public int FieldLaborActivityCategoryID { get; set; }
-        public bool LaborTypeCrew { get; set; }
-        public bool LaborTypeOperator { get; set; }
+        public bool LaborTypeManual { get; set; }
+        public bool LaborTypeMachinery { get; set; }
 
-        [ForeignKey(nameof(FieldLaborActivityCategoryID))]
+        [ForeignKey("FieldLaborActivityCategoryID")]
         [InverseProperty("FieldLaborActivities")]
         public virtual FieldLaborActivityCategory FieldLaborActivityCategory { get; set; }
-        [ForeignKey(nameof(WorkbookID))]
+        [ForeignKey("WorkbookID")]
         [InverseProperty("FieldLaborActivities")]
         public virtual Workbook Workbook { get; set; }
-        [InverseProperty(nameof(FieldStandardTime.FieldLaborActivity))]
+        [InverseProperty("FieldLaborActivity")]
         public virtual ICollection<FieldStandardTime> FieldStandardTimes { get; set; }
     }
 }

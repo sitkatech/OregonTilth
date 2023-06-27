@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace OregonTilth.EFModels.Entities
 {
     [Table("Workbook")]
-    [Index(nameof(UserID), nameof(WorkbookName), Name = "AK_Workbook_UserID_WorkbookName", IsUnique = true)]
+    [Index("UserID", "WorkbookName", Name = "AK_Workbook_UserID_WorkbookName", IsUnique = true)]
     public partial class Workbook
     {
         public Workbook()
@@ -42,6 +40,7 @@ namespace OregonTilth.EFModels.Entities
         public DateTime CreateDate { get; set; }
         [Required]
         [StringLength(255)]
+        [Unicode(false)]
         public string WorkbookName { get; set; }
         [Column(TypeName = "money")]
         public decimal AverageHourlyWage { get; set; }
@@ -50,46 +49,46 @@ namespace OregonTilth.EFModels.Entities
         [Column(TypeName = "decimal(18, 4)")]
         public decimal StandardUnitOfSpaceWidth { get; set; }
 
-        [ForeignKey(nameof(UserID))]
+        [ForeignKey("UserID")]
         [InverseProperty("Workbooks")]
         public virtual User User { get; set; }
-        [InverseProperty(nameof(CropSpecificInfo.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<CropSpecificInfo> CropSpecificInfos { get; set; }
-        [InverseProperty(nameof(CropUnit.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<CropUnit> CropUnits { get; set; }
-        [InverseProperty(nameof(CropYieldInformation.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<CropYieldInformation> CropYieldInformations { get; set; }
-        [InverseProperty(nameof(Crop.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<Crop> Crops { get; set; }
-        [InverseProperty(nameof(FieldInputByCrop.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<FieldInputByCrop> FieldInputByCrops { get; set; }
-        [InverseProperty(nameof(FieldInputCost.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<FieldInputCost> FieldInputCosts { get; set; }
-        [InverseProperty(nameof(FieldLaborActivity.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<FieldLaborActivity> FieldLaborActivities { get; set; }
-        [InverseProperty(nameof(FieldLaborByCrop.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<FieldLaborByCrop> FieldLaborByCrops { get; set; }
-        [InverseProperty(nameof(FieldStandardTime.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<FieldStandardTime> FieldStandardTimes { get; set; }
-        [InverseProperty(nameof(HarvestPostHarvestStandardTime.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<HarvestPostHarvestStandardTime> HarvestPostHarvestStandardTimes { get; set; }
-        [InverseProperty(nameof(Machinery.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<Machinery> Machineries { get; set; }
-        [InverseProperty(nameof(TimeStudy.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<TimeStudy> TimeStudies { get; set; }
-        [InverseProperty(nameof(TransplantProductionInformation.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<TransplantProductionInformation> TransplantProductionInformations { get; set; }
-        [InverseProperty(nameof(TransplantProductionInputCost.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<TransplantProductionInputCost> TransplantProductionInputCosts { get; set; }
-        [InverseProperty(nameof(TransplantProductionInput.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<TransplantProductionInput> TransplantProductionInputs { get; set; }
-        [InverseProperty(nameof(TransplantProductionLaborActivity.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<TransplantProductionLaborActivity> TransplantProductionLaborActivities { get; set; }
-        [InverseProperty(nameof(TransplantProductionLaborActivityByCrop.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<TransplantProductionLaborActivityByCrop> TransplantProductionLaborActivityByCrops { get; set; }
-        [InverseProperty(nameof(TransplantProductionStandardTime.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<TransplantProductionStandardTime> TransplantProductionStandardTimes { get; set; }
-        [InverseProperty(nameof(TransplantProductionTrayType.Workbook))]
+        [InverseProperty("Workbook")]
         public virtual ICollection<TransplantProductionTrayType> TransplantProductionTrayTypes { get; set; }
     }
 }

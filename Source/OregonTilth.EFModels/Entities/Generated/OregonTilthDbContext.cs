@@ -1,8 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-
-#nullable disable
 
 namespace OregonTilth.EFModels.Entities
 {
@@ -59,19 +58,15 @@ namespace OregonTilth.EFModels.Entities
         {
             
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+
                 
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
-
             modelBuilder.Entity<Crop>(entity =>
             {
-                entity.Property(e => e.CropName).IsUnicode(false);
-
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.Crops)
                     .HasForeignKey(d => d.WorkbookID)
@@ -99,8 +94,6 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<CropUnit>(entity =>
             {
-                entity.Property(e => e.CropUnitName).IsUnicode(false);
-
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.CropUnits)
                     .HasForeignKey(d => d.WorkbookID)
@@ -127,8 +120,6 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<CustomRichText>(entity =>
             {
-                entity.Property(e => e.CustomRichTextContent).IsUnicode(false);
-
                 entity.HasOne(d => d.CustomRichTextType)
                     .WithMany(p => p.CustomRichTexts)
                     .HasForeignKey(d => d.CustomRichTextTypeID)
@@ -138,10 +129,6 @@ namespace OregonTilth.EFModels.Entities
             modelBuilder.Entity<CustomRichTextType>(entity =>
             {
                 entity.Property(e => e.CustomRichTextTypeID).ValueGeneratedNever();
-
-                entity.Property(e => e.CustomRichTextTypeDisplayName).IsUnicode(false);
-
-                entity.Property(e => e.CustomRichTextTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<DatabaseMigration>(entity =>
@@ -154,8 +141,6 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<FieldDefinition>(entity =>
             {
-                entity.Property(e => e.FieldDefinitionValue).IsUnicode(false);
-
                 entity.HasOne(d => d.FieldDefinitionType)
                     .WithMany(p => p.FieldDefinitions)
                     .HasForeignKey(d => d.FieldDefinitionTypeID)
@@ -165,16 +150,10 @@ namespace OregonTilth.EFModels.Entities
             modelBuilder.Entity<FieldDefinitionType>(entity =>
             {
                 entity.Property(e => e.FieldDefinitionTypeID).ValueGeneratedNever();
-
-                entity.Property(e => e.FieldDefinitionTypeDisplayName).IsUnicode(false);
-
-                entity.Property(e => e.FieldDefinitionTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<FieldInputByCrop>(entity =>
             {
-                entity.Property(e => e.Notes).IsUnicode(false);
-
                 entity.HasOne(d => d.Crop)
                     .WithMany(p => p.FieldInputByCrops)
                     .HasForeignKey(d => d.CropID)
@@ -193,10 +172,6 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<FieldInputCost>(entity =>
             {
-                entity.Property(e => e.FieldInputCostName).IsUnicode(false);
-
-                entity.Property(e => e.Notes).IsUnicode(false);
-
                 entity.HasOne(d => d.FieldUnitType)
                     .WithMany(p => p.FieldInputCosts)
                     .HasForeignKey(d => d.FieldUnitTypeID)
@@ -210,8 +185,6 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<FieldLaborActivity>(entity =>
             {
-                entity.Property(e => e.FieldLaborActivityName).IsUnicode(false);
-
                 entity.HasOne(d => d.FieldLaborActivityCategory)
                     .WithMany(p => p.FieldLaborActivities)
                     .HasForeignKey(d => d.FieldLaborActivityCategoryID)
@@ -226,16 +199,10 @@ namespace OregonTilth.EFModels.Entities
             modelBuilder.Entity<FieldLaborActivityCategory>(entity =>
             {
                 entity.Property(e => e.FieldLaborActivityCategoryID).ValueGeneratedNever();
-
-                entity.Property(e => e.FieldLaborActivityCategoryDisplayName).IsUnicode(false);
-
-                entity.Property(e => e.FieldLaborActivityCategoryName).IsUnicode(false);
             });
 
             modelBuilder.Entity<FieldLaborByCrop>(entity =>
             {
-                entity.Property(e => e.Notes).IsUnicode(false);
-
                 entity.HasOne(d => d.Crop)
                     .WithMany(p => p.FieldLaborByCrops)
                     .HasForeignKey(d => d.CropID)
@@ -273,18 +240,10 @@ namespace OregonTilth.EFModels.Entities
             modelBuilder.Entity<FieldUnitType>(entity =>
             {
                 entity.Property(e => e.FieldUnitTypeID).ValueGeneratedNever();
-
-                entity.Property(e => e.FieldUnitTypeDisplayName).IsUnicode(false);
-
-                entity.Property(e => e.FieldUnitTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<FileResource>(entity =>
             {
-                entity.Property(e => e.OriginalBaseFilename).IsUnicode(false);
-
-                entity.Property(e => e.OriginalFileExtension).IsUnicode(false);
-
                 entity.HasOne(d => d.CreateUser)
                     .WithMany(p => p.FileResources)
                     .HasForeignKey(d => d.CreateUserID)
@@ -300,16 +259,6 @@ namespace OregonTilth.EFModels.Entities
             modelBuilder.Entity<FileResourceMimeType>(entity =>
             {
                 entity.Property(e => e.FileResourceMimeTypeID).ValueGeneratedNever();
-
-                entity.Property(e => e.FileResourceMimeTypeContentTypeName).IsUnicode(false);
-
-                entity.Property(e => e.FileResourceMimeTypeDisplayName).IsUnicode(false);
-
-                entity.Property(e => e.FileResourceMimeTypeIconNormalFilename).IsUnicode(false);
-
-                entity.Property(e => e.FileResourceMimeTypeIconSmallFilename).IsUnicode(false);
-
-                entity.Property(e => e.FileResourceMimeTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<HarvestPostHarvestStandardTime>(entity =>
@@ -338,64 +287,33 @@ namespace OregonTilth.EFModels.Entities
             modelBuilder.Entity<HarvestType>(entity =>
             {
                 entity.Property(e => e.HarvestTypeID).ValueGeneratedNever();
-
-                entity.Property(e => e.HarvestTypeDisplayName).IsUnicode(false);
-
-                entity.Property(e => e.HarvestTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<LaborType>(entity =>
             {
                 entity.Property(e => e.LaborTypeID).ValueGeneratedNever();
-
-                entity.Property(e => e.LaborTypeDisplayName).IsUnicode(false);
-
-                entity.Property(e => e.LaborTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<Machinery>(entity =>
             {
-                entity.Property(e => e.MachineryName).IsUnicode(false);
-
-                entity.Property(e => e.Notes).IsUnicode(false);
-
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.Machineries)
                     .HasForeignKey(d => d.WorkbookID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Page>(entity =>
-            {
-                entity.Property(e => e.PageContent).IsUnicode(false);
-
-                entity.Property(e => e.PageName).IsUnicode(false);
-            });
-
             modelBuilder.Entity<Phase>(entity =>
             {
                 entity.Property(e => e.PhaseID).ValueGeneratedNever();
-
-                entity.Property(e => e.PhaseDisplayName).IsUnicode(false);
-
-                entity.Property(e => e.PhaseName).IsUnicode(false);
             });
 
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.Property(e => e.RoleID).ValueGeneratedNever();
-
-                entity.Property(e => e.RoleDescription).IsUnicode(false);
-
-                entity.Property(e => e.RoleDisplayName).IsUnicode(false);
-
-                entity.Property(e => e.RoleName).IsUnicode(false);
             });
 
             modelBuilder.Entity<TimeStudy>(entity =>
             {
-                entity.Property(e => e.Notes).IsUnicode(false);
-
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.TimeStudies)
                     .HasForeignKey(d => d.WorkbookID)
@@ -405,10 +323,6 @@ namespace OregonTilth.EFModels.Entities
             modelBuilder.Entity<TpOrDsType>(entity =>
             {
                 entity.Property(e => e.TpOrDsTypeID).ValueGeneratedNever();
-
-                entity.Property(e => e.TpOrDsTypeDisplayName).IsUnicode(false);
-
-                entity.Property(e => e.TpOrDsTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<TransplantProductionInformation>(entity =>
@@ -436,8 +350,6 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<TransplantProductionInput>(entity =>
             {
-                entity.Property(e => e.TransplantProductionInputName).IsUnicode(false);
-
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.TransplantProductionInputs)
                     .HasForeignKey(d => d.WorkbookID)
@@ -446,8 +358,6 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<TransplantProductionInputCost>(entity =>
             {
-                entity.Property(e => e.Notes).IsUnicode(false);
-
                 entity.HasOne(d => d.TransplantProductionInput)
                     .WithMany(p => p.TransplantProductionInputCosts)
                     .HasForeignKey(d => d.TransplantProductionInputID)
@@ -467,8 +377,6 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<TransplantProductionLaborActivity>(entity =>
             {
-                entity.Property(e => e.TransplantProductionLaborActivityName).IsUnicode(false);
-
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.TransplantProductionLaborActivities)
                     .HasForeignKey(d => d.WorkbookID)
@@ -477,8 +385,6 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<TransplantProductionLaborActivityByCrop>(entity =>
             {
-                entity.Property(e => e.Notes).IsUnicode(false);
-
                 entity.HasOne(d => d.TransplantProductionInformation)
                     .WithMany(p => p.TransplantProductionLaborActivityByCrops)
                     .HasForeignKey(d => d.TransplantProductionInformationID)
@@ -515,8 +421,6 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<TransplantProductionTrayType>(entity =>
             {
-                entity.Property(e => e.TransplantProductionTrayTypeName).IsUnicode(false);
-
                 entity.HasOne(d => d.Workbook)
                     .WithMany(p => p.TransplantProductionTrayTypes)
                     .HasForeignKey(d => d.WorkbookID)
@@ -525,18 +429,6 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.Property(e => e.Company).IsUnicode(false);
-
-                entity.Property(e => e.Email).IsUnicode(false);
-
-                entity.Property(e => e.FirstName).IsUnicode(false);
-
-                entity.Property(e => e.LastName).IsUnicode(false);
-
-                entity.Property(e => e.LoginName).IsUnicode(false);
-
-                entity.Property(e => e.Phone).IsUnicode(false);
-
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleID)
@@ -545,8 +437,6 @@ namespace OregonTilth.EFModels.Entities
 
             modelBuilder.Entity<Workbook>(entity =>
             {
-                entity.Property(e => e.WorkbookName).IsUnicode(false);
-
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Workbooks)
                     .HasForeignKey(d => d.UserID)
@@ -556,10 +446,6 @@ namespace OregonTilth.EFModels.Entities
             modelBuilder.Entity<vFieldLaborActivityForTimeStudy>(entity =>
             {
                 entity.ToView("vFieldLaborActivityForTimeStudy");
-
-                entity.Property(e => e.FieldLaborActivityName).IsUnicode(false);
-
-                entity.Property(e => e.LaborTypeDisplayName).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

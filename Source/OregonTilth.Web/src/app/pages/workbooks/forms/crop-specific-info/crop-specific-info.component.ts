@@ -354,7 +354,7 @@ export class CropSpecificInfoComponent implements OnInit {
         }, cellRendererFramework: ButtonRendererComponent,
         cellRendererParams: { 
           clicked: function(field: any) {
-            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Crop Specific Info?`)) {
+            if(confirm(`Are you sure you want to delete the ${field.ObjectDisplayName} Crop Planting Info?`)) {
               componentScope.deleteCropSpecificInfo(field.PrimaryKey)
             }
           }
@@ -374,7 +374,7 @@ export class CropSpecificInfoComponent implements OnInit {
       })
       this.cropSpecificInfos.splice(index, 1);
 
-      this.alertService.pushAlert(new Alert("Successfully deleted Crop Specific Info", AlertContext.Success));
+      this.alertService.pushAlert(new Alert("Successfully deleted Crop Planting Info", AlertContext.Success));
       this.refreshCropsRequired();
       this.cdr.detectChanges();
     }, error => {

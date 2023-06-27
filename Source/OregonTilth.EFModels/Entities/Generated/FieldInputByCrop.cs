@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace OregonTilth.EFModels.Entities
 {
     [Table("FieldInputByCrop")]
@@ -19,15 +17,16 @@ namespace OregonTilth.EFModels.Entities
         [Column(TypeName = "decimal(18, 4)")]
         public decimal? Occurrences { get; set; }
         [StringLength(2000)]
+        [Unicode(false)]
         public string Notes { get; set; }
 
-        [ForeignKey(nameof(CropID))]
+        [ForeignKey("CropID")]
         [InverseProperty("FieldInputByCrops")]
         public virtual Crop Crop { get; set; }
-        [ForeignKey(nameof(FieldInputCostID))]
+        [ForeignKey("FieldInputCostID")]
         [InverseProperty("FieldInputByCrops")]
         public virtual FieldInputCost FieldInputCost { get; set; }
-        [ForeignKey(nameof(WorkbookID))]
+        [ForeignKey("WorkbookID")]
         [InverseProperty("FieldInputByCrops")]
         public virtual Workbook Workbook { get; set; }
     }

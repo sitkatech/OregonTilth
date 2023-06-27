@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace OregonTilth.EFModels.Entities
 {
     [Table("Crop")]
-    [Index(nameof(CropName), nameof(WorkbookID), Name = "AK_Crop_CropName_WorkbookID", IsUnique = true)]
+    [Index("CropName", "WorkbookID", Name = "AK_Crop_CropName_WorkbookID", IsUnique = true)]
     public partial class Crop
     {
         public Crop()
@@ -27,22 +25,23 @@ namespace OregonTilth.EFModels.Entities
         public int WorkbookID { get; set; }
         [Required]
         [StringLength(100)]
+        [Unicode(false)]
         public string CropName { get; set; }
 
-        [ForeignKey(nameof(WorkbookID))]
+        [ForeignKey("WorkbookID")]
         [InverseProperty("Crops")]
         public virtual Workbook Workbook { get; set; }
-        [InverseProperty(nameof(CropSpecificInfo.Crop))]
+        [InverseProperty("Crop")]
         public virtual ICollection<CropSpecificInfo> CropSpecificInfos { get; set; }
-        [InverseProperty(nameof(CropYieldInformation.Crop))]
+        [InverseProperty("Crop")]
         public virtual ICollection<CropYieldInformation> CropYieldInformations { get; set; }
-        [InverseProperty(nameof(FieldInputByCrop.Crop))]
+        [InverseProperty("Crop")]
         public virtual ICollection<FieldInputByCrop> FieldInputByCrops { get; set; }
-        [InverseProperty(nameof(FieldLaborByCrop.Crop))]
+        [InverseProperty("Crop")]
         public virtual ICollection<FieldLaborByCrop> FieldLaborByCrops { get; set; }
-        [InverseProperty(nameof(HarvestPostHarvestStandardTime.Crop))]
+        [InverseProperty("Crop")]
         public virtual ICollection<HarvestPostHarvestStandardTime> HarvestPostHarvestStandardTimes { get; set; }
-        [InverseProperty(nameof(TransplantProductionInformation.Crop))]
+        [InverseProperty("Crop")]
         public virtual ICollection<TransplantProductionInformation> TransplantProductionInformations { get; set; }
     }
 }

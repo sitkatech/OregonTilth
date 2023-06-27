@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace OregonTilth.EFModels.Entities
 {
     [Table("TransplantProductionInputCost")]
-    [Index(nameof(WorkbookID), nameof(TransplantProductionInputID), nameof(TransplantProductionTrayTypeID), Name = "AK_TransplantProductionInputCost_WorkbookID_TransplantProductionInputID_TransplantProductionTrayTypeID", IsUnique = true)]
+    [Index("WorkbookID", "TransplantProductionInputID", "TransplantProductionTrayTypeID", Name = "AK_TransplantProductionInputCost_WorkbookID_TransplantProductionInputID_TransplantProductionTrayTypeID", IsUnique = true)]
     public partial class TransplantProductionInputCost
     {
         [Key]
@@ -20,15 +18,16 @@ namespace OregonTilth.EFModels.Entities
         [Column(TypeName = "money")]
         public decimal CostPerTray { get; set; }
         [StringLength(2000)]
+        [Unicode(false)]
         public string Notes { get; set; }
 
-        [ForeignKey(nameof(TransplantProductionInputID))]
+        [ForeignKey("TransplantProductionInputID")]
         [InverseProperty("TransplantProductionInputCosts")]
         public virtual TransplantProductionInput TransplantProductionInput { get; set; }
-        [ForeignKey(nameof(TransplantProductionTrayTypeID))]
+        [ForeignKey("TransplantProductionTrayTypeID")]
         [InverseProperty("TransplantProductionInputCosts")]
         public virtual TransplantProductionTrayType TransplantProductionTrayType { get; set; }
-        [ForeignKey(nameof(WorkbookID))]
+        [ForeignKey("WorkbookID")]
         [InverseProperty("TransplantProductionInputCosts")]
         public virtual Workbook Workbook { get; set; }
     }

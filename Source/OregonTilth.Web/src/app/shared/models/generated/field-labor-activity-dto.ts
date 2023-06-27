@@ -10,8 +10,8 @@ export class FieldLaborActivityDto {
 	Workbook : WorkbookDto
 	FieldLaborActivityName : string
 	FieldLaborActivityCategory : FieldLaborActivityCategoryDto
-	LaborTypeCrew : boolean
-	LaborTypeOperator : boolean
+	LaborTypeManual : boolean
+	LaborTypeMachinery : boolean
 
     constructor(obj?: any) {
         Object.assign(this, obj);

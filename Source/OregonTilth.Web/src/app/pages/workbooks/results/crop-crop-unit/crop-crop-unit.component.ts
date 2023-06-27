@@ -137,7 +137,7 @@ export class CropCropUnitComponent implements OnInit {
         sortable:true,
       },
       {
-        headerName: 'Contribution Margin Per Standard Unit of Space', 
+        headerName: 'Contribution Margin per Standard Bed', 
         field: 'ContributionMarginPerStandardUnitOfSpace',
         valueFormatter: this.gridService.currencyFormatterToFixed,
         type: 'rightAligned',

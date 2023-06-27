@@ -13,8 +13,8 @@ from (
     select fla.WorkbookID, fla.FieldLaborActivityID, v.LaborTypeID, fla.FieldLaborActivityName, v.LaborTypeDisplayName
     from dbo.FieldLaborActivity fla
      outer apply
-         (values (1, LaborTypeCrew, 'Crew'),
-                 (2, LaborTypeOperator, 'Operator')
+         (values (1, LaborTypeManual, 'Manual'),
+                 (2, LaborTypeMachinery, 'Machinery')
          ) v(LaborTypeID, LaborTypeFlag, LaborTypeDisplayName)
     where v.LaborTypeFlag = 1
 

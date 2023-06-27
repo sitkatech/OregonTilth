@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace OregonTilth.EFModels.Entities
 {
     [Keyless]
@@ -15,9 +13,11 @@ namespace OregonTilth.EFModels.Entities
         public int FieldLaborActivityID { get; set; }
         [Required]
         [StringLength(100)]
+        [Unicode(false)]
         public string FieldLaborActivityName { get; set; }
         public int? LaborTypeID { get; set; }
-        [StringLength(8)]
+        [StringLength(9)]
+        [Unicode(false)]
         public string LaborTypeDisplayName { get; set; }
         public int? FieldStandardTimeID { get; set; }
     }
