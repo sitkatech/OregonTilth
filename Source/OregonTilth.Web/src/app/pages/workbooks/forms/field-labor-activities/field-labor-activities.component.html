@@ -44,15 +44,15 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="labor-type-checkbox-wrapper">
-                          <label for="LaborTypeCrew">
-                            <span>Crew</span>
-                            <input type="checkbox" id="LaborTypeCrew" class="labor-type-checkbox" name="LaborTypeCrew" [(ngModel)]="model.LaborTypeCrew" [required]="!model.LaborTypeCrew && !model.LaborTypeOperator">
+                          <label for="LaborTypeManual">
+                            <span>Manual</span>
+                            <input type="checkbox" id="LaborTypeManual" class="labor-type-checkbox" name="LaborTypeManual" [(ngModel)]="model.LaborTypeManual" [required]="!model.LaborTypeManual && !model.LaborTypeMachinery">
                           </label>
                         </div>
                         <div class="labor-type-checkbox-wrapper">
-                          <label for="LaborTypeOperator">
-                            <span>Operator</span>
-                            <input type="checkbox" id="LaborTypeOperator" class="labor-type-checkbox" name="LaborTypeOperator" [(ngModel)]="model.LaborTypeOperator" [required]="!model.LaborTypeCrew && !model.LaborTypeOperator">
+                          <label for="LaborTypeMachinery">
+                            <span>Machinery</span>
+                            <input type="checkbox" id="LaborTypeMachinery" class="labor-type-checkbox" name="LaborTypeMachinery" [(ngModel)]="model.LaborTypeMachinery" [required]="!model.LaborTypeManual && !model.LaborTypeMachinery">
                           </label>
                         </div>
                       </div>

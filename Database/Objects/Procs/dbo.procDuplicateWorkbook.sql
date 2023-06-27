@@ -26,11 +26,11 @@ begin
 
 		merge dbo.FieldLaborActivity 
 		USING (
-			select FieldLaborActivityID, [WorkbookID], [FieldLaborActivityName], [FieldLaborActivityCategoryID], [LaborTypeCrew], [LaborTypeOperator] from dbo.FieldLaborActivity where WorkbookID = @WorkbookIDToCopy
+			select FieldLaborActivityID, [WorkbookID], [FieldLaborActivityName], [FieldLaborActivityCategoryID], [LaborTypeManual], [LaborTypeMachinery] from dbo.FieldLaborActivity where WorkbookID = @WorkbookIDToCopy
 		) as src on 1=0
 		WHEN NOT MATCHED THEN 
-			INSERT([WorkbookID], [FieldLaborActivityName], [FieldLaborActivityCategoryID], [LaborTypeCrew], [LaborTypeOperator])
-			VALUES (@NewWorkbookID, [FieldLaborActivityName], [FieldLaborActivityCategoryID], [LaborTypeCrew], [LaborTypeOperator])
+			INSERT([WorkbookID], [FieldLaborActivityName], [FieldLaborActivityCategoryID], [LaborTypeManual], [LaborTypeMachinery])
+			VALUES (@NewWorkbookID, [FieldLaborActivityName], [FieldLaborActivityCategoryID], [LaborTypeManual], [LaborTypeMachinery])
 			OUTPUT src.FieldLaborActivityID, inserted.FieldLaborActivityID into @tempFieldLaborActivity;
 
 

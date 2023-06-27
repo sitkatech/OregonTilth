@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace OregonTilth.EFModels.Entities
 {
     [Table("CropYieldInformation")]
-    [Index(nameof(WorkbookID), nameof(CropID), nameof(CropUnitID), Name = "AK_CropYieldInformation_WorkbookID_CropID_CropUnitID", IsUnique = true)]
+    [Index("WorkbookID", "CropID", "CropUnitID", Name = "AK_CropYieldInformation_WorkbookID_CropID_CropUnitID", IsUnique = true)]
     public partial class CropYieldInformation
     {
         [Key]
@@ -26,13 +24,13 @@ namespace OregonTilth.EFModels.Entities
         [Column(TypeName = "money")]
         public decimal PricePerCropUnit { get; set; }
 
-        [ForeignKey(nameof(CropID))]
+        [ForeignKey("CropID")]
         [InverseProperty("CropYieldInformations")]
         public virtual Crop Crop { get; set; }
-        [ForeignKey(nameof(CropUnitID))]
+        [ForeignKey("CropUnitID")]
         [InverseProperty("CropYieldInformations")]
         public virtual CropUnit CropUnit { get; set; }
-        [ForeignKey(nameof(WorkbookID))]
+        [ForeignKey("WorkbookID")]
         [InverseProperty("CropYieldInformations")]
         public virtual Workbook Workbook { get; set; }
     }

@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace OregonTilth.EFModels.Entities
 {
     [Table("FieldStandardTime")]
@@ -27,24 +25,24 @@ namespace OregonTilth.EFModels.Entities
         [Column(TypeName = "decimal(18, 4)")]
         public decimal? StandardTimePerUnit { get; set; }
 
-        [ForeignKey(nameof(FieldLaborActivityID))]
+        [ForeignKey("FieldLaborActivityID")]
         [InverseProperty("FieldStandardTimes")]
         public virtual FieldLaborActivity FieldLaborActivity { get; set; }
-        [ForeignKey(nameof(FieldUnitTypeID))]
+        [ForeignKey("FieldUnitTypeID")]
         [InverseProperty("FieldStandardTimes")]
         public virtual FieldUnitType FieldUnitType { get; set; }
-        [ForeignKey(nameof(LaborTypeID))]
+        [ForeignKey("LaborTypeID")]
         [InverseProperty("FieldStandardTimes")]
         public virtual LaborType LaborType { get; set; }
-        [ForeignKey(nameof(MachineryID))]
+        [ForeignKey("MachineryID")]
         [InverseProperty("FieldStandardTimes")]
         public virtual Machinery Machinery { get; set; }
-        [ForeignKey(nameof(WorkbookID))]
+        [ForeignKey("WorkbookID")]
         [InverseProperty("FieldStandardTimes")]
         public virtual Workbook Workbook { get; set; }
-        [InverseProperty(nameof(FieldLaborByCrop.FieldStandardTime))]
+        [InverseProperty("FieldStandardTime")]
         public virtual ICollection<FieldLaborByCrop> FieldLaborByCrops { get; set; }
-        [InverseProperty(nameof(TimeStudy.FieldStandardTime))]
+        [InverseProperty("FieldStandardTime")]
         public virtual ICollection<TimeStudy> TimeStudies { get; set; }
     }
 }

@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace OregonTilth.EFModels.Entities
 {
     [Table("Machinery")]
@@ -21,16 +19,18 @@ namespace OregonTilth.EFModels.Entities
         public int WorkbookID { get; set; }
         [Required]
         [StringLength(200)]
+        [Unicode(false)]
         public string MachineryName { get; set; }
         [Column(TypeName = "money")]
         public decimal StandardMachineryCost { get; set; }
         [StringLength(2000)]
+        [Unicode(false)]
         public string Notes { get; set; }
 
-        [ForeignKey(nameof(WorkbookID))]
+        [ForeignKey("WorkbookID")]
         [InverseProperty("Machineries")]
         public virtual Workbook Workbook { get; set; }
-        [InverseProperty(nameof(FieldStandardTime.Machinery))]
+        [InverseProperty("Machinery")]
         public virtual ICollection<FieldStandardTime> FieldStandardTimes { get; set; }
     }
 }

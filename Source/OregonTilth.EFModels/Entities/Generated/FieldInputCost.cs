@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace OregonTilth.EFModels.Entities
 {
     [Table("FieldInputCost")]
@@ -22,19 +20,21 @@ namespace OregonTilth.EFModels.Entities
         public int FieldUnitTypeID { get; set; }
         [Required]
         [StringLength(200)]
+        [Unicode(false)]
         public string FieldInputCostName { get; set; }
         [Column(TypeName = "money")]
         public decimal CostPerFieldUnit { get; set; }
         [StringLength(2000)]
+        [Unicode(false)]
         public string Notes { get; set; }
 
-        [ForeignKey(nameof(FieldUnitTypeID))]
+        [ForeignKey("FieldUnitTypeID")]
         [InverseProperty("FieldInputCosts")]
         public virtual FieldUnitType FieldUnitType { get; set; }
-        [ForeignKey(nameof(WorkbookID))]
+        [ForeignKey("WorkbookID")]
         [InverseProperty("FieldInputCosts")]
         public virtual Workbook Workbook { get; set; }
-        [InverseProperty(nameof(FieldInputByCrop.FieldInputCost))]
+        [InverseProperty("FieldInputCost")]
         public virtual ICollection<FieldInputByCrop> FieldInputByCrops { get; set; }
     }
 }

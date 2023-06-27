@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace OregonTilth.EFModels.Entities
 {
     [Table("FieldLaborByCrop")]
-    [Index(nameof(WorkbookID), nameof(CropID), nameof(FieldStandardTimeID), Name = "AK_FieldLaborByCrop_WorkbookID_CropID_FieldStandardTimeID", IsUnique = true)]
+    [Index("WorkbookID", "CropID", "FieldStandardTimeID", Name = "AK_FieldLaborByCrop_WorkbookID_CropID_FieldStandardTimeID", IsUnique = true)]
     public partial class FieldLaborByCrop
     {
         [Key]
@@ -20,15 +18,16 @@ namespace OregonTilth.EFModels.Entities
         public decimal? Occurrences { get; set; }
         public int FieldStandardTimeID { get; set; }
         [StringLength(2000)]
+        [Unicode(false)]
         public string Notes { get; set; }
 
-        [ForeignKey(nameof(CropID))]
+        [ForeignKey("CropID")]
         [InverseProperty("FieldLaborByCrops")]
         public virtual Crop Crop { get; set; }
-        [ForeignKey(nameof(FieldStandardTimeID))]
+        [ForeignKey("FieldStandardTimeID")]
         [InverseProperty("FieldLaborByCrops")]
         public virtual FieldStandardTime FieldStandardTime { get; set; }
-        [ForeignKey(nameof(WorkbookID))]
+        [ForeignKey("WorkbookID")]
         [InverseProperty("FieldLaborByCrops")]
         public virtual Workbook Workbook { get; set; }
     }

@@ -32,8 +32,8 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "Field Labor Activities must have a name." });
             }
 
-            if (fieldLaborActivityUpsertDto.LaborTypeCrew == false &&
-                fieldLaborActivityUpsertDto.LaborTypeOperator == false)
+            if (fieldLaborActivityUpsertDto.LaborTypeManual == false &&
+                fieldLaborActivityUpsertDto.LaborTypeMachinery == false)
             {
                 result.Add(new ErrorMessage() { Type = "Labor Type", Message = "At least one labor type is required for Field Labor Activities" });
             }
@@ -57,8 +57,8 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Field Labor Activity Name", Message = "Field Labor Activities must have a name." });
             }
 
-            if (fieldLaborActivityDto.LaborTypeCrew == false &&
-                fieldLaborActivityDto.LaborTypeOperator == false)
+            if (fieldLaborActivityDto.LaborTypeManual == false &&
+                fieldLaborActivityDto.LaborTypeMachinery == false)
             {
                 result.Add(new ErrorMessage() { Type = "Labor Type", Message = "At least one labor type is required for Field Labor Activities" });
             }
@@ -100,8 +100,8 @@ namespace OregonTilth.EFModels.Entities
                FieldLaborActivityName = fieldLaborActivityUpsertDto.FieldLaborActivityName,
                FieldLaborActivityCategoryID = fieldLaborActivityUpsertDto.FieldLaborActivityCategoryID,
                WorkbookID = fieldLaborActivityUpsertDto.WorkbookID,
-               LaborTypeCrew = fieldLaborActivityUpsertDto.LaborTypeCrew,
-               LaborTypeOperator = fieldLaborActivityUpsertDto.LaborTypeOperator
+               LaborTypeManual = fieldLaborActivityUpsertDto.LaborTypeManual,
+               LaborTypeMachinery = fieldLaborActivityUpsertDto.LaborTypeMachinery
             };
 
             dbContext.FieldLaborActivities.Add(fieldLaborActivity);
@@ -119,8 +119,8 @@ namespace OregonTilth.EFModels.Entities
 
             fieldLaborActivity.FieldLaborActivityCategoryID = fieldLaborActivityDto.FieldLaborActivityCategory.FieldLaborActivityCategoryID;
             fieldLaborActivity.FieldLaborActivityName = fieldLaborActivityDto.FieldLaborActivityName;
-            fieldLaborActivity.LaborTypeCrew = fieldLaborActivityDto.LaborTypeCrew;
-            fieldLaborActivity.LaborTypeOperator = fieldLaborActivityDto.LaborTypeOperator;
+            fieldLaborActivity.LaborTypeManual = fieldLaborActivityDto.LaborTypeManual;
+            fieldLaborActivity.LaborTypeMachinery = fieldLaborActivityDto.LaborTypeMachinery;
 
             dbContext.SaveChanges();
             dbContext.Entry(fieldLaborActivity).Reload();

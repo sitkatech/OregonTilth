@@ -131,8 +131,8 @@ export class FieldLaborActivitiesComponent implements OnInit {
         resizable: true
       },
       {
-        headerName: 'Crew', 
-        field: 'LaborTypeCrew',
+        headerName: 'Manual', 
+        field: 'LaborTypeManual',
         editable: true,
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
@@ -145,11 +145,11 @@ export class FieldLaborActivitiesComponent implements OnInit {
           return "No";
         },
         valueSetter: params => {
-          params.data.LaborTypeCrew = params.newValue == "Yes" ? true : false;
+          params.data.LaborTypeManual = params.newValue == "Yes" ? true : false;
           return true;
         },
         valueGetter: params => {
-          return params.data.LaborTypeCrew ? "Yes" : "No";
+          return params.data.LaborTypeManual ? "Yes" : "No";
         },
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 
@@ -157,8 +157,8 @@ export class FieldLaborActivitiesComponent implements OnInit {
         resizable: true
       },
       {
-        headerName: 'Operator', 
-        field: 'LaborTypeOperator',
+        headerName: 'Machinery', 
+        field: 'LaborTypeMachinery',
         editable: true,
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
@@ -171,11 +171,11 @@ export class FieldLaborActivitiesComponent implements OnInit {
           return "No";
         },
         valueSetter: params => {
-          params.data.LaborTypeOperator = params.newValue == "Yes" ? true : false;
+          params.data.LaborTypeMachinery = params.newValue == "Yes" ? true : false;
           return true;
         },
         valueGetter: params => {
-          return params.data.LaborTypeOperator ? "Yes" : "No";
+          return params.data.LaborTypeMachinery ? "Yes" : "No";
         },
         cellRendererFramework: EditableRendererComponent,
         sortable: true, 

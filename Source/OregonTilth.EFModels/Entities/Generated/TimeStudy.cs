@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace OregonTilth.EFModels.Entities
 {
     [Table("TimeStudy")]
@@ -20,20 +18,21 @@ namespace OregonTilth.EFModels.Entities
         [Column(TypeName = "decimal(18, 4)")]
         public decimal Units { get; set; }
         [StringLength(8000)]
+        [Unicode(false)]
         public string Notes { get; set; }
         public int? HarvestPostHarvestStandardTimeID { get; set; }
         public int? TransplantProductionStandardTimeID { get; set; }
 
-        [ForeignKey(nameof(FieldStandardTimeID))]
+        [ForeignKey("FieldStandardTimeID")]
         [InverseProperty("TimeStudies")]
         public virtual FieldStandardTime FieldStandardTime { get; set; }
-        [ForeignKey(nameof(HarvestPostHarvestStandardTimeID))]
+        [ForeignKey("HarvestPostHarvestStandardTimeID")]
         [InverseProperty("TimeStudies")]
         public virtual HarvestPostHarvestStandardTime HarvestPostHarvestStandardTime { get; set; }
-        [ForeignKey(nameof(TransplantProductionStandardTimeID))]
+        [ForeignKey("TransplantProductionStandardTimeID")]
         [InverseProperty("TimeStudies")]
         public virtual TransplantProductionStandardTime TransplantProductionStandardTime { get; set; }
-        [ForeignKey(nameof(WorkbookID))]
+        [ForeignKey("WorkbookID")]
         [InverseProperty("TimeStudies")]
         public virtual Workbook Workbook { get; set; }
     }

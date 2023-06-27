@@ -185,14 +185,14 @@ export class FieldStandardTimesComponent implements OnInit {
   }
 
   machineryDisabled(laborTypeID: number) {
-    return laborTypeID == LaborTypeEnum.Crew;
+    return laborTypeID == LaborTypeEnum.Manual;
   }
   startButtonDisabled(fieldStandardTimeCreateDto: FieldStandardTimeCreateDto) {
     if(!fieldStandardTimeCreateDto.FieldUnitTypeID || fieldStandardTimeCreateDto.FieldUnitTypeID == -1){
       return true;
     }
 
-    if(fieldStandardTimeCreateDto.LaborTypeID == LaborTypeEnum.Operator 
+    if(fieldStandardTimeCreateDto.LaborTypeID == LaborTypeEnum.Machinery 
       && (!fieldStandardTimeCreateDto.MachineryID || fieldStandardTimeCreateDto.MachineryID == -1)) {
       return true;
     }
@@ -228,7 +228,7 @@ export class FieldStandardTimesComponent implements OnInit {
         headerName: 'Machinery', 
         field: 'Machinery',
         editable: params => {
-          return params.data.LaborType.LaborTypeID == LaborTypeEnum.Operator;
+          return params.data.LaborType.LaborTypeID == LaborTypeEnum.Machinery;
         },
         valueFormatter: function (params) {
           return params.value ? params.value : 'N/A';

@@ -14,7 +14,7 @@ namespace OregonTilth.EFModels.Entities
 
     public enum LaborTypeEnum
     {
-        Crew = 1,
-        Operator = 2
+        Manual = 1,
+        Machinery = 2
     }
 }

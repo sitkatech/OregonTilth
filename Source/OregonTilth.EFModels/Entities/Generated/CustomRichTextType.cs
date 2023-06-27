@@ -4,13 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace OregonTilth.EFModels.Entities
 {
     [Table("CustomRichTextType")]
-    [Index(nameof(CustomRichTextTypeDisplayName), Name = "AK_CustomRichTextType_CustomRichTextTypeDisplayName", IsUnique = true)]
-    [Index(nameof(CustomRichTextTypeName), Name = "AK_CustomRichTextType_CustomRichTextTypeName", IsUnique = true)]
+    [Index("CustomRichTextTypeDisplayName", Name = "AK_CustomRichTextType_CustomRichTextTypeDisplayName", IsUnique = true)]
+    [Index("CustomRichTextTypeName", Name = "AK_CustomRichTextType_CustomRichTextTypeName", IsUnique = true)]
     public partial class CustomRichTextType
     {
         public CustomRichTextType()
@@ -22,12 +20,14 @@ namespace OregonTilth.EFModels.Entities
         public int CustomRichTextTypeID { get; set; }
         [Required]
         [StringLength(100)]
+        [Unicode(false)]
         public string CustomRichTextTypeName { get; set; }
         [Required]
         [StringLength(100)]
+        [Unicode(false)]
         public string CustomRichTextTypeDisplayName { get; set; }
 
-        [InverseProperty(nameof(CustomRichText.CustomRichTextType))]
+        [InverseProperty("CustomRichTextType")]
         public virtual ICollection<CustomRichText> CustomRichTexts { get; set; }
     }
 }

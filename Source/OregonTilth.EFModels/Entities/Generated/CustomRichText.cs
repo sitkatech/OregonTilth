@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace OregonTilth.EFModels.Entities
 {
     [Table("CustomRichText")]
@@ -14,9 +12,10 @@ namespace OregonTilth.EFModels.Entities
         [Key]
         public int CustomRichTextID { get; set; }
         public int CustomRichTextTypeID { get; set; }
+        [Unicode(false)]
         public string CustomRichTextContent { get; set; }
 
-        [ForeignKey(nameof(CustomRichTextTypeID))]
+        [ForeignKey("CustomRichTextTypeID")]
         [InverseProperty("CustomRichTexts")]
         public virtual CustomRichTextType CustomRichTextType { get; set; }
     }
