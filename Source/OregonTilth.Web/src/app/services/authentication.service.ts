@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { UserService } from './user/user.service';
 import { UserDetailedDto } from '../shared/models';
-import { Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CookieStorageService } from '../shared/services/cookies/cookie-storage.service';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
@@ -21,7 +21,7 @@ export class AuthenticationService {
 
   private getUserObservable: any;
 
-  private _currentUserSetSubject = new Subject<UserDetailedDto>();
+  private _currentUserSetSubject = new ReplaySubject<UserDetailedDto>();
   public currentUserSetObservable = this._currentUserSetSubject.asObservable();
 
 
