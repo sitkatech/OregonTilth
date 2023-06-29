@@ -404,7 +404,7 @@ export class HarvestPostHarvestStandardTimesComponent implements OnInit {
     if (this.initializeStandardTimeRequest && this.initializeStandardTimeRequest.unsubscribe) {
       this.initializeStandardTimeRequest.unsubscribe();
     }
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

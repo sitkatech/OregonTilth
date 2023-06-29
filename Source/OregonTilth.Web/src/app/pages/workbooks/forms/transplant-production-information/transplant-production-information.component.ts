@@ -346,7 +346,7 @@ export class TransplantProductionInformationComponent implements OnInit {
       this.getTrayTypesRequest.unsubscribe();
     }
 
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

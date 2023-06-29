@@ -180,7 +180,7 @@ export class MachineryComponent implements OnInit {
     if (this.deleteMachineryRequest && this.deleteMachineryRequest.unsubscribe) {
       this.deleteMachineryRequest.unsubscribe();
     }
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

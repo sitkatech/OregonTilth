@@ -315,7 +315,7 @@ export class CropYieldInformationComponent implements OnInit {
     if (this.deleteCropYieldInfoRequest && this.deleteCropYieldInfoRequest.unsubscribe) {
       this.deleteCropYieldInfoRequest.unsubscribe();
     }
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

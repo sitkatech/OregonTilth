@@ -247,7 +247,7 @@ export class FieldInputByCropComponent implements OnInit {
       this.getFieldInputCostDtosRequest.unsubscribe();
     }
 
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

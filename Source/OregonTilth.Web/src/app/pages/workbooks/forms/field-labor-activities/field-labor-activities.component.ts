@@ -247,7 +247,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
     if (this.deleteFieldLaborActivityRequest && this.deleteFieldLaborActivityRequest.unsubscribe) {
       this.deleteFieldLaborActivityRequest.unsubscribe();
     }
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

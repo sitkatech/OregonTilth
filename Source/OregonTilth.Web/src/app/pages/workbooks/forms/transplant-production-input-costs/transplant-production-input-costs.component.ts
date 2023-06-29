@@ -237,7 +237,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     if (this.deleteTransplantProductionInputCostRequest && this.deleteTransplantProductionInputCostRequest.unsubscribe) {
       this.deleteTransplantProductionInputCostRequest.unsubscribe();
     }
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

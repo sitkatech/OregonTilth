@@ -151,7 +151,7 @@ export class TransplantProductionTrayTypesComponent implements OnInit {
     if (this.deleteTransplantProductionTrayTypeRequest && this.deleteTransplantProductionTrayTypeRequest.unsubscribe) {
       this.deleteTransplantProductionTrayTypeRequest.unsubscribe();
     }
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

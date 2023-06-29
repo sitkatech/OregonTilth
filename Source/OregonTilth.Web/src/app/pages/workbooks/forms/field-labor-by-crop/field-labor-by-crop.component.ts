@@ -242,7 +242,7 @@ export class FieldLaborByCropComponent implements OnInit {
       this.getFieldStandardTimeDtosRequest.unsubscribe();
     }
 
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

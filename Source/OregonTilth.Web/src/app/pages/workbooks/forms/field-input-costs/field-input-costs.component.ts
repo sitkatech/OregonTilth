@@ -208,7 +208,7 @@ export class FieldInputCostsComponent implements OnInit {
     if (this.deleteFieldInputCostRequest && this.deleteFieldInputCostRequest.unsubscribe) {
       this.deleteFieldInputCostRequest.unsubscribe();
     }
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

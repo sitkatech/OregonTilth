@@ -77,7 +77,7 @@ export class FieldDefinitionListComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 }

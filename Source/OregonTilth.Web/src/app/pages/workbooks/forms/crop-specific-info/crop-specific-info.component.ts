@@ -428,7 +428,7 @@ export class CropSpecificInfoComponent implements OnInit {
     if (this.deleteCropSpecificInfoRequest && this.deleteCropSpecificInfoRequest.unsubscribe) {
       this.deleteCropSpecificInfoRequest.unsubscribe();
     }
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

@@ -65,7 +65,7 @@ export class UserInviteComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.watchUserChangeSubscription.unsubscribe();
-        this.authenticationService.dispose();
+        
         this.cdr.detach();
     }
 

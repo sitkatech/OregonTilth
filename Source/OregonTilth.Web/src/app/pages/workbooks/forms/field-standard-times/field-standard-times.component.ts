@@ -444,7 +444,7 @@ export class FieldStandardTimesComponent implements OnInit {
       this.getFieldUnitsRequest.unsubscribe();
     }
     
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

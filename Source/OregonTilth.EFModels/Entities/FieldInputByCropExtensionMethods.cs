@@ -26,7 +26,7 @@ namespace OregonTilth.EFModels.Entities
             // =INDEX(Table1619[Cost per Field Unit],MATCH([@[Field Input]],Table1619[Field Input],0))*([@[UNITS USED PER STANDARD BED]]*[@Occurrences])
 
             return (decimal) (fieldInputByCrop.FieldInputCost.CostPerFieldUnit 
-                   * fieldInputByCrop.UnitsUsedPerStandardBed() 
+                   * fieldInputByCrop.UnitsUsedPerStandardBed() // there are no transplant units because It would be getting them from the crop planting info form
                    * fieldInputByCrop.Occurrences);
 
 

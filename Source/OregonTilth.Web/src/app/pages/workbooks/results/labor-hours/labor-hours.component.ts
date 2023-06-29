@@ -221,7 +221,6 @@ export class LaborHoursComponent implements OnInit {
 
   ngOnDestroy() {
 
-    this.authenticationService.dispose();
 
     if (this.watchUserChangeSubscription && this.watchUserChangeSubscription.unsubscribe) {
       this.watchUserChangeSubscription.unsubscribe();

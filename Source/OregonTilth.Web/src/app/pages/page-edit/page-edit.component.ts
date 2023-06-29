@@ -106,7 +106,7 @@ export class PageEditComponent implements OnInit {
 
   ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

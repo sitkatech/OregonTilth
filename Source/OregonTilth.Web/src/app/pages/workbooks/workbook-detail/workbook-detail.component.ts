@@ -79,7 +79,6 @@ export class WorkbookDetailComponent implements OnInit {
 
   ngOnDestroy() {
 
-    this.authenticationService.dispose();
 
     if (this.watchUserChangeSubscription && this.watchUserChangeSubscription.unsubscribe) {
       this.watchUserChangeSubscription.unsubscribe();
@@ -97,7 +96,7 @@ export class WorkbookDetailComponent implements OnInit {
     // if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
     //   this.getWorkbookRequest.unsubscribe();
     // }
-    // this.authenticationService.dispose();
+    // 
     // this.cdr.detach();
   }
 

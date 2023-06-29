@@ -72,7 +72,7 @@ export class DuplicateComponent implements OnInit {
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
     }
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

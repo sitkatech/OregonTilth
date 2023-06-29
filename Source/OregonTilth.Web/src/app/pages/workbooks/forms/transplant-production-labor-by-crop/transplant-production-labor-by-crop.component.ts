@@ -288,7 +288,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
       this.getTransplantProductionLaborActivityDtosRequest.unsubscribe();
     }
 
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

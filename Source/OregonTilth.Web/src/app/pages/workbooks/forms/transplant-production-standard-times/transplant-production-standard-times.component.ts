@@ -347,7 +347,7 @@ export class TransplantProductionStandardTimesComponent implements OnInit {
     if (this.deleteStandardTimeRequest && this.deleteStandardTimeRequest.unsubscribe) {
       this.deleteStandardTimeRequest.unsubscribe();
     }
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

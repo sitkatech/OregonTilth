@@ -150,7 +150,7 @@ export class CropsComponent implements OnInit {
     if (this.deleteCropRequest && this.deleteCropRequest.unsubscribe) {
       this.deleteCropRequest.unsubscribe();
     }
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

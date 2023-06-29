@@ -65,7 +65,7 @@ export class NewWorkbookComponent implements OnInit {
       this.createWorkbookRequest.unsubscribe();
     }
     
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

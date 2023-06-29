@@ -148,7 +148,7 @@ export class CropUnitsComponent implements OnInit {
     if (this.deleteCropUnitRequest && this.deleteCropUnitRequest.unsubscribe) {
       this.deleteCropUnitRequest.unsubscribe();
     }
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 

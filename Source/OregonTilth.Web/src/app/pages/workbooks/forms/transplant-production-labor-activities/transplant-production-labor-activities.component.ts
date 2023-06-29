@@ -154,7 +154,7 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
     if (this.deleteTransplantProductionLaborActivityRequest && this.deleteTransplantProductionLaborActivityRequest.unsubscribe) {
       this.deleteTransplantProductionLaborActivityRequest.unsubscribe();
     }
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 
