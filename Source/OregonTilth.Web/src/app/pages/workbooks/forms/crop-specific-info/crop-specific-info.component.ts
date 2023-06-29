@@ -35,6 +35,7 @@ import { FieldStandardTimeDto } from 'src/app/shared/models/generated/field-stan
 import { FieldLaborActivityCategoryEnum } from 'src/app/shared/models/enums/field-labor-activity-category.enum';
 import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor-by-crop-dto';
 import { FieldUnitTypeEnum } from 'src/app/shared/models/enums/field-unit-type.enum';
+import { FieldInputByCropDto } from 'src/app/shared/models/generated/field-input-by-crop-dto';
 
 @Component({
   selector: 'crop-specific-info',
@@ -88,6 +89,7 @@ export class CropSpecificInfoComponent implements OnInit {
   public fieldStandardTimes: FieldStandardTimeDto[];
   public fieldLaborActivities: FieldLaborActivityDto[];
   public fieldLaborByCrops: FieldLaborByCropDto[];
+  public fieldInputByCrops: FieldInputByCropDto[];
  
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -112,16 +114,18 @@ export class CropSpecificInfoComponent implements OnInit {
         this.getCropSpecificInfosRequest, 
         this.getCropsRequest,
         
-        this.workbookService.getFieldLaborByCrops(this.workbookID)
+        this.workbookService.getFieldLaborByCrops(this.workbookID),
+        this.workbookService.getFieldInputByCrops(this.workbookID)
       ])
-      .subscribe(([workbook, tpOrDsTypes, cropSpecificInfos, cropDtos, fieldLaborByCrops] 
-        : [WorkbookDto, TpOrDsTypeDto[], CropSpecificInfoSummaryDto[], CropDto[], FieldLaborByCropDto[]]) => {
+      .subscribe(([workbook, tpOrDsTypes, cropSpecificInfos, cropDtos, fieldLaborByCrops, fieldInputByCrops] 
+        : [WorkbookDto, TpOrDsTypeDto[], CropSpecificInfoSummaryDto[], CropDto[], FieldLaborByCropDto[], FieldInputByCropDto[]]) => {
       this.workbook = workbook;
       this.tpOrDsTypes = tpOrDsTypes;
       this.allTpOrDsTypes = [...tpOrDsTypes];
       this.cropSpecificInfos = cropSpecificInfos;
       this.crops = cropDtos;
       this.fieldLaborByCrops = fieldLaborByCrops;
+      this.fieldInputByCrops = fieldInputByCrops;
       this.refreshCropsRequired();
       this.defineColumnDefs();
       this.cdr.markForCheck();
@@ -480,9 +484,17 @@ export class CropSpecificInfoComponent implements OnInit {
      * for the crop on Field Labor by Crop use the Field Unit “Transplant” on Field Labor Time Studies,
      *  then don’t allow the user to select “DS” in the field TP Type or DS on the Crop Planting Info form for that crop.
      */
-
     var fieldLaborByCrops = this.fieldLaborByCrops.filter(x => x.Crop.CropID == parseInt(cropID) && x.FieldStandardTime.FieldUnitType.FieldUnitTypeID == FieldUnitTypeEnum.Transplants)
-    if(fieldLaborByCrops.length > 0 ){
+
+    /**
+     * When a crop is entered on the Crop Planting Info form, look at the Field Inputs that have been selected on the 
+     * Field Input by Crop for that crop. If any of the Field Inputs that have been selected for the crop on 
+     * Field Input by Crop use the Field Unit “Transplant”  on Field Input Costs, 
+     * then don’t allow the user to select “DS” in the field TP Type or DS on the Crop Planting Info form.
+     */
+    var fieldInputsByCrops = this.fieldInputByCrops.filter((x : any) => x.Crop.CropID == parseInt(cropID) && x.FieldInputCost.FieldUnitTypeID == FieldUnitTypeEnum.Transplants)
+
+    if(fieldLaborByCrops.length > 0 || fieldInputsByCrops.length > 0 ){
       this.tpOrDsTypes = this.allTpOrDsTypes.filter(x => x.TpOrDsTypeID != TpOrDsTypeEnum.DirectSeeded);
     } else {
       this.tpOrDsTypes = this.allTpOrDsTypes;

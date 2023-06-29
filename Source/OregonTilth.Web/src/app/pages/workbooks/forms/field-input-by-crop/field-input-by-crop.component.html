@@ -27,7 +27,7 @@
                 
                 <div class="form-group col-md-4">
                   <label class="required">Crop</label>
-                  <select name="CropID" class="form-control" [(ngModel)]="model.CropID" required>
+                  <select name="CropID" class="form-control" [(ngModel)]="model.CropID" required (change)="cropSelectionChanged(model.CropID)">
                     <option value=""></option>
                     <option *ngFor="let option of cropDtos" [value]="option.CropID">
                       {{option.CropName}}

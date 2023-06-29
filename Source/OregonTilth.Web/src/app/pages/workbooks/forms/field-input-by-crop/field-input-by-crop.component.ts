@@ -20,6 +20,9 @@ import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { AgGridAngular } from 'ag-grid-angular';
+import { CropSpecificInfoSummaryDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-summary-dto';
+import { FieldUnitTypeEnum } from 'src/app/shared/models/enums/field-unit-type.enum';
+import { TpOrDsTypeEnum } from 'src/app/shared/models/enums/tp-or-ds-type.enum';
 @Component({
   selector: 'field-input-labor-by-crop',
   templateUrl: './field-input-by-crop.component.html',
@@ -53,10 +56,13 @@ export class FieldInputByCropComponent implements OnInit {
   private getCropDtosRequest: any;
 
   public fieldInputCostDtos: FieldInputCostDto[];
+  public allFieldInputCostDtos: FieldInputCostDto[];
   private getFieldInputCostDtosRequest: any;
 
   private updateFieldInputByCropRequest: any;
   private deleteFieldInputByCropRequest: any;
+
+  public cropSpecificInfos: CropSpecificInfoSummaryDto[];
 
   public columnDefs: ColDef[];
 
@@ -80,11 +86,15 @@ export class FieldInputByCropComponent implements OnInit {
 
     this.getFieldInputByCropsRequest = this.workbookService.getFieldInputByCrops(this.workbookID);
 
-    forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldInputCostDtosRequest, this.getFieldInputByCropsRequest]).subscribe(([workbookDto, cropDtos, fieldInputCostDtos, fieldInputByCrops]: [WorkbookDto, CropDto[], FieldInputCostDto[], FieldInputByCropDto[]]) => {
+    forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldInputCostDtosRequest, this.getFieldInputByCropsRequest, this.workbookService.getCropSpecificInfos(this.workbookID)])
+    .subscribe(([workbookDto, cropDtos, fieldInputCostDtos, fieldInputByCrops, cropSpecificInfos]
+      : [WorkbookDto, CropDto[], FieldInputCostDto[], FieldInputByCropDto[],CropSpecificInfoSummaryDto[]]) => {
       this.workbook = workbookDto;
       this.cropDtos = cropDtos;
       this.fieldInputCostDtos = fieldInputCostDtos;
+      this.allFieldInputCostDtos = [...fieldInputCostDtos];
       this.fieldInputByCropDtos = fieldInputByCrops;
+      this.cropSpecificInfos = cropSpecificInfos;
       this.defineColumnDefs();
       this.cdr.markForCheck();
     });
@@ -295,4 +305,18 @@ export class FieldInputByCropComponent implements OnInit {
     this.utilityFunctionsService.exportGridToCsv(this.fieldInputByCropGrid, 'Field-Input-By-Crop.csv', columnIds);
   }  
 
+
+  cropSelectionChanged(cropID: string) {
+    /**
+     * Check the Crop Planting Info form to see if the TP Type or DS has DS selected for a crop when that crop is linked to 
+     * Field Inputs on Field Input by Crop, where the Field Unit for the Field Inputs is “Transplant” on Field Input Costs. 
+     * If this is the case, don’t allow them to select the Field Input for the Crop. 
+     */
+    var directSeededInfos = this.cropSpecificInfos.filter(x => x.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.DirectSeeded && x.Crop.CropID == parseInt(cropID));
+    if(directSeededInfos.length > 0) {
+      this.fieldInputCostDtos = this.allFieldInputCostDtos.filter(x => x.FieldUnitType.FieldUnitTypeID != FieldUnitTypeEnum.Transplants)
+    } else {
+      this.fieldInputCostDtos = this.allFieldInputCostDtos;
+    }
+  }
 }
