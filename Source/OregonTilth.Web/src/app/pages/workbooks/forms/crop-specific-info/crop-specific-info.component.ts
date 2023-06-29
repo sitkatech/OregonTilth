@@ -30,6 +30,11 @@ import { IntegerEditor } from 'src/app/shared/components/ag-grid/integer-editor/
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { AgGridAngular } from 'ag-grid-angular';
+import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-labor-activity-dto';
+import { FieldStandardTimeDto } from 'src/app/shared/models/generated/field-standard-time-dto';
+import { FieldLaborActivityCategoryEnum } from 'src/app/shared/models/enums/field-labor-activity-category.enum';
+import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor-by-crop-dto';
+import { FieldUnitTypeEnum } from 'src/app/shared/models/enums/field-unit-type.enum';
 
 @Component({
   selector: 'crop-specific-info',
@@ -71,6 +76,7 @@ export class CropSpecificInfoComponent implements OnInit {
   private deleteCropSpecificInfoRequest: any;
 
   public tpOrDsTypes: TpOrDsTypeDto[];
+  public allTpOrDsTypes: TpOrDsTypeDto[];
   private getTpOrDsTypesRequest: any;
 
   public crops: CropDto[];
@@ -78,6 +84,10 @@ export class CropSpecificInfoComponent implements OnInit {
   public columnDefs: ColDef[];
 
   public cropDtosRequired: CropDto[] = [];
+
+  public fieldStandardTimes: FieldStandardTimeDto[];
+  public fieldLaborActivities: FieldLaborActivityDto[];
+  public fieldLaborByCrops: FieldLaborByCropDto[];
  
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -96,14 +106,26 @@ export class CropSpecificInfoComponent implements OnInit {
     this.getCropSpecificInfosRequest = this.workbookService.getCropSpecificInfos(this.workbookID);
     this.getCropsRequest = this.workbookService.getCrops(this.workbookID);
 
-    forkJoin([this.getWorkbookRequest, this.getTpOrDsTypesRequest, this.getCropSpecificInfosRequest, this.getCropsRequest]).subscribe(([workbook, tpOrDsTypes, cropSpecificInfos, cropDtos]: [WorkbookDto, TpOrDsTypeDto[], CropSpecificInfoSummaryDto[], CropDto[]]) => {
+    forkJoin([
+        this.getWorkbookRequest, 
+        this.getTpOrDsTypesRequest, 
+        this.getCropSpecificInfosRequest, 
+        this.getCropsRequest,
+        
+        this.workbookService.getFieldLaborByCrops(this.workbookID)
+      ])
+      .subscribe(([workbook, tpOrDsTypes, cropSpecificInfos, cropDtos, fieldLaborByCrops] 
+        : [WorkbookDto, TpOrDsTypeDto[], CropSpecificInfoSummaryDto[], CropDto[], FieldLaborByCropDto[]]) => {
       this.workbook = workbook;
       this.tpOrDsTypes = tpOrDsTypes;
+      this.allTpOrDsTypes = [...tpOrDsTypes];
       this.cropSpecificInfos = cropSpecificInfos;
       this.crops = cropDtos;
+      this.fieldLaborByCrops = fieldLaborByCrops;
       this.refreshCropsRequired();
       this.defineColumnDefs();
       this.cdr.markForCheck();
+
     });
   }
 
@@ -449,5 +471,23 @@ export class CropSpecificInfoComponent implements OnInit {
     columnIds.splice(-1, 1); // remove the delete column from the download
     this.utilityFunctionsService.exportGridToCsv(this.cropSpecificInfoGrid, 'Crop-Specific-Information.csv', columnIds);
   }  
+
+  cropSelectionChanged(cropID: string) {
+
+    /**
+     *  look at the Field Labor Activities that have been selected on the Field Labor by Crop for that crop. 
+     * Then look at the Field Labor Time Studies form. If any of the Field Labor Activities that have been selected 
+     * for the crop on Field Labor by Crop use the Field Unit “Transplant” on Field Labor Time Studies,
+     *  then don’t allow the user to select “DS” in the field TP Type or DS on the Crop Planting Info form for that crop.
+     */
+
+    var fieldLaborByCrops = this.fieldLaborByCrops.filter(x => x.Crop.CropID == parseInt(cropID) && x.FieldStandardTime.FieldUnitType.FieldUnitTypeID == FieldUnitTypeEnum.Transplants)
+    if(fieldLaborByCrops.length > 0 ){
+      this.tpOrDsTypes = this.allTpOrDsTypes.filter(x => x.TpOrDsTypeID != TpOrDsTypeEnum.DirectSeeded);
+    } else {
+      this.tpOrDsTypes = this.allTpOrDsTypes;
+    }
+
+  }
 }
 

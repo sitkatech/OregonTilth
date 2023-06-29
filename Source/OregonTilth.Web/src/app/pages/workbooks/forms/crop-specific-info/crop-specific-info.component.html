@@ -26,7 +26,7 @@
               <div class="row">
                 <div class="col-md-3">
                   <label class="required">Crop</label>
-                  <select class="form-control" [(ngModel)]="model.CropID" name="CropID" required>
+                  <select class="form-control" [(ngModel)]="model.CropID" name="CropID" required (change)="cropSelectionChanged(model.CropID)">
                     <option disabled="true" [ngValue]="undefined" [selected]="!model.CropID">Select Crop</option>
                     <option *ngFor="let option of cropDtosRequired" [selected]="model.CropID == option.CropID" [value]="option.CropID">{{option.CropName}}</option>
                   </select>

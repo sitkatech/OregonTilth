@@ -21,6 +21,9 @@ import { FieldStandardTimeDto } from 'src/app/shared/models/generated/field-stan
 import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-summary-dto';
 import { AgGridAngular } from 'ag-grid-angular';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { CropSpecificInfoSummaryDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-summary-dto';
+import { TpOrDsTypeEnum } from 'src/app/shared/models/enums/tp-or-ds-type.enum';
+import { FieldUnitTypeEnum } from 'src/app/shared/models/enums/field-unit-type.enum';
 
 @Component({
   selector: 'field-labor-by-crop',
@@ -56,7 +59,10 @@ export class FieldLaborByCropComponent implements OnInit {
   private getCropDtosRequest: any;
 
   public fieldStandardTimeDtos: FieldStandardTimeSummaryDto[];
+  public allFieldStandardTimeDtos: FieldStandardTimeSummaryDto[];
   private getFieldStandardTimeDtosRequest: any;
+
+  public cropSpecificInfos: CropSpecificInfoSummaryDto[];
 
   private updateFieldLaborByCropRequest: any;
   private deleteFieldLaborByCropRequest: any;
@@ -81,11 +87,14 @@ export class FieldLaborByCropComponent implements OnInit {
     this.getFieldStandardTimeDtosRequest = this.workbookService.getFieldStandardTimes(this.workbookID);
     this.getFieldLaborByCropsRequest = this.workbookService.getFieldLaborByCrops(this.workbookID);
 
-    forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldStandardTimeDtosRequest, this.getFieldLaborByCropsRequest]).subscribe(([workbookDto, cropDtos, fieldStandardTimeDtos, fieldLaborByCrops]: [WorkbookDto, CropDto[], FieldStandardTimeSummaryDto[], FieldLaborByCropDto[]]) => {
+
+    forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldStandardTimeDtosRequest, this.getFieldLaborByCropsRequest, this.workbookService.getCropSpecificInfos(this.workbookID)]).subscribe(([workbookDto, cropDtos, fieldStandardTimeDtos, fieldLaborByCrops, cropSpecificInfos]: [WorkbookDto, CropDto[], FieldStandardTimeSummaryDto[], FieldLaborByCropDto[], CropSpecificInfoSummaryDto[]]) => {
       this.workbook = workbookDto;
       this.cropDtos = cropDtos;
       this.fieldStandardTimeDtos = fieldStandardTimeDtos.filter(x => {return x.TimeStudies.length > 0});
+      this.allFieldStandardTimeDtos = [... this.fieldStandardTimeDtos];
       this.fieldLaborByCropDtos = fieldLaborByCrops;
+      this.cropSpecificInfos = cropSpecificInfos;
       this.defineColumnDefs();
       this.cdr.markForCheck();
     });
@@ -276,7 +285,6 @@ export class FieldLaborByCropComponent implements OnInit {
 
 
       }else{
-        debugger;
         var activitiesString = this.model.FieldStandardTimes.map(x => '<strong>\'' + x.FieldLaborActivityAndLaborTypeNameForDropdown + '\'</strong>').join(', ');
 
         var infoMessage = `Could not add the Field Labor Activities ${activitiesString} because they have already been entered for this Crop.`;
@@ -291,6 +299,20 @@ export class FieldLaborByCropComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
+  }
+
+  cropSelectionChanged(cropID: string) {
+    /**
+     *  check the Crop Planting Info form to see if the TP Type or DS has DS selected for a crop when that 
+     *  crop is linked to Field Labor Activities on Field Labor by Crop, where the Field Unit for the Field Labor Activity
+     *  is “Transplant” on Field Labor Time Studies. If this is the case, don’t allow them to select the Field Labor Activity for the Crop. 
+     */
+    var directSeededInfos = this.cropSpecificInfos.filter(x => x.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.DirectSeeded && x.Crop.CropID == parseInt(cropID));
+    if(directSeededInfos.length > 0) {
+      this.fieldStandardTimeDtos = this.allFieldStandardTimeDtos.filter(x => x.FieldUnitType.FieldUnitTypeID != FieldUnitTypeEnum.Transplants)
+    } else {
+      this.fieldStandardTimeDtos = this.allFieldStandardTimeDtos;
+    }
   }
 
   resetForm() {
