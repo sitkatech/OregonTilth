@@ -31,13 +31,13 @@
           <input class="form-control" type="number" name="SortOrder" [(ngModel)]="model.SortOrder">
         </div>
         <div class="form-group col-md-12">
-          <label class="">Page Content</label>
-          <div [ngClass]="{'ckEditorDisabled':isUploadingImage()}">
-            <div *ngIf="isUploadingImage()">
-                <em>Please wait while the image is uploaded...</em>
-                <span class="mt-1 fa fa-spinner loading-spinner" style="float:right;"></span>
-            </div>
-            <ckeditor [editor]="Editor" [(ngModel)]="model.PageContent" (ready)="ckEditorReady($event)" [config]="ckConfig" [ngModelOptions]="{standalone: true}"></ckeditor>
+          <label class="" for="PageContent">Page Content</label>
+          <div>
+            <editor #tinyMceEditor
+              [init]="tinyMceConfig"
+              name="PageContent"
+              [(ngModel)]="model.PageContent"
+            ></editor>
           </div>
         </div>
         <div class="col-md-12">
@@ -46,7 +46,7 @@
               <i class="fas fa-bolt"></i> Required field
             </div>
             <div class="col-sm text-right">
-              <button type="submit" class="btn btn-fresca" [disabled]="!editPageForm.form.valid || isLoadingSubmit || isUploadingImage()">
+              <button type="submit" class="btn btn-fresca" [disabled]="!editPageForm.form.valid || isLoadingSubmit">
                 <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                 Submit
               </button>

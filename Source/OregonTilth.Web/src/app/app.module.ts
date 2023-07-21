@@ -45,7 +45,6 @@ import { DisclaimerComponent } from './pages/disclaimer/disclaimer.component';
 import { AppInitService } from './app.init';
 import { FieldDefinitionListComponent } from './pages/field-definition-list/field-definition-list.component';
 import { FieldDefinitionEditComponent } from './pages/field-definition-edit/field-definition-edit.component';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { HttpErrorInterceptor } from './shared/interceptors/httpErrorInterceptor';
 import { TrainingComponent } from './pages/training/training.component';
 import { environment } from 'src/environments/environment';
@@ -144,7 +143,6 @@ export function init_app(appLoadService: AppInitService) {
         BrowserAnimationsModule,
         AgGridModule,
         NgMultiSelectDropDownModule.forRoot(),
-        CKEditorModule,
         ReactiveFormsModule,
         ChartsModule,
         NgClickOutsideModule

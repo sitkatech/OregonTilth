@@ -1,28 +1,22 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, forwardRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { RoleService } from 'src/app/services/role/role.service';
-import { UserService } from 'src/app/services/user/user.service';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { RoleDto } from 'src/app/shared/models/generated/role-dto';
 import { PageTreeDto } from 'src/app/shared/models/page/page-tree-dto';
 import { PageUpdateDto } from 'src/app/shared/models/page/page-update-dto';
-import { UserUpdateDto } from 'src/app/shared/models/user/user-update-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { CustomRichTextService } from 'src/app/shared/services/custom-rich-text.service';
 import { PageService } from 'src/app/shared/services/page-service';
-import { environment } from 'src/environments/environment';
-import * as ClassicEditor from 'src/assets/main/ckeditor/ckeditor.js';
-import { CkEditorUploadAdapter } from 'src/app/shared/CkEditorUploadAdapter';
+import TinyMCEHelpers from 'src/app/shared/helpers/tiny-mce-helpers';
+import { EditorComponent } from '@tinymce/tinymce-angular';
 @Component({
   selector: 'oregontilth-page-edit',
   templateUrl: './page-edit.component.html',
-  styleUrls: ['./page-edit.component.scss']
+  styleUrls: ['./page-edit.component.scss'],
 })
-export class PageEditComponent implements OnInit {
+export class PageEditComponent implements OnInit, AfterViewChecked {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
 
@@ -33,23 +27,31 @@ export class PageEditComponent implements OnInit {
   public model: PageUpdateDto;
   
   public isLoadingSubmit: boolean = false;
-  public editor;
-  public Editor = ClassicEditor;
-
-  //For media embed https://ckeditor.com/docs/ckeditor5/latest/api/module_media-embed_mediaembed-MediaEmbedConfig.html
-  //Only some embeds will work, and if we want others to work we'll likely need to write some extra functions
-  public ckConfig = {mediaEmbed: {previewsInData: true}};
+  @ViewChild('tinyMceEditor') tinyMceEditor: EditorComponent;
+  public tinyMceConfig: object;
+  
 
   constructor(
-    private customRichTextService: CustomRichTextService,
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
     private pageService: PageService,
-  
     private cdr: ChangeDetectorRef,
     private alertService: AlertService
   ) {
+  }
+
+  ngAfterViewChecked() {
+    // viewChild is updated after the view has been checked
+    this.initalizeEditor();
+  }
+
+  initalizeEditor() {
+    if (!this.isLoadingSubmit && this.model) {
+      this.tinyMceConfig = TinyMCEHelpers.DefaultInitConfig(
+        this.tinyMceEditor
+      );
+    }
   }
 
   ngOnInit() {
@@ -84,24 +86,6 @@ export class PageEditComponent implements OnInit {
 
       });
     });
-  }
-
-  public isUploadingImage():boolean{
-    return this.editor && this.editor.isReadOnly;
-  }
-
-  // tell CkEditor to use the class below as its upload adapter
-  // see https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/upload-adapter.html#how-does-the-image-upload-work
-  public ckEditorReady(editor) {
-
-    const customRichTextService = this.customRichTextService
-    this.editor = editor;
-
-    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-      // disable the editor until the image comes back
-      editor.isReadOnly = true;
-      return new CkEditorUploadAdapter(loader, customRichTextService, environment.apiHostName, editor);
-    };
   }
 
   ngOnDestroy() {

@@ -1,14 +1,15 @@
-import { Component, OnInit, Input, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { Alert } from '../../models/alert';
 import { UserDetailedDto } from '../../models';
 import { FieldDefinitionService } from '../../services/field-definition-service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { AlertService } from '../../services/alert.service';
-import * as ClassicEditor from 'src/assets/main/ckeditor/ckeditor.js';
 import { AlertContext } from '../../models/enums/alert-context.enum';
 import { FieldDefinitionDto } from '../../models/generated/field-definition-dto';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { FieldDefinitionTypeEnum } from '../../models/enums/field-definition-type.enum';
+import TinyMCEHelpers from '../../helpers/tiny-mce-helpers';
+import { EditorComponent } from '@tinymce/tinymce-angular';
 
 declare var $ : any
 
@@ -28,13 +29,9 @@ export class FieldDefinitionComponent implements OnInit {
   public isEditing: boolean = false;
   public emptyContent: boolean = false;
   public watchUserChangeSubscription: any;
-  public Editor = ClassicEditor;
   public editedContent: string;
-  public editor;
 
   currentUser: UserDetailedDto;
-
-  public ckConfig = {"removePlugins": ["MediaEmbed", "ImageUpload"]};
 
   constructor(private fieldDefinitionService: FieldDefinitionService,
     private authenticationService: AuthenticationService,
@@ -52,11 +49,8 @@ export class FieldDefinitionComponent implements OnInit {
     this.cdr.detach();
   }
 
-  // tell CkEditor to use the class below as its upload adapter
-  // see https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/upload-adapter.html#how-does-the-image-upload-work
-  public ckEditorReady(editor) {
-    this.editor = editor;
-  }
+
+
 
   public getLabelText() {
     return this.labelOverride !== null && this.labelOverride !== undefined ? this.labelOverride : this.fieldDefinition.FieldDefinitionType.FieldDefinitionTypeDisplayName;

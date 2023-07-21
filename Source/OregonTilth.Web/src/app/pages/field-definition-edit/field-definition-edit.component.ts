@@ -1,6 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { FieldDefinitionService } from 'src/app/shared/services/field-definition-service';
-import * as ClassicEditor from 'src/assets/main/ckeditor/ckeditor.js';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { FieldDefinitionDto } from 'src/app/shared/models/generated/field-definition-dto';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -8,22 +7,24 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { EditorComponent } from '@tinymce/tinymce-angular';
+import TinyMCEHelpers from 'src/app/shared/helpers/tiny-mce-helpers';
 
 @Component({
   selector: 'fresca-field-definition-edit',
   templateUrl: './field-definition-edit.component.html',
   styleUrls: ['./field-definition-edit.component.scss']
 })
-export class FieldDefinitionEditComponent implements OnInit {
+export class FieldDefinitionEditComponent implements OnInit, AfterViewChecked {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
 
   public fieldDefinition: FieldDefinitionDto;
-  public Editor = ClassicEditor;
   public editor;
 
-  public ckConfig = {"removePlugins": ["MediaEmbed", "ImageUpload"]};
   isLoadingSubmit: boolean;
+  @ViewChild('tinyMceEditor') tinyMceEditor: EditorComponent;
+  public tinyMceConfig: object;
 
   constructor(
       private route: ActivatedRoute,
@@ -33,6 +34,19 @@ export class FieldDefinitionEditComponent implements OnInit {
       private authenticationService: AuthenticationService,
       private cdr: ChangeDetectorRef
   ) {
+  }
+
+  ngAfterViewChecked() {
+    // viewChild is updated after the view has been checked
+    this.initalizeEditor();
+  }
+
+  initalizeEditor() {
+    if (!this.isLoadingSubmit) {
+      this.tinyMceConfig = TinyMCEHelpers.DefaultInitConfig(
+        this.tinyMceEditor
+      );
+    }
   }
 
   ngOnInit() {
@@ -55,12 +69,6 @@ export class FieldDefinitionEditComponent implements OnInit {
 
   public currentUserIsAdmin(): boolean {
       return this.authenticationService.isUserAnAdministrator(this.currentUser);
-  }
-
-  // tell CkEditor to use the class below as its upload adapter
-  // see https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/upload-adapter.html#how-does-the-image-upload-work
-  public ckEditorReady(editor) {
-    this.editor = editor;
   }
 
   saveDefinition(): void {
