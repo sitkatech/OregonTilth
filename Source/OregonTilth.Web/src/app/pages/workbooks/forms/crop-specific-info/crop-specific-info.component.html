@@ -39,18 +39,18 @@
                   </select>
                 </div>
                 <div class="col-md-3">
-                  <label class="required">Rows Per Standard Width</label>
+                  <label class="required">Rows Per Standard Bed</label>
                   <input class="form-control" min="1" type="number" name="RowsPerStandardWidth" [(ngModel)]="model.RowsPerStandardWidth" required>       
                 </div>
                 <div class="col-md-3">
-                  <label class="required">Drip Tape Rows Per Standard Width</label>
+                  <label class="required">Drip Tape Rows per Standard Bed</label>
                   <input class="form-control" min="0" type="number" name="DripTapeRowsPerStandardWidth" [(ngModel)]="model.DripTapeRowsPerStandardWidth" required>         
                 </div>
                 
               </div>
               <div class="row mt-4">
                 <div class="col-md-4">
-                  <label [class.required]="seedCostRequired()">Seed Cost Per Standard Unit Of Space</label>
+                  <label [class.required]="seedCostRequired()">Seed Cost Per Standard Bed</label>
                   <input class="form-control" min="0" type="number" name="SeedCostPerStandardUnitOfSpace" [(ngModel)]="model.SeedCostPerStandardUnitOfSpace" [disabled]="!seedCostRequired()" [required]="seedCostRequired()">                  
                 </div>
                 <div class="col-md-4">
