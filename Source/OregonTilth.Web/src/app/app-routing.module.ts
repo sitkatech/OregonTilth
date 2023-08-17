@@ -3,20 +3,17 @@ import { Routes, RouterModule } from '@angular/router';
 import { NotFoundComponent, UnauthenticatedComponent, SubscriptionInsufficientComponent } from './shared/pages';
 import { UnauthenticatedAccessGuard } from './shared/guards/unauthenticated-access/unauthenticated-access.guard';
 import { ManagerOnlyGuard } from "./shared/guards/unauthenticated-access/manager-only-guard";
-import { AcknowledgedDisclaimerGuard } from "./shared/guards/acknowledged-disclaimer-guard";
 import { UserListComponent } from './pages/user-list/user-list.component';
 import { HomeIndexComponent } from './pages/home/home-index/home-index.component';
 import { UserDetailComponent } from './pages/user-detail/user-detail.component';
 import { UserInviteComponent } from './pages/user-invite/user-invite.component';
 import { UserEditComponent } from './pages/user-edit/user-edit.component';
 import { LoginCallbackComponent } from './pages/login-callback/login-callback.component';
-import { HelpComponent } from './pages/help/help.component';
 import { CreateUserCallbackComponent } from './pages/create-user-callback/create-user-callback.component';
 import { AboutComponent } from './pages/about/about.component';
 import { DisclaimerComponent } from './pages/disclaimer/disclaimer.component';
 import { FieldDefinitionListComponent } from './pages/field-definition-list/field-definition-list.component';
 import { FieldDefinitionEditComponent } from './pages/field-definition-edit/field-definition-edit.component';
-import { TrainingComponent } from './pages/training/training.component';
 import { WorkbooksComponent } from './pages/workbooks/workbooks.component';
 import { NewWorkbookComponent } from './pages/workbooks/new-workbook/new-workbook.component';
 import { WorkbookDetailComponent } from './pages/workbooks/workbook-detail/workbook-detail.component';
@@ -47,16 +44,16 @@ import { PageEditComponent } from './pages/page-edit/page-edit.component';
 import { PageDetailComponent } from './pages/page-detail/page-detail.component';
 
 const routes: Routes = [
-  { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
-  { path: "labels-and-definitions", component: FieldDefinitionListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
-  { path: "pages", component: PageListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
-  { path: "pages/edit/:id", component: PageEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
-  { path: "pages/:pageId", component: PageDetailComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
-  { path: "users", component: UserListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
-  { path: "users/:id", component: UserDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
-  { path: "users/:id/edit", component: UserEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
-  { path: "invite-user/:userID", component: UserInviteComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
-  { path: "invite-user", component: UserInviteComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
+  { path: "labels-and-definitions", component: FieldDefinitionListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
+  { path: "pages", component: PageListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard]},
+  { path: "pages/edit/:id", component: PageEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard]},
+  { path: "pages/:pageId", component: PageDetailComponent, canActivate: [UnauthenticatedAccessGuard]},
+  { path: "users", component: UserListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard]},
+  { path: "users/:id", component: UserDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
+  { path: "users/:id/edit", component: UserEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
+  { path: "invite-user/:userID", component: UserInviteComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
+  { path: "invite-user", component: UserInviteComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
   { path: "", component: HomeIndexComponent},
   { path: "disclaimer", component: DisclaimerComponent },
   { path: "disclaimer/:forced", component: DisclaimerComponent },
