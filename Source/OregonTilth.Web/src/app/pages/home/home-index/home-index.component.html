@@ -23,7 +23,7 @@
 
             <div *ngIf="!currentUser">
                 <custom-rich-text [customRichTextTypeID]="notLoggedInRichTextID"></custom-rich-text>
-                <div class="cta-container mt-4">
+                <div class="cta-container mt-4" *ngIf="false">
                     <button (click)="createAccount()" type="button" class="btn btn-primary btn-cta">Create An Account!</button>
                 </div>
             </div>
