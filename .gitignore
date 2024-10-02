@@ -13,6 +13,6 @@ obj
 
 *.env
 *.user
-Source/OregonTilth.Web/wwwroot/
+OregonTilth.Web/wwwroot/
 Build/build.ini
 *.vscode/

@@ -1,0 +1,60 @@
+@import "~src/scss/_variables.scss";
+
+.side-nav  {
+    position:sticky;
+    top:20px;
+    .new-workbook-option {
+        color:$success;
+    }
+    .nav-link {
+        padding:.1em 0;
+        &.active {
+            font-weight:700;
+        }
+    }
+    .nav-group {
+        h4 {
+            font-size:16px;
+            font-weight:700;
+        }
+    }
+    .nav-links-disabled {
+        .nav-link {
+            pointer-events: none;
+        }
+    }
+}
+.workbook-nav-toggler {
+    display:none;
+    .navbar-toggler-icon {
+        
+    }
+}
+
+:host {
+    @media screen and (max-width: 990px){
+        
+        z-index:1;
+        .side-nav {
+            transition:all .3s;
+            position:fixed;
+            overflow-y:auto;
+            top:0;
+            bottom:0;
+            left:-100%;
+            background:#fff;
+            box-shadow:1px 1px 3px #000;
+            padding:30px;
+        }
+        .side-nav.open {
+            
+            left:0;
+        }
+        .workbook-nav-toggler {
+            display:block;
+        }
+    }
+    &+ * {
+      margin-top:100px;  
+    }
+}

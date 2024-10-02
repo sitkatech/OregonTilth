@@ -1,0 +1,58 @@
+<form (ngSubmit)="onSubmit(timeStudiesForm)" #timeStudiesForm class="">
+
+
+  <div class="modal-header w-100">
+    <h4 class="modal-title">Time Studies for <strong>{{activityDisplayString}}</strong></h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body w-100">
+    
+    <app-alert-display></app-alert-display>
+    <div class="time-studies-container" *ngIf="model.TimeStudies.length > 0">
+      <div class="form-group" *ngFor="let timeStudy of model.TimeStudies; let i = index">
+        <div class="row">
+          <div class="col-md-1 text-center">
+            <h5>#{{i + 1}}</h5>
+          </div>
+          <div class="col-md-3">
+            <label class="required">{{this.durationLabel}}</label>
+            <input name="Duration_{{i}}" class="form-control" type="number" [(ngModel)]="timeStudy.Duration" required />
+          </div>
+          <div class="col-md-3">
+            <label class="required">Total {{this.unitsLabel}}</label>
+            <input name="Units_{{i}}" class="form-control" type="number" [(ngModel)]="timeStudy.Units" required />
+          </div>
+          <div class="col-md-4">
+            <label for="">Notes</label>
+            <input name="Notes_{{i}}" class="form-control" type="text" [(ngModel)]="timeStudy.Notes" />
+          </div>
+          <div class="col-md-1">
+            <label>Delete</label>
+            <button class="btn btn-danger" (click)="removeTimeStudyAtIndex(i)" type="button"><i class="fa fa-trash"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mt-5">
+      <div class="col-md-12">
+        <button class="btn btn-secondary float-right" (click)="addTimeStudy()" type="button">+ Add Time Study</button>
+      </div>
+    </div>
+    
+    
+    <br />
+  
+    <i class="fas fa-bolt"></i> Required Field
+  
+  </div>
+  <div class="modal-footer w-100">
+        <button type="submit" class="btn btn-primary btn-sm" [disabled]="">
+            <span *ngIf="" class="fa fa-spinner loading-spinner"></span>
+            Submit</button>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="activeModal.close('Cancel click')"
+            [disabled]="">Cancel</button>
+  </div>
+</form>
