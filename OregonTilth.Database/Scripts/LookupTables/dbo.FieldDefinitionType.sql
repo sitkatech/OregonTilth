@@ -1,38 +1,35 @@
 MERGE INTO dbo.FieldDefinitionType AS Target
 USING (VALUES
-	(1, 'Name', 'Name')
-,	(2, 'CommitmentID', 'Commitment ID')
-,	(3, 'Title', 'Title')
-,	(4, 'CommitmentType', 'Commitment Type')
-,	(5, 'ResourceCategory', 'Resource Category')
-,	(6, 'Source', 'Source')
-,	(9, 'FullCommitmentText', 'Full Commitment Text')
-,	(10, 'ComplianceLead', 'Compliance Lead')
-,	(11, 'Phase', 'Phase')
-,	(12, 'ApplicableCommitmentText', 'Applicable Commitment Text')
-,	(13, 'Seasonality', 'Seasonality')
-,	(14, 'WorkActivities', 'Work Activities')
-,	(15, 'LocationDescription', 'Location Description')
-,	(16, 'VersionNumber', 'Version Number')
-,	(17, 'DateApproved', 'Date Approved')
-,	(18, 'ApprovedBy', 'Approved By')
-,	(19, 'SummaryOfChange', 'Summary of Change')
-,	(20, 'DateOfLatestAmendment', 'Date Of Latest Amendment')
-,	(21, 'ReferenceNumber', 'Reference Number')
-,	(22, 'ApprovingAgency', 'Approving Agency')
-,	(23, 'AgencyContact', 'Agency Contact')
-,	(24, 'AgencySignatory', 'Agency Signatory')
-,	(25, 'Description', 'Description')
-,	(26, 'GeneralGuidance', 'General Guidance')
-,	(27, 'OriginatorOfChange', 'Originator of Change')
-,	(28, 'Tags', 'Tags')
-,	(29, 'ImplementationResponsibilities', 'Implementation Responsibilities')
-,	(30, 'ComplianceRequirementType', 'Compliance Requirement Type')
-,	(31, 'ComplianceLeads', 'Compliance Leads')
-,	(32, 'Scope', 'Scope')
-,	(33, 'Frequency', 'Frequency')
-,	(34, 'CommitmentTechnicalLead', 'Commitment Technical Lead')
-,	(35, 'AgreementTerms', 'Agreement Terms')
+(1, 'Name', 'Name'),
+(2, 'FieldLaborActivityForm', 'Field Labor Activities'),
+(3, 'MachineryCostForm', 'Machinery Costs'),
+(4, 'FieldLaborTimeStudies', 'Field Labor Time Studies'),
+(5, 'CropForm', 'Crops'),
+(6, 'CropUnitForm', 'Crop Units'),
+(7, 'HarvestPostHarvestTimeStudies', 'Harvest Post-Harvest Time Studies'),
+(8, 'TPLaborActivityForm', 'Transplant Production Labor Activities'),
+(9, 'TPTrayTypeForm', 'Transplant Production Tray Types'),
+(10, 'TPTimeStudies', 'Transplant Production Time Studies'),
+(11, 'FieldLaborByCropForm', 'Field Labor Activities By Crop'),
+(12, 'FieldInputCostForm', 'Field Input Costs'),
+(13, 'FieldInputByCropForm', 'Field Inputs By Crop'),
+(14, 'TPLaborByCropForm', 'Transplant Production Labor Activities By Crop'),
+(15, 'TPInputForm', 'Transplant Production Inputs'),
+(16, 'TPInputCostForm', 'Transplant Production Input Costs'),
+(17, 'TPInfoForm', 'Transplant Production Info'),
+(18, 'GeneralFarmInfoForm', 'General Farm Info'),
+(19, 'CropSpecificInfoForm', 'Crop Planting Info'),
+(20, 'CropYieldInfoForm', 'Crop Yield and Price Info'),
+(21, 'PreSeason', 'Time Study Set-Up'),
+(22, 'TimeStudies', 'Time Studies'),
+(23, 'PostSeason', 'Crop Specific Info'),
+(24, 'Results', 'Results'),
+(25, 'AverageHourlyWage', 'Average Hourly Wage'),
+(26, 'StandardUnitOfSpaceLength', 'Standard Unit Of Space Length'),
+(27, 'StandardUnitOfSpaceWidth', 'Standard Unit Of Space Width'),
+(28, 'ResultsCropCropUnit', 'Crop/Crop Unit'),
+(29, 'ResultsCropCropUnitLaborHours', 'Crop/Crop Unit Labor Hours per Labor Activity Category'),
+(30, 'ResultsCropCropUnitCostsPerCostCategory', 'Crop/Crop Unit Costs per Cost Category')
 )
 AS Source (FieldDefinitionTypeID, FieldDefinitionTypeName, FieldDefinitionTypeDisplayName)
 ON Target.FieldDefinitionTypeID = Source.FieldDefinitionTypeID
