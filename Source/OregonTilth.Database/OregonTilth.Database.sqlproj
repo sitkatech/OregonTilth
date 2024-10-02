@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Beacon.Database</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{8851eb6a-bcea-42b4-83dd-125a1bcfaa52}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Beacon.Database</RootNamespace>
+    <AssemblyName>Beacon.Database</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="dbo\User Defined Types\" />
+    <Folder Include="Scripts" />
+    <Folder Include="Scripts\LookupTables" />
+    <Folder Include="Scripts\PreReleaseScripts" />
+    <Folder Include="Scripts\ReleaseScripts" />
+    <Folder Include="Scripts\Utility" />
+    <Folder Include="Scripts\Archive" />
+    <Folder Include="dbo\Procs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\dbo.CustomRichText.sql" />
+    <Build Include="dbo\Tables\dbo.CustomRichTextType.sql" />
+    <Build Include="dbo\Tables\dbo.DatabaseMigration.sql" />
+    <Build Include="dbo\Tables\dbo.FieldDefinition.sql" />
+    <Build Include="dbo\Tables\dbo.FieldDefinitionType.sql" />
+    <Build Include="dbo\Tables\dbo.Role.sql" />
+    <Build Include="dbo\Tables\dbo.User.sql" />
+    <Build Include="dbo\User Defined Types\html.sql" />
+    <None Include="Scripts\LookupTables\Script.PostDeployment.LookupTables.sql" />
+    <None Include="Scripts\LookupTables\dbo.CustomRichTextType.sql" />
+    <None Include="Scripts\LookupTables\dbo.FieldDefinitionType.sql" />
+    <None Include="Scripts\LookupTables\dbo.MenuItem.sql" />
+    <None Include="Scripts\PreReleaseScripts\Script.PreDeployment.ReleaseScripts.sql" />
+    <None Include="Scripts\ReleaseScripts\Script.PostDeployment.ReleaseScripts.sql" />
+    <None Include="Scripts\Utility\Script.PostDeployment.Utility.sql" />
+    <None Include="Scripts\LookupTables\dbo.Flag.sql" />
+    <None Include="Scripts\LookupTables\dbo.Permission.sql" />
+    <None Include="Scripts\LookupTables\dbo.CommitmentVersionStatus.sql" />
+    <Build Include="dbo\Tables\dbo.Phase.sql" />
+    <None Include="Scripts\ReleaseScripts\0008 - Add field definitions take two.sql" />
+    <None Include="Scripts\Archive\0007 - Add field definitions.sql" />
+    <None Include="Scripts\Archive\0001 - Create Client Users.sql" />
+    <None Include="Scripts\Archive\0002 - Add default custom page text.sql" />
+    <None Include="Scripts\Archive\0003 - Add CommitmentTypes.sql" />
+    <None Include="Scripts\Archive\0004 - Add Timings.sql" />
+    <None Include="Scripts\Archive\0005 - Update Roles to support Role editing.sql" />
+    <None Include="Scripts\Archive\0006 - Add commitments.sql" />
+    <None Include="Scripts\ReleaseScripts\0009 - Add field definitions for tags.sql" />
+    <None Include="Scripts\ReleaseScripts\0010 - Add default relationship types.sql" />
+    <None Include="Scripts\ReleaseScripts\0011 - Remove FileResource permissions.sql" />
+    <None Include="Scripts\ReleaseScripts\0012 - Add commitment types.sql" />
+    <None Include="Scripts\ReleaseScripts\0014 - Add Cobalt Solar tenant.sql" />
+    <None Include="Scripts\ReleaseScripts\0013 - Tenantize application.sql" />
+    <None Include="Scripts\ReleaseScripts\0015 - Add LEBLS tenant.sql" />
+    <None Include="Scripts\ReleaseScripts\0016 - Update DisplayIndex for DC ComplianceRequirements.sql" />
+    <None Include="Scripts\ReleaseScripts\0017 - Add User to all tenants.sql" />
+    <None Include="Scripts\ReleaseScripts\0018 - Add daily monitoring report form ids to config.sql" />
+    <None Include="Scripts\ReleaseScripts\0019 - Add SFO tenant.sql" />
+    <None Include="Scripts\ReleaseScripts\0020 - Add Project rights to roles.sql" />
+    <None Include="Scripts\ReleaseScripts\0021 - Add default projects to tenants with the commitment tracking module.sql" />
+    <None Include="Scripts\ReleaseScripts\0022 - Seed initial ImplementationResponsibilites.sql" />
+    <None Include="Scripts\ReleaseScripts\0023 - Seed initial ImplementationActions.sql" />
+    <None Include="Scripts\ReleaseScripts\0024 - Backfill commitment compliance lead users.sql" />
+    <None Include="Scripts\ReleaseScripts\0025 - Add Compliance Tracking Module.sql" />
+    <None Include="Scripts\ReleaseScripts\0026 - Add Monitoring Dashboard to DeltaConveyance tenant.sql" />
+    <None Include="Scripts\ReleaseScripts\0027 - Delete CommitmentVersion for DeltaConveyance.sql" />
+    <None Include="Scripts\Archive\PRE 0001 - Back fill compliance lead users.sql" />
+    <None Include="Scripts\PreReleaseScripts\PRE 0002 - Fix data for simplifed commitment status workflow.sql" />
+    <None Include="Scripts\ReleaseScripts\0028 - Rename Commitment Tracking module to Commitment Library.sql" />
+    <None Include="Scripts\ReleaseScripts\0029 - Seed initial Scopes and Frequencies.sql" />
+    <None Include="Scripts\PreReleaseScripts\PRE 0003 - Remove extra implementation actions.sql" />
+    <None Include="Scripts\ReleaseScripts\0030 - Update roles for Checklists.sql" />
+    <None Include="Scripts\ReleaseScripts\0031 - Add Implementation Planning Phase.sql" />
+    <None Include="Scripts\ReleaseScripts\0032 - Add CommitmentTechnicalLead Field Definition.sql" />
+    <None Include="Scripts\ReleaseScripts\0033 - Rename Activity Types to Work Activities in Field Definition.sql" />
+    <None Include="Scripts\ReleaseScripts\0034 - Rename Compliance Requirements Measure Text to Applicable Commitment Text in Field Definition.sql" />
+    <None Include="Scripts\ReleaseScripts\0035 - Seed New ComplianceRequirementType Table with New List And Rename Implementation Action to Compliance Requirement Type in Field Definitions.sql" />
+    <None Include="Scripts\ReleaseScripts\0036 - Populate ChecklistItemStatus Table.sql" />
+    <None Include="Scripts\ReleaseScripts\0037 - Add prologis tenant BCN-272.sql" />
+    <None Include="Scripts\ReleaseScripts\0038 - Add lv tenant BCN-272.sql" />
+    <None Include="Scripts\ReleaseScripts\0039 - Add CASP tenant BCN-272.sql" />
+    <None Include="Scripts\ReleaseScripts\0040 - Add AgreementTerms To Field Definition.sql" />
+    <None Include="Scripts\ReleaseScripts\0041 - Update Compliance Requirement Types.sql" />
+    <None Include="Scripts\ReleaseScripts\0042 - Add As Needed To Frequency.sql" />
+    <None Include="Scripts\ReleaseScripts\0043 - Add Sort Orders To Phases.sql" />
+    <None Include="Scripts\PreReleaseScripts\PRE 0004 - Pull old CRs into temptable.sql" />
+    <None Include="Scripts\ReleaseScripts\0044 - Add Not Started To Component Status and Sort Statuses.sql" />
+    <None Include="Scripts\ReleaseScripts\0045 - Fill Evidences Of Compliance With Titles From Compliance Requirements.sql" />
+    <None Include="Scripts\ReleaseScripts\0046 - delete empty EOC.sql" />
+    <None Include="Scripts\ReleaseScripts\0047 - Add RTEs for library and compliance tracking modules.sql" />
+    <Build Include="dbo\Tables\dbo.Workbook.sql" />
+    <Build Include="dbo\Procs\dbo.procDuplicateWorkbook.sql" />
+    <Build Include="dbo\Tables\dbo.Crop.sql" />
+    <Build Include="dbo\Tables\dbo.CropSpecificInfo.sql" />
+    <Build Include="dbo\Tables\dbo.CropUnit.sql" />
+    <Build Include="dbo\Tables\dbo.CropYieldInformation.sql" />
+    <Build Include="dbo\Tables\dbo.FieldInputByCrop.sql" />
+    <Build Include="dbo\Tables\dbo.FieldInputCost.sql" />
+    <Build Include="dbo\Tables\dbo.FieldLaborActivity.sql" />
+    <Build Include="dbo\Tables\dbo.FieldLaborActivityCategory.sql" />
+    <Build Include="dbo\Tables\dbo.FieldLaborByCrop.sql" />
+    <Build Include="dbo\Tables\dbo.FieldStandardTime.sql" />
+    <Build Include="dbo\Tables\dbo.FieldUnitType.sql" />
+    <Build Include="dbo\Tables\dbo.FileResource.sql" />
+    <Build Include="dbo\Tables\dbo.FileResourceMimeType.sql" />
+    <Build Include="dbo\Tables\dbo.HarvestPostHarvestStandardTime.sql" />
+    <Build Include="dbo\Tables\dbo.HarvestType.sql" />
+    <Build Include="dbo\Tables\dbo.LaborType.sql" />
+    <Build Include="dbo\Tables\dbo.Machinery.sql" />
+    <Build Include="dbo\Tables\dbo.Page.sql" />
+    <Build Include="dbo\Tables\dbo.TimeStudy.sql" />
+    <Build Include="dbo\Tables\dbo.TpOrDsType.sql" />
+    <Build Include="dbo\Tables\dbo.TransplantProductionInformation.sql" />
+    <Build Include="dbo\Tables\dbo.TransplantProductionInput.sql" />
+    <Build Include="dbo\Tables\dbo.TransplantProductionInputCost.sql" />
+    <Build Include="dbo\Tables\dbo.TransplantProductionLaborActivity.sql" />
+    <Build Include="dbo\Tables\dbo.TransplantProductionLaborActivityByCrop.sql" />
+    <Build Include="dbo\Tables\dbo.TransplantProductionStandardTime.sql" />
+    <Build Include="dbo\Tables\dbo.TransplantProductionTrayType.sql" />
+    <Build Include="dbo\Views\dbo.vFieldLaborActivityForTimeStudy.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\PreReleaseScripts\README.md" />
+    <None Include="Scripts\ReleaseScripts\README.md" />
+    <None Include="OregonTilth.Database.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Script.PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="Scripts\Script.PreDeployment.sql" />
+  </ItemGroup>
+  <UsingTask TaskName="ScriptDeploymentGenerator" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <releaseScriptFolder ParameterType="System.String" Required="true" />
+      <releaseScriptFileName ParameterType="System.String" Required="true" />
+      <projectName ParameterType="System.String" Required="true" />
+      <title ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+
+        var files = Directory.GetFiles(releaseScriptFolder, "*.sql");
+        StringBuilder sb = new StringBuilder();
+
+        sb.AppendLine("/*");
+        sb.AppendLine(title + " Script");
+        sb.AppendLine("--------------------------------------------------------------------------------------");
+        sb.AppendLine("This file is generated on every build, DO NOT modify.");
+        sb.AppendLine("--------------------------------------------------------------------------------------");
+        sb.AppendLine("*/");
+        sb.AppendLine("");
+        sb.AppendLine("PRINT N'" + projectName + " - " + releaseScriptFileName +"';");
+        sb.AppendLine("GO");
+        sb.AppendLine("");
+
+        foreach (var file in files.OrderBy(f => f))
+        {
+            if (file.Contains(releaseScriptFileName))
+            {
+              continue;
+            }
+
+            var fileName = file.Replace(releaseScriptFolder, "");
+
+            sb.AppendLine(":r \"." + fileName + "\"");
+            sb.AppendLine("GO");
+                    
+        }
+        using (System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(releaseScriptFolder, releaseScriptFileName)))
+        {
+          file.WriteLine(sb.ToString()); 
+        }
+
+]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="CustomBuildStep" BeforeTargets="BeforeBuild">
+    <ScriptDeploymentGenerator projectName="$(MSBuildProjectName)" title="Post-Deployment" releaseScriptFolder="Scripts\\ReleaseScripts" releaseScriptFileName="Script.PostDeployment.ReleaseScripts.sql" />
+    <ScriptDeploymentGenerator projectName="$(MSBuildProjectName)" title="Pre-Deployment" releaseScriptFolder="Scripts\\PreReleaseScripts" releaseScriptFileName="Script.PreDeployment.ReleaseScripts.sql" />
+    <ScriptDeploymentGenerator projectName="$(MSBuildProjectName)" title="Lookup-Table" releaseScriptFolder="Scripts\\LookupTables" releaseScriptFileName="Script.PostDeployment.LookupTables.sql" />
+  </Target>
+</Project>
