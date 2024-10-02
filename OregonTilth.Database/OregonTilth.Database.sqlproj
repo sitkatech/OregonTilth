@@ -87,9 +87,6 @@
     <None Include="Scripts\ReleaseScripts\Script.PostDeployment.ReleaseScripts.sql" />
     <None Include="Scripts\Utility\Script.PostDeployment.Utility.sql" />
     <Build Include="dbo\Tables\dbo.Phase.sql" />
-    <None Include="Scripts\PreReleaseScripts\PRE 0002 - Fix data for simplifed commitment status workflow.sql" />
-    <None Include="Scripts\PreReleaseScripts\PRE 0003 - Remove extra implementation actions.sql" />
-    <None Include="Scripts\PreReleaseScripts\PRE 0004 - Pull old CRs into temptable.sql" />
     <Build Include="dbo\Tables\dbo.Workbook.sql" />
     <Build Include="dbo\Procs\dbo.procDuplicateWorkbook.sql" />
     <Build Include="dbo\Tables\dbo.Crop.sql" />
