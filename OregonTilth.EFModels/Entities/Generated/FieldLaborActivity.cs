@@ -26,9 +26,6 @@ namespace OregonTilth.EFModels.Entities
         public bool LaborTypeManual { get; set; }
         public bool LaborTypeMachinery { get; set; }
 
-        [ForeignKey("FieldLaborActivityCategoryID")]
-        [InverseProperty("FieldLaborActivities")]
-        public virtual FieldLaborActivityCategory FieldLaborActivityCategory { get; set; }
         [ForeignKey("WorkbookID")]
         [InverseProperty("FieldLaborActivities")]
         public virtual Workbook Workbook { get; set; }

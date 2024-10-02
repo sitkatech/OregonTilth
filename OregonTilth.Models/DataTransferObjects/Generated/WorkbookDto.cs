@@ -17,4 +17,16 @@ namespace OregonTilth.Models.DataTransferObjects
         public decimal StandardUnitOfSpaceLength { get; set; }
         public decimal StandardUnitOfSpaceWidth { get; set; }
     }
+
+    public partial class WorkbookSimpleDto
+    {
+        public int WorkbookID { get; set; }
+        public int UserID { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string WorkbookName { get; set; }
+        public decimal AverageHourlyWage { get; set; }
+        public decimal StandardUnitOfSpaceLength { get; set; }
+        public decimal StandardUnitOfSpaceWidth { get; set; }
+    }
+
 }

@@ -14,9 +14,5 @@ namespace OregonTilth.EFModels.Entities
         public int CustomRichTextTypeID { get; set; }
         [Unicode(false)]
         public string CustomRichTextContent { get; set; }
-
-        [ForeignKey("CustomRichTextTypeID")]
-        [InverseProperty("CustomRichTexts")]
-        public virtual CustomRichTextType CustomRichTextType { get; set; }
     }
 }

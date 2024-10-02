@@ -13,4 +13,12 @@ namespace OregonTilth.Models.DataTransferObjects
         public WorkbookDto Workbook { get; set; }
         public string TransplantProductionInputName { get; set; }
     }
+
+    public partial class TransplantProductionInputSimpleDto
+    {
+        public int TransplantProductionInputID { get; set; }
+        public int WorkbookID { get; set; }
+        public string TransplantProductionInputName { get; set; }
+    }
+
 }

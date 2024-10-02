@@ -15,4 +15,14 @@ namespace OregonTilth.Models.DataTransferObjects
         public int SortOrder { get; set; }
         public int? ParentPageID { get; set; }
     }
+
+    public partial class PageSimpleDto
+    {
+        public int PageID { get; set; }
+        public string PageName { get; set; }
+        public string PageContent { get; set; }
+        public int SortOrder { get; set; }
+        public int? ParentPageID { get; set; }
+    }
+
 }

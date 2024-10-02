@@ -27,5 +27,22 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(Workbook workbook, WorkbookDto workbookDto);
 
+        public static WorkbookSimpleDto AsSimpleDto(this Workbook workbook)
+        {
+            var workbookSimpleDto = new WorkbookSimpleDto()
+            {
+                WorkbookID = workbook.WorkbookID,
+                UserID = workbook.UserID,
+                CreateDate = workbook.CreateDate,
+                WorkbookName = workbook.WorkbookName,
+                AverageHourlyWage = workbook.AverageHourlyWage,
+                StandardUnitOfSpaceLength = workbook.StandardUnitOfSpaceLength,
+                StandardUnitOfSpaceWidth = workbook.StandardUnitOfSpaceWidth
+            };
+            DoCustomSimpleDtoMappings(workbook, workbookSimpleDto);
+            return workbookSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(Workbook workbook, WorkbookSimpleDto workbookSimpleDto);
     }
 }

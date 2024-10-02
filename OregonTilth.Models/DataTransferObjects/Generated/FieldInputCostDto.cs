@@ -16,4 +16,15 @@ namespace OregonTilth.Models.DataTransferObjects
         public decimal CostPerFieldUnit { get; set; }
         public string Notes { get; set; }
     }
+
+    public partial class FieldInputCostSimpleDto
+    {
+        public int FieldInputCostID { get; set; }
+        public int WorkbookID { get; set; }
+        public int FieldUnitTypeID { get; set; }
+        public string FieldInputCostName { get; set; }
+        public decimal CostPerFieldUnit { get; set; }
+        public string Notes { get; set; }
+    }
+
 }

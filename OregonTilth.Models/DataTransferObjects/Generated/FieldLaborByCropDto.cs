@@ -16,4 +16,15 @@ namespace OregonTilth.Models.DataTransferObjects
         public FieldStandardTimeDto FieldStandardTime { get; set; }
         public string Notes { get; set; }
     }
+
+    public partial class FieldLaborByCropSimpleDto
+    {
+        public int FieldLaborByCropID { get; set; }
+        public int WorkbookID { get; set; }
+        public int CropID { get; set; }
+        public decimal? Occurrences { get; set; }
+        public int FieldStandardTimeID { get; set; }
+        public string Notes { get; set; }
+    }
+
 }

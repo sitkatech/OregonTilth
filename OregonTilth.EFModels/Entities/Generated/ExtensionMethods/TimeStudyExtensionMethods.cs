@@ -28,5 +28,23 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(TimeStudy timeStudy, TimeStudyDto timeStudyDto);
 
+        public static TimeStudySimpleDto AsSimpleDto(this TimeStudy timeStudy)
+        {
+            var timeStudySimpleDto = new TimeStudySimpleDto()
+            {
+                TimeStudyID = timeStudy.TimeStudyID,
+                WorkbookID = timeStudy.WorkbookID,
+                FieldStandardTimeID = timeStudy.FieldStandardTimeID,
+                Duration = timeStudy.Duration,
+                Units = timeStudy.Units,
+                Notes = timeStudy.Notes,
+                HarvestPostHarvestStandardTimeID = timeStudy.HarvestPostHarvestStandardTimeID,
+                TransplantProductionStandardTimeID = timeStudy.TransplantProductionStandardTimeID
+            };
+            DoCustomSimpleDtoMappings(timeStudy, timeStudySimpleDto);
+            return timeStudySimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(TimeStudy timeStudy, TimeStudySimpleDto timeStudySimpleDto);
     }
 }

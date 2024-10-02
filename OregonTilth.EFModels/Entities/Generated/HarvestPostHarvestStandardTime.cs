@@ -30,9 +30,6 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey("CropUnitID")]
         [InverseProperty("HarvestPostHarvestStandardTimes")]
         public virtual CropUnit CropUnit { get; set; }
-        [ForeignKey("HarvestTypeID")]
-        [InverseProperty("HarvestPostHarvestStandardTimes")]
-        public virtual HarvestType HarvestType { get; set; }
         [ForeignKey("WorkbookID")]
         [InverseProperty("HarvestPostHarvestStandardTimes")]
         public virtual Workbook Workbook { get; set; }

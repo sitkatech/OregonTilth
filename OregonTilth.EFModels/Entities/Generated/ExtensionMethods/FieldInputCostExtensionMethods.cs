@@ -26,5 +26,21 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(FieldInputCost fieldInputCost, FieldInputCostDto fieldInputCostDto);
 
+        public static FieldInputCostSimpleDto AsSimpleDto(this FieldInputCost fieldInputCost)
+        {
+            var fieldInputCostSimpleDto = new FieldInputCostSimpleDto()
+            {
+                FieldInputCostID = fieldInputCost.FieldInputCostID,
+                WorkbookID = fieldInputCost.WorkbookID,
+                FieldUnitTypeID = fieldInputCost.FieldUnitTypeID,
+                FieldInputCostName = fieldInputCost.FieldInputCostName,
+                CostPerFieldUnit = fieldInputCost.CostPerFieldUnit,
+                Notes = fieldInputCost.Notes
+            };
+            DoCustomSimpleDtoMappings(fieldInputCost, fieldInputCostSimpleDto);
+            return fieldInputCostSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(FieldInputCost fieldInputCost, FieldInputCostSimpleDto fieldInputCostSimpleDto);
     }
 }

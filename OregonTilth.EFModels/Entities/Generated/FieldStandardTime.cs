@@ -28,12 +28,6 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey("FieldLaborActivityID")]
         [InverseProperty("FieldStandardTimes")]
         public virtual FieldLaborActivity FieldLaborActivity { get; set; }
-        [ForeignKey("FieldUnitTypeID")]
-        [InverseProperty("FieldStandardTimes")]
-        public virtual FieldUnitType FieldUnitType { get; set; }
-        [ForeignKey("LaborTypeID")]
-        [InverseProperty("FieldStandardTimes")]
-        public virtual LaborType LaborType { get; set; }
         [ForeignKey("MachineryID")]
         [InverseProperty("FieldStandardTimes")]
         public virtual Machinery Machinery { get; set; }

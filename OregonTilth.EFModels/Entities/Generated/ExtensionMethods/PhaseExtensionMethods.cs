@@ -23,5 +23,18 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(Phase phase, PhaseDto phaseDto);
 
+        public static PhaseSimpleDto AsSimpleDto(this Phase phase)
+        {
+            var phaseSimpleDto = new PhaseSimpleDto()
+            {
+                PhaseID = phase.PhaseID,
+                PhaseName = phase.PhaseName,
+                PhaseDisplayName = phase.PhaseDisplayName
+            };
+            DoCustomSimpleDtoMappings(phase, phaseSimpleDto);
+            return phaseSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(Phase phase, PhaseSimpleDto phaseSimpleDto);
     }
 }

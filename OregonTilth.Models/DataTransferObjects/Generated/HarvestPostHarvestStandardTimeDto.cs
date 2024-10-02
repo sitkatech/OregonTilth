@@ -16,4 +16,15 @@ namespace OregonTilth.Models.DataTransferObjects
         public HarvestTypeDto HarvestType { get; set; }
         public decimal? StandardTimePerUnit { get; set; }
     }
+
+    public partial class HarvestPostHarvestStandardTimeSimpleDto
+    {
+        public int HarvestPostHarvestStandardTimeID { get; set; }
+        public int WorkbookID { get; set; }
+        public int CropID { get; set; }
+        public int CropUnitID { get; set; }
+        public int HarvestTypeID { get; set; }
+        public decimal? StandardTimePerUnit { get; set; }
+    }
+
 }

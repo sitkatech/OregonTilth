@@ -32,9 +32,6 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey("CropID")]
         [InverseProperty("TransplantProductionInformations")]
         public virtual Crop Crop { get; set; }
-        [ForeignKey("PhaseID")]
-        [InverseProperty("TransplantProductionInformations")]
-        public virtual Phase Phase { get; set; }
         [ForeignKey("TransplantProductionTrayTypeID")]
         [InverseProperty("TransplantProductionInformations")]
         public virtual TransplantProductionTrayType TransplantProductionTrayType { get; set; }

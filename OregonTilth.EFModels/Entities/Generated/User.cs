@@ -52,9 +52,6 @@ namespace OregonTilth.EFModels.Entities
         [Unicode(false)]
         public string Company { get; set; }
 
-        [ForeignKey("RoleID")]
-        [InverseProperty("Users")]
-        public virtual Role Role { get; set; }
         [InverseProperty("CreateUser")]
         public virtual ICollection<FileResource> FileResources { get; set; }
         [InverseProperty("User")]

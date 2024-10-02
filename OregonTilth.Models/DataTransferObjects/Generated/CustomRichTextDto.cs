@@ -13,4 +13,12 @@ namespace OregonTilth.Models.DataTransferObjects
         public CustomRichTextTypeDto CustomRichTextType { get; set; }
         public string CustomRichTextContent { get; set; }
     }
+
+    public partial class CustomRichTextSimpleDto
+    {
+        public int CustomRichTextID { get; set; }
+        public int CustomRichTextTypeID { get; set; }
+        public string CustomRichTextContent { get; set; }
+    }
+
 }

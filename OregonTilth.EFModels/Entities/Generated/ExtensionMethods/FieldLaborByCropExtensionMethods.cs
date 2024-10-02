@@ -26,5 +26,21 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(FieldLaborByCrop fieldLaborByCrop, FieldLaborByCropDto fieldLaborByCropDto);
 
+        public static FieldLaborByCropSimpleDto AsSimpleDto(this FieldLaborByCrop fieldLaborByCrop)
+        {
+            var fieldLaborByCropSimpleDto = new FieldLaborByCropSimpleDto()
+            {
+                FieldLaborByCropID = fieldLaborByCrop.FieldLaborByCropID,
+                WorkbookID = fieldLaborByCrop.WorkbookID,
+                CropID = fieldLaborByCrop.CropID,
+                Occurrences = fieldLaborByCrop.Occurrences,
+                FieldStandardTimeID = fieldLaborByCrop.FieldStandardTimeID,
+                Notes = fieldLaborByCrop.Notes
+            };
+            DoCustomSimpleDtoMappings(fieldLaborByCrop, fieldLaborByCropSimpleDto);
+            return fieldLaborByCropSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(FieldLaborByCrop fieldLaborByCrop, FieldLaborByCropSimpleDto fieldLaborByCropSimpleDto);
     }
 }

@@ -17,4 +17,16 @@ namespace OregonTilth.Models.DataTransferObjects
         public FieldUnitTypeDto FieldUnitType { get; set; }
         public decimal? StandardTimePerUnit { get; set; }
     }
+
+    public partial class FieldStandardTimeSimpleDto
+    {
+        public int FieldStandardTimeID { get; set; }
+        public int WorkbookID { get; set; }
+        public int FieldLaborActivityID { get; set; }
+        public int LaborTypeID { get; set; }
+        public int? MachineryID { get; set; }
+        public int? FieldUnitTypeID { get; set; }
+        public decimal? StandardTimePerUnit { get; set; }
+    }
+
 }

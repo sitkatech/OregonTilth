@@ -23,5 +23,18 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(FieldLaborActivityCategory fieldLaborActivityCategory, FieldLaborActivityCategoryDto fieldLaborActivityCategoryDto);
 
+        public static FieldLaborActivityCategorySimpleDto AsSimpleDto(this FieldLaborActivityCategory fieldLaborActivityCategory)
+        {
+            var fieldLaborActivityCategorySimpleDto = new FieldLaborActivityCategorySimpleDto()
+            {
+                FieldLaborActivityCategoryID = fieldLaborActivityCategory.FieldLaborActivityCategoryID,
+                FieldLaborActivityCategoryName = fieldLaborActivityCategory.FieldLaborActivityCategoryName,
+                FieldLaborActivityCategoryDisplayName = fieldLaborActivityCategory.FieldLaborActivityCategoryDisplayName
+            };
+            DoCustomSimpleDtoMappings(fieldLaborActivityCategory, fieldLaborActivityCategorySimpleDto);
+            return fieldLaborActivityCategorySimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(FieldLaborActivityCategory fieldLaborActivityCategory, FieldLaborActivityCategorySimpleDto fieldLaborActivityCategorySimpleDto);
     }
 }

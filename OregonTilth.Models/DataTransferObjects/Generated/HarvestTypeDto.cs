@@ -13,4 +13,12 @@ namespace OregonTilth.Models.DataTransferObjects
         public string HarvestTypeName { get; set; }
         public string HarvestTypeDisplayName { get; set; }
     }
+
+    public partial class HarvestTypeSimpleDto
+    {
+        public int HarvestTypeID { get; set; }
+        public string HarvestTypeName { get; set; }
+        public string HarvestTypeDisplayName { get; set; }
+    }
+
 }

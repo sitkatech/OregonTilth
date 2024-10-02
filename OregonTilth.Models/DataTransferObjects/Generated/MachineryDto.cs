@@ -15,4 +15,14 @@ namespace OregonTilth.Models.DataTransferObjects
         public decimal StandardMachineryCost { get; set; }
         public string Notes { get; set; }
     }
+
+    public partial class MachinerySimpleDto
+    {
+        public int MachineryID { get; set; }
+        public int WorkbookID { get; set; }
+        public string MachineryName { get; set; }
+        public decimal StandardMachineryCost { get; set; }
+        public string Notes { get; set; }
+    }
+
 }

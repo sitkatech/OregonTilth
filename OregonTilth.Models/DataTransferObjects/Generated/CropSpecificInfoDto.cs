@@ -19,4 +19,18 @@ namespace OregonTilth.Models.DataTransferObjects
         public decimal? SeedCostPerStandardUnitOfSpace { get; set; }
         public decimal? TransplantProductionCostOutsourced { get; set; }
     }
+
+    public partial class CropSpecificInfoSimpleDto
+    {
+        public int CropSpecificInfoID { get; set; }
+        public int CropID { get; set; }
+        public int WorkbookID { get; set; }
+        public int TpOrDsTypeID { get; set; }
+        public decimal RowsPerStandardWidth { get; set; }
+        public int DripTapeRowsPerStandardWidth { get; set; }
+        public decimal? InRowSpacing { get; set; }
+        public decimal? SeedCostPerStandardUnitOfSpace { get; set; }
+        public decimal? TransplantProductionCostOutsourced { get; set; }
+    }
+
 }

@@ -16,4 +16,15 @@ namespace OregonTilth.Models.DataTransferObjects
         public TransplantProductionInformationDto TransplantProductionInformation { get; set; }
         public string Notes { get; set; }
     }
+
+    public partial class TransplantProductionLaborActivityByCropSimpleDto
+    {
+        public int TransplantProductionLaborActivityByCropID { get; set; }
+        public int WorkbookID { get; set; }
+        public int TransplantProductionLaborActivityID { get; set; }
+        public decimal? Occurrences { get; set; }
+        public int TransplantProductionInformationID { get; set; }
+        public string Notes { get; set; }
+    }
+
 }

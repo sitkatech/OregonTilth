@@ -29,5 +29,24 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(TransplantProductionInformation transplantProductionInformation, TransplantProductionInformationDto transplantProductionInformationDto);
 
+        public static TransplantProductionInformationSimpleDto AsSimpleDto(this TransplantProductionInformation transplantProductionInformation)
+        {
+            var transplantProductionInformationSimpleDto = new TransplantProductionInformationSimpleDto()
+            {
+                TransplantProductionInformationID = transplantProductionInformation.TransplantProductionInformationID,
+                WorkbookID = transplantProductionInformation.WorkbookID,
+                CropID = transplantProductionInformation.CropID,
+                PhaseID = transplantProductionInformation.PhaseID,
+                TransplantProductionTrayTypeID = transplantProductionInformation.TransplantProductionTrayTypeID,
+                SeedsPerTray = transplantProductionInformation.SeedsPerTray,
+                UsageRate = transplantProductionInformation.UsageRate,
+                CostPerSeed = transplantProductionInformation.CostPerSeed,
+                CropSpecificInputCostsPerTray = transplantProductionInformation.CropSpecificInputCostsPerTray
+            };
+            DoCustomSimpleDtoMappings(transplantProductionInformation, transplantProductionInformationSimpleDto);
+            return transplantProductionInformationSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(TransplantProductionInformation transplantProductionInformation, TransplantProductionInformationSimpleDto transplantProductionInformationSimpleDto);
     }
 }

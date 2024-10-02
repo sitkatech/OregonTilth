@@ -25,5 +25,20 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(Machinery machinery, MachineryDto machineryDto);
 
+        public static MachinerySimpleDto AsSimpleDto(this Machinery machinery)
+        {
+            var machinerySimpleDto = new MachinerySimpleDto()
+            {
+                MachineryID = machinery.MachineryID,
+                WorkbookID = machinery.WorkbookID,
+                MachineryName = machinery.MachineryName,
+                StandardMachineryCost = machinery.StandardMachineryCost,
+                Notes = machinery.Notes
+            };
+            DoCustomSimpleDtoMappings(machinery, machinerySimpleDto);
+            return machinerySimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(Machinery machinery, MachinerySimpleDto machinerySimpleDto);
     }
 }

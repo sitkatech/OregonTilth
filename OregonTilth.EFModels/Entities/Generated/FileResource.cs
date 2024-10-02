@@ -31,8 +31,5 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey("CreateUserID")]
         [InverseProperty("FileResources")]
         public virtual User CreateUser { get; set; }
-        [ForeignKey("FileResourceMimeTypeID")]
-        [InverseProperty("FileResources")]
-        public virtual FileResourceMimeType FileResourceMimeType { get; set; }
     }
 }

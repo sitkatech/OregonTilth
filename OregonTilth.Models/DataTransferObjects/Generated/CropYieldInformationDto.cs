@@ -18,4 +18,17 @@ namespace OregonTilth.Models.DataTransferObjects
         public decimal PackagingCostPerCropUnit { get; set; }
         public decimal PricePerCropUnit { get; set; }
     }
+
+    public partial class CropYieldInformationSimpleDto
+    {
+        public int CropYieldInformationID { get; set; }
+        public int WorkbookID { get; set; }
+        public int CropID { get; set; }
+        public int CropUnitID { get; set; }
+        public decimal HarvestedYieldPerStandardUnitOfSpace { get; set; }
+        public decimal MarketableYieldPerStandardUnitOfSpace { get; set; }
+        public decimal PackagingCostPerCropUnit { get; set; }
+        public decimal PricePerCropUnit { get; set; }
+    }
+
 }

@@ -55,7 +55,7 @@ namespace OregonTilth.EFModels.Entities
                 && x.CropUnit.CropUnitID == createDto.CropUnitID
                 && x.HarvestType.HarvestTypeID == createDto.HarvestTypeID))
             {
-                var selectedHarvestType = dbContext.HarvestTypes.Single(x => x.HarvestTypeID == createDto.HarvestTypeID);
+                var selectedHarvestType = HarvestType.AllAsDto.Single(x => x.HarvestTypeID == createDto.HarvestTypeID);
                 result.Add(new ErrorMessage() { Type = "Harvest Post Harvest Standard Time", Message = $"You've already started {selectedHarvestType.HarvestTypeDisplayName} Time Studies for this Crop and Crop Unit combination." });
             }
 
@@ -76,7 +76,7 @@ namespace OregonTilth.EFModels.Entities
                 && x.HarvestType.HarvestTypeID == harvestPostHarvestStandardTimeDto.HarvestType.HarvestTypeID
                 && x.HarvestPostHarvestStandardTimeID != harvestPostHarvestStandardTimeDto.HarvestPostHarvestStandardTimeID))
             {
-                var selectedHarvestType = dbContext.HarvestTypes.Single(x => x.HarvestTypeID == harvestPostHarvestStandardTimeDto.HarvestType.HarvestTypeID);
+                var selectedHarvestType = HarvestType.AllAsDto.Single(x => x.HarvestTypeID == harvestPostHarvestStandardTimeDto.HarvestType.HarvestTypeID);
                 result.Add(new ErrorMessage() { Type = "Harvest Post Harvest Standard Time", Message = $"You've already started {selectedHarvestType.HarvestTypeDisplayName} Time Studies for this Crop and Crop Unit combination." });
             }
 

@@ -28,5 +28,23 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(CropYieldInformation cropYieldInformation, CropYieldInformationDto cropYieldInformationDto);
 
+        public static CropYieldInformationSimpleDto AsSimpleDto(this CropYieldInformation cropYieldInformation)
+        {
+            var cropYieldInformationSimpleDto = new CropYieldInformationSimpleDto()
+            {
+                CropYieldInformationID = cropYieldInformation.CropYieldInformationID,
+                WorkbookID = cropYieldInformation.WorkbookID,
+                CropID = cropYieldInformation.CropID,
+                CropUnitID = cropYieldInformation.CropUnitID,
+                HarvestedYieldPerStandardUnitOfSpace = cropYieldInformation.HarvestedYieldPerStandardUnitOfSpace,
+                MarketableYieldPerStandardUnitOfSpace = cropYieldInformation.MarketableYieldPerStandardUnitOfSpace,
+                PackagingCostPerCropUnit = cropYieldInformation.PackagingCostPerCropUnit,
+                PricePerCropUnit = cropYieldInformation.PricePerCropUnit
+            };
+            DoCustomSimpleDtoMappings(cropYieldInformation, cropYieldInformationSimpleDto);
+            return cropYieldInformationSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(CropYieldInformation cropYieldInformation, CropYieldInformationSimpleDto cropYieldInformationSimpleDto);
     }
 }

@@ -13,4 +13,12 @@ namespace OregonTilth.Models.DataTransferObjects
         public string FieldLaborActivityCategoryName { get; set; }
         public string FieldLaborActivityCategoryDisplayName { get; set; }
     }
+
+    public partial class FieldLaborActivityCategorySimpleDto
+    {
+        public int FieldLaborActivityCategoryID { get; set; }
+        public string FieldLaborActivityCategoryName { get; set; }
+        public string FieldLaborActivityCategoryDisplayName { get; set; }
+    }
+
 }

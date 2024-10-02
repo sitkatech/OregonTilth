@@ -23,5 +23,18 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(LaborType laborType, LaborTypeDto laborTypeDto);
 
+        public static LaborTypeSimpleDto AsSimpleDto(this LaborType laborType)
+        {
+            var laborTypeSimpleDto = new LaborTypeSimpleDto()
+            {
+                LaborTypeID = laborType.LaborTypeID,
+                LaborTypeName = laborType.LaborTypeName,
+                LaborTypeDisplayName = laborType.LaborTypeDisplayName
+            };
+            DoCustomSimpleDtoMappings(laborType, laborTypeSimpleDto);
+            return laborTypeSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(LaborType laborType, LaborTypeSimpleDto laborTypeSimpleDto);
     }
 }

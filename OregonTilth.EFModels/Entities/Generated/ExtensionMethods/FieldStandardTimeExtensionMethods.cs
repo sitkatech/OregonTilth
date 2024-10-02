@@ -27,5 +27,22 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(FieldStandardTime fieldStandardTime, FieldStandardTimeDto fieldStandardTimeDto);
 
+        public static FieldStandardTimeSimpleDto AsSimpleDto(this FieldStandardTime fieldStandardTime)
+        {
+            var fieldStandardTimeSimpleDto = new FieldStandardTimeSimpleDto()
+            {
+                FieldStandardTimeID = fieldStandardTime.FieldStandardTimeID,
+                WorkbookID = fieldStandardTime.WorkbookID,
+                FieldLaborActivityID = fieldStandardTime.FieldLaborActivityID,
+                LaborTypeID = fieldStandardTime.LaborTypeID,
+                MachineryID = fieldStandardTime.MachineryID,
+                FieldUnitTypeID = fieldStandardTime.FieldUnitTypeID,
+                StandardTimePerUnit = fieldStandardTime.StandardTimePerUnit
+            };
+            DoCustomSimpleDtoMappings(fieldStandardTime, fieldStandardTimeSimpleDto);
+            return fieldStandardTimeSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(FieldStandardTime fieldStandardTime, FieldStandardTimeSimpleDto fieldStandardTimeSimpleDto);
     }
 }

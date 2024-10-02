@@ -26,5 +26,21 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(HarvestPostHarvestStandardTime harvestPostHarvestStandardTime, HarvestPostHarvestStandardTimeDto harvestPostHarvestStandardTimeDto);
 
+        public static HarvestPostHarvestStandardTimeSimpleDto AsSimpleDto(this HarvestPostHarvestStandardTime harvestPostHarvestStandardTime)
+        {
+            var harvestPostHarvestStandardTimeSimpleDto = new HarvestPostHarvestStandardTimeSimpleDto()
+            {
+                HarvestPostHarvestStandardTimeID = harvestPostHarvestStandardTime.HarvestPostHarvestStandardTimeID,
+                WorkbookID = harvestPostHarvestStandardTime.WorkbookID,
+                CropID = harvestPostHarvestStandardTime.CropID,
+                CropUnitID = harvestPostHarvestStandardTime.CropUnitID,
+                HarvestTypeID = harvestPostHarvestStandardTime.HarvestTypeID,
+                StandardTimePerUnit = harvestPostHarvestStandardTime.StandardTimePerUnit
+            };
+            DoCustomSimpleDtoMappings(harvestPostHarvestStandardTime, harvestPostHarvestStandardTimeSimpleDto);
+            return harvestPostHarvestStandardTimeSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(HarvestPostHarvestStandardTime harvestPostHarvestStandardTime, HarvestPostHarvestStandardTimeSimpleDto harvestPostHarvestStandardTimeSimpleDto);
     }
 }

@@ -16,4 +16,15 @@ namespace OregonTilth.Models.DataTransferObjects
         public decimal CostPerTray { get; set; }
         public string Notes { get; set; }
     }
+
+    public partial class TransplantProductionInputCostSimpleDto
+    {
+        public int TransplantProductionInputCostID { get; set; }
+        public int WorkbookID { get; set; }
+        public int TransplantProductionInputID { get; set; }
+        public int TransplantProductionTrayTypeID { get; set; }
+        public decimal CostPerTray { get; set; }
+        public string Notes { get; set; }
+    }
+
 }

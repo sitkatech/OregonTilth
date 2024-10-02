@@ -15,4 +15,14 @@ namespace OregonTilth.Models.DataTransferObjects
         public TransplantProductionTrayTypeDto TransplantProductionTrayType { get; set; }
         public decimal? StandardTimePerUnit { get; set; }
     }
+
+    public partial class TransplantProductionStandardTimeSimpleDto
+    {
+        public int TransplantProductionStandardTimeID { get; set; }
+        public int WorkbookID { get; set; }
+        public int TransplantProductionLaborActivityID { get; set; }
+        public int TransplantProductionTrayTypeID { get; set; }
+        public decimal? StandardTimePerUnit { get; set; }
+    }
+
 }

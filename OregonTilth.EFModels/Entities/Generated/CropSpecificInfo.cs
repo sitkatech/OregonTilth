@@ -28,9 +28,6 @@ namespace OregonTilth.EFModels.Entities
         [ForeignKey("CropID")]
         [InverseProperty("CropSpecificInfos")]
         public virtual Crop Crop { get; set; }
-        [ForeignKey("TpOrDsTypeID")]
-        [InverseProperty("CropSpecificInfos")]
-        public virtual TpOrDsType TpOrDsType { get; set; }
         [ForeignKey("WorkbookID")]
         [InverseProperty("CropSpecificInfos")]
         public virtual Workbook Workbook { get; set; }

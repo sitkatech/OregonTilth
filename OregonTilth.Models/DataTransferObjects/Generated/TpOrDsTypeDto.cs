@@ -13,4 +13,12 @@ namespace OregonTilth.Models.DataTransferObjects
         public string TpOrDsTypeName { get; set; }
         public string TpOrDsTypeDisplayName { get; set; }
     }
+
+    public partial class TpOrDsTypeSimpleDto
+    {
+        public int TpOrDsTypeID { get; set; }
+        public string TpOrDsTypeName { get; set; }
+        public string TpOrDsTypeDisplayName { get; set; }
+    }
+
 }

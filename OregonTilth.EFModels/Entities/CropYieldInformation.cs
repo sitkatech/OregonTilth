@@ -127,8 +127,8 @@ namespace OregonTilth.EFModels.Entities
         public static IEnumerable<LaborHoursDashboardReportDto> GetLaborHoursDashboardReportDtoListByWorkbookID(OregonTilthDbContext dbContext, int workbookID)
         {
             var cropYieldInformations = GetCropYieldInformationForReportImpl(dbContext).Where(x => x.WorkbookID == workbookID && x.Crop.CropSpecificInfos.Count > 0).ToList();
-            var fieldLaborActivityCategories = FieldLaborActivityCategory.List(dbContext);
-            var allHarvestTypes = HarvestType.List(dbContext);
+            var fieldLaborActivityCategories = FieldLaborActivityCategory.AllAsDto;
+            var allHarvestTypes = HarvestType.AllAsDto;
 
             return cropYieldInformations.SelectMany(x => x.AsLaborHoursReportDto(fieldLaborActivityCategories, allHarvestTypes));
         }

@@ -16,4 +16,15 @@ namespace OregonTilth.Models.DataTransferObjects
         public decimal? Occurrences { get; set; }
         public string Notes { get; set; }
     }
+
+    public partial class FieldInputByCropSimpleDto
+    {
+        public int FieldInputByCropID { get; set; }
+        public int WorkbookID { get; set; }
+        public int CropID { get; set; }
+        public int FieldInputCostID { get; set; }
+        public decimal? Occurrences { get; set; }
+        public string Notes { get; set; }
+    }
+
 }

@@ -23,5 +23,18 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(HarvestType harvestType, HarvestTypeDto harvestTypeDto);
 
+        public static HarvestTypeSimpleDto AsSimpleDto(this HarvestType harvestType)
+        {
+            var harvestTypeSimpleDto = new HarvestTypeSimpleDto()
+            {
+                HarvestTypeID = harvestType.HarvestTypeID,
+                HarvestTypeName = harvestType.HarvestTypeName,
+                HarvestTypeDisplayName = harvestType.HarvestTypeDisplayName
+            };
+            DoCustomSimpleDtoMappings(harvestType, harvestTypeSimpleDto);
+            return harvestTypeSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(HarvestType harvestType, HarvestTypeSimpleDto harvestTypeSimpleDto);
     }
 }

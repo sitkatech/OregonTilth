@@ -23,5 +23,18 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(FieldUnitType fieldUnitType, FieldUnitTypeDto fieldUnitTypeDto);
 
+        public static FieldUnitTypeSimpleDto AsSimpleDto(this FieldUnitType fieldUnitType)
+        {
+            var fieldUnitTypeSimpleDto = new FieldUnitTypeSimpleDto()
+            {
+                FieldUnitTypeID = fieldUnitType.FieldUnitTypeID,
+                FieldUnitTypeName = fieldUnitType.FieldUnitTypeName,
+                FieldUnitTypeDisplayName = fieldUnitType.FieldUnitTypeDisplayName
+            };
+            DoCustomSimpleDtoMappings(fieldUnitType, fieldUnitTypeSimpleDto);
+            return fieldUnitTypeSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(FieldUnitType fieldUnitType, FieldUnitTypeSimpleDto fieldUnitTypeSimpleDto);
     }
 }

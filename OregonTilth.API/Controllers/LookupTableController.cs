@@ -19,42 +19,42 @@ namespace OregonTilth.API.Controllers
         [HttpGet("lookupTable/field-labor-activity-categories")]
         public ActionResult<List<FieldLaborActivityCategoryDto>> ListAllFieldLaborActivityCategories()
         {
-            var fieldlaborActivityCategoryDtos = FieldLaborActivityCategory.List(_dbContext);
+            var fieldlaborActivityCategoryDtos = FieldLaborActivityCategory.AllAsDto;
             return fieldlaborActivityCategoryDtos;
         }
 
         [HttpGet("lookupTable/labor-types")]
         public ActionResult<List<LaborTypeDto>> ListAllLaborTypes()
         {
-            var laborTypeDtos = LaborType.List(_dbContext);
+            var laborTypeDtos = LaborType.AllAsDto;
             return laborTypeDtos;
         }
 
         [HttpGet("lookupTable/field-unit-types")]
         public ActionResult<List<FieldUnitTypeDto>> ListAllFieldUnitTypes()
         {
-            var fieldUnitTypes = FieldUnitType.List(_dbContext);
+            var fieldUnitTypes = FieldUnitType.AllAsDto;
             return fieldUnitTypes;
         }
 
         [HttpGet("lookupTable/phases")]
         public ActionResult<List<PhaseDto>> ListAllPhases()
         {
-            var phases = Phase.List(_dbContext);
+            var phases = Phase.AllAsDto;
             return phases;
         }
 
         [HttpGet("lookupTable/harvest-types")]
         public ActionResult<List<HarvestTypeDto>> ListAllHarvestTypes()
         {
-            var harvestTypes = HarvestType.List(_dbContext);
+            var harvestTypes = HarvestType.AllAsDto;
             return harvestTypes;
         }
 
         [HttpGet("lookupTable/tp-or-ds-types")]
         public ActionResult<List<TpOrDsTypeDto>> ListAllTpOrDsTypes()
         {
-            var allTpOrDsTypes = TpOrDsType.List(_dbContext); //FieldUnitType.List(_dbContext);
+            var allTpOrDsTypes = TpOrDsType.AllAsDto; //FieldUnitType.List(_dbContext);
             return allTpOrDsTypes;
         }
     }

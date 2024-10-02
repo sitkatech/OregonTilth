@@ -28,9 +28,6 @@ namespace OregonTilth.EFModels.Entities
         [Unicode(false)]
         public string Notes { get; set; }
 
-        [ForeignKey("FieldUnitTypeID")]
-        [InverseProperty("FieldInputCosts")]
-        public virtual FieldUnitType FieldUnitType { get; set; }
         [ForeignKey("WorkbookID")]
         [InverseProperty("FieldInputCosts")]
         public virtual Workbook Workbook { get; set; }

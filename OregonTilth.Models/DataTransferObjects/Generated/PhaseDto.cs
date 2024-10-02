@@ -13,4 +13,12 @@ namespace OregonTilth.Models.DataTransferObjects
         public string PhaseName { get; set; }
         public string PhaseDisplayName { get; set; }
     }
+
+    public partial class PhaseSimpleDto
+    {
+        public int PhaseID { get; set; }
+        public string PhaseName { get; set; }
+        public string PhaseDisplayName { get; set; }
+    }
+
 }

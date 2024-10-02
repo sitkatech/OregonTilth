@@ -13,4 +13,12 @@ namespace OregonTilth.Models.DataTransferObjects
         public FieldDefinitionTypeDto FieldDefinitionType { get; set; }
         public string FieldDefinitionValue { get; set; }
     }
+
+    public partial class FieldDefinitionSimpleDto
+    {
+        public int FieldDefinitionID { get; set; }
+        public int FieldDefinitionTypeID { get; set; }
+        public string FieldDefinitionValue { get; set; }
+    }
+
 }

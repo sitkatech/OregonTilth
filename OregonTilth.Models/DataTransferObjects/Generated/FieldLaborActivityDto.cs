@@ -16,4 +16,15 @@ namespace OregonTilth.Models.DataTransferObjects
         public bool LaborTypeManual { get; set; }
         public bool LaborTypeMachinery { get; set; }
     }
+
+    public partial class FieldLaborActivitySimpleDto
+    {
+        public int FieldLaborActivityID { get; set; }
+        public int WorkbookID { get; set; }
+        public string FieldLaborActivityName { get; set; }
+        public int FieldLaborActivityCategoryID { get; set; }
+        public bool LaborTypeManual { get; set; }
+        public bool LaborTypeMachinery { get; set; }
+    }
+
 }

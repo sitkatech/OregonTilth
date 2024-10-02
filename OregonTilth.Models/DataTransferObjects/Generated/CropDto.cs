@@ -13,4 +13,12 @@ namespace OregonTilth.Models.DataTransferObjects
         public WorkbookDto Workbook { get; set; }
         public string CropName { get; set; }
     }
+
+    public partial class CropSimpleDto
+    {
+        public int CropID { get; set; }
+        public int WorkbookID { get; set; }
+        public string CropName { get; set; }
+    }
+
 }

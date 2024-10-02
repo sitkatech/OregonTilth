@@ -23,5 +23,18 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(Crop crop, CropDto cropDto);
 
+        public static CropSimpleDto AsSimpleDto(this Crop crop)
+        {
+            var cropSimpleDto = new CropSimpleDto()
+            {
+                CropID = crop.CropID,
+                WorkbookID = crop.WorkbookID,
+                CropName = crop.CropName
+            };
+            DoCustomSimpleDtoMappings(crop, cropSimpleDto);
+            return cropSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(Crop crop, CropSimpleDto cropSimpleDto);
     }
 }

@@ -25,5 +25,20 @@ namespace OregonTilth.EFModels.Entities
 
         static partial void DoCustomMappings(Page page, PageDto pageDto);
 
+        public static PageSimpleDto AsSimpleDto(this Page page)
+        {
+            var pageSimpleDto = new PageSimpleDto()
+            {
+                PageID = page.PageID,
+                PageName = page.PageName,
+                PageContent = page.PageContent,
+                SortOrder = page.SortOrder,
+                ParentPageID = page.ParentPageID
+            };
+            DoCustomSimpleDtoMappings(page, pageSimpleDto);
+            return pageSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(Page page, PageSimpleDto pageSimpleDto);
     }
 }
