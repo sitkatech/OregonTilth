@@ -1,0 +1,9 @@
+export type {{classname}} = {{#allowableValues}}{{#enumVars}}{{-index}}{{^-last}} | {{/-last}}{{/enumVars}}{{/allowableValues}};
+
+export const {{classname}} = {
+{{#allowableValues}}
+{{#enumVars}}
+    {{name}}: {{-index}} as {{classname}}{{^-last}},{{/-last}}
+{{/enumVars}}
+{{/allowableValues}}
+};

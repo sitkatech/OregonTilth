@@ -1,0 +1,25 @@
+[Database]
+Server=.\
+DatabaseName=
+DatabaseProjectPath=..\DeltaConveyance.Database\DeltaConveyance.Database.sqlproj
+DatabaseProjectDacPacLocation=..\DeltaConveyance.Database\bin\Debug\DeltaConveyance.Database.dacpac
+DatabaseTablesDir=..\DeltaConveyance.Database\dbo\Tables\
+DatabaseLookupTablesDir=..\DeltaConveyance.Database\Scripts\LookupTables\
+PublishXmlFile=..\DeltaConveyance.Database\DeltaConveyance.Database.publish.xml
+ApiModelsPath=..\DeltaConveyance.Models\DataTransferObjects\Generated
+ApiEFModelExtensionMethodsPath=..\DeltaConveyance.EFModels\Entities\Generated\ExtensionMethods
+ApiEFModelsProject=DeltaConveyance.EFModels
+ApiEFModelsDbContextName=DeltaConveyanceDbContext
+ApiEFModelsNamespace=DeltaConveyance.EFModels.Entities
+ApiModelsNamespace=DeltaConveyance.Models.DataTransferObjects
+EFPocoGeneratorExePath=efcorepocogenerator\EFCorePOCOGenerator\bin\Debug\net5.0\EFCorePOCOGenerator.exe
+EFPocoGeneratorCSProj=efcorepocogenerator\EFCorePOCOGenerator\EFCorePOCOGenerator.csproj
+TableExcludeList=dbo.DatabaseMigration
+TypescriptEnumsPath=..\DeltaConveyance.Web\src\app\shared\generated\enum
+
+[Build]
+MsBuildFilePath=C:\Program Files\Microsoft Visual Studio\2022\Professional\Msbuild\Current\Bin\MSBuild.exe
+
+[Azure]
+BackupConnectionString=
+ContainerName=prod-backup
