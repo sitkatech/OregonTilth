@@ -1,15 +1,15 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
-WORKDIR /src
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 
+WORKDIR /src
 COPY ./OregonTilth.Models ./OregonTilth.Models
 COPY ./OregonTilth.EFModels ./OregonTilth.EFModels
 COPY ./OregonTilth.API ./OregonTilth.API
 
 RUN dotnet publish ./OregonTilth.API/OregonTilth.API.csproj -c Release -o /app
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal AS final
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-COPY --from=build /app /app
-RUN ls -la
-EXPOSE 80
+COPY --from=build-env /app /app
+EXPOSE 8080
+EXPOSE 8081
 ENTRYPOINT ["dotnet", "OregonTilth.API.dll"]
