@@ -9,7 +9,6 @@ namespace OregonTilth.EFModels.Entities
         public static CustomRichTextDto GetByCustomRichTextTypeID(OregonTilthDbContext dbContext, int customRichTextTypeID)
         {
             var customRichText = dbContext.CustomRichTexts
-                .Include(x => x.CustomRichTextType)
                 .SingleOrDefault(x => x.CustomRichTextTypeID == customRichTextTypeID);
 
             return customRichText?.AsDto();

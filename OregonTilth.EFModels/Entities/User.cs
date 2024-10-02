@@ -103,7 +103,6 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<User> GetUserImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.Users
-                .Include(x => x.Role)
                 .AsNoTracking();
         }
 

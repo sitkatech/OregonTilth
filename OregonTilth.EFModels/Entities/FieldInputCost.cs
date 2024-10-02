@@ -84,7 +84,6 @@ namespace OregonTilth.EFModels.Entities
         {
             return dbContext.FieldInputCosts
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
-                .Include(x => x.FieldUnitType)
                 .Include(x => x.FieldInputByCrops)
                 .AsNoTracking();
         }
@@ -116,7 +115,6 @@ namespace OregonTilth.EFModels.Entities
         public static FieldInputCostDto UpdateFieldInputCost(OregonTilthDbContext dbContext, FieldInputCostDto fieldInputByCostDto)
         {
             var fieldInputByCost = dbContext.FieldInputCosts
-                .Include(x => x.FieldUnitType)
                 .Single(x => x.FieldInputCostID == fieldInputByCostDto.FieldInputCostID);
 
             fieldInputByCost.FieldUnitTypeID = fieldInputByCostDto.FieldUnitType.FieldUnitTypeID;

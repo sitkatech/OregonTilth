@@ -99,7 +99,6 @@ namespace OregonTilth.EFModels.Entities
             return dbContext.CropSpecificInfos
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .Include(x => x.Crop)
-                .Include(x => x.TpOrDsType)
                 .AsNoTracking();
         }
 

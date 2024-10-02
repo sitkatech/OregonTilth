@@ -15,7 +15,6 @@ namespace OregonTilth.EFModels.Entities
         public static FieldDefinitionDto GetByFieldDefinitionTypeID(OregonTilthDbContext dbContext, int FieldDefinitionTypeID)
         {
             var fieldDefinition = dbContext.FieldDefinitions
-                .Include(x => x.FieldDefinitionType)
                 .SingleOrDefault(x => x.FieldDefinitionTypeID == FieldDefinitionTypeID);
 
             return fieldDefinition?.AsDto();
@@ -25,7 +24,6 @@ namespace OregonTilth.EFModels.Entities
             FieldDefinitionDto FieldDefinitionUpdateDto)
         {
             var fieldDefinition = dbContext.FieldDefinitions
-                .Include(x => x.FieldDefinitionType)
                 .SingleOrDefault(x => x.FieldDefinitionTypeID == FieldDefinitionTypeID);
 
             // null check occurs in calling endpoint method.

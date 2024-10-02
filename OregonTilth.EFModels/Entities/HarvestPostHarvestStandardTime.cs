@@ -13,7 +13,6 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .Include(x => x.Crop)
                 .Include(x => x.CropUnit)
-                .Include(x => x.HarvestType)
                 .Include(x => x.TimeStudies)
                 .ToList();
 
@@ -116,7 +115,6 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .Include(x => x.Crop)
                 .Include(x => x.CropUnit)
-                .Include(x => x.HarvestType)
                 .Include(x => x.TimeStudies);
         }
 

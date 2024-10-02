@@ -25,9 +25,7 @@ namespace OregonTilth.EFModels.Entities
             return dbContext.FieldStandardTimes
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .Include(x => x.FieldLaborActivity)
-                .Include(x => x.FieldUnitType)
                 .Include(x => x.Machinery)
-                .Include(x => x.LaborType)
                 .Include(x => x.TimeStudies);
         }
 

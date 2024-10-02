@@ -62,8 +62,6 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
                 .Include(x => x.Crop)
                 .Include(x => x.FieldStandardTime).ThenInclude(x => x.FieldLaborActivity).ThenInclude(x => x.FieldLaborActivityCategory)
-                .Include(x => x.FieldStandardTime).ThenInclude(x => x.LaborType)//Have to include FieldStandardTime twice in order to get the LaborType included
-                .Include(x => x.FieldStandardTime).ThenInclude(x => x.FieldUnitType)
                 .AsNoTracking();
         }
 
