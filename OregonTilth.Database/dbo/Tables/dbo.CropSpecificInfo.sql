@@ -18,7 +18,7 @@ CREATE TABLE [dbo].[CropSpecificInfo](
 	[CropID] ASC
 ),
 CONSTRAINT [FK_CropSpecificInfo_Crop_CropID] FOREIGN KEY([CropID]) REFERENCES [dbo].[Crop] ([CropID]),
-CONSTRAINT [FK_CropSpecificInfo_TpOrDsType] FOREIGN KEY([TpOrDsTypeID]) REFERENCES [dbo].[TpOrDsType] ([TpOrDsTypeID]),
+CONSTRAINT [FK_CropSpecificInfo_TpOrDsType_TpOrDsTypeID] FOREIGN KEY([TpOrDsTypeID]) REFERENCES [dbo].[TpOrDsType] ([TpOrDsTypeID]),
 CONSTRAINT [FK_CropSpecificInfo_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]),
 CONSTRAINT [CHK_CropSpecificInfo_InRowSpacing_NotNull_If_TPtype_selected] CHECK  (([TpOrDsTypeID]=(3) OR [InRowSpacing] IS NOT NULL AND ([TpOrDsTypeID]=(2) OR [TpOrDsTypeID]=(1)) AND [InRowSpacing]>(0))),
 CONSTRAINT [CHK_CropSpecificInfo_SeedCostPerStandardUnitOfSpace_Not_Null_If_DirectSeeded] CHECK  (([TpOrDsTypeID]=(2) OR [TpOrDsTypeID]=(1) OR [SeedCostPerStandardUnitOfSpace] IS NOT NULL AND [TpOrDsTypeID]=(3))),
