@@ -29,7 +29,7 @@
               <div class="row">
                 <div class="mb-3 col-md-4">
                   <label class="required">Crop, Crop Unit</label>
-                  <select name="CropCropUnit" class="form-control" [(ngModel)]="selectedAvailableCropCropUnitCombination" (change)="selectedCropCropUnit($event.target.value)" required>
+                  <select name="CropCropUnit" class="form-select" [(ngModel)]="selectedAvailableCropCropUnitCombination" (change)="selectedCropCropUnit($event.target.value)" required>
                     <option [ngValue]="undefined" *ngIf="availableCropCropUnitCombinations && availableCropCropUnitCombinations.length > 0" value=""></option>
                     <option [ngValue]="undefined" *ngIf="!availableCropCropUnitCombinations || availableCropCropUnitCombinations.length < 1" value="" [selected]="!availableCropCropUnitCombinations || availableCropCropUnitCombinations.length < 1">-No Options-</option>
                     <option *ngFor="let option of availableCropCropUnitCombinations" [ngValue]="option">
@@ -72,7 +72,7 @@
         </div>
         <div class="row mt-2">
           <div class="col">
-            <button class="btn btn-secondary btn-sm float-right" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
+            <button class="btn btn-secondary btn-sm float-end" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
               <i class="fas fa-download"></i>
               Download
             </button> 

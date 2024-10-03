@@ -27,7 +27,7 @@
                 
                 <div class="mb-3 col-md-6">
                   <label class="required">Crop, Phase, Tray Type</label>
-                  <select name="TransplantProductionInformationID" class="form-control" [(ngModel)]="model.TransplantProductionInformationID" (change)="updateAvailableLaborActivities()" required>
+                  <select name="TransplantProductionInformationID" class="form-select" [(ngModel)]="model.TransplantProductionInformationID" (change)="updateAvailableLaborActivities()" required>
                     <option value=""></option>
                     <option *ngFor="let option of transplantProductionInformationDtos" [value]="option.TransplantProductionInformationID">
                       {{option.Crop.CropName}}, {{option.Phase.PhaseDisplayName}}, {{option.TransplantProductionTrayType.TransplantProductionTrayTypeName}}
@@ -78,7 +78,7 @@
         </div>
         <div class="row mt-2">
           <div class="col">
-            <button class="btn btn-secondary btn-sm float-right" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
+            <button class="btn btn-secondary btn-sm float-end" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
               <i class="fas fa-download"></i>
               Download
             </button> 

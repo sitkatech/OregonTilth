@@ -33,7 +33,7 @@
               </div>
               <div class="mb-3 col-md-4">
                 <label class="">Parent Page</label>
-                <select name="ParentPageID" class="form-control" [(ngModel)]="model.ParentPageID" >
+                <select name="ParentPageID" class="form-select" [(ngModel)]="model.ParentPageID" >
                     <option [ngValue]="undefined" [selected]="!model.ParentPageID">-None-</option>
                     <option *ngFor="let option of rootPages" [value]="option.PageID">
                         {{option.PageName}}

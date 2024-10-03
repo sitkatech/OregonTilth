@@ -33,7 +33,7 @@
               <div class="row">
                 <div class="mb-3 col-md-4">
                   <label class="required">Crop</label>
-                  <select name="CropID" class="form-control" [(ngModel)]="model.CropID" required>
+                  <select name="CropID" class="form-select" [(ngModel)]="model.CropID" required>
                     <option value=""></option>
                     <option *ngFor="let option of cropDtos" [value]="option.CropID">
                       {{option.CropName}}
@@ -42,7 +42,7 @@
                 </div>
                 <div class="mb-3 col-md-4">
                   <label class="required">Phase</label>
-                  <select name="PhaseID" class="form-control" [(ngModel)]="model.PhaseID" required>
+                  <select name="PhaseID" class="form-select" [(ngModel)]="model.PhaseID" required>
                     <option value=""></option>
                     <option *ngFor="let option of phaseDtos" [value]="option.PhaseID">
                       {{option.PhaseDisplayName}}
@@ -51,7 +51,7 @@
                 </div>
                 <div class="mb-3 col-md-4">
                   <label class="required">TP Tray Type</label>
-                  <select name="TransplantProductionTrayTypeID" class="form-control" [(ngModel)]="model.TransplantProductionTrayTypeID" required>
+                  <select name="TransplantProductionTrayTypeID" class="form-select" [(ngModel)]="model.TransplantProductionTrayTypeID" required>
                     <option value=""></option>
                     <option *ngFor="let option of tpTrayTypeDtos" [value]="option.TransplantProductionTrayTypeID">
                       {{option.TransplantProductionTrayTypeName}}
@@ -96,7 +96,7 @@
         </div>
         <div class="row mt-2">
           <div class="col">
-            <button class="btn btn-secondary btn-sm float-right" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
+            <button class="btn btn-secondary btn-sm float-end" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
               <i class="fas fa-download"></i>
               Download
             </button> 

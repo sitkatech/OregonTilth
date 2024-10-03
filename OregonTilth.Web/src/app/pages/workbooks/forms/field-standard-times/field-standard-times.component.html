@@ -25,13 +25,13 @@
                 <td>{{item.FieldLaborActivity.FieldLaborActivityName}}</td>
                 <td>{{item.LaborType.LaborTypeDisplayName}}</td>
                 <td>
-                  <select class="form-control" [(ngModel)]="item.MachineryID" [disabled]="machineryDisabled(item.LaborTypeID)">
+                  <select class="form-select" [(ngModel)]="item.MachineryID" [disabled]="machineryDisabled(item.LaborTypeID)">
                     <option disabled="true" [ngValue]="undefined" [selected]="!item.MachineryID">Select Machinery</option>
                     <option *ngFor="let option of machinery" [selected]="item.MachineryID == option.MachineryID" [value]="option.MachineryID">{{option.MachineryName}}</option>
                   </select>
                 </td>
                 <td>
-                  <select class="form-control" [(ngModel)]="item.FieldUnitTypeID">
+                  <select class="form-select" [(ngModel)]="item.FieldUnitTypeID">
                     <option disabled="true" [ngValue]="undefined" [selected]="!item.FieldUnitTypeID">Select Field Unit</option>
                     <option *ngFor="let option of fieldUnits" [value]="option.FieldUnitTypeID">{{option.FieldUnitTypeDisplayName}}</option>
                   </select>
@@ -49,7 +49,7 @@
             <h3>Time Study Progress</h3>
           </div>
           <div class="col">
-            <button class="btn btn-secondary btn-sm float-right" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
+            <button class="btn btn-secondary btn-sm float-end" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
               <i class="fas fa-download"></i>
               Download
             </button> 

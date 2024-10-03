@@ -27,7 +27,7 @@
                 
                 <div class="mb-3 col-md-4">
                   <label class="required">Crop</label>
-                  <select name="CropID" class="form-control" [(ngModel)]="model.CropID" required (change)="cropSelectionChanged(model.CropID)">
+                  <select name="CropID" class="form-select" [(ngModel)]="model.CropID" required (change)="cropSelectionChanged(model.CropID)">
                     <option value=""></option>
                     <option *ngFor="let option of cropDtos" [value]="option.CropID">
                       {{option.CropName}}
@@ -70,7 +70,7 @@
         </div>
         <div class="row mt-2">
           <div class="col">
-            <button class="btn btn-secondary btn-sm float-right" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
+            <button class="btn btn-secondary btn-sm float-end" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
               <i class="fas fa-download"></i>
               Download
             </button> 

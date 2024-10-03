@@ -31,7 +31,7 @@
                 </div>
                 <div class="mb-3 col-md-4">
                   <label class="required">Field Unit</label>
-                  <select name="FieldUnitTypeID" class="form-control" [(ngModel)]="model.FieldUnitTypeID" required>
+                  <select name="FieldUnitTypeID" class="form-select" [(ngModel)]="model.FieldUnitTypeID" required>
                     <option value=""></option>
                     <option *ngFor="let category of fieldUnitTypes" [value]="category.FieldUnitTypeID">
                       {{category.FieldUnitTypeDisplayName}}
@@ -67,7 +67,7 @@
 
         <div class="row mt-2">
           <div class="col">
-            <button class="btn btn-secondary btn-sm float-right" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
+            <button class="btn btn-secondary btn-sm float-end" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
               <i class="fas fa-download"></i>
               Download
             </button> 

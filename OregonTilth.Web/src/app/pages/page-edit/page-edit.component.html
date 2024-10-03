@@ -19,7 +19,7 @@
         </div>
         <div class="mb-3 col-md-4">
           <label class="">Parent Page</label>
-          <select name="ParentPageID" class="form-control" [(ngModel)]="model.ParentPageID" [disabled]="!model.ParentPageID">
+          <select name="ParentPageID" class="form-select" [(ngModel)]="model.ParentPageID" [disabled]="!model.ParentPageID">
               <option [ngValue]="undefined" [selected]="!model.ParentPageID" *ngIf="!model.ParentPageID">A root page cannot have a parent.</option>
               <option *ngFor="let option of allPages" [value]="option.PageID">
                   {{option.PageName}}

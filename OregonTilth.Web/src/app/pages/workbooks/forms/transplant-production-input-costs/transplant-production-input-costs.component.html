@@ -27,7 +27,7 @@
                 
                 <div class="mb-3 col-md-4">
                   <label class="required">TP Input</label>
-                  <select name="TransplantProductionInputID" class="form-control" [(ngModel)]="model.TransplantProductionInputID" required>
+                  <select name="TransplantProductionInputID" class="form-select" [(ngModel)]="model.TransplantProductionInputID" required>
                     <option value=""></option>
                     <option *ngFor="let category of transplantProductionInputs" [value]="category.TransplantProductionInputID">
                       {{category.TransplantProductionInputName}}
@@ -36,7 +36,7 @@
                 </div>
                 <div class="mb-3 col-md-4">
                   <label class="required">TP Tray Type</label>
-                  <select name="TransplantProductionTrayTypeID" class="form-control" [(ngModel)]="model.TransplantProductionTrayTypeID" required>
+                  <select name="TransplantProductionTrayTypeID" class="form-select" [(ngModel)]="model.TransplantProductionTrayTypeID" required>
                     <option value=""></option>
                     <option *ngFor="let category of transplantProductionTrayTypes" [value]="category.TransplantProductionTrayTypeID">
                       {{category.TransplantProductionTrayTypeName}}
@@ -73,7 +73,7 @@
 
         <div class="row mt-2">
           <div class="col">
-            <button class="btn btn-secondary btn-sm float-right" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
+            <button class="btn btn-secondary btn-sm float-end" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
               <i class="fas fa-download"></i>
               Download
             </button> 

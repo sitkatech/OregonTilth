@@ -26,14 +26,14 @@
               <div class="row">
                 <div class="col-md-3">
                   <label class="required">Crop</label>
-                  <select class="form-control" [(ngModel)]="model.CropID" name="CropID" required (change)="cropSelectionChanged(model.CropID)">
+                  <select class="form-select" [(ngModel)]="model.CropID" name="CropID" required (change)="cropSelectionChanged(model.CropID)">
                     <option disabled="true" [ngValue]="undefined" [selected]="!model.CropID">Select Crop</option>
                     <option *ngFor="let option of cropDtosRequired" [selected]="model.CropID == option.CropID" [value]="option.CropID">{{option.CropName}}</option>
                   </select>
                 </div>
                 <div class="col-md-3">
                   <label class="required">TP Type or DS</label>
-                  <select class="form-control" [(ngModel)]="model.TpOrDsTypeID" name="TpOrDsTypeID" required>
+                  <select class="form-select" [(ngModel)]="model.TpOrDsTypeID" name="TpOrDsTypeID" required>
                     <option disabled="true" [ngValue]="undefined" [selected]="!model.TpOrDsTypeID">Select Tp Type or DS</option>
                     <option *ngFor="let option of tpOrDsTypes" [selected]="model.TpOrDsTypeID == option.TpOrDsTypeID" [value]="option.TpOrDsTypeID">{{option.TpOrDsTypeDisplayName}}</option>
                   </select>
@@ -79,7 +79,7 @@
         </div>
         <div class="row mt-2">
           <div class="col">
-            <button class="btn btn-secondary btn-sm float-right" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
+            <button class="btn btn-secondary btn-sm float-end" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
               <i class="fas fa-download"></i>
               Download
             </button> 

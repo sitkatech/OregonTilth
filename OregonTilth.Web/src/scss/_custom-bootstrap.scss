@@ -95,9 +95,9 @@ a:hover {
 
 .btn-fresca
 {
-  background-color: $button-border-and-background;
-  border-color: $button-border-and-background;
-  color: $button-text-color;
+  background-color: $button-border-and-background !important;
+  border-color: $button-border-and-background !important;
+  color: $button-text-color !important;
 }
 
 .btn-fresca:hover {
