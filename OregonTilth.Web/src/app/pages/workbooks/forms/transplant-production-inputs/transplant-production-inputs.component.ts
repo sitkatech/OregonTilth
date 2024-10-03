@@ -16,6 +16,7 @@ import { TransplantProductionInputCreateDto } from 'src/app/shared/models/forms/
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { AgGridAngular } from 'ag-grid-angular';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'transplant-production-inputs',
@@ -28,6 +29,7 @@ export class TransplantProductionInputsComponent implements OnInit {
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
     private alertService: AlertService,
+    private breadcrumbService: BreadcrumbsService,
     private router: Router,
     private utilityFunctionsService: UtilityFunctionsService, 
     private route: ActivatedRoute) { }
@@ -68,6 +70,8 @@ export class TransplantProductionInputsComponent implements OnInit {
 
     forkJoin([this.getWorkbookRequest, this.getTransplantProductionInputsRequest]).subscribe(([workbook, tpInputs]: [WorkbookDto, TransplantProductionInputDto[]]) => {
       this.workbook = workbook;
+      this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}, {label:'Transplant Production Inputs'}]);
+
       this.transplantProductionInputs = tpInputs;
       this.defineColumnDefs();
       this.cdr.markForCheck();

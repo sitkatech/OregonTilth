@@ -24,6 +24,7 @@ import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/butto
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { AgGridAngular } from 'ag-grid-angular';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'field-input-costs',
@@ -41,6 +42,7 @@ export class FieldInputCostsComponent implements OnInit {
     private gridService: GridService,
     private utilityFunctionsService: UtilityFunctionsService, 
     private router: Router,
+    private breadcrumbService: BreadcrumbsService,
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -83,6 +85,7 @@ export class FieldInputCostsComponent implements OnInit {
 
     forkJoin([this.getWorkbookRequest, this.getFieldUnitTypesRequest, this.getFieldInputCostsRequest]).subscribe(([workbook, fieldUnitTypes, fieldInputCosts]: [WorkbookDto, FieldUnitTypeDto[], FieldInputCostDto[]]) => {
       this.workbook = workbook;
+      this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}, {label:'Field Input Costs'}]);
       this.fieldUnitTypes = fieldUnitTypes;
       this.fieldInputCosts = fieldInputCosts;
       this.defineColumnDefs();

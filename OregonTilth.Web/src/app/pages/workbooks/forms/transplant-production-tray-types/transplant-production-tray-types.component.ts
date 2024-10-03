@@ -18,6 +18,7 @@ import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { AgGridAngular } from 'ag-grid-angular';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'transplant-production-tray-types',
@@ -32,6 +33,7 @@ export class TransplantProductionTrayTypesComponent implements OnInit {
     private alertService: AlertService,
     private router: Router,
     private utilityFunctionsService: UtilityFunctionsService, 
+    private breadcrumbService: BreadcrumbsService,
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -70,6 +72,8 @@ export class TransplantProductionTrayTypesComponent implements OnInit {
 
     forkJoin([this.getWorkbookRequest, this.getTransplantProductionTrayTypesRequest]).subscribe(([workbook, tpTrayTypes]: [WorkbookDto, TransplantProductionTrayTypeDto[]]) => {
       this.workbook = workbook;
+      this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}, {label:'Transplant Production Tray Types'}]);
+
       this.transplantProductionTrayTypes = tpTrayTypes;
       this.defineColumnDefs();
       this.cdr.markForCheck();

@@ -5,6 +5,7 @@ import { error } from 'protractor';
 import { RoleEnum } from 'src/app/shared/models/enums/role.enum';
 import { environment } from 'src/environments/environment';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
     selector: 'app-home-index',
@@ -20,10 +21,13 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
 
     public displayNotLoggedInRichTextForAdmin : boolean = false;
 
-    constructor(private authenticationService: AuthenticationService) {
+    constructor(private authenticationService: AuthenticationService,
+        private breadcrumbService: BreadcrumbsService,
+    ) {
     }
 
     public ngOnInit(): void {
+        this.breadcrumbService.setBreadcrumbs([{label: "Home"}]);
         if (localStorage.getItem("loginOnReturn")){
             localStorage.removeItem("loginOnReturn");
             this.authenticationService.login();

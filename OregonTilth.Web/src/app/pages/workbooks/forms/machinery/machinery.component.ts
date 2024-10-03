@@ -23,6 +23,7 @@ import { GridService } from 'src/app/shared/services/grid/grid.service';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { AgGridAngular } from 'ag-grid-angular';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'machinery',
@@ -38,6 +39,7 @@ export class MachineryComponent implements OnInit {
     private alertService: AlertService,
     private gridService: GridService,
     private utilityFunctionsService: UtilityFunctionsService, 
+    private breadcrumbService: BreadcrumbsService,
     private router: Router,
     private route: ActivatedRoute) { }
 
@@ -78,6 +80,8 @@ export class MachineryComponent implements OnInit {
 
     forkJoin([this.getWorkbookRequest, this.getMachineryRequest]).subscribe(([workbook, machineries]: [WorkbookDto, MachineryDto[],] ) => {
         this.workbook = workbook;
+        this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}, {label:'Machinery Costs'}]);
+
         this.machineries = machineries;
         this.defineColumnDefs();
         this.cdr.markForCheck();

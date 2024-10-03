@@ -4,6 +4,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { forkJoin } from 'rxjs';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
     selector: 'template-user-detail',
@@ -22,6 +23,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         private router: Router,
         private userService: UserService,
         private authenticationService: AuthenticationService,
+        private breadcrumbService: BreadcrumbsService,
         private cdr: ChangeDetectorRef
     ) {
         // force route reload whenever params change;
@@ -36,6 +38,9 @@ export class UserDetailComponent implements OnInit, OnDestroy {
                 forkJoin(
                     this.userService.getUserFromUserID(id),
                 ).subscribe(([user]) => {
+                    
+                    this.breadcrumbService.setBreadcrumbs([{label: "Users", routerLink: ["/users"]}, {label: user.FullName}]);
+                    
                     this.user = user instanceof Array
                         ? null
                         : user as UserDetailedDto;

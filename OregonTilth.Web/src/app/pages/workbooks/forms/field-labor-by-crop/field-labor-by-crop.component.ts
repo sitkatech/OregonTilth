@@ -24,6 +24,7 @@ import { UtilityFunctionsService } from 'src/app/services/utility-functions.serv
 import { CropSpecificInfoSummaryDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-summary-dto';
 import { TpOrDsTypeEnum } from 'src/app/shared/models/enums/tp-or-ds-type.enum';
 import { FieldUnitTypeEnum } from 'src/app/shared/models/enums/field-unit-type.enum';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'field-labor-by-crop',
@@ -39,6 +40,7 @@ export class FieldLaborByCropComponent implements OnInit {
     private alertService: AlertService,
     private router: Router,
     private utilityFunctionsService: UtilityFunctionsService, 
+    private breadcrumbService: BreadcrumbsService,
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -90,6 +92,8 @@ export class FieldLaborByCropComponent implements OnInit {
 
     forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldStandardTimeDtosRequest, this.getFieldLaborByCropsRequest, this.workbookService.getCropSpecificInfos(this.workbookID)]).subscribe(([workbookDto, cropDtos, fieldStandardTimeDtos, fieldLaborByCrops, cropSpecificInfos]: [WorkbookDto, CropDto[], FieldStandardTimeSummaryDto[], FieldLaborByCropDto[], CropSpecificInfoSummaryDto[]]) => {
       this.workbook = workbookDto;
+      this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbookDto.WorkbookName, routerLink:['/workbooks',workbookDto.WorkbookID.toString()]}, {label:'Field Labor By Crop'}]);
+
       this.cropDtos = cropDtos;
       this.fieldStandardTimeDtos = fieldStandardTimeDtos.filter(x => {return x.TimeStudies.length > 0});
       this.allFieldStandardTimeDtos = [... this.fieldStandardTimeDtos];

@@ -25,6 +25,7 @@ import { UtilityFunctionsService } from 'src/app/services/utility-functions.serv
 import { TransplantProductionStandardTimeCreateDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-create-dto';
 import { TransplantProductionStandardTimeDto } from 'src/app/shared/models/generated/transplant-production-standard-time-dto';
 import { TransplantProductionStandardTimeSummaryDto } from 'src/app/shared/models/forms/transplant-production-standard-times/transplant-production-standard-time-summary-dto';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 @Component({
   selector: 'transplant-production-labor-by-crop',
   templateUrl: './transplant-production-labor-by-crop.component.html',
@@ -38,6 +39,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
     private utilityFunctionsService: UtilityFunctionsService, 
+    private breadcrumbService: BreadcrumbsService,
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -116,6 +118,8 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
 
     forkJoin([this.getWorkbookRequest, this.getTransplantProductionInformationDtosRequest, this.getTransplantProductionLaborActivityDtosRequest, this.getTransplantProductionLaborByCropsRequest, this.getTransplantProductionStandardTimeDtosRequest]).subscribe(([workbookDto, transplantProductionInformationDtos, transplantProductionLaborActivityDtos, transplantProductionLaborByCrops, standardTimes]: [WorkbookDto, TransplantProductionInformationDto[], TransplantProductionLaborActivityDto[], TransplantProductionLaborActivityByCropDto[], TransplantProductionStandardTimeSummaryDto[]]) => {
       this.workbook = workbookDto;
+      this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbookDto.WorkbookName, routerLink:['/workbooks',workbookDto.WorkbookID.toString()]}, {label:'Transplant Production Labor By Crop'}]);
+
       this.transplantProductionInformationDtos =  transplantProductionInformationDtos;
       this.transplantProductionLaborActivityDtos = this.getUniqueTransplantProductionLaborActivityDtos(transplantProductionLaborActivityDtos);
       this.transplantProductionStandardTimeDtos = standardTimes;

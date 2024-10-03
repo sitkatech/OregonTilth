@@ -14,6 +14,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'new-workbook',
@@ -26,6 +27,7 @@ export class NewWorkbookComponent implements OnInit {
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
     private alertService: AlertService,
+    private breadcrumbService: BreadcrumbsService,
     private router: Router) { }
 
   private watchUserChangeSubscription: any;
@@ -53,6 +55,7 @@ export class NewWorkbookComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.breadcrumbService.setBreadcrumbs([{label: "Workbooks", routerLink: ["/workbooks"]}, {label: "New Workbook"}]);
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.model = new WorkbookDto();

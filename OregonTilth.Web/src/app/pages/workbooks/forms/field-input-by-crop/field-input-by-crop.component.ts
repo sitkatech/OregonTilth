@@ -23,6 +23,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { CropSpecificInfoSummaryDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-summary-dto';
 import { FieldUnitTypeEnum } from 'src/app/shared/models/enums/field-unit-type.enum';
 import { TpOrDsTypeEnum } from 'src/app/shared/models/enums/tp-or-ds-type.enum';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 @Component({
   selector: 'field-input-labor-by-crop',
   templateUrl: './field-input-by-crop.component.html',
@@ -36,6 +37,7 @@ export class FieldInputByCropComponent implements OnInit {
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
     private utilityFunctionsService: UtilityFunctionsService, 
+    private breadcrumbService: BreadcrumbsService,
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -90,6 +92,7 @@ export class FieldInputByCropComponent implements OnInit {
     .subscribe(([workbookDto, cropDtos, fieldInputCostDtos, fieldInputByCrops, cropSpecificInfos]
       : [WorkbookDto, CropDto[], FieldInputCostDto[], FieldInputByCropDto[],CropSpecificInfoSummaryDto[]]) => {
       this.workbook = workbookDto;
+      this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbookDto.WorkbookName, routerLink:['/workbooks',workbookDto.WorkbookID.toString()]}, {label:'Field Input By Crop'}]);
       this.cropDtos = cropDtos;
       this.fieldInputCostDtos = fieldInputCostDtos;
       this.allFieldInputCostDtos = [...fieldInputCostDtos];

@@ -11,6 +11,7 @@ import { UserDetailedDto } from 'src/app/shared/models';
 import { forkJoin } from 'rxjs';
 import { UserInviteDto } from 'src/app/shared/models/user/user-invite-dto';
 import { environment } from 'src/environments/environment';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 
 
@@ -30,9 +31,11 @@ export class UserInviteComponent implements OnInit, OnDestroy {
 
     constructor(private cdr: ChangeDetectorRef, 
         private route: ActivatedRoute,
+        private breadcrumbService: BreadcrumbsService,
         private router: Router, private userService: UserService, private roleService: RoleService, private authenticationService: AuthenticationService, private alertService: AlertService) { }
 
     ngOnInit(): void {
+        this.breadcrumbService.setBreadcrumbs([{label: "Users", routerLink: ["/users"]}, {label: "Invite User"}]);
         this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
             this.currentUser = currentUser;
             this.roleService.getRoles().subscribe(result => {

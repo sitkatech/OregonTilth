@@ -14,6 +14,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { Router } from '@angular/router';
 import { GridService } from 'src/app/shared/services/grid/grid.service';
 import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'workbooks',
@@ -28,6 +29,7 @@ export class WorkbooksComponent implements OnInit {
     private workbookService: WorkbookService,
     private alertService: AlertService,
     private gridService: GridService,
+    private breadcrumbService: BreadcrumbsService,
     private router: Router) { }
 
   private watchUserChangeSubscription: any;
@@ -41,6 +43,7 @@ export class WorkbooksComponent implements OnInit {
   private deleteWorkbookRequest: any;
 
   ngOnInit() {
+    this.breadcrumbService.setBreadcrumbs([{label: "Workbooks"}]);
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       var workbookComponentScope = this;

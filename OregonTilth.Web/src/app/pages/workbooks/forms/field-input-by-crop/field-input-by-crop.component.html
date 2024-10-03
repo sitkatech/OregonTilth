@@ -1,15 +1,3 @@
-<nav aria-label="breadcrumb" *ngIf="workbook">
-  <ol class="breadcrumb">
-      <li class="breadcrumb-item" aria-current="page">
-        <a routerLink="/workbooks">Workbooks</a>
-      </li>
-      <li *ngIf="workbook" class="breadcrumb-item" aria-current="page">
-        <a routerLink="/workbooks/{{workbook.WorkbookID}}">{{workbook.WorkbookName}}</a>
-      </li>
-      <li class="breadcrumb-item active" aria-current="page">Field Input By Crop</li>
-  </ol>
-</nav>
-
 <div class="container-fluid">
   <div class="row mb-2 min-vh-100">
     <side-nav class="col-lg-2"></side-nav>

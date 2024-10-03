@@ -26,6 +26,7 @@ import { TransplantProductionTrayTypeDto } from 'src/app/shared/models/generated
 import { element } from 'protractor';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { AgGridAngular } from 'ag-grid-angular';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'transplant-production-input-costs',
@@ -41,6 +42,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
     private alertService: AlertService,
     private gridService: GridService,
     private router: Router,
+    private breadcrumbService: BreadcrumbsService,
     private utilityFunctionsService: UtilityFunctionsService, 
     private route: ActivatedRoute) { }
 
@@ -88,6 +90,7 @@ export class TransplantProductionInputCostsComponent implements OnInit {
 
     forkJoin([this.getWorkbookRequest, this.getTransplantProductionInputsRequest, this.getTransplantProductionTrayTypesRequest, this.getTransplantProductionInputCostsRequest]).subscribe(([workbook, tpInputs, tpTrayTypes, tpInputCosts]: [WorkbookDto, TransplantProductionInputDto[], TransplantProductionTrayTypeDto[], TransplantProductionInputCostDto[]]) => {
       this.workbook = workbook;
+      this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}, {label:'Transplant Production Input Costs'}]);
       this.transplantProductionInputs = tpInputs;
       this.transplantProductionTrayTypes = tpTrayTypes;
       this.transplantProductionInputCosts = tpInputCosts;

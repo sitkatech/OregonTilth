@@ -16,6 +16,7 @@ import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { AgGridAngular } from 'ag-grid-angular';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'crop-units',
@@ -28,7 +29,8 @@ export class CropUnitsComponent implements OnInit {
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
     private alertService: AlertService,
-    private utilityFunctionsService: UtilityFunctionsService, 
+    private utilityFunctionsService: UtilityFunctionsService,
+    private breadcrumbService: BreadcrumbsService, 
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -68,6 +70,8 @@ export class CropUnitsComponent implements OnInit {
 
     forkJoin([this.getWorkbookRequest, this.getCropUnitsRequest]).subscribe(([workbook, cropUnits]: [WorkbookDto, CropUnitDto[]]) => {
       this.workbook = workbook;
+      this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}, {label:'Crop Units'}]);
+
       this.cropUnits = cropUnits;
       this.defineColumnDefs();
       this.cdr.markForCheck();

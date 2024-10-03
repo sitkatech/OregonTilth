@@ -11,6 +11,7 @@ import { UtilityFunctionsService } from 'src/app/services/utility-functions.serv
 import { UserCreateDto } from 'src/app/shared/models/user/user-create-dto';
 import { RoleEnum } from 'src/app/shared/models/enums/role.enum';
 import { DatePipe } from '@angular/common';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 declare var $:any;
 
@@ -38,9 +39,11 @@ export class UserListComponent implements OnInit, OnDestroy {
     private utilityFunctionsService: UtilityFunctionsService, 
     private userService: UserService, 
     private decimalPipe: DecimalPipe,
+    private breadcrumbService: BreadcrumbsService,
     private datePipe: DatePipe) { }
 
   ngOnInit() {
+    this.breadcrumbService.setBreadcrumbs([{label: "Users"}]);
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       // this.usersGrid.api.showLoadingOverlay();

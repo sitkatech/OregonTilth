@@ -11,6 +11,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { UserUpdateDto } from 'src/app/shared/models/user/user-update-dto';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 
 @Component({
@@ -36,7 +37,8 @@ export class UserEditComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private roleService: RoleService,
     private cdr: ChangeDetectorRef,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private breadcrumbService: BreadcrumbsService,
   ) {
   }
 
@@ -59,7 +61,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
         this.user = user instanceof Array
           ? null
           : user as UserDetailedDto;
-
+          this.breadcrumbService.setBreadcrumbs([{label: "Users", routerLink: ["/users"]}, {label: user.FullName, routerLink: ['/users/' + user.UserID]}, {label: "Edit"}]);
         this.roles = roles.sort((a: RoleDto, b: RoleDto) => {
           if (a.RoleDisplayName > b.RoleDisplayName)
             return 1;
