@@ -142,13 +142,14 @@ a:hover {
 }
 
 .side-nav {
-  .card {
+  .accordion-item {
     border:none;
     padding:0;
     background:#fff;
-    .card-header {
+    .accordion-header {
       padding:0px;
       background:none;
+      
       &:hover {
         background:#e8e8e8;
       }
@@ -161,6 +162,7 @@ a:hover {
         display:flex;
         justify-content: space-between;
         align-items: center;
+        text-decoration: none;
         &:hover, &:active, &:focus {
           text-decoration: none;
         }
@@ -168,8 +170,9 @@ a:hover {
           font-size:14px;
         }
       }
+      
     }
-    .card-body {
+    .accordion-body {
       border:none;
       border-top:1px solid #e1e1e1;
       
