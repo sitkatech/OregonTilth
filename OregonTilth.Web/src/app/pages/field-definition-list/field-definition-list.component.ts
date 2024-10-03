@@ -7,6 +7,7 @@ import { ColDef } from 'ag-grid-community';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { AgGridAngular } from 'ag-grid-angular';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'fresca-field-definition-list',
@@ -28,9 +29,11 @@ export class FieldDefinitionListComponent implements OnInit {
   constructor(
     private fieldDefinitionService: FieldDefinitionService,
     private authenticationService: AuthenticationService,
+    private breadcrumbService: BreadcrumbsService,
     private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
+    this.breadcrumbService.setBreadcrumbs([{label:'Labels and Definitions'}]);
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.fieldDefinitionsGrid.api.showLoadingOverlay();

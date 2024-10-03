@@ -1,6 +1,19 @@
 <header-nav></header-nav>
 <div class="mh-auto min-vh-100 page-content">
-    <router-outlet></router-outlet>
+    <div class="container-fluid">
+        <div class="row">
+            <oregontilth-breadcrumbs></oregontilth-breadcrumbs>
+        </div>
+        <div class="row">
+            <side-nav class="col-lg-2"></side-nav>
+            <div class="col-lg-10">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+    
+    
+    
 </div>
 <footer class="footer mt-2">
     <div class="container">

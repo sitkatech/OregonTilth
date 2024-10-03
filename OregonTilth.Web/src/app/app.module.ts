@@ -72,6 +72,7 @@ import { PageListComponent } from './pages/page-list/page-list.component';
 import { PageEditComponent } from './pages/page-edit/page-edit.component';
 import { PageDetailComponent } from './pages/page-detail/page-detail.component';
 import { NgChartsModule } from 'ng2-charts';
+import { BreadcrumbsComponent } from "./shared/components/breadcrumbs/breadcrumbs.component";
 
 export function init_app(appLoadService: AppInitService) {
   return () => appLoadService.init().then(() => {
@@ -129,22 +130,23 @@ export function init_app(appLoadService: AppInitService) {
         PageDetailComponent
     ],
     imports: [
-        AppRoutingModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        NgbModule,
-        RouterModule,
-        OAuthModule.forRoot(),
-        SharedModule,
-        FormsModule,
-        NgxChartsModule,
-        BrowserAnimationsModule,
-        AgGridModule,
-        NgMultiSelectDropDownModule,
-        ReactiveFormsModule,
-        NgClickOutsideModule,
-        NgChartsModule
-    ],
+    AppRoutingModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    NgbModule,
+    RouterModule,
+    OAuthModule.forRoot(),
+    SharedModule,
+    FormsModule,
+    NgxChartsModule,
+    BrowserAnimationsModule,
+    AgGridModule,
+    NgMultiSelectDropDownModule,
+    ReactiveFormsModule,
+    NgClickOutsideModule,
+    NgChartsModule,
+    BreadcrumbsComponent
+],
     providers: [
         CookieService,
         AppInitService,

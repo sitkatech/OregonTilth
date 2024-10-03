@@ -9,6 +9,7 @@ import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { EditorComponent } from '@tinymce/tinymce-angular';
 import TinyMCEHelpers from 'src/app/shared/helpers/tiny-mce-helpers';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'fresca-field-definition-edit',
@@ -32,7 +33,8 @@ export class FieldDefinitionEditComponent implements OnInit, AfterViewChecked {
       private alertService: AlertService,
       private fieldDefinitionService: FieldDefinitionService,
       private authenticationService: AuthenticationService,
-      private cdr: ChangeDetectorRef
+      private cdr: ChangeDetectorRef,
+      private breadcrumbService: BreadcrumbsService,
   ) {
   }
 
@@ -55,6 +57,7 @@ export class FieldDefinitionEditComponent implements OnInit, AfterViewChecked {
           const id = parseInt(this.route.snapshot.paramMap.get("id"));
           if (id) {
               this.fieldDefinitionService.getFieldDefinition(id).subscribe(fieldDefinition => {
+                this.breadcrumbService.setBreadcrumbs([{label:'Labels and Definitions', routerLink:['/labels-and-definitions']},{label:`Edit "${fieldDefinition.FieldDefinitionType.FieldDefinitionTypeDisplayName}"`}]);
                 this.fieldDefinition = fieldDefinition;
               })
           }

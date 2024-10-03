@@ -13,6 +13,7 @@ import { PageDto } from 'src/app/shared/models/generated/page-dto';
 import { PageCreateDto } from 'src/app/shared/models/page/page-create-dto';
 import { PageTreeDto } from 'src/app/shared/models/page/page-tree-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 import { FieldDefinitionService } from 'src/app/shared/services/field-definition-service';
 import { PageService } from 'src/app/shared/services/page-service';
 
@@ -39,10 +40,11 @@ export class PageListComponent implements OnInit {
     private pageService: PageService,
     private authenticationService: AuthenticationService,
     private cdr: ChangeDetectorRef,
+    private breadcrumbService: BreadcrumbsService,
     private alertService: AlertService) { }
 
   ngOnInit() {
-
+    this.breadcrumbService.setBreadcrumbs([{label: "Pages"}]);
     this.pageService.listAllPages().subscribe(pages => {
       this.model = new PageCreateDto();
       this.model.SortOrder = pages.length > 0 ? Math.max(...pages.map(x => x.SortOrder)) + 10 : 10;
