@@ -72,6 +72,7 @@ import { DuplicateComponent } from './pages/workbooks/duplicate/duplicate.compon
 import { PageListComponent } from './pages/page-list/page-list.component';
 import { PageEditComponent } from './pages/page-edit/page-edit.component';
 import { PageDetailComponent } from './pages/page-detail/page-detail.component';
+import { NgChartsModule } from 'ng2-charts';
 
 export function init_app(appLoadService: AppInitService) {
   return () => appLoadService.init().then(() => {
@@ -143,7 +144,8 @@ export function init_app(appLoadService: AppInitService) {
         AgGridModule,
         NgMultiSelectDropDownModule.forRoot(),
         ReactiveFormsModule,
-        NgClickOutsideModule
+        NgClickOutsideModule,
+        NgChartsModule
     ],
     providers: [
         CookieService,
