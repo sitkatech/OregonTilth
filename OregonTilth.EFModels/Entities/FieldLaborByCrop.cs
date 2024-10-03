@@ -61,7 +61,7 @@ namespace OregonTilth.EFModels.Entities
             return dbContext.FieldLaborByCrops
                 .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.Crop)
-                .Include(x => x.FieldStandardTime).ThenInclude(x => x.FieldLaborActivity).ThenInclude(x => x.FieldLaborActivityCategory)
+                .Include(x => x.FieldStandardTime).ThenInclude(x => x.FieldLaborActivity)
                 .AsNoTracking();
         }
 

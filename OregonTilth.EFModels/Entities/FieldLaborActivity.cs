@@ -82,7 +82,6 @@ namespace OregonTilth.EFModels.Entities
         {
             return dbContext.FieldLaborActivities
                 .Include(x => x.Workbook).ThenInclude(x => x.User)
-                .Include(x => x.FieldLaborActivityCategory)
                 .Include(x => x.FieldStandardTimes)
                 .AsNoTracking();
         }
@@ -114,7 +113,7 @@ namespace OregonTilth.EFModels.Entities
         public static FieldLaborActivityDto UpdateFieldLaborActivity(OregonTilthDbContext dbContext, FieldLaborActivityDto fieldLaborActivityDto)
         {
             var fieldLaborActivity = dbContext.FieldLaborActivities
-                .Include(x => x.FieldLaborActivityCategory)
+                
                 .Single(x => x.FieldLaborActivityID == fieldLaborActivityDto.FieldLaborActivityID);
 
             fieldLaborActivity.FieldLaborActivityCategoryID = fieldLaborActivityDto.FieldLaborActivityCategory.FieldLaborActivityCategoryID;
