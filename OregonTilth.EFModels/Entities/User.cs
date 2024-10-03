@@ -52,7 +52,6 @@ namespace OregonTilth.EFModels.Entities
         public static IEnumerable<UserDto> List(OregonTilthDbContext dbContext)
         {
             return dbContext.Users
-                .Include(x => x.Role)
                 .AsNoTracking()
                 .OrderBy(x => x.LastName)
                 .ThenBy(x => x.FirstName)
@@ -120,7 +119,6 @@ namespace OregonTilth.EFModels.Entities
             }
 
             var user = dbContext.Users
-                .Include(x => x.Role)
                 .Single(x => x.UserID == userID);
             
             user.RoleID = userEditDto.RoleID.Value;
