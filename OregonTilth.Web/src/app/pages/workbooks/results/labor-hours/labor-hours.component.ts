@@ -23,7 +23,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { LaborHoursDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/labor-hours-dashboard-report-dto';
 import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/field-labor-activity-category-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
-import { ChartOptions, ChartType,  } from 'chart.js';
+import { ChartData, ChartOptions, ChartType,  } from 'chart.js';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
 
@@ -66,22 +66,22 @@ export class LaborHoursComponent implements OnInit {
   private getLaborActivityCategoriesRequest: any;
   public laborActivityCategoryDtos : FieldLaborActivityCategoryDto[];
 
-  public pieChartOptions: ChartOptions = {
+  public pieChartOptions: ChartOptions<'pie'> = {
     responsive: true,
-    legend: {
-      position: 'top',
-    },
+    // legend: {
+    //   position: 'top',
+    // },
     plugins: {
-      datalabels: {
-        formatter: (value, ctx) => {
-          const label = ctx.chart.data.labels[ctx.dataIndex];
-          return label;
-        },
-      },
+      // datalabels: {
+      //   formatter: (value, ctx) => {
+      //     const label = ctx.chart.data.labels[ctx.dataIndex];
+      //     return label;
+      //   },
+      // },
     }
   };
-  public pieChartLabels: Label[] = [];
-  public pieChartData: number[] = [];
+  public pieChartLabels: any[] = [];
+  public pieChartData: any[] = [];
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
   public pieChartColors: Array<any> = [
@@ -166,7 +166,7 @@ export class LaborHoursComponent implements OnInit {
     this.pieChartLabels = recordsForChart.map(x => {
       return x.FieldLaborActivityCategory;
     })
-
+    console.log(this.pieChartLabels)
   }
 
   onGridReady(params: any) {
