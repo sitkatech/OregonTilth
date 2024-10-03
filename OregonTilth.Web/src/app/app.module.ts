@@ -23,7 +23,6 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { ComboSeriesVerticalComponent } from './shared/components/combo-chart/combo-series-vertical.component'
 import { FontAwesomeIconLinkRendererComponent } from './shared/components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { LoginCallbackComponent } from './pages/login-callback/login-callback.component';
 import { HelpComponent } from './pages/help/help.component';
@@ -88,7 +87,6 @@ export function init_app(appLoadService: AppInitService) {
         UserInviteComponent,
         UserDetailComponent,
         UserEditComponent,
-        ComboSeriesVerticalComponent,
         LoginCallbackComponent,
         HelpComponent,
         CreateUserCallbackComponent,
@@ -137,12 +135,12 @@ export function init_app(appLoadService: AppInitService) {
         NgbModule,
         RouterModule,
         OAuthModule.forRoot(),
-        SharedModule.forRoot(),
+        SharedModule,
         FormsModule,
         NgxChartsModule,
         BrowserAnimationsModule,
         AgGridModule,
-        NgMultiSelectDropDownModule.forRoot(),
+        NgMultiSelectDropDownModule,
         ReactiveFormsModule,
         NgClickOutsideModule,
         NgChartsModule

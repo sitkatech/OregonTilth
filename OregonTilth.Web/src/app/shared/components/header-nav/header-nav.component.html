@@ -25,35 +25,37 @@
                     About
                 </a>
             </li>
-            <li class="nav-item dropdown" routerLinkActive="active" *ngIf="isAdministrator()">
-                <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+
+            <li class="nav-item dropdown" ngbDropdown  routerLinkActive="active" *ngIf="isAdministrator()">
+                <a ngbDropdownToggle type="button" id="adminDropdown" href="javascript:void(0);" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
                     Admin
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a routerLink="/users" class="dropdown-item">
+                <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="adminDropdown" aria-labelledby="navbarDropdown">
+                    <a ngbDropdownItem routerLink="/users" class="dropdown-item">
                         Users
                     </a>
-                    <a routerLink="/pages" class="dropdown-item">
+                    <a ngbDropdownItem routerLink="/pages" class="dropdown-item">
                         Pages
                     </a>
-                    <a routerLink="/labels-and-definitions" class="dropdown-item">
+                    <a ngbDropdownItem routerLink="/labels-and-definitions" class="dropdown-item">
                         Labels and Definitions
                     </a>
                 </div>
             </li>
+
         </ul>
-        <ul class="navbar-nav flex-column mt-2 mt-lg-0 mr-sm-2">
+        <ul class="navbar-nav flex-column mt-2 mt-lg-0 mr-sm-2 float-end">
             <li class="nav-item" routerLinkActive="active" *ngIf="!isAuthenticated()">
-                <a href="javascript:void(0);" (click)="login()" routerLinkActive="active" class="nav-link">Sign In</a>
+                <a  href="javascript:void(0);" (click)="login()" routerLinkActive="active" class="nav-link">Sign In</a>
             </li>
-            <li class="nav-item dropdown welcomeUser" routerLinkActive="active" *ngIf="isAuthenticated()"> 
-                <a href="#" class="nav-link dropdown-toggle pr-3" role="button" data-toggle="dropdown"
+            <li ngbDropdown class="nav-item dropdown welcomeUser" routerLinkActive="active" *ngIf="isAuthenticated()"> 
+                <a ngbDropdownToggle href="javascript:void(0);" class="nav-link dropdown-toggle pr-3" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     Welcome {{getUserName()}}
                 </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a href="javascript:void(0);" (click)="logout()" class="dropdown-item">Sign Out</a>
+                <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a ngbDropdownItem href="javascript:void(0);" (click)="logout()" class="dropdown-item">Sign Out</a>
                 </div>
             </li>
         </ul>

@@ -1,5 +1,7 @@
 @import "src/scss/_variables.scss";
-
+#navbarNav {
+  justify-content: space-between;
+}
 .navbarLogo {
     height: 80px;
   }

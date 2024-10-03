@@ -1,5 +1,7 @@
 @import "src/scss/_variables.scss";
-
+.accordion-collapse {
+    padding:1rem;
+}
 .side-nav  {
     position:sticky;
     top:20px;
