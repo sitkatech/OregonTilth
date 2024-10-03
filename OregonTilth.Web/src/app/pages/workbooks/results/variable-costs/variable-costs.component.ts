@@ -16,7 +16,7 @@ import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { CropCropUnitDashboardReportDto as CropCropUnitDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/crop-crop-unit-dashboard-report-dto';
 import { ResultsService } from 'src/app/services/results/results.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { GridService } from 'src/app/shared/services/grid/grid.service';
 import { ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
@@ -27,6 +27,7 @@ import { ChartOptions, ChartType, } from 'chart.js';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
 import { VariableCostsDashboardReportDto, ViariableCostForCropPivoted } from 'src/app/shared/models/forms/crop-yield-information/variable-costs-dashboard-report-dto';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 
 
@@ -45,6 +46,7 @@ export class VariableCostsComponent implements OnInit {
     private alertService: AlertService,
     private lookupTablesService: LookupTablesService,
     private gridService: GridService,
+    private breadcrumbService: BreadcrumbsService,
     private router: Router,
     private utilityFunctionsService: UtilityFunctionsService, 
     private route: ActivatedRoute) { }
@@ -98,24 +100,28 @@ export class VariableCostsComponent implements OnInit {
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getVariableCostsDashboardReportDtosRequest = this.resultsService.getVariableCostsDashboardReportDtos(this.workbookID);
-
-
-      forkJoin([this.getWorkbookRequest, this.getVariableCostsDashboardReportDtosRequest]).subscribe(([workbook, variableCostsDashboardReportDtos]: [WorkbookDto, VariableCostsDashboardReportDto[]] ) => {
-          this.workbook = workbook;
-          this.variableCostsDashboardReportDtos = variableCostsDashboardReportDtos;
-          
-          this.initializeDropdowns();
-          this.updateGridData();
-          this.formatChartData();
-
-          this.defineColumnDefs();
-          this.gridApi.sizeColumnsToFit();
-          this.cdr.markForCheck();
+      this.route.params.subscribe(params => {
+        this.workbookID = parseInt(params['id']);
+        this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+        this.getVariableCostsDashboardReportDtosRequest = this.resultsService.getVariableCostsDashboardReportDtos(this.workbookID);
+  
+  
+        forkJoin([this.getWorkbookRequest, this.getVariableCostsDashboardReportDtosRequest]).subscribe(([workbook, variableCostsDashboardReportDtos]: [WorkbookDto, VariableCostsDashboardReportDto[]] ) => {
+            this.workbook = workbook;
+            this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}, {label:'Cost Breakdown'}]);
+            this.variableCostsDashboardReportDtos = variableCostsDashboardReportDtos;
+            
+            this.initializeDropdowns();
+            this.updateGridData();
+            this.formatChartData();
+  
+            this.defineColumnDefs();
+            this.gridApi.sizeColumnsToFit();
+            this.cdr.markForCheck();
+        });
       });
+      
+      
 
     });
   }
@@ -204,7 +210,9 @@ export class VariableCostsComponent implements OnInit {
   }
  
 
-  ngOnDestroy() {
+  private routeSubscription : Subscription = Subscription.EMPTY;
+ ngOnDestroy(){
+    this.routeSubscription.unsubscribe()
 
 
     if (this.watchUserChangeSubscription && this.watchUserChangeSubscription.unsubscribe) {

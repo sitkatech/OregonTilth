@@ -16,7 +16,7 @@ import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { CropCropUnitDashboardReportDto as CropCropUnitDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/crop-crop-unit-dashboard-report-dto';
 import { ResultsService } from 'src/app/services/results/results.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { GridService } from 'src/app/shared/services/grid/grid.service';
 import { ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
@@ -26,6 +26,7 @@ import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-table
 import { ChartData, ChartOptions, ChartType,  } from 'chart.js';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 
 
@@ -45,6 +46,7 @@ export class LaborHoursComponent implements OnInit {
     private lookupTablesService: LookupTablesService,
     private gridService: GridService,
     private router: Router,
+    private breadcrumbService: BreadcrumbsService,
     private utilityFunctionsService: UtilityFunctionsService, 
     private route: ActivatedRoute) { }
 
@@ -98,8 +100,9 @@ export class LaborHoursComponent implements OnInit {
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      
+      this.route.params.subscribe(params => {
+        this.workbookID = parseInt(params['id']);
+              
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
       this.getLaborHoursDashboardReportDtosRequest = this.resultsService.getLaborHoursDashboardReportDtos(this.workbookID);
       this.getLaborActivityCategoriesRequest = this.lookupTablesService.getFieldLaborActivityCategories();
@@ -107,6 +110,7 @@ export class LaborHoursComponent implements OnInit {
 
       forkJoin([this.getWorkbookRequest, this.getLaborHoursDashboardReportDtosRequest]).subscribe(([workbook, laborHoursDashboardReportDtos, laborActivityCategoryDtos]: [WorkbookDto, LaborHoursDashboardReportDto[], FieldLaborActivityCategoryDto[]] ) => {
           this.workbook = workbook;
+          this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}, {label:'Labor Breakdown'}]);
           this.laborHoursDashboardReportDtos = laborHoursDashboardReportDtos;
           this.laborActivityCategoryDtos = laborActivityCategoryDtos;
           
@@ -118,6 +122,8 @@ export class LaborHoursComponent implements OnInit {
           this.gridApi.sizeColumnsToFit();
           this.cdr.markForCheck();
       });
+      });
+      
 
     });
   }
@@ -214,7 +220,9 @@ export class LaborHoursComponent implements OnInit {
   }
  
 
-  ngOnDestroy() {
+  private routeSubscription : Subscription = Subscription.EMPTY;
+ ngOnDestroy(){
+    this.routeSubscription.unsubscribe()
 
 
     if (this.watchUserChangeSubscription && this.watchUserChangeSubscription.unsubscribe) {

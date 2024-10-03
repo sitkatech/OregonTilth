@@ -13,7 +13,7 @@ import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-lab
 import { FieldLaborActivityCreateDto } from 'src/app/shared/models/forms/field-labor-activities/field-labor-activity-create-dto';
 import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/field-labor-activity-category-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { TransplantProductionLaborActivityCreateDto } from 'src/app/shared/models/forms/transplant-production-labor-activities/transplant-production-labor-activity-create-dto';
 import { TransplantProductionLaborActivityDto } from 'src/app/shared/models/generated/transplant-production-labor-activity-dto';
@@ -61,10 +61,13 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      this.model = new TransplantProductionLaborActivityCreateDto({WorkbookID: this.workbookID});
+      this.route.params.subscribe(params => {
+        this.workbookID = parseInt(params['id']);
+        this.model = new TransplantProductionLaborActivityCreateDto({WorkbookID: this.workbookID});
       
-      this.refreshData();
+        this.refreshData();
+      });
+      
 
     });
   }
@@ -140,7 +143,9 @@ export class TransplantProductionLaborActivitiesComponent implements OnInit {
 
   }
 
-  ngOnDestroy() {
+  private routeSubscription : Subscription = Subscription.EMPTY;
+ ngOnDestroy(){
+    this.routeSubscription.unsubscribe()
     this.watchUserChangeSubscription.unsubscribe();
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();

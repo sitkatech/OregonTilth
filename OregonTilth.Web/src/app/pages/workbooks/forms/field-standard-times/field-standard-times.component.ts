@@ -9,7 +9,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-labor-activity-dto';
 import { FieldStandardTimeSummaryDto } from 'src/app/shared/models/forms/field-standard-times/field-standard-time-summary-dto';
@@ -29,6 +29,7 @@ import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { AgGridAngular } from 'ag-grid-angular';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'field-standard-times',
@@ -49,6 +50,7 @@ export class FieldStandardTimesComponent implements OnInit {
     private lookupTablesService: LookupTablesService,
     private utilityFunctionsService: UtilityFunctionsService,
     private alertService: AlertService,
+    private breadcrumbService: BreadcrumbsService,
     private route: ActivatedRoute,
     private modalService: NgbModal) { }
 
@@ -107,9 +109,12 @@ export class FieldStandardTimesComponent implements OnInit {
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
+      this.route.params.subscribe(params => {
+        this.workbookID = parseInt(params['id']);
+        this.refreshData();
+      });
       
-      this.refreshData();
+      
 
     });
   }
@@ -151,6 +156,7 @@ export class FieldStandardTimesComponent implements OnInit {
             FieldUnitTypeDto[]
           ]) => {
         this.workbook = workbook;
+        this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}, {label:'Field Labor Time Studies'}]);
         this.fieldLaborActivities = fieldLaborActivities;
         this.fieldStandardTimes = fieldStandardTimes;
 
@@ -422,7 +428,9 @@ export class FieldStandardTimesComponent implements OnInit {
   }
 
   
-  ngOnDestroy() {
+  private routeSubscription : Subscription = Subscription.EMPTY;
+ ngOnDestroy(){
+    this.routeSubscription.unsubscribe()
     this.watchUserChangeSubscription.unsubscribe();
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();

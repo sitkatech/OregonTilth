@@ -8,7 +8,7 @@ import { ColDef } from 'ag-grid-community';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { GridService } from 'src/app/shared/services/grid/grid.service';
 import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/decimal-editor.component';
@@ -20,6 +20,7 @@ import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/edi
 import { AgGridAngular } from 'ag-grid-angular';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { AvailableCropYieldInformationDto } from 'src/app/shared/models/forms/crop-yield-information/available-crop-yield-information-dto';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'crop-yield-information',
@@ -34,6 +35,7 @@ export class CropYieldInformationComponent implements OnInit {
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
     private gridService: GridService,
+    private breadcrumbService: BreadcrumbsService,
     private router: Router,
     private utilityFunctionsService: UtilityFunctionsService, 
     private route: ActivatedRoute) { }
@@ -72,10 +74,13 @@ export class CropYieldInformationComponent implements OnInit {
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      this.model = new CropYieldInformationCreateDto({WorkbookID: this.workbookID});
+      this.route.params.subscribe(params => {
+        this.workbookID = parseInt(params['id']);
+        this.model = new CropYieldInformationCreateDto({WorkbookID: this.workbookID});
       
-      this.refreshData();
+        this.refreshData();
+      });
+
 
     });
   }
@@ -89,6 +94,7 @@ export class CropYieldInformationComponent implements OnInit {
 
     forkJoin([this.getWorkbookRequest, this.getCropsRequest, this.getCropUnitsRequest, this.getCropYieldInformationDtosRequest, this.availableCropCropUnitCombinationsRequest]).subscribe(([workbook, cropDtos, cropUnitDtos, cropYieldInfoDtos, availableCropCropUnitCombinations]: [WorkbookDto, CropDto[], CropUnitDto[], CropYieldInformationSummaryDto[], AvailableCropYieldInformationDto[]]) => {
       this.workbook = workbook;
+      this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}, {label:'Crop Yield and Price Information'}]);
       this.crops = cropDtos;
       this.cropUnits = cropUnitDtos;
       this.cropYieldInformations = cropYieldInfoDtos;
@@ -297,7 +303,9 @@ export class CropYieldInformationComponent implements OnInit {
 
   }
 
-  ngOnDestroy() {
+  private routeSubscription : Subscription = Subscription.EMPTY;
+ ngOnDestroy(){
+    this.routeSubscription.unsubscribe()
     this.watchUserChangeSubscription.unsubscribe();
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();

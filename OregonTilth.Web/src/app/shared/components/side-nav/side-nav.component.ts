@@ -7,7 +7,8 @@ import { PageTreeDto } from '../../models/page/page-tree-dto';
 import { WorkbookService } from 'src/app/services/workbook/workbook.service';
 import { WorkbookDto } from '../../models/generated/workbook-dto';
 import { forkJoin } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, startWith } from 'rxjs/operators';
+import { RouteHelpers } from '../../services/router-helper/router-helper';
 
 @Component({
     selector: 'side-nav',
@@ -76,13 +77,14 @@ export class SideNavComponent implements OnInit {
   }
 
   initWorkbookIDNavigation() {
-    this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-    this.setCurrentWorkbookID(this.workbookID);
 
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
+      startWith(null)
     ).subscribe((event: NavigationEnd) => {
-      var workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
+      
+      var route = RouteHelpers.getCurrentRouteFromActivatedRoute(this.route);
+      var workbookID = parseInt(route.paramMap.get("id"));
       this.setCurrentWorkbookID(workbookID);
     });
   }
@@ -96,7 +98,8 @@ export class SideNavComponent implements OnInit {
 
 
     if(this.isNavigatingWorkbook){
-      var path = this.route.snapshot.routeConfig.path.replace(":id", workbookID.toString())
+      var route = RouteHelpers.getCurrentRouteFromActivatedRoute(this.route);
+      var path = route.routeConfig.path.replace(":id", workbookID.toString())
       this.router.navigate([path]);
     } else {
       this.router.navigate(["/workbooks", workbookID]);

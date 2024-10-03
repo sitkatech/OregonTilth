@@ -16,10 +16,11 @@ import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { CropCropUnitDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/crop-crop-unit-dashboard-report-dto';
 import { ResultsService } from 'src/app/services/results/results.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { GridService } from 'src/app/shared/services/grid/grid.service';
 import { ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'crop-crop-unit',
@@ -34,6 +35,7 @@ export class CropCropUnitComponent implements OnInit {
     private workbookService: WorkbookService,
     private resultsService: ResultsService,
     private alertService: AlertService,
+    private breadcrumbService: BreadcrumbsService,
     private gridService: GridService,
     private router: Router,
     private utilityFunctionsService: UtilityFunctionsService, 
@@ -61,19 +63,24 @@ export class CropCropUnitComponent implements OnInit {
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      
-      this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
-      this.getcropYieldInformationDashboardReportDtosRequest = this.resultsService.getCropYieldInformationDashboardReportDtos(this.workbookID);
+      this.route.params.subscribe(params => {
+        this.workbookID = parseInt(params['id']);
+        this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
+        this.getcropYieldInformationDashboardReportDtosRequest = this.resultsService.getCropYieldInformationDashboardReportDtos(this.workbookID);
 
-      forkJoin([this.getWorkbookRequest, this.getcropYieldInformationDashboardReportDtosRequest]).subscribe(([workbook, cropYieldInformationDashboardReportDtos]: [WorkbookDto, CropCropUnitDashboardReportDto[]] ) => {
-          this.workbook = workbook;
-          this.cropYieldInformationDashboardReportDtos = cropYieldInformationDashboardReportDtos;
-          
-          this.defineColumnDefs();
-          this.gridApi.sizeColumnsToFit();
-          this.cdr.markForCheck();
+        forkJoin([this.getWorkbookRequest, this.getcropYieldInformationDashboardReportDtosRequest]).subscribe(([workbook, cropYieldInformationDashboardReportDtos]: [WorkbookDto, CropCropUnitDashboardReportDto[]] ) => {
+            this.workbook = workbook;
+            this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}, {label:'Crop/Crop-Unit'}]);
+
+            this.cropYieldInformationDashboardReportDtos = cropYieldInformationDashboardReportDtos;
+            
+            this.defineColumnDefs();
+            this.gridApi.sizeColumnsToFit();
+            this.cdr.markForCheck();
+        });
       });
+      
+      
 
     });
   }
@@ -148,7 +155,9 @@ export class CropCropUnitComponent implements OnInit {
   }
  
 
-  ngOnDestroy() {
+  private routeSubscription : Subscription = Subscription.EMPTY;
+ ngOnDestroy(){
+    this.routeSubscription.unsubscribe()
 
     
 

@@ -12,7 +12,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { CropCreateDto } from 'src/app/shared/models/forms/crops/crop-create-dto';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
@@ -26,6 +26,7 @@ import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/
 import { PhaseEnum } from 'src/app/shared/models/enums/phase.enum';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { AgGridAngular } from 'ag-grid-angular';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'transplant-production-information',
@@ -40,6 +41,7 @@ export class TransplantProductionInformationComponent implements OnInit {
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
     private utilityFunctionsService: UtilityFunctionsService, 
+    private breadcrumbService: BreadcrumbsService,
     private route: ActivatedRoute) { }
 
   private gridApi: any;
@@ -77,10 +79,13 @@ export class TransplantProductionInformationComponent implements OnInit {
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      this.model = new TransplantProductionInformationCreateDto({WorkbookID: this.workbookID});
+      this.route.params.subscribe(params => {
+        this.workbookID = parseInt(params['id']);
+        this.model = new TransplantProductionInformationCreateDto({WorkbookID: this.workbookID});
       
-      this.refreshData();
+        this.refreshData();
+      });
+
 
     });
   }
@@ -96,6 +101,7 @@ export class TransplantProductionInformationComponent implements OnInit {
 
     forkJoin([this.getWorkbookRequest, this.getTpInfoDtosRequest, this.getCropsRequest, this.getPhasesRequest, this.getTrayTypesRequest]).subscribe(([workbook, tpInfoDtos, cropDtos, phaseDtos, trayTypeDtos]: [WorkbookDto, TransplantProductionInformationDto[], CropDto[], PhaseDto[], TransplantProductionTrayTypeDto[]]) => {
       this.workbook = workbook;
+      this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}, {label:'Transplant Production Information'}]);
       this.transplantProductionInformationDtos = tpInfoDtos;
       this.cropDtos = cropDtos;
       this.phaseDtos = phaseDtos;
@@ -319,7 +325,9 @@ export class TransplantProductionInformationComponent implements OnInit {
 
   }
 
-  ngOnDestroy() {
+  private routeSubscription : Subscription = Subscription.EMPTY;
+ ngOnDestroy(){
+    this.routeSubscription.unsubscribe()
     this.watchUserChangeSubscription.unsubscribe();
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();

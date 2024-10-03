@@ -21,9 +21,7 @@ export class BreadcrumbsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.breadcrumbs$ = this.breadcrumbsService.breadcrumbs$.pipe(
-      debounceTime(200)
-    );
+    this.breadcrumbs$ = this.breadcrumbsService.breadcrumbs$.pipe(    );
   }
 
 }

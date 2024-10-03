@@ -14,7 +14,8 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'workbook-detail',
@@ -30,6 +31,7 @@ export class WorkbookDetailComponent implements OnInit {
     private workbookService: WorkbookService,
     private alertService: AlertService,
     private router: Router,
+    private breadcrumbsservice: BreadcrumbsService,
     private route: ActivatedRoute) { }
 
   private watchUserChangeSubscription: any;
@@ -61,8 +63,11 @@ export class WorkbookDetailComponent implements OnInit {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
 
-      this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      this.getWorkbook();
+      this.route.params.subscribe(params => {
+        this.workbookID = parseInt(params['id']);
+        this.getWorkbook();
+      });
+      
       
       
     });
@@ -71,13 +76,16 @@ export class WorkbookDetailComponent implements OnInit {
   getWorkbook() {
     this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID).subscribe(workbook => {
       this.workbook = workbook;
+      this.breadcrumbsservice.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName}]);
       this.model = new WorkbookDto(workbook);
     }, error => {
       
     })
   }
 
-  ngOnDestroy() {
+  private routeSubscription : Subscription = Subscription.EMPTY;
+ ngOnDestroy(){
+    this.routeSubscription.unsubscribe()
 
 
     if (this.watchUserChangeSubscription && this.watchUserChangeSubscription.unsubscribe) {

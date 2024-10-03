@@ -1,7 +1,8 @@
 @if(breadcrumbs$ | async; as breadcrumbs) {
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
     @if(breadcrumbs.length > 0) {
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
+        
                 @for(breadcrumb of breadcrumbs; track $index) {
     
                     @if(breadcrumb.routerLink) {
@@ -13,20 +14,9 @@
                             {{breadcrumb.label}}
                         </li>
                     }
-                        
-                        
-                        
-                    
     
                 }
-                
-               
-            </ol>
-        </nav>
     }
-        
-    
-
+        </ol>
+    </nav>
 }
-
-

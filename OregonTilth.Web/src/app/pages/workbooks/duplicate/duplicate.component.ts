@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ColDef } from 'ag-grid-community';
+import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WorkbookService } from 'src/app/services/workbook/workbook.service';
 import { UserDetailedDto } from 'src/app/shared/models';
@@ -10,6 +11,7 @@ import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text
 import { RoleDto } from 'src/app/shared/models/generated/role-dto';
 import { WorkbookDto } from 'src/app/shared/models/generated/workbook-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'oregontilth-duplicate',
@@ -22,6 +24,7 @@ export class DuplicateComponent implements OnInit {
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
     private alertService: AlertService,
+    private breadcrumbService: BreadcrumbsService,
     private router: Router,
     private route: ActivatedRoute) { }
 
@@ -49,7 +52,7 @@ export class DuplicateComponent implements OnInit {
       this.cdr.detectChanges();
     });
   }
-
+  private routeSubscription : Subscription = Subscription.EMPTY;
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -58,6 +61,8 @@ export class DuplicateComponent implements OnInit {
 
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID).subscribe(workbook => {
         this.workbook = workbook;
+        this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:`Duplicate ${workbook.WorkbookName}`}]);
+
         this.workbookCopyName = workbook.WorkbookName + " (Copy)";
       })
       

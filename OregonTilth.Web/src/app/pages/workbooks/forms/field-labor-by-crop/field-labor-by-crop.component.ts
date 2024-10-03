@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { FieldLaborByCropCreateDto } from 'src/app/shared/models/forms/field-labor-by-crop/field-labor-by-crop-create-dto';
 import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor-by-crop-dto';
@@ -75,10 +75,13 @@ export class FieldLaborByCropComponent implements OnInit {
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      this.model = new FieldLaborByCropCreateDto({WorkbookID: this.workbookID});
+      this.route.params.subscribe(params => {
+        this.workbookID = parseInt(params['id']);
+        this.model = new FieldLaborByCropCreateDto({WorkbookID: this.workbookID});
       
-      this.refreshData();
+        this.refreshData();
+      });
+      
 
     });
   }
@@ -231,7 +234,9 @@ export class FieldLaborByCropComponent implements OnInit {
 
   }
 
-  ngOnDestroy() {
+  private routeSubscription : Subscription = Subscription.EMPTY;
+ ngOnDestroy(){
+    this.routeSubscription.unsubscribe()
     this.watchUserChangeSubscription.unsubscribe();
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();

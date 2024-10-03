@@ -19,7 +19,7 @@ import { CropSpecificInfoDto } from 'src/app/shared/models/generated/crop-specif
 import { CropSpecificInfoCreateDto } from 'src/app/shared/models/forms/crop-specific-info/crop-specific-info-create-dto';
 import { FieldUnitTypeDto } from 'src/app/shared/models/generated/field-unit-type-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { ButtonRendererComponent } from 'src/app/shared/components/ag-grid/button-renderer/button-renderer.component';
 import { TpOrDsTypeDto } from 'src/app/shared/models/generated/tp-or-ds-type-dto';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
@@ -36,6 +36,7 @@ import { FieldLaborActivityCategoryEnum } from 'src/app/shared/models/enums/fiel
 import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor-by-crop-dto';
 import { FieldUnitTypeEnum } from 'src/app/shared/models/enums/field-unit-type.enum';
 import { FieldInputByCropDto } from 'src/app/shared/models/generated/field-input-by-crop-dto';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 
 @Component({
   selector: 'crop-specific-info',
@@ -50,6 +51,7 @@ export class CropSpecificInfoComponent implements OnInit {
     private lookupTablesService: LookupTablesService,
     private alertService: AlertService,
     private gridService: GridService,
+    private breadcrumbService: BreadcrumbsService,
     private router: Router,
     private utilityFunctionsService: UtilityFunctionsService,
     private route: ActivatedRoute) { }
@@ -94,10 +96,13 @@ export class CropSpecificInfoComponent implements OnInit {
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
-      this.model = new CropSpecificInfoCreateDto({WorkbookID: this.workbookID});
+      this.route.params.subscribe(params => {
+        this.workbookID = parseInt(params['id']);
+        this.model = new CropSpecificInfoCreateDto({WorkbookID: this.workbookID});
       
-      this.refreshData();
+        this.refreshData();
+      });
+      
 
     });
   }
@@ -120,6 +125,7 @@ export class CropSpecificInfoComponent implements OnInit {
       .subscribe(([workbook, tpOrDsTypes, cropSpecificInfos, cropDtos, fieldLaborByCrops, fieldInputByCrops] 
         : [WorkbookDto, TpOrDsTypeDto[], CropSpecificInfoSummaryDto[], CropDto[], FieldLaborByCropDto[], FieldInputByCropDto[]]) => {
       this.workbook = workbook;
+      this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}, {label:'Crop Planting Info'}]);
       this.tpOrDsTypes = tpOrDsTypes;
       this.allTpOrDsTypes = [...tpOrDsTypes];
       this.cropSpecificInfos = cropSpecificInfos;
@@ -434,7 +440,9 @@ export class CropSpecificInfoComponent implements OnInit {
     return data.CropSpecificInfoID.toString();
   }
 
-  ngOnDestroy() {
+  private routeSubscription : Subscription = Subscription.EMPTY;
+ ngOnDestroy(){
+    this.routeSubscription.unsubscribe()
     this.watchUserChangeSubscription.unsubscribe();
     if (this.getWorkbookRequest && this.getWorkbookRequest.unsubscribe) {
       this.getWorkbookRequest.unsubscribe();
