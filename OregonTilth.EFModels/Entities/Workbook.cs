@@ -12,7 +12,7 @@ namespace OregonTilth.EFModels.Entities
         public static IEnumerable<WorkbookDto> List(OregonTilthDbContext dbContext)
         {
             return dbContext.Workbooks
-                .Include(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.User)
                 .AsNoTracking()
                 .Select(x => x.AsDto()).AsEnumerable();
         }
@@ -45,7 +45,7 @@ namespace OregonTilth.EFModels.Entities
         {
             
             var workbook = dbContext.Workbooks
-                .Include(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.User)
                 .Single(x => x.WorkbookID == workbookToEdit.WorkbookID);
 
             workbook.WorkbookName = workbookToEdit.WorkbookName;
@@ -81,7 +81,7 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<Workbook> GetWorkbookImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.Workbooks
-                .Include(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.User)
                 .AsNoTracking();
         }
 

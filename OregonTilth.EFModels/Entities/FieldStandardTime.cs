@@ -23,7 +23,7 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<FieldStandardTime> GetFieldStandardTimesImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.FieldStandardTimes
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.FieldLaborActivity)
                 .Include(x => x.Machinery)
                 .Include(x => x.TimeStudies);

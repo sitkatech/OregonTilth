@@ -10,7 +10,7 @@ namespace OregonTilth.EFModels.Entities
         public static IEnumerable<TransplantProductionInformationDto> List(OregonTilthDbContext dbContext)
         {
             return dbContext.TransplantProductionInformations
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .AsNoTracking()
                 .Select(x => TransplantProductionInformationExtensionMethods.AsDto(x)).AsEnumerable();
         }
@@ -114,10 +114,10 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<TransplantProductionInformation> GetTransplantProductionInformationImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.TransplantProductionInformations
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
-                .Include(x => x.Crop).ThenInclude(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
+                .Include(x => x.Crop).ThenInclude(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.Phase)
-                .Include(x => x.TransplantProductionTrayType).ThenInclude(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.TransplantProductionTrayType).ThenInclude(x => x.Workbook).ThenInclude(x => x.User)
                 .AsNoTracking();
         }
 

@@ -10,7 +10,7 @@ namespace OregonTilth.EFModels.Entities
         public static IEnumerable<HarvestPostHarvestStandardTimeSummaryDto> GetHarvestPostHarvestStandardTimeSummaryDtos(OregonTilthDbContext dbContext)
         {
             var harvestPostHarvestStandardTimes = dbContext.HarvestPostHarvestStandardTimes
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.Crop)
                 .Include(x => x.CropUnit)
                 .Include(x => x.TimeStudies)
@@ -112,7 +112,7 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<HarvestPostHarvestStandardTime> GetHarvestPostHarvestStandardTimesImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.HarvestPostHarvestStandardTimes
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.Crop)
                 .Include(x => x.CropUnit)
                 .Include(x => x.TimeStudies);

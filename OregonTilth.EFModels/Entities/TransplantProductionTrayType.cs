@@ -11,7 +11,7 @@ namespace OregonTilth.EFModels.Entities
         public static IEnumerable<TransplantProductionTrayTypeDto> List(OregonTilthDbContext dbContext)
         {
             return dbContext.TransplantProductionTrayTypes
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .AsNoTracking()
                 .Select(x => TransplantProductionTrayTypeExtensionMethods.AsDto(x)).AsEnumerable();
         }
@@ -71,7 +71,7 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.TransplantProductionInformations)
                 .Include(x => x.TransplantProductionInputCosts)
                 .Include(x => x.TransplantProductionStandardTimes)
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
 
                 .AsNoTracking();
         }

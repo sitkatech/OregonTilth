@@ -12,7 +12,7 @@ namespace OregonTilth.EFModels.Entities
         public static IEnumerable<FieldLaborActivityDto> List(OregonTilthDbContext dbContext)
         {
             return dbContext.FieldLaborActivities
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .AsNoTracking()
                 .Select(x => FieldLaborActivityExtensionMethods.AsDto(x)).AsEnumerable();
         }
@@ -81,7 +81,7 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<FieldLaborActivity> GetFieldLaborActivityImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.FieldLaborActivities
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.FieldLaborActivityCategory)
                 .Include(x => x.FieldStandardTimes)
                 .AsNoTracking();

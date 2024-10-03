@@ -11,7 +11,7 @@ namespace OregonTilth.EFModels.Entities
         public static IEnumerable<TransplantProductionInputDto> List(OregonTilthDbContext dbContext)
         {
             return dbContext.TransplantProductionInputs
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .AsNoTracking()
                 .Select(x => TransplantProductionInputExtensionMethods.AsDto(x)).AsEnumerable();
         }
@@ -68,7 +68,7 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<TransplantProductionInput> GetTransplantProductionInputImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.TransplantProductionInputs
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.TransplantProductionInputCosts)
                 .AsNoTracking();
         }

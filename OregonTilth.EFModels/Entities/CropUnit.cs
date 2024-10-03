@@ -82,7 +82,7 @@ namespace OregonTilth.EFModels.Entities
         public static IEnumerable<CropUnitDto> List(OregonTilthDbContext dbContext)
         {
             return dbContext.CropUnits
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .AsNoTracking()
                 .Select(x => CropUnitExtensionMethods.AsDto(x)).AsEnumerable();
         }
@@ -96,7 +96,7 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<CropUnit> GetCropUnitImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.CropUnits
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.CropYieldInformations)
                 .Include(x => x.HarvestPostHarvestStandardTimes)
                 .AsNoTracking();

@@ -11,7 +11,7 @@ namespace OregonTilth.EFModels.Entities
         public static IEnumerable<MachineryDto> List(OregonTilthDbContext dbContext)
         {
             return dbContext.Machineries
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .AsNoTracking()
                 .Select(x => x.AsDto()).AsEnumerable();
         }
@@ -78,7 +78,7 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<Machinery> GetMachineryImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.Machineries
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .AsNoTracking();
         }
 

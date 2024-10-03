@@ -60,7 +60,7 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<FieldInputByCrop> GetFieldInputByCropImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.FieldInputByCrops
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.Crop)
                 .Include(x => x.FieldInputCost)
                 .AsNoTracking();

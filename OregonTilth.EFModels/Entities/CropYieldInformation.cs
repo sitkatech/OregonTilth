@@ -10,7 +10,7 @@ namespace OregonTilth.EFModels.Entities
         public static IEnumerable<CropYieldInformationSummaryDto> List(OregonTilthDbContext dbContext)
         {
             return dbContext.CropYieldInformations
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.Crop)
                 .Include(x => x.CropUnit)
                 .AsNoTracking()
@@ -144,7 +144,7 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<CropYieldInformation> GetCropYieldInformationForReportImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.CropYieldInformations
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.Crop).ThenInclude(x => x.CropSpecificInfos)
                 .Include(x => x.Crop).ThenInclude(x => x.CropSpecificInfos).ThenInclude(x => x.Workbook)
                 .Include(x => x.Crop).ThenInclude(x => x.FieldLaborByCrops).ThenInclude(x => x.FieldStandardTime).ThenInclude(x => x.FieldLaborActivity)
@@ -164,7 +164,7 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<CropYieldInformation> GetCropYieldInformationImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.CropYieldInformations
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.Crop)
                 .Include(x => x.CropUnit)
                 .AsNoTracking();

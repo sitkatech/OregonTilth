@@ -11,7 +11,7 @@ namespace OregonTilth.EFModels.Entities
         public static IEnumerable<TransplantProductionLaborActivityDto> List(OregonTilthDbContext dbContext)
         {
             return dbContext.TransplantProductionLaborActivities
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .AsNoTracking()
                 .Select(x => TransplantProductionLaborActivityExtensionMethods.AsDto(x)).AsEnumerable();
         }
@@ -68,7 +68,7 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<TransplantProductionLaborActivity> GetTransplantProductionLaborActivityImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.TransplantProductionLaborActivities
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.TransplantProductionStandardTimes)
                 .Include(x => x.TransplantProductionLaborActivityByCrops)
                 .AsNoTracking();

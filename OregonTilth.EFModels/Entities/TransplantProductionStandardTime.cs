@@ -10,7 +10,7 @@ namespace OregonTilth.EFModels.Entities
         public static IEnumerable<TransplantProductionStandardTimeSummaryDto> GetTransplantProductionStandardTimeSummaryDtos(OregonTilthDbContext dbContext)
         {
             var transplantProductionStandardTimes = dbContext.TransplantProductionStandardTimes
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.TransplantProductionLaborActivity)
                 .Include(x => x.TransplantProductionTrayType)
                 .Include(x => x.TimeStudies)
@@ -107,7 +107,7 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<TransplantProductionStandardTime> GetTransplantProductionStandardTimesImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.TransplantProductionStandardTimes
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.TransplantProductionTrayType)
                 .Include(x => x.TransplantProductionLaborActivity)
                 .Include(x => x.TimeStudies);

@@ -63,7 +63,7 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<TransplantProductionLaborActivityByCrop> GetTransplantProductionLaborActivityByCropImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.TransplantProductionLaborActivityByCrops
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.TransplantProductionInformation).ThenInclude(x => x.Crop)
                 .Include(x => x.TransplantProductionInformation).ThenInclude(x => x.Phase)
                 .Include(x => x.TransplantProductionInformation).ThenInclude(x => x.Workbook)

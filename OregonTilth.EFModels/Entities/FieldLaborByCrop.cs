@@ -59,7 +59,7 @@ namespace OregonTilth.EFModels.Entities
         private static IQueryable<FieldLaborByCrop> GetFieldLaborByCropImpl(OregonTilthDbContext dbContext)
         {
             return dbContext.FieldLaborByCrops
-                .Include(x => x.Workbook).ThenInclude(x => x.User).ThenInclude(x => x.Role)
+                .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.Crop)
                 .Include(x => x.FieldStandardTime).ThenInclude(x => x.FieldLaborActivity).ThenInclude(x => x.FieldLaborActivityCategory)
                 .AsNoTracking();
