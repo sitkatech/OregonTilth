@@ -110,7 +110,7 @@ export class FieldStandardTimesComponent implements OnInit {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.route.params.subscribe(params => {
-        this.workbookID = parseInt(params['id']);
+        this.workbookID = parseInt(params['workbookID']);
         this.refreshData();
       });
       

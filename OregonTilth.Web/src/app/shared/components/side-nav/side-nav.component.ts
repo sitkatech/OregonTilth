@@ -20,7 +20,7 @@ export class SideNavComponent implements OnInit {
     private watchUserChangeSubscription: any;
     private watchWorkbookChangeSubscription: any;
     private currentUser: UserDetailedDto;
-    public workbookID: number;
+    public workbookID: number = null;
     public navigationOpen: boolean = true;
     private sideNavMinWidth: number = 990;
     private screenWidth: number = null;
@@ -84,8 +84,13 @@ export class SideNavComponent implements OnInit {
     ).subscribe((event: NavigationEnd) => {
       
       var route = RouteHelpers.getCurrentRouteFromActivatedRoute(this.route);
-      var workbookID = parseInt(route.paramMap.get("id"));
-      this.setCurrentWorkbookID(workbookID);
+      var workbookID = parseInt(route.paramMap.get("workbookID"));
+      if(!isNaN(workbookID)){
+        this.setCurrentWorkbookID(workbookID);
+      } else {
+        this.setCurrentWorkbookID(null);
+      }
+      
     });
   }
 

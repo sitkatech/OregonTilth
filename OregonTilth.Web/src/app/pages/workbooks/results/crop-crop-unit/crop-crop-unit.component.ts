@@ -64,7 +64,7 @@ export class CropCropUnitComponent implements OnInit {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.route.params.subscribe(params => {
-        this.workbookID = parseInt(params['id']);
+        this.workbookID = parseInt(params['workbookID']);
         this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
         this.getcropYieldInformationDashboardReportDtosRequest = this.resultsService.getCropYieldInformationDashboardReportDtos(this.workbookID);
 

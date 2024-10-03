@@ -64,7 +64,7 @@ export class WorkbookDetailComponent implements OnInit {
       this.currentUser = currentUser;
 
       this.route.params.subscribe(params => {
-        this.workbookID = parseInt(params['id']);
+        this.workbookID = parseInt(params['workbookID']);
         this.getWorkbook();
       });
       
