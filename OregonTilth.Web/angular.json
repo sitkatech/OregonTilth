@@ -90,18 +90,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "OregonTilth.Web:build"
+            "buildTarget": "OregonTilth.Web:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "OregonTilth.Web:build:production"
+              "buildTarget": "OregonTilth.Web:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "OregonTilth.Web:build"
+            "buildTarget": "OregonTilth.Web:build"
           }
         },
         "test": {
