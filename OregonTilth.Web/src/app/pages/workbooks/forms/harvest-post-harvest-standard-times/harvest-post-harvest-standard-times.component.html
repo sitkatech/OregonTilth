@@ -25,7 +25,7 @@
             <form *ngIf=(model) (ngSubmit)="onSubmit(harvestPostHarvestForm)" #harvestPostHarvestForm="ngForm">
               <div class="row">
                 
-                <div class="form-group col-md-3">
+                <div class="mb-3 col-md-3">
                   <label class="required">Crop</label>
                   <select name="CropID" class="form-control" [(ngModel)]="model.CropID" required>
                     <option value=""></option>
@@ -34,7 +34,7 @@
                     </option>
                   </select>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="mb-3 col-md-3">
                   <label class="required">Crop Unit</label>
                   <select name="CropUnitID" class="form-control" [(ngModel)]="model.CropUnitID" required>
                     <option value=""></option>
@@ -43,7 +43,7 @@
                     </option>
                   </select>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="mb-3 col-md-3">
                   <label class="required">Harvest/Post-Harvest</label>
                   <select name="HarvestTypeID" class="form-control" [(ngModel)]="model.HarvestTypeID" required>
                     <option value=""></option>
@@ -59,7 +59,7 @@
                 <div class="col-sm">
                   <i class="fas fa-bolt"></i> Required field
                 </div>
-                <div class="col-sm text-right">
+                <div class="col-sm text-end">
                   <button type="submit" class="btn btn-fresca" [disabled]="!harvestPostHarvestForm.form.valid || isLoadingSubmit">
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                     Start

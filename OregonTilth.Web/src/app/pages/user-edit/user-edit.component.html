@@ -18,7 +18,7 @@
     <app-alert-display></app-alert-display>
   <div class="col-sm-12">
     <form (ngSubmit)="onSubmit(editUserForm)" #editUserForm="ngForm">
-      <div class="form-group mt-4">
+      <div class="mb-3 mt-4">
         <div class="col-sm-2 control-label">
           <label class="required">Role</label>
         </div>
@@ -31,7 +31,7 @@
           </select>
         </div>
       </div>
-      <div class="form-group mt-4" *ngIf="model.RoleID.toString() === '1'">
+      <div class="mb-3 mt-4" *ngIf="model.RoleID.toString() === '1'">
         <div class="col-sm-5 control-label">
           <label class="required">Should Receive System Communications?</label>
         </div>
@@ -46,7 +46,7 @@
         <div class="col-sm">
           <i class="fas fa-bolt"></i> Required field
         </div>
-        <div class="col-sm text-right">
+        <div class="col-sm text-end">
           <button type="submit" class="btn btn-fresca" [disabled]="!editUserForm.form.valid || isLoadingSubmit">
             <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
             Submit

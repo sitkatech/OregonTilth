@@ -27,7 +27,7 @@
             </p>
             <form *ngIf="model && availableCropCropUnitCombinations && availableCropCropUnitCombinations.length > 0" (ngSubmit)="onSubmit(cropYieldInformationForm)" #cropYieldInformationForm="ngForm">
               <div class="row">
-                <div class="form-group col-md-4">
+                <div class="mb-3 col-md-4">
                   <label class="required">Crop, Crop Unit</label>
                   <select name="CropCropUnit" class="form-control" [(ngModel)]="selectedAvailableCropCropUnitCombination" (change)="selectedCropCropUnit($event.target.value)" required>
                     <option [ngValue]="undefined" *ngIf="availableCropCropUnitCombinations && availableCropCropUnitCombinations.length > 0" value=""></option>
@@ -37,21 +37,21 @@
                     </option>
                   </select>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="mb-3 col-md-4">
                   <label class="required" for="">Price Per Crop Unit</label>
                   <input class="form-control" type="number" name="PricePerCropUnit" [(ngModel)]="model.PricePerCropUnit" required>
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-md-4">
+                <div class="mb-3 col-md-4">
                   <label class="required" for="">Harvested Yield Per Standard Bed</label>
                   <input class="form-control" type="number" name="HarvestedYieldPerStandardUnitOfSpace" [(ngModel)]="model.HarvestedYieldPerStandardUnitOfSpace" required>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="mb-3 col-md-4">
                   <label class="required" for="">Marketable Yield Per Standard Bed</label>
                   <input class="form-control" type="number" name="MarketableYieldPerStandardUnitOfSpace" [(ngModel)]="model.MarketableYieldPerStandardUnitOfSpace" required>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="mb-3 col-md-4">
                   <label class="required" for="">Packaging Cost Per Crop Unit</label>
                   <input class="form-control" type="number" name="PackagingCostPerCropUnit" [(ngModel)]="model.PackagingCostPerCropUnit" required>
                 </div>
@@ -60,7 +60,7 @@
                 <div class="col-sm">
                   <i class="fas fa-bolt"></i> Required field
                 </div>
-                <div class="col-sm text-right">
+                <div class="col-sm text-end">
                   <button type="submit" class="btn btn-fresca" [disabled]="!cropYieldInformationForm.form.valid || isLoadingSubmit">
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                     Submit

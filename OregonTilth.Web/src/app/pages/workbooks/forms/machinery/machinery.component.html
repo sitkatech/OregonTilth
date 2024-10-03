@@ -25,17 +25,17 @@
             <form *ngIf=(model) (ngSubmit)="onSubmit(machineryForm)" #machineryForm="ngForm">
               <div class="row">
                 
-                <div class="form-group col-md-8">
+                <div class="mb-3 col-md-8">
                   <label class="required">Machinery</label>
                   <input class="form-control" type="text" name="MachineryName" [(ngModel)]="model.MachineryName" required>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="mb-3 col-md-4">
                   <label class="required">Hourly Machinery Operating Cost</label>
                   <input class="form-control" type="number" name="HourlyMachineryOperatingCost" [(ngModel)]="model.StandardMachineryCost" required>
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-md-12">
+                <div class="mb-3 col-md-12">
                   <label>Notes</label>
                   <input class="form-control" type="text" name="Notes" [(ngModel)]="model.Notes">
                 </div>
@@ -45,7 +45,7 @@
                 <div class="col-sm">
                   <i class="fas fa-bolt"></i> Required field
                 </div>
-                <div class="col-sm text-right">
+                <div class="col-sm text-end">
                   <button type="submit" class="btn btn-fresca" [disabled]="!machineryForm.form.valid || isLoadingSubmit">
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                     Submit

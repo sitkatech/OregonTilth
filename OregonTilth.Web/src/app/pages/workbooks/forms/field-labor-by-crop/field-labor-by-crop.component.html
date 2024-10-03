@@ -25,7 +25,7 @@
             <form *ngIf=(model) (ngSubmit)="onSubmit(fieldLaborActivityForm)" #fieldLaborActivityForm="ngForm">
               <div class="row">
                 
-                <div class="form-group col-md-3">
+                <div class="mb-3 col-md-3">
                   <label class="required">Crop</label>
                   <select name="CropID" class="form-control" [(ngModel)]="model.CropID" required (change)="cropSelectionChanged(model.CropID)">
                     <option value=""></option>
@@ -34,7 +34,7 @@
                     </option>
                   </select>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="mb-3 col-md-6">
                   <label class="required">Field Labor Activity and Labor Types</label>
                   <ng-multiselect-dropdown
                     [settings]="dropdownSettings"
@@ -46,7 +46,7 @@
 
               </div>
               <div class="row">
-                <div class="form-group col-md-12">
+                <div class="mb-3 col-md-12">
                   <label>Notes</label>
                   <input class="form-control" type="text" name="Notes" [(ngModel)]="model.Notes">
                 </div>
@@ -55,7 +55,7 @@
                 <div class="col-sm">
                   <i class="fas fa-bolt"></i> Required field
                 </div>
-                <div class="col-sm text-right">
+                <div class="col-sm text-end">
                   <button type="submit" class="btn btn-fresca" [disabled]="!fieldLaborActivityForm.form.valid || isLoadingSubmit || (!model.FieldStandardTimes || model.FieldStandardTimes.length < 1)">
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                     Add <span *ngIf="model.FieldStandardTimes && model.FieldStandardTimes.length > 0">({{model.FieldStandardTimes.length}})</span>

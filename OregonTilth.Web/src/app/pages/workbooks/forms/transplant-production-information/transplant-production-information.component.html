@@ -31,7 +31,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-md-4">
+                <div class="mb-3 col-md-4">
                   <label class="required">Crop</label>
                   <select name="CropID" class="form-control" [(ngModel)]="model.CropID" required>
                     <option value=""></option>
@@ -40,7 +40,7 @@
                     </option>
                   </select>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="mb-3 col-md-4">
                   <label class="required">Phase</label>
                   <select name="PhaseID" class="form-control" [(ngModel)]="model.PhaseID" required>
                     <option value=""></option>
@@ -49,7 +49,7 @@
                     </option>
                   </select>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="mb-3 col-md-4">
                   <label class="required">TP Tray Type</label>
                   <select name="TransplantProductionTrayTypeID" class="form-control" [(ngModel)]="model.TransplantProductionTrayTypeID" required>
                     <option value=""></option>
@@ -61,19 +61,19 @@
               </div>
 
               <div class="row">
-                <div class="form-group col-md-3">
+                <div class="mb-3 col-md-3">
                   <label class="required">Seeds/Seedlings Per Tray</label>
                   <input class="form-control" type="text" name="SeedsPerTray" [(ngModel)]="model.SeedsPerTray" required>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="mb-3 col-md-3">
                   <label class="required">Percentage Plantable</label>
                   <input class="form-control" type="number" min="0" max="100" name="UsageRate" [(ngModel)]="model.UsageRate" required>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="mb-3 col-md-3">
                   <label class="required">Seed Cost per Cell/Plug</label>
                   <input class="form-control" type="number" min="0" max="100" name="CostPerSeed" [(ngModel)]="model.CostPerSeed" [required]="model.PhaseID == seedingPhaseEnum" [disabled]="model.PhaseID != seedingPhaseEnum">
                 </div>
-                <div class="form-group col-md-3">
+                <div class="mb-3 col-md-3">
                   <label class="required">Crop Specific Input Costs Per Tray</label>
                   <input class="form-control" type="number" min="0" max="100" name="CropSpecificInputCostsPerTray" [(ngModel)]="model.CropSpecificInputCostsPerTray" required>
                 </div>
@@ -83,7 +83,7 @@
                 <div class="col-sm">
                   <i class="fas fa-bolt"></i> Required field
                 </div>
-                <div class="col-sm text-right">
+                <div class="col-sm text-end">
                   <button type="submit" class="btn btn-fresca" [disabled]="!cropForm.form.valid || isLoadingSubmit">
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                     Submit

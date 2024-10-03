@@ -23,7 +23,7 @@
             <div class="col">
                 <form *ngIf=(model) (ngSubmit)="onSubmit(editWorkbookForm)" #editWorkbookForm="ngForm">
                   <div class="row">
-                    <div class="form-group mt-4 col-md-6">
+                    <div class="mb-3 mt-4 col-md-6">
                       <div class="control-label">
                         <label class="required">Workbook Name</label>
                       </div>
@@ -31,7 +31,7 @@
                         <input class="form-control" type="text" name="WorkbookName" [(ngModel)]="model.WorkbookName" required>
                       </div>
                     </div>
-                    <div class="form-group mt-4 col-md-6">
+                    <div class="mb-3 mt-4 col-md-6">
                       <div class="control-label">
                         <label class="required">Average Hourly Wage</label>
                       </div>
@@ -39,7 +39,7 @@
                         <input class="form-control" type="number" name="AverageHourlyWage" [(ngModel)]="model.AverageHourlyWage" required>
                       </div>
                     </div>
-                    <div class="form-group mt-4 col-md-6">
+                    <div class="mb-3 mt-4 col-md-6">
                       <div class="control-label">
                         <label class="required">Standard Bed Length (feet)</label>
                       </div>
@@ -47,7 +47,7 @@
                         <input class="form-control" type="number" name="StandardUnitOfSpaceLength" [(ngModel)]="model.StandardUnitOfSpaceLength" required>
                       </div>
                     </div>
-                    <div class="form-group mt-4 col-md-6">
+                    <div class="mb-3 mt-4 col-md-6">
                       <div class="control-label">
                         <label class="required">Standard Bed Width (feet)</label>
                       </div>
@@ -61,7 +61,7 @@
                       <div class="col-sm">
                         <i class="fas fa-bolt"></i> Required field
                       </div>
-                      <div class="col-sm text-right">
+                      <div class="col-sm text-end">
                         <button type="submit" class="btn btn-fresca" [disabled]="!editWorkbookForm.form.valid || isLoadingSubmit">
                           <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                           Save
