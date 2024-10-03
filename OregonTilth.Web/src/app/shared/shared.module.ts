@@ -6,7 +6,6 @@ import { NotFoundComponent } from './pages';
 import { HeaderNavComponent } from './components';
 import { UnauthenticatedComponent } from './pages/unauthenticated/unauthenticated.component';
 import { SubscriptionInsufficientComponent } from './pages/subscription-insufficient/subscription-insufficient.component';
-import { NgProgressModule } from '@ngx-progressbar/core';
 import { RouterModule } from '@angular/router';
 import { LinkRendererComponent } from './components/ag-grid/link-renderer/link-renderer.component';
 import { ButtonRendererComponent } from './components/ag-grid/button-renderer/button-renderer.component';
@@ -22,6 +21,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { TimeStudyCellRendererComponent } from './components/ag-grid/time-study-cell-renderer/time-study-cell-renderer.component';
 import { NgClickOutsideModule } from 'ng-click-outside2';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 
 @NgModule({
     declarations: [
@@ -44,12 +44,12 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
         CommonModule,
         FormsModule,
         HttpClientModule,
-        NgProgressModule,
         RouterModule,
         NgMultiSelectDropDownModule.forRoot(),
         NgbModule,
+        NgChartsModule,
         NgClickOutsideModule,
-        EditorModule
+        EditorModule,
     ],
     exports: [
         AlertDisplayComponent,

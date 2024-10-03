@@ -65,7 +65,6 @@ import { CropYieldInformationComponent } from './pages/workbooks/forms/crop-yiel
 import { CropSpecificInfoComponent } from './pages/workbooks/forms/crop-specific-info/crop-specific-info.component';
 import { CropCropUnitComponent } from './pages/workbooks/results/crop-crop-unit/crop-crop-unit.component';
 import { LaborHoursComponent } from './pages/workbooks/results/labor-hours/labor-hours.component';
-import { ChartsModule } from 'ng2-charts';
 import { EditableRendererComponent } from './shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { VariableCostsComponent } from './pages/workbooks/results/variable-costs/variable-costs.component';
 import { NgClickOutsideModule } from 'ng-click-outside2';
@@ -144,7 +143,6 @@ export function init_app(appLoadService: AppInitService) {
         AgGridModule,
         NgMultiSelectDropDownModule.forRoot(),
         ReactiveFormsModule,
-        ChartsModule,
         NgClickOutsideModule
     ],
     providers: [
@@ -157,8 +155,10 @@ export function init_app(appLoadService: AppInitService) {
             provide: ErrorHandler,
             useClass: GlobalErrorHandlerService
         },
-        DecimalPipe, CurrencyPipe, DatePipe
+        DecimalPipe, CurrencyPipe, DatePipe,
     ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+

@@ -23,8 +23,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { LaborHoursDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/labor-hours-dashboard-report-dto';
 import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/field-labor-activity-category-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
-import { ChartOptions, ChartType, ChartColor } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { ChartOptions, ChartType, } from 'chart.js';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
 import { VariableCostsDashboardReportDto, ViariableCostForCropPivoted } from 'src/app/shared/models/forms/crop-yield-information/variable-costs-dashboard-report-dto';
@@ -67,7 +66,7 @@ export class VariableCostsComponent implements OnInit {
 
   public variableCostsPivotedForSelectedCrop : ViariableCostForCropPivoted[];
 
-  public pieChartOptions: ChartOptions = {
+  public pieChartOptions: any = {
     responsive: true,
     legend: {
       position: 'top',
@@ -81,7 +80,7 @@ export class VariableCostsComponent implements OnInit {
       },
     }
   };
-  public pieChartLabels: Label[] = [];
+  public pieChartLabels: string[] = [];
   public pieChartData: number[] = [];
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;

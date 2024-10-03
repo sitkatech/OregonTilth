@@ -23,8 +23,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { LaborHoursDashboardReportDto } from 'src/app/shared/models/forms/crop-yield-information/labor-hours-dashboard-report-dto';
 import { FieldLaborActivityCategoryDto } from 'src/app/shared/models/generated/field-labor-activity-category-dto';
 import { LookupTablesService } from 'src/app/services/lookup-tables/lookup-tables.service';
-import { ChartOptions, ChartType, ChartColor } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { ChartOptions, ChartType,  } from 'chart.js';
 import { CropDto } from 'src/app/shared/models/generated/crop-dto';
 import { CropUnitDto } from 'src/app/shared/models/generated/crop-unit-dto';
 
