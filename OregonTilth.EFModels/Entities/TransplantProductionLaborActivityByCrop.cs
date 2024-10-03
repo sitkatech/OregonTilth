@@ -65,7 +65,7 @@ namespace OregonTilth.EFModels.Entities
             return dbContext.TransplantProductionLaborActivityByCrops
                 .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.TransplantProductionInformation).ThenInclude(x => x.Crop)
-                .Include(x => x.TransplantProductionInformation).ThenInclude(x => x.Phase)
+                .Include(x => x.TransplantProductionInformation)
                 .Include(x => x.TransplantProductionInformation).ThenInclude(x => x.Workbook)
                 .Include(x => x.TransplantProductionInformation).ThenInclude(x => x.TransplantProductionTrayType)
                 .Include(x => x.TransplantProductionLaborActivity)

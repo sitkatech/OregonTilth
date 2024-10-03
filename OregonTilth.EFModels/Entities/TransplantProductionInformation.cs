@@ -116,7 +116,6 @@ namespace OregonTilth.EFModels.Entities
             return dbContext.TransplantProductionInformations
                 .Include(x => x.Workbook).ThenInclude(x => x.User)
                 .Include(x => x.Crop).ThenInclude(x => x.Workbook).ThenInclude(x => x.User)
-                .Include(x => x.Phase)
                 .Include(x => x.TransplantProductionTrayType).ThenInclude(x => x.Workbook).ThenInclude(x => x.User)
                 .AsNoTracking();
         }
@@ -178,7 +177,7 @@ namespace OregonTilth.EFModels.Entities
                 .TransplantProductionInformations
                 .Include(x => x.TransplantProductionLaborActivityByCrops)
                 .Include(x => x.Crop)
-                .Include(x => x.Phase)
+                
                 .Include(x => x.TransplantProductionTrayType)
                 .FirstOrDefault(x => x.TransplantProductionInformationID == transplantProductionInformationID);
 
