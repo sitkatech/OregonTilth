@@ -1,14 +1,5 @@
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a routerLink="/pages">Pages</a>
-      </li>
-      <li *ngIf="page" class="breadcrumb-item active" aria-current="page">
-        Edit "{{page.PageName}}"
-      </li>
-    </ol>
-  </nav>
-  <div class="container mt-sm-4" *ngIf="model">
+
+  <div class="container-fluid mt-sm-4" *ngIf="model">
       <h2 class="d-inline-block">{{user?.FullName ||  ((user?.FirstName || user?.LastName) ? (user?.FirstName + ' ' + user?.LastName) : null)}}</h2>
       <app-alert-display></app-alert-display>
     <div class="col-sm-12">

@@ -11,6 +11,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { PageService } from 'src/app/shared/services/page-service';
 import TinyMCEHelpers from 'src/app/shared/helpers/tiny-mce-helpers';
 import { EditorComponent } from '@tinymce/tinymce-angular';
+import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 @Component({
   selector: 'oregontilth-page-edit',
   templateUrl: './page-edit.component.html',
@@ -37,7 +38,8 @@ export class PageEditComponent implements OnInit, AfterViewChecked {
     private authenticationService: AuthenticationService,
     private pageService: PageService,
     private cdr: ChangeDetectorRef,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private breadcrumbService: BreadcrumbsService,
   ) {
   }
 
@@ -71,6 +73,7 @@ export class PageEditComponent implements OnInit, AfterViewChecked {
         this.pageService.listAllPages()
       ).subscribe(([page, allPages]) => {
         this.page = page;
+        this.breadcrumbService.setBreadcrumbs([{label: "Pages", routerLink:['/pages']},{label: `Edit "${page.PageName}"`}]);
         this.allPages = allPages.filter(x => !x.ParentPage);
         
         // var thisPageIndex = allPages.findIndex(x => x.PageID == this.page.PageID)

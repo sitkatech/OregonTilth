@@ -6,25 +6,19 @@ import { filter } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class BreadcrumbsService implements OnInit, OnDestroy{
+export class BreadcrumbsService {
   private navSubscription: Subscription = Subscription.EMPTY;
   private breadcrumbsSubject : BehaviorSubject<IBreadcrumb[]> = new BehaviorSubject<IBreadcrumb[]>([]);
   public breadcrumbs$ = this.breadcrumbsSubject.asObservable();
 
-  constructor(private router: Router) { }
-
-  ngOnInit(): void {
-
+  constructor(private router: Router) { 
     this.navSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(event => {
       this.breadcrumbsSubject.next([]);
     });
-    
   }
-  ngOnDestroy(): void {
-    this.navSubscription.unsubscribe();
-  }
+
 
   setBreadcrumbs(breadcrumbs: IBreadcrumb[]){
     this.breadcrumbsSubject.next(breadcrumbs);

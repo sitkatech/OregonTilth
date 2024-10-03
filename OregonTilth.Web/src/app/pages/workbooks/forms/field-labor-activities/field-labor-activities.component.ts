@@ -86,7 +86,7 @@ export class FieldLaborActivitiesComponent implements OnInit {
 
     forkJoin([this.getWorkbookRequest, this.getFieldLaborActivityCategoriesRequest, this.getFieldLaborActivitiesRequest]).subscribe(([workbook, fieldLaborActivityCategories, fieldLaborActivities]: [WorkbookDto, FieldLaborActivityCategoryDto[], FieldLaborActivityDto[]]) => {
       this.workbook = workbook;
-      this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}]);
+      this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}, {label:'Field Labor Activities'}]);
       this.fieldLaborActivityCategories = fieldLaborActivityCategories;
       this.fieldLaborActivities = fieldLaborActivities;
       this.defineColumnDefs();

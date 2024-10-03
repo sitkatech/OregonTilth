@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 import { RouteHelpers } from '../../services/router-helper/router-helper';
 import { BreadcrumbsService, IBreadcrumb } from '../../services/breadcrumbs.service';
 import { AsyncPipe } from '@angular/common';
@@ -21,7 +21,9 @@ export class BreadcrumbsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.breadcrumbs$ = this.breadcrumbsService.breadcrumbs$;
+    this.breadcrumbs$ = this.breadcrumbsService.breadcrumbs$.pipe(
+      debounceTime(200)
+    );
   }
 
 }
