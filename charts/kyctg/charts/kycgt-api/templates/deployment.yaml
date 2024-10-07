@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kyctg-api.fullname" . }}
+  labels:    
+    tags.datadoghq.com/env: {{ .Values.global.env.name | quote }}
+    tags.datadoghq.com/service: {{ include "kyctg-api.fullname" . }}
+    tags.datadoghq.com/version: {{ .Values.image.tag | quote }}
+    {{- include "kyctg-api.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "kyctg-api.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        ad.datadoghq.com/tags: '{"teamName": "{{ .Values.namespace }}"}'
+        rollme: {{ randAlphaNum 5 | quote }} # roll deployments on every upgrade: https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "kyctg-api.selectorLabels" . | nindent 8 }}
+    spec:
+      volumes:
+      - name: secrets
+        secret:
+          secretName: kyctg-api-secrets
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "kyctg-api.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          # this startup probe checks the app every 10 seconds to see if it's ready to receive traffic
+          # it gives a very generous 5 minutes for the container to startup. As soon as it is successful
+          # the liveness probe kicks into effect.
+          startupProbe: 
+            httpGet:
+              path: /
+              scheme: HTTP
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              scheme: HTTP
+              port: http
+            periodSeconds: 4
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              scheme: HTTP
+              port: http
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep","120"]
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          envFrom:
+          - configMapRef:
+              name: {{ include "kyctg-api.fullname" . }}-configmap
+          volumeMounts:
+          - name: secrets
+            mountPath: /app/secrets
+            readOnly: true
+          # - name: certs
+          #   mountPath: /https
+          #   readOnly: true
+      terminationGracePeriodSeconds: 131
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

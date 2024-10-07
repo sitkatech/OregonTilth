@@ -1,0 +1,135 @@
+global:
+  env:
+    name: "qa"
+    dbServer: "*.database.windows.net"
+    databaseName: "OregonTilthDB"
+    sqlUsername: "SqlAdministrator"
+    aspNetEnvironment: "Staging"
+    emailRedirect: ""
+  domains:
+    web: "kyctg.esa-qa.sitkatech.com"
+  secrets:
+    apiSqlPassword: "passwordhere"
+    sendGridApiKey: "sendgridapikeyhere"
+
+
+kyctg-api:
+  replicaCount: 1
+  image:
+    repository: containersesaqa.azurecr.io/oregontilth/api
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart appVersion.
+  nameOverride: ""
+  fullnameOverride: ""
+  namespace: jackalope
+  labels:
+    app: oregontilth-api
+  resources: 
+    requests:
+      memory: "512Mi"
+    limits:
+      memory: "1024Mi"
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+  podAnnotations: {}
+  podSecurityContext: {}
+    # fsGroup: 2000
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+  service:
+    type: ClusterIP
+    port: 80
+  ingress:
+    enabled: true
+    className: "azure-application-gateway"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+      acme.cert-manager.io/http01-edit-in-place: "true"
+      appgw.ingress.kubernetes.io/ssl-redirect: "true"
+      cert-manager.io/issue-temporary-certificate: "true"
+      appgw.ingress.kubernetes.io/connection-draining: "true"
+      appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
+    tls: true
+    path: /
+    hosts:
+      - "kyctg-api.esa-qa.sitkatech.com"
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+  nodeSelector: 
+    agentpool: appnodepool
+  tolerations: []
+  affinity: {}
+  
+
+kyctg-web:
+  replicaCount: 1
+  image:
+    repository: containersesaqa.azurecr.io/oregontilth/web
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart appVersion.
+  nameOverride: ""
+  fullnameOverride: ""
+  namespace: jackalope
+  labels:
+    app: kyctg-web
+  resources: 
+    requests:
+      memory: "256Mi"
+    limits:
+      memory: "512Mi"
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+  podAnnotations: {}
+  podSecurityContext: {}
+    # fsGroup: 2000
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+  service:
+    type: ClusterIP
+    port: 80
+  ingress:
+    enabled: true
+    className: "azure-application-gateway"
+    annotations:
+      appgw.ingress.kubernetes.io/ssl-redirect: "true"
+      appgw.ingress.kubernetes.io/connection-draining: "true"
+      appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
+      cert-manager.io/cluster-issuer: letsencrypt
+      acme.cert-manager.io/http01-edit-in-place: "true"
+      cert-manager.io/issue-temporary-certificate: "true"
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+  nodeSelector: 
+    agentpool: appnodepool
+  tolerations: []
+  affinity: {}
