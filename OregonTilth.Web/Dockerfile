@@ -27,8 +27,6 @@ RUN dotnet build ./OregonTilth.Web/OregonTilth.Web.csproj -c Release -o /app
 WORKDIR /src/OregonTilth.Web/
 
 RUN npm cache clean --force
-RUN npm uninstall   -g angular-cli
-RUN npm install     -g @angular/cli@13.3.11
 RUN npm ci
 
 ARG env
