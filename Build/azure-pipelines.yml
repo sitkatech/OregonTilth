@@ -106,6 +106,8 @@ stages:
                       includeLatestTag: true
 
     - stage: BuildTerraform
+      dependsOn: BuildDB
+      condition: in(dependencies.BuildDB.result, 'Succeeded')
       displayName: Terraform Plan
       jobs:
           - job: Terraform
