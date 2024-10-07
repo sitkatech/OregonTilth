@@ -57,10 +57,6 @@ export class DynamicEnvironment {
         return window.config.leadOrganizationLongName;
     }
 
-    public get leadOrganizationShortName(){
-        return window.config.leadOrganizationShortName;
-    }
-
     public get leadOrganizationHomeUrl(){
         return window.config.leadOrganizationHomeUrl;
     }

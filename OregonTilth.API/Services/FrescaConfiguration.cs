@@ -13,7 +13,6 @@
         public string PlatformLongName { get; set; }
         public string PlatformShortName { get; set; }
         public string LeadOrganizationLongName { get; set; }
-        public string LeadOrganizationShortName { get; set; }
         public string LeadOrganizationHomeUrl { get; set; }
         public string LeadOrganizationEmail { get; set; }
     }

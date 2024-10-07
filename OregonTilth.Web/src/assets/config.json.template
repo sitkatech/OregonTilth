@@ -11,11 +11,9 @@
     
     "platformLongName": [TODO],
     "platformShortName": [TODO],
-    "leadOrganizationShortName": [TODO], 
     "leadOrganizationLongName": [TODO], 
     "leadOrganizationHomeUrl": [TODO],
 
-    "leadOrganizationLogoFilename": [TODO],
   
     "keystoneAuthConfiguration": {
       "clientId": [TODO],
