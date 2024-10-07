@@ -478,6 +478,7 @@ stages:
                                       global.env.aspNetEnvironment="$(aspNetEnvironment)"
                                       global.env.emailRedirect="$(emailRedirect)"
                                       global.domains.web="$(domainWeb)"
+                                      global.domains.api="$(domainApi)"
                                       global.env.name="$(Environment)"
                                       global.env.dbServer=$(kv-dbServerName).database.windows.net
                                       global.env.databaseName=$(databaseName)

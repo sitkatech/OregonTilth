@@ -8,6 +8,7 @@ global:
     emailRedirect: ""
   domains:
     web: "kyctg.esa-qa.sitkatech.com"
+    api: "kyctg-api.esa-qa.sitkatech.com"
   secrets:
     apiSqlPassword: "passwordhere"
     sendGridApiKey: "sendgridapikeyhere"

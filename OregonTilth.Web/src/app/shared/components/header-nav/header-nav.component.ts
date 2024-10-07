@@ -100,6 +100,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
     }
 
     public leadOrganizationLogoSrc(): string{
-        return `assets/main/logos/${environment.leadOrganizationLogoFilename}`;
+        return `assets/main/logos/oregon-tilth-logo.png`;
     }
 }

@@ -86,8 +86,6 @@ namespace Fresca.Web
             LeadOrganizationShortName = configuration["LeadOrganizationShortName"];
             LeadOrganizationLongName = configuration["LeadOrganizationLongName"];
             LeadOrganizationHomeUrl = configuration["LeadOrganizationHomeUrl"];
-            FaviconFilename = configuration["FaviconFilename"];
-            LeadOrganizationLogoFilename = configuration["LeadOrganizationLogoFilename"];
         }
 
         [JsonProperty("production")]
@@ -118,10 +116,6 @@ namespace Fresca.Web
         public string LeadOrganizationLongName { get; set; }
         [JsonProperty("leadOrganizationHomeUrl")]
         public string LeadOrganizationHomeUrl { get; set; }
-        [JsonProperty("faviconFilename")]
-        public string FaviconFilename {get; set;}
-        [JsonProperty("leadOrganizationLogoFilename")]
-        public string LeadOrganizationLogoFilename { get; set;}
         
     }
 
