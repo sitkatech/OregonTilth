@@ -17,7 +17,9 @@ using Serilog;
 using System;
 using System.Net.Http;
 using OregonTilth.API.Services.Logging;
+using OregonTilth.API.Services.SitkaSmtpClientService;
 using ILogger = Serilog.ILogger;
+using SendGrid.Extensions.DependencyInjection;
 
 namespace OregonTilth.API
 {
@@ -90,8 +92,8 @@ namespace OregonTilth.API
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient(s => new KeystoneService(s.GetService<IHttpContextAccessor>(), keystoneHost));
-
-            services.AddSingleton(x => new SitkaSmtpClientService(frescaConfiguration));
+            services.AddSendGrid(options => { options.ApiKey = frescaConfiguration.SendGridApiKey; });
+            services.AddSingleton<SitkaSmtpClientService>();
 
             services.AddHealthChecks().AddDbContextCheck<OregonTilthDbContext>();
 
