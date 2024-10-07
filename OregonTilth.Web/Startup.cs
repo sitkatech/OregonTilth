@@ -136,7 +136,7 @@ namespace Fresca.Web
             SessionChecksEnabled = bool.Parse(configuration["Keystone_SessionCheckEnabled"]);
             LogoutUrl = configuration["Keystone_LogoutUrl"];
             PostLogoutRedirectUri = configuration["Keystone_PostLogoutRedirectUri"];
-            WaitForTokenInMsec = int.Parse(configuration["WaitForTokenInMsec"]);
+            WaitForTokenInMsec = int.Parse(configuration["Keystone_WaitForTokenInMsec"]);
             ResponseType = configuration["Keystone_ResponseType"];
             DisablePKCE = bool.Parse(configuration["Keystone_DisablePKCE"]);
         }
