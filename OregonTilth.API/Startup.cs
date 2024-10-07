@@ -16,6 +16,7 @@ using OregonTilth.EFModels.Entities;
 using Serilog;
 using System;
 using System.Net.Http;
+using OregonTilth.API.Services.Logging;
 using ILogger = Serilog.ILogger;
 
 namespace OregonTilth.API
@@ -91,7 +92,9 @@ namespace OregonTilth.API
             services.AddTransient(s => new KeystoneService(s.GetService<IHttpContextAccessor>(), keystoneHost));
 
             services.AddSingleton(x => new SitkaSmtpClientService(frescaConfiguration));
-            
+
+            services.AddHealthChecks().AddDbContextCheck<OregonTilthDbContext>();
+
             services.AddScoped<HierarchyContext>();
             services.AddScoped(s => s.GetService<IHttpContextAccessor>().HttpContext);
             services.AddScoped(s => UserContext.GetUserFromHttpContext(s.GetService<OregonTilthDbContext>(), s.GetService<IHttpContextAccessor>().HttpContext));
@@ -99,9 +102,8 @@ namespace OregonTilth.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime applicationLifetime, ILoggerFactory loggerFactory, ILogger logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            loggerFactory.AddSerilog(logger);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -113,6 +115,11 @@ namespace OregonTilth.API
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseSerilogRequestLogging(opts =>
+            {
+                opts.EnrichDiagnosticContext = LogHelper.EnrichFromRequest;
+                opts.GetLevel = LogHelper.CustomGetLevel;
+            });
             app.UseRouting();
             app.UseCors(policy =>
             {
@@ -130,6 +137,7 @@ namespace OregonTilth.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/healthz");
             });
 
             
