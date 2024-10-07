@@ -6,6 +6,8 @@ using System;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace OregonTilth.API
 {
@@ -15,6 +17,7 @@ namespace OregonTilth.API
         {
             var host = new HostBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseKestrel(serverOptions =>
@@ -55,6 +58,13 @@ namespace OregonTilth.API
                     {
                         config.AddJsonFile(secretPath);
                     }
+                })
+                .ConfigureLogging(logging => { logging.ClearProviders(); })
+                .UseSerilog((context, services, configuration) =>
+                {
+                    configuration
+                        .Enrich.FromLogContext()
+                        .ReadFrom.Configuration(context.Configuration);
                 })
                 .Build();
 

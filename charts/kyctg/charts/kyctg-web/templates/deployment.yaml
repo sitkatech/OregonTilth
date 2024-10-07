@@ -25,10 +25,6 @@ spec:
       labels:
         {{- include "kyctg-web.selectorLabels" . | nindent 8 }} 
     spec:
-      # volumes:
-      # - name: secrets
-      #   secret:
-      #     secretName: web-secrets
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
