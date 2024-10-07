@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using OregonTilth.API.Models;
+using OregonTilth.API.Services.SitkaSmtpClientService;
 using OregonTilth.Models.DataTransferObjects;
 using User = OregonTilth.EFModels.Entities.User;
 
@@ -280,7 +281,7 @@ As an administrator of the {_frescaConfiguration.PlatformShortName}, you can ass
             mailMessage.IsBodyHtml = true;
             mailMessage.From = smtpClient.GetDefaultEmailFrom();
             mailMessage.ReplyToList.Add(!String.IsNullOrWhiteSpace(_frescaConfiguration.LeadOrganizationEmail) ? _frescaConfiguration.LeadOrganizationEmail : "donotreply@sitkatech.com");
-            smtpClient.Send(mailMessage);
+            smtpClient.SendEmailMessage(mailMessage).Wait();
         }
     }
 }
