@@ -1,8 +1,6 @@
-version: '3.5'
-
 services:
-  oregontilth.api:
-    image: oregontilth/api
-    build:
-      context: ..
-      dockerfile: OregonTilth.API/Dockerfile
+    oregontilth.api:
+        image: oregontilth/api
+        build:
+            context: ..
+            dockerfile: OregonTilth.API/Dockerfile

@@ -1,6 +1,4 @@
-version: '3.5'
-
 services:
-  oregontilth.web:  
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+    oregontilth.web:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development

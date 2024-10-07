@@ -1,13 +1,11 @@
-version: '3.5'
-
 services:
-  oregontilth.api:
-    image: oregontilth/api
-    labels:
-      - "com.microsoft.visualstudio.targetoperatingsystem=linux"
-    build:
-      args:
-        source: ${DOCKER_BUILD_SOURCE}
-    ports:
-      - "8887:80"
-      - "8886:443"
+    oregontilth.api:
+        image: oregontilth/api
+        labels:
+            - "com.microsoft.visualstudio.targetoperatingsystem=linux"
+        build:
+            args:
+                source: ${DOCKER_BUILD_SOURCE}
+        ports:
+            - "8887:80"
+            - "8886:443"
