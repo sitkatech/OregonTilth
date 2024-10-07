@@ -341,153 +341,153 @@ stages:
                                   desiredSqlPassword: "$(SQL_API_PASSWORD)"
                                   roles: "db_datawriter,db_datareader"
 
-    # - stage: DeployHelm
-    #   displayName: Deploy Helm
-    #   dependsOn:
-    #       - DeployDB
-    #       - DeployTerraform
-    #   condition: |
-    #       and
-    #       (
-    #         in(dependencies.DeployDB.result, 'Succeeded', 'SucceededWithIssues'),
-    #         in(dependencies.DeployTerraform.result, 'Succeeded', 'SucceededWithIssues'),
-    #         eq(variables['deploy'], 'true')
-    #       )
-    #   jobs:
-    #       - deployment: Helm
-    #         pool:
-    #             vmImage: "ubuntu-latest"
-    #         variables:
-    #             APPLICATION_STORAGE_ACCOUNT_CONNECTION_STRING: $[ stageDependencies.DeployTerraform.Terraform.outputs['Terraform.Bash.APPLICATION_STORAGE_ACCOUNT_CONNECTION_STRING'] ]
-    #             SQL_API_PASSWORD: $[ stageDependencies.DeployTerraform.Terraform.outputs['Terraform.Bash.SQL_API_PASSWORD'] ]
-    #             RABBIT_MQ_PASS: $[ stageDependencies.DeployTerraform.Terraform.outputs['Terraform.Bash.RABBIT_MQ_PASS'] ]
-    #         # creates an environment if it doesn't exist
-    #         environment: $(Environment)
-    #         strategy:
-    #             runOnce:
-    #                 preDeploy:
-    #                     steps:
-    #                         - task: AzureKeyVault@2
-    #                           inputs:
-    #                               azureSubscription: "$(azureSubscription)"
-    #                               KeyVaultName: "$(spokeKeyVaultName)"
-    #                               SecretsFilter: "kv-AtlassianClientSecret"
-    #                               RunAsPreJob: true
+    - stage: DeployHelm
+      displayName: Deploy Helm
+      dependsOn:
+          - DeployDB
+          - DeployTerraform
+      condition: |
+          and
+          (
+            in(dependencies.DeployDB.result, 'Succeeded', 'SucceededWithIssues'),
+            in(dependencies.DeployTerraform.result, 'Succeeded', 'SucceededWithIssues'),
+            eq(variables['deploy'], 'true')
+          )
+      jobs:
+          - deployment: Helm
+            pool:
+                vmImage: "ubuntu-latest"
+            variables:
+                APPLICATION_STORAGE_ACCOUNT_CONNECTION_STRING: $[ stageDependencies.DeployTerraform.Terraform.outputs['Terraform.Bash.APPLICATION_STORAGE_ACCOUNT_CONNECTION_STRING'] ]
+                SQL_API_PASSWORD: $[ stageDependencies.DeployTerraform.Terraform.outputs['Terraform.Bash.SQL_API_PASSWORD'] ]
+                RABBIT_MQ_PASS: $[ stageDependencies.DeployTerraform.Terraform.outputs['Terraform.Bash.RABBIT_MQ_PASS'] ]
+            # creates an environment if it doesn't exist
+            environment: $(Environment)
+            strategy:
+                runOnce:
+                    preDeploy:
+                        steps:
+                            - task: AzureKeyVault@2
+                              inputs:
+                                  azureSubscription: "$(azureSubscription)"
+                                  KeyVaultName: "$(spokeKeyVaultName)"
+                                  SecretsFilter: "kv-AtlassianClientSecret"
+                                  RunAsPreJob: true
 
-    #                         - template: azure-pipelines/templates/azure-jira-update/update-jira.yml@BuildTemplates
-    #                           parameters:
-    #                               JiraState: "Pending"
-    #                               JiraEnvironment: "$(aspNetEnvironment)"
-    #                               AtlassianClientSecret: "$(kv-AtlassianClientSecret)"
-    #                 on:
-    #                     failure:
-    #                         steps:
-    #                             - task: AzureKeyVault@2
-    #                               inputs:
-    #                                   azureSubscription: "$(azureSubscription)"
-    #                                   KeyVaultName: "$(spokeKeyVaultName)"
-    #                                   SecretsFilter: "kv-AtlassianClientSecret"
-    #                                   RunAsPreJob: true
+                            - template: azure-pipelines/templates/azure-jira-update/update-jira.yml@BuildTemplates
+                              parameters:
+                                  JiraState: "Pending"
+                                  JiraEnvironment: "$(aspNetEnvironment)"
+                                  AtlassianClientSecret: "$(kv-AtlassianClientSecret)"
+                    on:
+                        failure:
+                            steps:
+                                - task: AzureKeyVault@2
+                                  inputs:
+                                      azureSubscription: "$(azureSubscription)"
+                                      KeyVaultName: "$(spokeKeyVaultName)"
+                                      SecretsFilter: "kv-AtlassianClientSecret"
+                                      RunAsPreJob: true
 
-    #                             - template: azure-pipelines/templates/azure-jira-update/update-jira.yml@BuildTemplates
-    #                               parameters:
-    #                                   JiraState: "Failed"
-    #                                   JiraEnvironment: "$(aspNetEnvironment)"
-    #                                   AtlassianClientSecret: "$(kv-AtlassianClientSecret)"
-    #                     success:
-    #                         steps:
-    #                             - task: AzureKeyVault@2
-    #                               inputs:
-    #                                   azureSubscription: "$(azureSubscription)"
-    #                                   KeyVaultName: "$(spokeKeyVaultName)"
-    #                                   SecretsFilter: "kv-AtlassianClientSecret"
-    #                                   RunAsPreJob: true
+                                - template: azure-pipelines/templates/azure-jira-update/update-jira.yml@BuildTemplates
+                                  parameters:
+                                      JiraState: "Failed"
+                                      JiraEnvironment: "$(aspNetEnvironment)"
+                                      AtlassianClientSecret: "$(kv-AtlassianClientSecret)"
+                        success:
+                            steps:
+                                - task: AzureKeyVault@2
+                                  inputs:
+                                      azureSubscription: "$(azureSubscription)"
+                                      KeyVaultName: "$(spokeKeyVaultName)"
+                                      SecretsFilter: "kv-AtlassianClientSecret"
+                                      RunAsPreJob: true
 
-    #                             - template: azure-pipelines/templates/azure-jira-update/update-jira.yml@BuildTemplates
-    #                               parameters:
-    #                                   JiraState: "Successful"
-    #                                   JiraEnvironment: "$(aspNetEnvironment)"
-    #                                   AtlassianClientSecret: "$(kv-AtlassianClientSecret)"
-    #                 deploy:
-    #                     steps:
-    #                         - task: AzureKeyVault@2
-    #                           inputs:
-    #                               azureSubscription: "$(azureSubscription)"
-    #                               KeyVaultName: "$(spokeKeyVaultName)"
-    #                               SecretsFilter: "*"
-    #                               RunAsPreJob: true
+                                - template: azure-pipelines/templates/azure-jira-update/update-jira.yml@BuildTemplates
+                                  parameters:
+                                      JiraState: "Successful"
+                                      JiraEnvironment: "$(aspNetEnvironment)"
+                                      AtlassianClientSecret: "$(kv-AtlassianClientSecret)"
+                    deploy:
+                        steps:
+                            - task: AzureKeyVault@2
+                              inputs:
+                                  azureSubscription: "$(azureSubscription)"
+                                  KeyVaultName: "$(spokeKeyVaultName)"
+                                  SecretsFilter: "*"
+                                  RunAsPreJob: true
 
-    #                         - template: azure-pipelines/templates/azure-jira-update/update-jira.yml@BuildTemplates
-    #                           parameters:
-    #                               JiraState: "InProgress"
-    #                               JiraEnvironment: "$(aspNetEnvironment)"
-    #                               AtlassianClientSecret: "$(kv-AtlassianClientSecret)"
+                            - template: azure-pipelines/templates/azure-jira-update/update-jira.yml@BuildTemplates
+                              parameters:
+                                  JiraState: "InProgress"
+                                  JiraEnvironment: "$(aspNetEnvironment)"
+                                  AtlassianClientSecret: "$(kv-AtlassianClientSecret)"
 
-    #                         - download: current
-    #                           artifact: ChartArtifacts
+                            - download: current
+                              artifact: ChartArtifacts
 
-    #                         - task: HelmInstaller@0
-    #                           displayName: "Install Helm 3.8.0"
-    #                           inputs:
-    #                               helmVersion: 3.8.0
-    #                               installKubectl: true
+                            - task: HelmInstaller@0
+                              displayName: "Install Helm 3.8.0"
+                              inputs:
+                                  helmVersion: 3.8.0
+                                  installKubectl: true
 
-    #                         - task: Kubernetes@1
-    #                           displayName: "kubectl login"
-    #                           inputs:
-    #                               connectionType: Azure Resource Manager
-    #                               azureSubscriptionEndpoint: "$(azureSubscription)"
-    #                               azureResourceGroup: "$(kv-azureClusterResourceGroup)"
-    #                               kubernetesCluster: "$(kv-kubernetesCluster)"
-    #                               command: login
+                            - task: Kubernetes@1
+                              displayName: "kubectl login"
+                              inputs:
+                                  connectionType: Azure Resource Manager
+                                  azureSubscriptionEndpoint: "$(azureSubscription)"
+                                  azureResourceGroup: "$(kv-azureClusterResourceGroup)"
+                                  kubernetesCluster: "$(kv-kubernetesCluster)"
+                                  command: login
 
-    #                         # - task: HelmDeploy@0
-    #                         #   displayName: 'helm repo add rabbitmq'
-    #                         #   inputs:
-    #                         #     connectionType: Azure Resource Manager
-    #                         #     azureSubscription: '$(azureSubscription)'
-    #                         #     azureResourceGroup: '$(kv-azureClusterResourceGroup)'
-    #                         #     kubernetesCluster: '$(kv-kubernetesCluster)'
-    #                         #     command: 'repo'
-    #                         #     arguments: 'azure-marketplace https://marketplace.azurecr.io/helm/v1/repo'
+                            # - task: HelmDeploy@0
+                            #   displayName: 'helm repo add rabbitmq'
+                            #   inputs:
+                            #     connectionType: Azure Resource Manager
+                            #     azureSubscription: '$(azureSubscription)'
+                            #     azureResourceGroup: '$(kv-azureClusterResourceGroup)'
+                            #     kubernetesCluster: '$(kv-kubernetesCluster)'
+                            #     command: 'repo'
+                            #     arguments: 'azure-marketplace https://marketplace.azurecr.io/helm/v1/repo'
 
-    #                         - task: HelmDeploy@0
-    #                           displayName: "helm dependency update"
-    #                           inputs:
-    #                               connectionType: Azure Resource Manager
-    #                               azureSubscription: "$(azureSubscription)"
-    #                               azureResourceGroup: "$(kv-azureClusterResourceGroup)"
-    #                               kubernetesCluster: "$(kv-kubernetesCluster)"
-    #                               command: "dependency"
-    #                               arguments: "update $(Pipeline.Workspace)/ChartArtifacts/chart"
+                            - task: HelmDeploy@0
+                              displayName: "helm dependency update"
+                              inputs:
+                                  connectionType: Azure Resource Manager
+                                  azureSubscription: "$(azureSubscription)"
+                                  azureResourceGroup: "$(kv-azureClusterResourceGroup)"
+                                  kubernetesCluster: "$(kv-kubernetesCluster)"
+                                  command: "dependency"
+                                  arguments: "update $(Pipeline.Workspace)/ChartArtifacts/chart"
 
-    #                         - task: HelmDeploy@0
-    #                           displayName: "helm upgrade kyctg"
-    #                           inputs:
-    #                               connectionType: Azure Resource Manager
-    #                               azureSubscription: "$(azureSubscription)"
-    #                               azureResourceGroup: "$(kv-azureClusterResourceGroup)"
-    #                               kubernetesCluster: "$(kv-kubernetesCluster)"
-    #                               namespace: "$(team)"
-    #                               arguments: "--create-namespace"
-    #                               command: upgrade
-    #                               chartType: FilePath
-    #                               chartPath: "$(Pipeline.Workspace)/ChartArtifacts/chart"
-    #                               releaseName: "kyctg"
-    #                               overrideValues: |
-    #                                   global.env.aspNetEnvironment="$(aspNetEnvironment)"
-    #                                   global.env.emailRedirect="$(emailRedirect)"
-    #                                   global.domains.web="$(domainWeb)"
-    #                                   global.env.name="$(Environment)"
-    #                                   global.env.dbServer=$(kv-dbServerName).database.windows.net
-    #                                   global.env.databaseName=$(databaseName)
-    #                                   global.env.sqlUsername=$(sqlApiUsername)
-    #                                   global.secrets.apiSqlPassword=$(SQL_API_PASSWORD)
-    #                                   global.secrets.sendGridApiKey="$(kv-sendGridApiKey)"
-    #                                   kyctg-api.image.repository=$(kv-containerRegistry)/kyctg/api
-    #                                   kyctg-api.image.tag=$(Build.BuildNumber)-$(environment)
-    #                                   kyctg-api.ingress.hosts[0]=$(domainApi)
-    #                                   kyctg-web.image.repository=$(kv-containerRegistry)/kyctg/web
-    #                                   kyctg-web.image.tag=$(Build.BuildNumber)-$(environment)
-    #                                   kyctg-web.ingress.hosts[0]=$(domainWeb)
-    #                               force: false
+                            - task: HelmDeploy@0
+                              displayName: "helm upgrade kyctg"
+                              inputs:
+                                  connectionType: Azure Resource Manager
+                                  azureSubscription: "$(azureSubscription)"
+                                  azureResourceGroup: "$(kv-azureClusterResourceGroup)"
+                                  kubernetesCluster: "$(kv-kubernetesCluster)"
+                                  namespace: "$(team)"
+                                  arguments: "--create-namespace"
+                                  command: upgrade
+                                  chartType: FilePath
+                                  chartPath: "$(Pipeline.Workspace)/ChartArtifacts/chart"
+                                  releaseName: "kyctg"
+                                  overrideValues: |
+                                      global.env.aspNetEnvironment="$(aspNetEnvironment)"
+                                      global.env.emailRedirect="$(emailRedirect)"
+                                      global.domains.web="$(domainWeb)"
+                                      global.env.name="$(Environment)"
+                                      global.env.dbServer=$(kv-dbServerName).database.windows.net
+                                      global.env.databaseName=$(databaseName)
+                                      global.env.sqlUsername=$(sqlApiUsername)
+                                      global.secrets.apiSqlPassword=$(SQL_API_PASSWORD)
+                                      global.secrets.sendGridApiKey="$(kv-sendGridApiKey)"
+                                      kyctg-api.image.repository=$(kv-containerRegistry)/oregontilth/api
+                                      kyctg-api.image.tag=$(Build.BuildNumber)-$(environment)
+                                      kyctg-api.ingress.hosts[0]=$(domainApi)
+                                      kyctg-web.image.repository=$(kv-containerRegistry)/oregontilth/web
+                                      kyctg-web.image.tag=$(Build.BuildNumber)-$(environment)
+                                      kyctg-web.ingress.hosts[0]=$(domainWeb)
+                                  force: false
