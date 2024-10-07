@@ -3,17 +3,17 @@ kind: ConfigMap
 metadata:
   name: {{ include "kyctg-web.fullname" . }}-configmap
 data:
-  ASPNETCORE_ENVIRONMENT: "Staging"
-  production: {{ ternary "true" "false" eq .Values.global.env.aspNetEnvironment "Production" }}
-  staging: {{ ternary "false" "true" eq .Values.global.env.aspNetEnvironment "Production" }}
+  ASPNETCORE_ENVIRONMENT: {{ eq .Values.global.env.aspNetEnvironment "Production" | ternary "Production" "Staging"  }}
+  production: {{ eq .Values.global.env.aspNetEnvironment "Production" | ternary "true" "false" }}
+  staging: {{ eq .Values.global.env.aspNetEnvironment "Production" | ternary "false" "true" }}
   dev: "false"
   mainAppApiUrl: "https://{{ .Values.global.domains.api }}"
   keystone_clientId: "Splash"
-  keystone_issuer: "https://identity{{ ternary "" "-qa" eq .Values.global.env.aspNetEnvironment "Production" }}.sitkatech.com"
+  keystone_issuer: "https://identity{{ eq .Values.global.env.aspNetEnvironment "Production" | ternary "" "-qa" }}.sitkatech.com"
   keystone_redirectUriRelative: "/signin-oidc"
   keystone_scope: "openid profile offline_access keystone"
   keystone_sessionCheckEnabled: "false"
-  keystone_logoutUrl: "https://identity{{ ternary "" "-qa" eq .Values.global.env.aspNetEnvironment "Production" }}.sitkatech.com/account/logout"
+  keystone_logoutUrl: "https://identity{{eq .Values.global.env.aspNetEnvironment "Production" | ternary "" "-qa" }}.sitkatech.com/account/logout"
   keystone_postLogoutRedirectUri: "/"
   keystone_waitForTokenInMsec: "500"
   keystone_responseType: "code"
