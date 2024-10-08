@@ -241,7 +241,7 @@ export class CropSpecificInfoComponent implements OnInit {
         resizable: true
       }, 
       {
-        headerName: 'Drip Tape Rows Per Standard Width', 
+        headerName: 'Drip Tape Rows per Standard Bed', 
         field:'DripTapeRowsPerStandardWidth',
         valueGetter: function(params:any) {
           return params.data.DripTapeRowsPerStandardWidth
@@ -266,7 +266,7 @@ export class CropSpecificInfoComponent implements OnInit {
       },
      
       {
-        headerName: 'Rows Per Standard Width', 
+        headerName: 'Rows Per Standard Bed', 
         field:'RowsPerStandardWidth',
         valueGetter: function(params:any) {
           return params.data.RowsPerStandardWidth
@@ -290,7 +290,7 @@ export class CropSpecificInfoComponent implements OnInit {
         resizable: true
       },
       {
-        headerName: 'Seed Cost Per Standard Unit of Space', 
+        headerName: 'Seed Cost per Standard Bed', 
         field:'SeedCostPerStandardUnitOfSpace',
         valueGetter: function(params:any) {
           if(params.data.TpOrDsType.TpOrDsTypeID == TpOrDsTypeEnum.DirectSeeded) {

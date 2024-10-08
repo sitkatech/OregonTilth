@@ -46,9 +46,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Packaging Cost Per Crop Unit", Message = "Packaging Cost Per Crop Unit must be greater than or equal to zero." });
             }
 
-            if (cropYieldInformationCreateDto.PricePerCropUnit <= 0)
+            if (cropYieldInformationCreateDto.PricePerCropUnit < 0)
             {
-                result.Add(new ErrorMessage() { Type = "Price Per Crop Unit", Message = "Price Per Crop Unit must be greater than zero." });
+                result.Add(new ErrorMessage() { Type = "Price Per Crop Unit", Message = "Price Per Crop Unit must be greater than or equal to zero." });
             }
 
 
@@ -85,7 +85,7 @@ namespace OregonTilth.EFModels.Entities
             }
             if (cropYieldInformationDto.PricePerCropUnit <= 0)
             {
-                result.Add(new ErrorMessage() { Type = "Price Per Crop Unit", Message = "Price Per Crop Unit must be greater than zero." });
+                result.Add(new ErrorMessage() { Type = "Price Per Crop Unit", Message = "Price Per Crop Unit must be greater than or equal to zero." });
             }
 
 

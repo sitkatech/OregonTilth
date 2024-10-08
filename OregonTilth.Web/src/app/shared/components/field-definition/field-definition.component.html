@@ -29,8 +29,7 @@
             <div *ngIf="!showEditButton()" [innerHtml]="fieldDefinition.FieldDefinitionValue"></div>
         </ng-container>
         <div *ngIf="isEditing">
-            <editor [(ngModel)]="editedContent"></editor>
-
+            <editor #tinyMceEditor [init]="tinyMceEditor | tinyMceConfig" [(ngModel)]="editedContent"></editor>
             <div style="float:right;">
                 <button type="button" class="btn btn-sm btn-fresca mt-1 mr-1 mb-1" (click)="saveEdit()">Save</button>
                 <button type="button" class="btn btn-sm btn-secondary mt-1 mb-1" (click)="cancelEdit(p)">Cancel</button>

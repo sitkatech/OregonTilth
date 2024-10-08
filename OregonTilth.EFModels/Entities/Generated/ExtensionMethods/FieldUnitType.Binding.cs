@@ -41,17 +41,19 @@ namespace OregonTilth.EFModels.Entities
         /// <summary>
         /// Protected constructor only for use in instantiating the set of static lookup values that match database
         /// </summary>
-        protected FieldUnitType(int fieldUnitTypeID, string fieldUnitTypeName, string fieldUnitTypeDisplayName)
+        protected FieldUnitType(int fieldUnitTypeID, string fieldUnitTypeName, string fieldUnitTypeDisplayName, bool enabled)
         {
             FieldUnitTypeID = fieldUnitTypeID;
             FieldUnitTypeName = fieldUnitTypeName;
             FieldUnitTypeDisplayName = fieldUnitTypeDisplayName;
+            Enabled = enabled;
         }
 
         [Key]
         public int FieldUnitTypeID { get; private set; }
         public string FieldUnitTypeName { get; private set; }
         public string FieldUnitTypeDisplayName { get; private set; }
+        public bool Enabled { get; private set; }
         [NotMapped]
         public int PrimaryKey { get { return FieldUnitTypeID; } }
 
@@ -134,37 +136,37 @@ namespace OregonTilth.EFModels.Entities
 
     public partial class FieldUnitTypeBedFeet : FieldUnitType
     {
-        private FieldUnitTypeBedFeet(int fieldUnitTypeID, string fieldUnitTypeName, string fieldUnitTypeDisplayName) : base(fieldUnitTypeID, fieldUnitTypeName, fieldUnitTypeDisplayName) {}
-        public static readonly FieldUnitTypeBedFeet Instance = new FieldUnitTypeBedFeet(1, @"BedFeet", @"Bed Feet");
+        private FieldUnitTypeBedFeet(int fieldUnitTypeID, string fieldUnitTypeName, string fieldUnitTypeDisplayName, bool enabled) : base(fieldUnitTypeID, fieldUnitTypeName, fieldUnitTypeDisplayName, enabled) {}
+        public static readonly FieldUnitTypeBedFeet Instance = new FieldUnitTypeBedFeet(1, @"BedFeet", @"Bed Feet", true);
     }
 
     public partial class FieldUnitTypeRowFeet : FieldUnitType
     {
-        private FieldUnitTypeRowFeet(int fieldUnitTypeID, string fieldUnitTypeName, string fieldUnitTypeDisplayName) : base(fieldUnitTypeID, fieldUnitTypeName, fieldUnitTypeDisplayName) {}
-        public static readonly FieldUnitTypeRowFeet Instance = new FieldUnitTypeRowFeet(2, @"RowFeet", @"Row Feet");
+        private FieldUnitTypeRowFeet(int fieldUnitTypeID, string fieldUnitTypeName, string fieldUnitTypeDisplayName, bool enabled) : base(fieldUnitTypeID, fieldUnitTypeName, fieldUnitTypeDisplayName, enabled) {}
+        public static readonly FieldUnitTypeRowFeet Instance = new FieldUnitTypeRowFeet(2, @"RowFeet", @"Row Feet", true);
     }
 
     public partial class FieldUnitTypeSquareFeet : FieldUnitType
     {
-        private FieldUnitTypeSquareFeet(int fieldUnitTypeID, string fieldUnitTypeName, string fieldUnitTypeDisplayName) : base(fieldUnitTypeID, fieldUnitTypeName, fieldUnitTypeDisplayName) {}
-        public static readonly FieldUnitTypeSquareFeet Instance = new FieldUnitTypeSquareFeet(3, @"SquareFeet", @"Square Feet");
+        private FieldUnitTypeSquareFeet(int fieldUnitTypeID, string fieldUnitTypeName, string fieldUnitTypeDisplayName, bool enabled) : base(fieldUnitTypeID, fieldUnitTypeName, fieldUnitTypeDisplayName, enabled) {}
+        public static readonly FieldUnitTypeSquareFeet Instance = new FieldUnitTypeSquareFeet(3, @"SquareFeet", @"Square Feet", false);
     }
 
     public partial class FieldUnitTypeAcres : FieldUnitType
     {
-        private FieldUnitTypeAcres(int fieldUnitTypeID, string fieldUnitTypeName, string fieldUnitTypeDisplayName) : base(fieldUnitTypeID, fieldUnitTypeName, fieldUnitTypeDisplayName) {}
-        public static readonly FieldUnitTypeAcres Instance = new FieldUnitTypeAcres(4, @"Acres", @"Acres");
+        private FieldUnitTypeAcres(int fieldUnitTypeID, string fieldUnitTypeName, string fieldUnitTypeDisplayName, bool enabled) : base(fieldUnitTypeID, fieldUnitTypeName, fieldUnitTypeDisplayName, enabled) {}
+        public static readonly FieldUnitTypeAcres Instance = new FieldUnitTypeAcres(4, @"Acres", @"Acres", true);
     }
 
     public partial class FieldUnitTypeDripRowFeet : FieldUnitType
     {
-        private FieldUnitTypeDripRowFeet(int fieldUnitTypeID, string fieldUnitTypeName, string fieldUnitTypeDisplayName) : base(fieldUnitTypeID, fieldUnitTypeName, fieldUnitTypeDisplayName) {}
-        public static readonly FieldUnitTypeDripRowFeet Instance = new FieldUnitTypeDripRowFeet(5, @"DripRowFeet", @"Drip Row Feet");
+        private FieldUnitTypeDripRowFeet(int fieldUnitTypeID, string fieldUnitTypeName, string fieldUnitTypeDisplayName, bool enabled) : base(fieldUnitTypeID, fieldUnitTypeName, fieldUnitTypeDisplayName, enabled) {}
+        public static readonly FieldUnitTypeDripRowFeet Instance = new FieldUnitTypeDripRowFeet(5, @"DripRowFeet", @"Drip Row Feet", true);
     }
 
     public partial class FieldUnitTypeTransplants : FieldUnitType
     {
-        private FieldUnitTypeTransplants(int fieldUnitTypeID, string fieldUnitTypeName, string fieldUnitTypeDisplayName) : base(fieldUnitTypeID, fieldUnitTypeName, fieldUnitTypeDisplayName) {}
-        public static readonly FieldUnitTypeTransplants Instance = new FieldUnitTypeTransplants(6, @"Transplants", @"Transplants");
+        private FieldUnitTypeTransplants(int fieldUnitTypeID, string fieldUnitTypeName, string fieldUnitTypeDisplayName, bool enabled) : base(fieldUnitTypeID, fieldUnitTypeName, fieldUnitTypeDisplayName, enabled) {}
+        public static readonly FieldUnitTypeTransplants Instance = new FieldUnitTypeTransplants(6, @"Transplants", @"Transplants", true);
     }
 }

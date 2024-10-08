@@ -22,6 +22,7 @@ import { TimeStudyCellRendererComponent } from './components/ag-grid/time-study-
 import { NgClickOutsideModule } from 'ng-click-outside2';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
+import { TinyMceConfigPipe } from './helpers/tiny-mce-config.pipe';
 
 @NgModule({
     declarations: [
@@ -38,7 +39,8 @@ import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
         CustomRichTextComponent,
         SideNavComponent,
         FieldDefinitionComponent,
-        FieldDefinitionGridHeaderComponent
+        FieldDefinitionGridHeaderComponent,
+        TinyMceConfigPipe
     ],
     imports: [
         CommonModule,
@@ -61,7 +63,8 @@ import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
         SideNavComponent,
         FieldDefinitionComponent,
         FieldDefinitionGridHeaderComponent,
-        EditorModule
+        EditorModule,
+        TinyMceConfigPipe
     ],
     providers: [
         { provide: TINYMCE_SCRIPT_SRC, useValue: 'assets/tinymce/tinymce.min.js' }

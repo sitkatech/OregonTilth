@@ -15,7 +15,7 @@ import TinyMCEHelpers from '../../helpers/tiny-mce-helpers';
   templateUrl: './custom-rich-text.component.html',
   styleUrls: ['./custom-rich-text.component.scss']
 })
-export class CustomRichTextComponent implements OnInit, AfterViewChecked {
+export class CustomRichTextComponent implements OnInit {
   @Input() customRichTextTypeID: number;
   public customRichTextContent: SafeHtml;
   public isLoading: boolean = true;
@@ -26,7 +26,6 @@ export class CustomRichTextComponent implements OnInit, AfterViewChecked {
 
   currentUser: UserDetailedDto;
   @ViewChild('tinyMceEditor') tinyMceEditor: EditorComponent;
-  public tinyMceConfig: object;
 
 
   constructor(private customRichTextService: CustomRichTextService,
@@ -47,21 +46,6 @@ export class CustomRichTextComponent implements OnInit, AfterViewChecked {
       this.editedContent = x.CustomRichTextContent;
       this.isLoading = false;
     });
-  }
-
-  ngAfterViewChecked() {
-    // viewChild is updated after the view has been checked
-    this.initalizeEditor();
-  }
-
-  initalizeEditor() {
-    
-    if (!this.isLoading && this.isEditing) {
-      console.log('hello?')
-      this.tinyMceConfig = TinyMCEHelpers.DefaultInitConfig(
-        this.tinyMceEditor
-      );
-    }
   }
   
   public showEditButton(): boolean {
