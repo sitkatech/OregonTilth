@@ -32,7 +32,6 @@ import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/edi
 import { AgGridAngular } from 'ag-grid-angular';
 import { FieldLaborActivityDto } from 'src/app/shared/models/generated/field-labor-activity-dto';
 import { FieldStandardTimeDto } from 'src/app/shared/models/generated/field-standard-time-dto';
-import { FieldLaborActivityCategoryEnum } from 'src/app/shared/models/enums/field-labor-activity-category.enum';
 import { FieldLaborByCropDto } from 'src/app/shared/models/generated/field-labor-by-crop-dto';
 import { FieldUnitTypeEnum } from 'src/app/shared/models/enums/field-unit-type.enum';
 import { FieldInputByCropDto } from 'src/app/shared/models/generated/field-input-by-crop-dto';

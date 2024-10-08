@@ -6,7 +6,8 @@ USING (VALUES
 (4, 'Irrigation', 'Irrigation'),
 (5, 'WeedManagement', 'Weed Management'),
 (6, 'RowCover', 'Row Cover'),
-(7, 'PlantCare', 'Plant Care')
+(7, 'PlantCare', 'Plant Care'),
+(8, 'MechanicalHarvest', 'Mechanical Harvest')
 )
 AS Source (FieldLaborActivityCategoryID, FieldLaborActivityCategoryName, FieldLaborActivityCategoryDisplayName)
 ON Target.FieldLaborActivityCategoryID = Source.FieldLaborActivityCategoryID

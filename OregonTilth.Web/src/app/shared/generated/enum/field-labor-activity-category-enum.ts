@@ -9,5 +9,6 @@ export enum FieldLaborActivityCategoryEnum {
   Irrigation = 4,
   WeedManagement = 5,
   RowCover = 6,
-  PlantCare = 7
+  PlantCare = 7,
+  MechanicalHarvest = 8
 }
