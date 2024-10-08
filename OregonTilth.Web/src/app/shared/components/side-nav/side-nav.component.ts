@@ -6,9 +6,10 @@ import { PageService } from '../../services/page-service';
 import { PageTreeDto } from '../../models/page/page-tree-dto';
 import { WorkbookService } from 'src/app/services/workbook/workbook.service';
 import { WorkbookDto } from '../../models/generated/workbook-dto';
-import { forkJoin } from 'rxjs';
+import { combineLatest, forkJoin, merge } from 'rxjs';
 import { filter, startWith } from 'rxjs/operators';
 import { RouteHelpers } from '../../services/router-helper/router-helper';
+import { WorkbookCreatedService } from '../../services/workbook-created.service';
 
 @Component({
     selector: 'side-nav',
@@ -48,19 +49,29 @@ export class SideNavComponent implements OnInit {
         private router: Router,
         private cdr: ChangeDetectorRef,
         private pageService: PageService,
+        private workboookCreatedService:WorkbookCreatedService,
         private workbookService: WorkbookService) {
             this.navigationOpen = window.innerWidth > this.sideNavMinWidth;
     }
 
   ngOnInit() {
     this.initWorkbookIDNavigation();
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+
+
+
+    this.watchUserChangeSubscription = combineLatest([
+      this.authenticationService.currentUserSetObservable, 
+      this.workboookCreatedService.workbookCreatedObservable$
+    ]) 
+    .subscribe(([currentUser, newWorkbook]) => {
         this.currentUser = currentUser;
         this.getWorkbooksInformation()
         this.watchWorkbookChangeSubscription = this.workbookService.workbookSubject.subscribe(workbook => {
           this.getWorkbooksInformation()
         })
-    });
+    }
+    );
+    
   }
 
   getWorkbooksInformation() {

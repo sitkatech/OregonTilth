@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
+import { WorkbookCreatedService } from 'src/app/shared/services/workbook-created.service';
 
 @Component({
   selector: 'new-workbook',
@@ -27,6 +28,7 @@ export class NewWorkbookComponent implements OnInit {
     private authenticationService: AuthenticationService, 
     private workbookService: WorkbookService,
     private alertService: AlertService,
+    private workbookCreatedService: WorkbookCreatedService,
     private breadcrumbService: BreadcrumbsService,
     private router: Router) { }
 
@@ -46,6 +48,7 @@ export class NewWorkbookComponent implements OnInit {
     this.createWorkbookRequest = this.workbookService.createWorkbook(this.model).subscribe(response => {
       this.isLoadingSubmit = false;
       this.router.navigate(["/workbooks", response.WorkbookID]).then(x => {
+        this.workbookCreatedService.setWorkbookCreated(response);
         this.alertService.pushAlert(new Alert("Successfully created Workbook.", AlertContext.Success));
       });
     }, error => { 
