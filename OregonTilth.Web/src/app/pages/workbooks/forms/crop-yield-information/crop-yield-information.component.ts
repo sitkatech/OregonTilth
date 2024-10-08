@@ -175,7 +175,7 @@ export class CropYieldInformationComponent implements OnInit {
         width:150
       },
       {
-        headerName: 'Harvested Yield Per Standard Unit of Space', 
+        headerName: 'Harvested Yield per Standard Bed', 
         field:'HarvestedYieldPerStandardUnitOfSpace',
         valueGetter: function(params:any) {
           return params.data.HarvestedYieldPerStandardUnitOfSpace
@@ -195,7 +195,7 @@ export class CropYieldInformationComponent implements OnInit {
         resizable: true,
       },
       {
-        headerName: 'Marketable Yield Per Standard Unit of Space', 
+        headerName: 'Marketable Yield per Standard Bed', 
         field:'MarketableYieldPerStandardUnitOfSpace',
         valueGetter: function(params:any) {
           return params.data.MarketableYieldPerStandardUnitOfSpace
