@@ -11,7 +11,7 @@ import { tap } from 'rxjs/operators';
 })
 export class AlertDisplayComponent implements OnDestroy {
 
-    public alerts$: Observable<Alert[]> = this.alertService.alerts$.pipe(tap(console.log));
+    public alerts$: Observable<Alert[]> = this.alertService.alerts$;
 
     constructor(
         private alertService: AlertService,
