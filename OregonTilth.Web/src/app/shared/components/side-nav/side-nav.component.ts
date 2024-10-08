@@ -115,7 +115,7 @@ export class SideNavComponent implements OnInit {
 
     if(this.isNavigatingWorkbook){
       var route = RouteHelpers.getCurrentRouteFromActivatedRoute(this.route);
-      var path = route.routeConfig.path.replace(":id", workbookID.toString())
+      var path = route.routeConfig.path.replace(`:workbookID`, workbookID.toString())
       this.router.navigate([path]);
     } else {
       this.router.navigate(["/workbooks", workbookID]);
