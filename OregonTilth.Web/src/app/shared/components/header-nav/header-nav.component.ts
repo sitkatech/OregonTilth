@@ -17,7 +17,7 @@ import { AlertContext } from '../../models/enums/alert-context.enum';
 export class HeaderNavComponent implements OnInit, OnDestroy {
     private watchUserChangeSubscription: any;
     private currentUser: UserDetailedDto;
-
+    public isCollapsed: boolean = false;
     private getUnassignedUserReportRequest: any;
     windowWidth: number;
 
