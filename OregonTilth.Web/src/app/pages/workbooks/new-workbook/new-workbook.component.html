@@ -1,0 +1,69 @@
+<div class="container-fluid">
+    <app-alert-display></app-alert-display>
+    <div class="row mb-2">
+        <div class="col">
+            <h2 class="d-inline-block">Create new Workbook</h2>
+            <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mb-2">
+        <div class="col">
+            <form *ngIf=(model) (ngSubmit)="onSubmit(newWorkbookForm)" #newWorkbookForm="ngForm">
+              <div class="row">
+                <div class="mb-3 mt-4 col-md-6">
+                  <div class="control-label">
+                    <label class="required">Workbook Name</label>
+                  </div>
+                  <div class="">
+                    <input class="form-control" type="text" name="WorkbookName" [(ngModel)]="model.WorkbookName" required>
+                  </div>
+                </div>
+                <div class="mb-3 mt-4 col-md-6">
+                  <div class="control-label">
+                    <label class="required">Average Hourly Wage</label>
+                  </div>
+                  <div class="">
+                    <input class="form-control" type="number" name="AverageHourlyWage" [(ngModel)]="model.AverageHourlyWage" required>
+                  </div>
+                </div>
+                <div class="mb-3 mt-4 col-md-6">
+                  <div class="control-label">
+                    <label class="required">Standard Bed Length (feet)</label>
+                  </div>
+                  <div class="">
+                    <input class="form-control" type="number" name="StandardUnitOfSpaceLength" [(ngModel)]="model.StandardUnitOfSpaceLength" required>
+                  </div>
+                </div>
+                <div class="mb-3 mt-4 col-md-6">
+                  <div class="control-label">
+                    <label class="required">Standard Bed Width (feet)</label>
+                  </div>
+                  <div class="">
+                    <input class="form-control" type="number" name="StandardUnitOfSpaceWidth" [(ngModel)]="model.StandardUnitOfSpaceWidth" required>
+                  </div>
+                </div>
+
+              </div>
+                
+
+                
+                
+                <div class="row">
+                  <div class="col-sm">
+                    <i class="fas fa-bolt"></i> Required field
+                  </div>
+                  <div class="col-sm text-end">
+                    <button type="submit" class="btn btn-fresca" [disabled]="!newWorkbookForm.form.valid || isLoadingSubmit">
+                      <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                      Submit
+                    </button>
+                    <a class="btn btn-secondary ml-1" routerLink="/workbooks">Cancel</a>
+                  </div>
+                </div>
+              </form>
+        </div>
+    </div>
+</div>

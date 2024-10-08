@@ -1,0 +1,39 @@
+<div class="container">
+    <app-alert-display></app-alert-display>
+    <div class="row mb-2">
+        <div class="col">
+            <h2 class="d-inline-block">Duplicate Workbook</h2>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mb-2">
+        <div class="col">
+            <form *ngIf=(workbook) (ngSubmit)="onSubmit(duplicateWorkbookForm)" #duplicateWorkbookForm="ngForm">
+                <div class="row">
+                    <div class="mb-3 mt-4 col-md-12">
+                        <div class="control-label">
+                            <label class="required">Workbook Name</label>
+                        </div>
+                        <div class="">
+                            <input class="form-control" type="text" name="WorkbookName" [(ngModel)]="workbookCopyName" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                        <i class="fas fa-bolt"></i> Required field
+                    </div>
+                    <div class="col-sm text-end">
+                        <button type="submit" class="btn btn-fresca" [disabled]="!duplicateWorkbookForm.form.valid || isLoadingSubmit">
+                        <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                        Submit
+                        </button>
+                        <a class="btn btn-secondary ml-1" routerLink="/workbooks">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

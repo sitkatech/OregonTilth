@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Beacon.Database</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{8851eb6a-bcea-42b4-83dd-125a1bcfaa52}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Beacon.Database</RootNamespace>
+    <AssemblyName>Beacon.Database</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="dbo\User Defined Types\" />
+    <Folder Include="Scripts" />
+    <Folder Include="Scripts\LookupTables" />
+    <Folder Include="Scripts\PreReleaseScripts" />
+    <Folder Include="Scripts\ReleaseScripts" />
+    <Folder Include="Scripts\Utility" />
+    <Folder Include="Scripts\Archive" />
+    <Folder Include="dbo\Procs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\dbo.CustomRichText.sql" />
+    <Build Include="dbo\Tables\dbo.CustomRichTextType.sql" />
+    <Build Include="dbo\Tables\dbo.DatabaseMigration.sql" />
+    <Build Include="dbo\Tables\dbo.FieldDefinition.sql" />
+    <Build Include="dbo\Tables\dbo.FieldDefinitionType.sql" />
+    <Build Include="dbo\Tables\dbo.Role.sql" />
+    <Build Include="dbo\Tables\dbo.User.sql" />
+    <Build Include="dbo\User Defined Types\html.sql" />
+    <None Include="Scripts\LookupTables\Script.PostDeployment.LookupTables.sql" />
+    <None Include="Scripts\LookupTables\dbo.CustomRichTextType.sql" />
+    <None Include="Scripts\LookupTables\dbo.FieldDefinitionType.sql" />
+    <None Include="Scripts\PreReleaseScripts\Script.PreDeployment.ReleaseScripts.sql" />
+    <None Include="Scripts\ReleaseScripts\Script.PostDeployment.ReleaseScripts.sql" />
+    <None Include="Scripts\Utility\Script.PostDeployment.Utility.sql" />
+    <Build Include="dbo\Tables\dbo.Phase.sql" />
+    <Build Include="dbo\Tables\dbo.Workbook.sql" />
+    <Build Include="dbo\Procs\dbo.procDuplicateWorkbook.sql" />
+    <Build Include="dbo\Tables\dbo.Crop.sql" />
+    <Build Include="dbo\Tables\dbo.CropSpecificInfo.sql" />
+    <Build Include="dbo\Tables\dbo.CropUnit.sql" />
+    <Build Include="dbo\Tables\dbo.CropYieldInformation.sql" />
+    <Build Include="dbo\Tables\dbo.FieldInputByCrop.sql" />
+    <Build Include="dbo\Tables\dbo.FieldInputCost.sql" />
+    <Build Include="dbo\Tables\dbo.FieldLaborActivity.sql" />
+    <Build Include="dbo\Tables\dbo.FieldLaborActivityCategory.sql" />
+    <Build Include="dbo\Tables\dbo.FieldLaborByCrop.sql" />
+    <Build Include="dbo\Tables\dbo.FieldStandardTime.sql" />
+    <Build Include="dbo\Tables\dbo.FieldUnitType.sql" />
+    <Build Include="dbo\Tables\dbo.FileResource.sql" />
+    <Build Include="dbo\Tables\dbo.FileResourceMimeType.sql" />
+    <Build Include="dbo\Tables\dbo.HarvestPostHarvestStandardTime.sql" />
+    <Build Include="dbo\Tables\dbo.HarvestType.sql" />
+    <Build Include="dbo\Tables\dbo.LaborType.sql" />
+    <Build Include="dbo\Tables\dbo.Machinery.sql" />
+    <Build Include="dbo\Tables\dbo.Page.sql" />
+    <Build Include="dbo\Tables\dbo.TimeStudy.sql" />
+    <Build Include="dbo\Tables\dbo.TpOrDsType.sql" />
+    <Build Include="dbo\Tables\dbo.TransplantProductionInformation.sql" />
+    <Build Include="dbo\Tables\dbo.TransplantProductionInput.sql" />
+    <Build Include="dbo\Tables\dbo.TransplantProductionInputCost.sql" />
+    <Build Include="dbo\Tables\dbo.TransplantProductionLaborActivity.sql" />
+    <Build Include="dbo\Tables\dbo.TransplantProductionLaborActivityByCrop.sql" />
+    <Build Include="dbo\Tables\dbo.TransplantProductionStandardTime.sql" />
+    <Build Include="dbo\Tables\dbo.TransplantProductionTrayType.sql" />
+    <Build Include="dbo\Views\dbo.vFieldLaborActivityForTimeStudy.sql" />
+    <None Include="Scripts\LookupTables\dbo.FieldLaborActivityCategory.sql" />
+    <None Include="Scripts\LookupTables\dbo.FieldUnitType.sql" />
+    <None Include="Scripts\LookupTables\dbo.FileResourceMimeType.sql" />
+    <None Include="Scripts\LookupTables\dbo.HarvestType.sql" />
+    <None Include="Scripts\LookupTables\dbo.LaborType.sql" />
+    <None Include="Scripts\LookupTables\dbo.Phase.sql" />
+    <None Include="Scripts\LookupTables\dbo.Role.sql" />
+    <None Include="Scripts\LookupTables\dbo.TpOrDsType.sql" />
+    <None Include="Scripts\Archive\0001 - initial schema.sql" />
+    <None Include="Scripts\Archive\0002 - Add Custom Rich Text for Training.sql" />
+    <None Include="Scripts\Archive\0003 - Add Workbook table.sql" />
+    <None Include="Scripts\Archive\0004 - Adding lookup tables.sql" />
+    <None Include="Scripts\Archive\0005 - Adding FieldLaborActivity table.sql" />
+    <None Include="Scripts\Archive\0006 - Adding custom rich text values.sql" />
+    <None Include="Scripts\Archive\0007 - Adding Crop table.sql" />
+    <None Include="Scripts\Archive\0008 - CropUnit table.sql" />
+    <None Include="Scripts\Archive\0009 - Adding machinery table.sql" />
+    <None Include="Scripts\Archive\0010 - Adding FieldLaborByCrop table.sql" />
+    <None Include="Scripts\Archive\0011 - Adding TransplantProductionLaborActivity table.sql" />
+    <None Include="Scripts\Archive\0012 - Adding FieldInputByCost table.sql" />
+    <None Include="Scripts\Archive\0013 - Adding TransplantProductionLaborActivityByCrop table.sql" />
+    <None Include="Scripts\Archive\0014 - Adding TransplantProductionInput table.sql" />
+    <None Include="Scripts\Archive\0015 - Adding TransplantProductionTrayType table.sql" />
+    <None Include="Scripts\Archive\0016 - Adding TransplantProductionInputCost table.sql" />
+    <None Include="Scripts\Archive\0017 - Adding form field definitions.sql" />
+    <None Include="Scripts\Archive\0018 - Adding FieldInputByCrop table.sql" />
+    <None Include="Scripts\Archive\0019 - Blank because prod seems to have migrated a 19 script.sql" />
+    <None Include="Scripts\Archive\0020 - Adding TransplantProductionInformation table.sql" />
+    <None Include="Scripts\Archive\0021 - Adding Fields to Workbook table for general farm information.sql" />
+    <None Include="Scripts\Archive\0022 - Adding field definitions for new workbook fields.sql" />
+    <None Include="Scripts\Archive\0023 - adding StandardTimes  and FieldStandardTimes table.sql" />
+    <None Include="Scripts\Archive\0024 - HarvestPostHarvestStandardTime table.sql" />
+    <None Include="Scripts\Archive\0025 - TransplantProductionStandardTime table.sql" />
+    <None Include="Scripts\Archive\0026 - CostPerTray must be greater than zero.sql" />
+    <None Include="Scripts\Archive\0027 - add CropYieldInformation table.sql" />
+    <None Include="Scripts\Archive\0028 - Adding crop specific into table and field definitions.sql" />
+    <None Include="Scripts\Archive\0029 - adding dashboard results custom rich texts.sql" />
+    <None Include="Scripts\Archive\0030 - validation changes for TPInfo.sql" />
+    <None Include="Scripts\Archive\0031 - changing foreign key on FieldLaborByCrop.sql" />
+    <None Include="Scripts\Archive\0032 - update columns on CropSpecificInfo.sql" />
+    <None Include="Scripts\Archive\0033 - update FK on TransplantProductionLaborActivityByCrop.sql" />
+    <None Include="Scripts\Archive\0034 - change a few workbook columns to be not null.sql" />
+    <None Include="Scripts\Archive\0035 - update field definition for In-Season.sql" />
+    <None Include="Scripts\Archive\0036 - alter TimeStudy table to not use integers for units or duration.sql" />
+    <None Include="Scripts\Archive\0037 - adjust TPInfo to be unique by Crop and Phase.sql" />
+    <None Include="Scripts\Archive\0038 - add notes to additional forms.sql" />
+    <None Include="Scripts\Archive\0039 - add pages.sql" />
+    <None Include="Scripts\Archive\0040 - add separate contents for homepage.sql" />
+    <None Include="Scripts\Archive\0041 - adjust int to decimals.sql" />
+    <None Include="Scripts\Archive\0042 - rename crew and operator.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\PreReleaseScripts\README.md" />
+    <None Include="Scripts\ReleaseScripts\README.md" />
+    <None Include="OregonTilth.Database.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Script.PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="Scripts\Script.PreDeployment.sql" />
+  </ItemGroup>
+  <UsingTask TaskName="ScriptDeploymentGenerator" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <releaseScriptFolder ParameterType="System.String" Required="true" />
+      <releaseScriptFileName ParameterType="System.String" Required="true" />
+      <projectName ParameterType="System.String" Required="true" />
+      <title ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+
+        var files = Directory.GetFiles(releaseScriptFolder, "*.sql");
+        StringBuilder sb = new StringBuilder();
+
+        sb.AppendLine("/*");
+        sb.AppendLine(title + " Script");
+        sb.AppendLine("--------------------------------------------------------------------------------------");
+        sb.AppendLine("This file is generated on every build, DO NOT modify.");
+        sb.AppendLine("--------------------------------------------------------------------------------------");
+        sb.AppendLine("*/");
+        sb.AppendLine("");
+        sb.AppendLine("PRINT N'" + projectName + " - " + releaseScriptFileName +"';");
+        sb.AppendLine("GO");
+        sb.AppendLine("");
+
+        foreach (var file in files.OrderBy(f => f))
+        {
+            if (file.Contains(releaseScriptFileName))
+            {
+              continue;
+            }
+
+            var fileName = file.Replace(releaseScriptFolder, "");
+
+            sb.AppendLine(":r \"." + fileName + "\"");
+            sb.AppendLine("GO");
+                    
+        }
+        using (System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(releaseScriptFolder, releaseScriptFileName)))
+        {
+          file.WriteLine(sb.ToString()); 
+        }
+
+]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="CustomBuildStep" BeforeTargets="BeforeBuild">
+    <ScriptDeploymentGenerator projectName="$(MSBuildProjectName)" title="Post-Deployment" releaseScriptFolder="Scripts\\ReleaseScripts" releaseScriptFileName="Script.PostDeployment.ReleaseScripts.sql" />
+    <ScriptDeploymentGenerator projectName="$(MSBuildProjectName)" title="Pre-Deployment" releaseScriptFolder="Scripts\\PreReleaseScripts" releaseScriptFileName="Script.PreDeployment.ReleaseScripts.sql" />
+    <ScriptDeploymentGenerator projectName="$(MSBuildProjectName)" title="Lookup-Table" releaseScriptFolder="Scripts\\LookupTables" releaseScriptFileName="Script.PostDeployment.LookupTables.sql" />
+  </Target>
+</Project>

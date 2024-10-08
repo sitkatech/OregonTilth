@@ -1,0 +1,55 @@
+<div class="container-fluid">
+  <div class="row mb-2 min-vh-100">
+        <div class="col-lg-12">
+        <app-alert-display></app-alert-display>
+        <h1>Field Labor Time Studies</h1>
+        <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+        <ng-container *ngIf="createDtos && createDtos.length > 0">
+          <h4>Time Studies are required for:</h4>        
+          <table class="time-studies-required-table">
+            <tbody>
+              <tr *ngFor="let item of createDtos">
+                <td>{{item.FieldLaborActivity.FieldLaborActivityName}}</td>
+                <td>{{item.LaborType.LaborTypeDisplayName}}</td>
+                <td>
+                  <select class="form-select" [(ngModel)]="item.MachineryID" [disabled]="machineryDisabled(item.LaborTypeID)">
+                    <option disabled="true" [ngValue]="undefined" [selected]="!item.MachineryID">Select Machinery</option>
+                    <option *ngFor="let option of machinery" [selected]="item.MachineryID == option.MachineryID" [value]="option.MachineryID">{{option.MachineryName}}</option>
+                  </select>
+                </td>
+                <td>
+                  <select class="form-select" [(ngModel)]="item.FieldUnitTypeID">
+                    <option disabled="true" [ngValue]="undefined" [selected]="!item.FieldUnitTypeID">Select Field Unit</option>
+                    <option *ngFor="let option of fieldUnits" [value]="option.FieldUnitTypeID">{{option.FieldUnitTypeDisplayName}}</option>
+                  </select>
+                
+                </td>
+                <td>
+                  <button class="btn btn-success" (click)="initializeTimeStudy(item)" [disabled]="startButtonDisabled(item)">Ready</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-container>
+        <div class="row mt-4">
+          <div class="col">
+            <h3>Time Study Progress</h3>
+          </div>
+          <div class="col">
+            <button class="btn btn-secondary btn-sm float-end" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
+              <i class="fas fa-download"></i>
+              Download
+            </button> 
+          </div>
+        </div>        
+        <div class="row mt-2">
+          <div class="col">
+            
+            <ag-grid-angular #fieldStandardTimesGrid style="width: 100%; height: 800px;" class="ag-theme-balham" [rowData]="fieldStandardTimes"
+              [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (cellValueChanged)="onCellValueChanged($event)" (gridReady)="onGridReady($event)" [getRowNodeId]="getRowNodeId" [suppressDragLeaveHidesColumns]="true">
+            </ag-grid-angular>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

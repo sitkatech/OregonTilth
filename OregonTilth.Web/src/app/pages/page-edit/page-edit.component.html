@@ -1,0 +1,51 @@
+
+  <div class="container-fluid mt-sm-4" *ngIf="model">
+      <h2 class="d-inline-block">{{user?.FullName ||  ((user?.FirstName || user?.LastName) ? (user?.FirstName + ' ' + user?.LastName) : null)}}</h2>
+      <app-alert-display></app-alert-display>
+    <div class="col-sm-12">
+      <form (ngSubmit)="onSubmit(editPageForm)" #editPageForm="ngForm" class="row">
+        <div class="mb-3 col-md-4">
+            <label class="required">Page Name</label>
+            <input class="form-control" type="text" name="PageName" [(ngModel)]="model.PageName">
+        </div>
+        <div class="mb-3 col-md-4">
+          <label class="">Parent Page</label>
+          <select name="ParentPageID" class="form-select" [(ngModel)]="model.ParentPageID" [disabled]="!model.ParentPageID">
+              <option [ngValue]="undefined" [selected]="!model.ParentPageID" *ngIf="!model.ParentPageID">A root page cannot have a parent.</option>
+              <option *ngFor="let option of allPages" [value]="option.PageID">
+                  {{option.PageName}}
+              </option>
+          </select>
+        </div>
+        <div class="mb-3 col-md-4">
+          <label class="required">Sort Order</label>
+          <input class="form-control" type="number" name="SortOrder" [(ngModel)]="model.SortOrder">
+        </div>
+        <div class="mb-3 col-md-12">
+          <label class="" for="PageContent">Page Content</label>
+          <div>
+            <editor #tinyMceEditor
+              [init]="tinyMceConfig"
+              name="PageContent"
+              [(ngModel)]="model.PageContent"
+            ></editor>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-sm">
+              <i class="fas fa-bolt"></i> Required field
+            </div>
+            <div class="col-sm text-end">
+              <button type="submit" class="btn btn-fresca" [disabled]="!editPageForm.form.valid || isLoadingSubmit">
+                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                Submit
+              </button>
+              <a class="btn btn-secondary ml-1" routerLink="/pages">Cancel</a>
+            </div>
+          </div>
+        </div>
+        
+      </form>
+    </div>
+  </div>

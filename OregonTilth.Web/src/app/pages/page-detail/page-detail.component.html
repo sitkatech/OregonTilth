@@ -1,0 +1,9 @@
+<div class="container-fluid mt-4">
+    <div class="row mb-2 min-vh-100">
+        <div class="col-lg-12" *ngIf="page">
+            <app-alert-display></app-alert-display>
+            <h1 class="text-primary mb-4">{{page.PageName}}</h1>
+            <div [innerHtml]="displayedContent"></div>
+        </div>
+    </div>
+</div>

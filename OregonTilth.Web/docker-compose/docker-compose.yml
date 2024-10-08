@@ -1,0 +1,8 @@
+services:
+    oregontilth.web:
+        image: oregontilth/web
+        build:
+            args:
+                env: ${ENVIRONMENT}
+            context: ../..
+            dockerfile: OregonTilth.Web/Dockerfile

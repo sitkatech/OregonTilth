@@ -1,0 +1,69 @@
+<div class="container-fluid">
+  <div class="row mb-2 min-vh-100">
+        <div class="col-lg-12">
+        <app-alert-display></app-alert-display>
+        <h1>Machinery Costs</h1>
+        <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+        <div class="card mt-4">
+          <div class="card-header">
+            Add new Machinery Cost
+          </div>
+          <div class="card-body">
+            <form *ngIf=(model) (ngSubmit)="onSubmit(machineryForm)" #machineryForm="ngForm">
+              <div class="row">
+                
+                <div class="mb-3 col-md-8">
+                  <label class="required">Machinery</label>
+                  <input class="form-control" type="text" name="MachineryName" [(ngModel)]="model.MachineryName" required>
+                </div>
+                <div class="mb-3 col-md-4">
+                  <label class="required">Hourly Machinery Operating Cost</label>
+                  <input class="form-control" type="number" name="HourlyMachineryOperatingCost" [(ngModel)]="model.StandardMachineryCost" required>
+                </div>
+              </div>
+              <div class="row">
+                <div class="mb-3 col-md-12">
+                  <label>Notes</label>
+                  <input class="form-control" type="text" name="Notes" [(ngModel)]="model.Notes">
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-sm">
+                  <i class="fas fa-bolt"></i> Required field
+                </div>
+                <div class="col-sm text-end">
+                  <button type="submit" class="btn btn-fresca" [disabled]="!machineryForm.form.valid || isLoadingSubmit">
+                    <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          
+        </div>
+
+        <div class="row mt-2">
+          <div class="col">
+            <button class="btn btn-secondary btn-sm float-end" style="cursor: pointer;" (click)="exportToCsv()" placement="top" ngbTooltip="Download Grid">
+              <i class="fas fa-download"></i>
+              Download
+            </button> 
+          </div>
+        </div>
+        
+        <div class="row mt-2">
+          <div class="col">
+            <ag-grid-angular #machineryGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="machineries"
+              [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" (cellValueChanged)="onCellValueChanged($event)" (gridReady)="onGridReady($event)" [getRowNodeId]="getRowNodeId" [suppressDragLeaveHidesColumns]="true">
+            </ag-grid-angular>
+          </div>
+        </div>
+
+
+
+    </div>
+  </div>
+  
+</div>

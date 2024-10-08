@@ -1,0 +1,9 @@
+services:
+    oregontilth.web:
+        build:
+            args:
+                source: ${DOCKER_BUILD_SOURCE}
+        image: oregontilth/web
+        ports:
+            - "8887:80"
+            - "8886:443"
