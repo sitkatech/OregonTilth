@@ -18,7 +18,7 @@ variables:
     databaseTier: "ElasticPool"
     sqlApiUsername: "OregonTilthWeb"
 
-    domainApi: "kyctg-api.esa-$(Environment).sitkatech.com"
+    domainApi: "api-qa.knowyourcosttogrow.com"
     # add domainWeb to pipeline variables
 
 resources:
