@@ -3,9 +3,7 @@
 
   <div class="modal-header w-100">
     <h4 class="modal-title">Time Studies for <strong>{{activityDisplayString}}</strong></h4>
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body w-100">
     
@@ -49,7 +47,7 @@
   
   </div>
   <div class="modal-footer w-100">
-        <button type="submit" class="btn btn-primary btn-sm" [disabled]="">
+        <button type="submit" class="btn btn-primary btn-sm submit-button" [disabled]="">
             <span *ngIf="" class="fa fa-spinner loading-spinner"></span>
             Submit</button>
         <button type="button" class="btn btn-secondary btn-sm" (click)="activeModal.close('Cancel click')"
