@@ -12,6 +12,7 @@ import { UserCreateDto } from 'src/app/shared/models/user/user-create-dto';
 import { RoleEnum } from 'src/app/shared/models/enums/role.enum';
 import { DatePipe } from '@angular/common';
 import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
+import { SystemInfoService } from 'src/app/services/user/system-info.service';
 
 declare var $:any;
 
@@ -21,9 +22,10 @@ declare var $:any;
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit, OnDestroy {
+
   @ViewChild('usersGrid') usersGrid: AgGridAngular;
   @ViewChild('unassignedUsersGrid') unassignedUsersGrid: AgGridAngular;
-
+  public testEmail: string = '';
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
 
@@ -40,6 +42,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     private userService: UserService, 
     private decimalPipe: DecimalPipe,
     private breadcrumbService: BreadcrumbsService,
+    private systemInfoService: SystemInfoService,
     private datePipe: DatePipe) { }
 
   ngOnInit() {
@@ -147,4 +150,10 @@ export class UserListComponent implements OnInit, OnDestroy {
     columnIds.splice(0, 1);
     this.utilityFunctionsService.exportGridToCsv(this.usersGrid, 'users.csv', columnIds);
   }  
+
+  sendTestEmail() {
+    this.systemInfoService.sendTestEmail(this.testEmail).subscribe(() => {
+      this.testEmail = '';
+    });
+  }
 }
