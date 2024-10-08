@@ -20,7 +20,7 @@
     </ng-container>
     <div *ngIf="isEditing">
         <editor #tinyMceEditor
-                [init]="tinyMceConfig"
+                [init]="tinyMceEditor | tinyMceConfig"
                 [(ngModel)]="editedContent"
                 ></editor>
         <div style="float:right;" >

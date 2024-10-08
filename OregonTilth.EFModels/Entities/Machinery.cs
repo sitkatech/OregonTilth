@@ -31,9 +31,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Machinery Name", Message = "Machinery must have a name." });
             }
 
-            if (machineryUpsertDto.StandardMachineryCost <= 0)
+            if (machineryUpsertDto.StandardMachineryCost < 0)
             {
-                result.Add(new ErrorMessage() { Type = "Hourly Machinery Operating Cost", Message = "Hourly Machinery Operating Cost must be greater than zero." });
+                result.Add(new ErrorMessage() { Type = "Hourly Machinery Operating Cost", Message = "Hourly Machinery Operating Cost must be greater than or equal to zero." });
             }
 
             return result;
@@ -55,9 +55,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Machinery Name", Message = "Machinery must have a name." });
             }
 
-            if (machineryDto.StandardMachineryCost <= 0)
+            if (machineryDto.StandardMachineryCost < 0)
             {
-                result.Add(new ErrorMessage(){ Type = "Hourly Machinery Operating Cost" , Message = "Hourly Machinery Operating Cost must be greater than zero." });
+                result.Add(new ErrorMessage(){ Type = "Hourly Machinery Operating Cost" , Message = "Hourly Machinery Operating Cost must be greater than or equal to zero." });
             }
 
             return result;

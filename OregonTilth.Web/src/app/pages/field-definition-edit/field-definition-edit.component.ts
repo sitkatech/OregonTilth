@@ -16,7 +16,7 @@ import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service'
   templateUrl: './field-definition-edit.component.html',
   styleUrls: ['./field-definition-edit.component.scss']
 })
-export class FieldDefinitionEditComponent implements OnInit, AfterViewChecked {
+export class FieldDefinitionEditComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
 
@@ -24,8 +24,6 @@ export class FieldDefinitionEditComponent implements OnInit, AfterViewChecked {
   public editor;
 
   isLoadingSubmit: boolean;
-  @ViewChild('tinyMceEditor') tinyMceEditor: EditorComponent;
-  public tinyMceConfig: object;
 
   constructor(
       private route: ActivatedRoute,
@@ -36,19 +34,6 @@ export class FieldDefinitionEditComponent implements OnInit, AfterViewChecked {
       private cdr: ChangeDetectorRef,
       private breadcrumbService: BreadcrumbsService,
   ) {
-  }
-
-  ngAfterViewChecked() {
-    // viewChild is updated after the view has been checked
-    this.initalizeEditor();
-  }
-
-  initalizeEditor() {
-    if (!this.isLoadingSubmit) {
-      this.tinyMceConfig = TinyMCEHelpers.DefaultInitConfig(
-        this.tinyMceEditor
-      );
-    }
   }
 
   ngOnInit() {

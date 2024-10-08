@@ -25,6 +25,7 @@ import { CropSpecificInfoSummaryDto } from 'src/app/shared/models/forms/crop-spe
 import { TpOrDsTypeEnum } from 'src/app/shared/models/enums/tp-or-ds-type.enum';
 import { FieldUnitTypeEnum } from 'src/app/shared/models/enums/field-unit-type.enum';
 import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
+import { HarvestPostHarvestStandardTimeSummaryDto } from 'src/app/shared/models/forms/harvest-post-harvest-standard-times/harvest-post-harvest-standard-time-summary-dto';
 
 @Component({
   selector: 'field-labor-by-crop',
@@ -90,14 +91,18 @@ export class FieldLaborByCropComponent implements OnInit {
     this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID);
     this.getCropDtosRequest = this.workbookService.getCrops(this.workbookID);
     this.getFieldStandardTimeDtosRequest = this.workbookService.getFieldStandardTimes(this.workbookID);
+    
     this.getFieldLaborByCropsRequest = this.workbookService.getFieldLaborByCrops(this.workbookID);
 
 
-    forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldStandardTimeDtosRequest, this.getFieldLaborByCropsRequest, this.workbookService.getCropSpecificInfos(this.workbookID)]).subscribe(([workbookDto, cropDtos, fieldStandardTimeDtos, fieldLaborByCrops, cropSpecificInfos]: [WorkbookDto, CropDto[], FieldStandardTimeSummaryDto[], FieldLaborByCropDto[], CropSpecificInfoSummaryDto[]]) => {
+    forkJoin([this.getWorkbookRequest, this.getCropDtosRequest, this.getFieldStandardTimeDtosRequest, this.getFieldLaborByCropsRequest, this.workbookService.getCropSpecificInfos(this.workbookID), this.workbookService.getHarvestPostHarvestStandardTimes(this.workbookID)])
+    .subscribe(([workbookDto, cropDtos, fieldStandardTimeDtos, fieldLaborByCrops, cropSpecificInfos, harvestPostHarvestStandardTimes]: [WorkbookDto, CropDto[], FieldStandardTimeSummaryDto[], FieldLaborByCropDto[], CropSpecificInfoSummaryDto[], HarvestPostHarvestStandardTimeSummaryDto[]]) => {
       this.workbook = workbookDto;
       this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbookDto.WorkbookName, routerLink:['/workbooks',workbookDto.WorkbookID.toString()]}, {label:'Field Labor By Crop'}]);
 
-      this.cropDtos = cropDtos;
+      let validCrops = harvestPostHarvestStandardTimes.filter(x => x.StandardTimePerUnit > 0).map(x => x.Crop.CropID);
+      this.cropDtos = cropDtos.filter(x => validCrops.includes(x.CropID));
+
       this.fieldStandardTimeDtos = fieldStandardTimeDtos.filter(x => {return x.TimeStudies.length > 0});
       this.allFieldStandardTimeDtos = [... this.fieldStandardTimeDtos];
       this.fieldLaborByCropDtos = fieldLaborByCrops;

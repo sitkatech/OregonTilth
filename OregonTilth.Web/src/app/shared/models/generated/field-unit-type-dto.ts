@@ -8,6 +8,7 @@ export class FieldUnitTypeDto {
 	FieldUnitTypeID : number
 	FieldUnitTypeName : string
 	FieldUnitTypeDisplayName : string
+    Enabled: boolean
 
     constructor(obj?: any) {
         Object.assign(this, obj);

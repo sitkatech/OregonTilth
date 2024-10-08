@@ -30,6 +30,7 @@ import { UtilityFunctionsService } from 'src/app/services/utility-functions.serv
 import { AgGridAngular } from 'ag-grid-angular';
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
+import { FieldUnitTypeEnum } from 'src/app/shared/generated/enum/field-unit-type-enum';
 
 @Component({
   selector: 'field-standard-times',
@@ -96,6 +97,8 @@ export class FieldStandardTimesComponent implements OnInit {
 
   public updateFieldStandardTimeRequest: any;
   public screenWidth: number;
+
+  public userHasSquareFeet: boolean = false;
   
   @HostListener('window:resize', ['$event.target.innerWidth'])
   onResize(width) {
@@ -163,7 +166,9 @@ export class FieldStandardTimesComponent implements OnInit {
         this.vFieldLaborActivitiesForTimeStudyDtos = vFieldLaborActivityForTimeStudyDtos;
         this.laborTypes = laborTypeDtos;
         this.machinery = machineryDtos;
-        this.fieldUnits = fieldUnitDtos;
+        this.fieldUnits = fieldUnitDtos.filter(x => x.Enabled);
+
+        this.userHasSquareFeet = fieldStandardTimes.map(x => x.FieldUnitType.FieldUnitTypeID).some(x => x == FieldUnitTypeEnum.SquareFeet);
 
         this.createDtos = vFieldLaborActivityForTimeStudyDtos.map(element => {
           return new FieldStandardTimeCreateDto({

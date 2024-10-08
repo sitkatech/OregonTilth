@@ -25,7 +25,7 @@
           <label class="" for="PageContent">Page Content</label>
           <div>
             <editor #tinyMceEditor
-              [init]="tinyMceConfig"
+              [init]="tinyMceEditor | tinyMceConfig"
               name="PageContent"
               [(ngModel)]="model.PageContent"
             ></editor>

@@ -12,6 +12,7 @@ namespace OregonTilth.Models.DataTransferObjects
         public int FieldUnitTypeID { get; set; }
         public string FieldUnitTypeName { get; set; }
         public string FieldUnitTypeDisplayName { get; set; }
+        public bool Enabled { get; set; }
     }
 
     public partial class FieldUnitTypeSimpleDto
@@ -19,6 +20,7 @@ namespace OregonTilth.Models.DataTransferObjects
         public int FieldUnitTypeID { get; set; }
         public string FieldUnitTypeName { get; set; }
         public string FieldUnitTypeDisplayName { get; set; }
+        public bool Enabled { get; set; }
     }
 
 }
