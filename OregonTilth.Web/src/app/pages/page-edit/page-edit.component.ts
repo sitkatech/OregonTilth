@@ -17,7 +17,7 @@ import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service'
   templateUrl: './page-edit.component.html',
   styleUrls: ['./page-edit.component.scss'],
 })
-export class PageEditComponent implements OnInit, AfterViewChecked {
+export class PageEditComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
 
@@ -28,9 +28,6 @@ export class PageEditComponent implements OnInit, AfterViewChecked {
   public model: PageUpdateDto;
   
   public isLoadingSubmit: boolean = false;
-  @ViewChild('tinyMceEditor') tinyMceEditor: EditorComponent;
-  public tinyMceConfig: object;
-  
 
   constructor(
     private route: ActivatedRoute,
@@ -41,19 +38,6 @@ export class PageEditComponent implements OnInit, AfterViewChecked {
     private alertService: AlertService,
     private breadcrumbService: BreadcrumbsService,
   ) {
-  }
-
-  ngAfterViewChecked() {
-    // viewChild is updated after the view has been checked
-    this.initalizeEditor();
-  }
-
-  initalizeEditor() {
-    if (!this.isLoadingSubmit && this.model) {
-      this.tinyMceConfig = TinyMCEHelpers.DefaultInitConfig(
-        this.tinyMceEditor
-      );
-    }
   }
 
   ngOnInit() {
