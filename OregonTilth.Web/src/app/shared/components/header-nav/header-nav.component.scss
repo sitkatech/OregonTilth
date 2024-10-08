@@ -27,6 +27,9 @@ nav {
   .navbar.navbar-fresca
   {
     background-color: $header-background;
+    .navbar-collapse {
+      justify-content: space-between;
+    }
     @media screen and (max-width: 990px){
       .navbar-collapse.show {
         border-top:1px solid #fff;
