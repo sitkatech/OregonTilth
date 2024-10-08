@@ -22,6 +22,7 @@ namespace OregonTilth.EFModels.Entities
         public static readonly FieldLaborActivityCategoryWeedManagement WeedManagement = OregonTilth.EFModels.Entities.FieldLaborActivityCategoryWeedManagement.Instance;
         public static readonly FieldLaborActivityCategoryRowCover RowCover = OregonTilth.EFModels.Entities.FieldLaborActivityCategoryRowCover.Instance;
         public static readonly FieldLaborActivityCategoryPlantCare PlantCare = OregonTilth.EFModels.Entities.FieldLaborActivityCategoryPlantCare.Instance;
+        public static readonly FieldLaborActivityCategoryMechanicalHarvest MechanicalHarvest = OregonTilth.EFModels.Entities.FieldLaborActivityCategoryMechanicalHarvest.Instance;
 
         public static readonly List<FieldLaborActivityCategory> All;
         public static readonly List<FieldLaborActivityCategoryDto> AllAsDto;
@@ -33,8 +34,8 @@ namespace OregonTilth.EFModels.Entities
         /// </summary>
         static FieldLaborActivityCategory()
         {
-            All = new List<FieldLaborActivityCategory> { BedPreparation, DirectSeeding, Transplanting, Irrigation, WeedManagement, RowCover, PlantCare };
-            AllAsDto = new List<FieldLaborActivityCategoryDto> { BedPreparation.AsDto(), DirectSeeding.AsDto(), Transplanting.AsDto(), Irrigation.AsDto(), WeedManagement.AsDto(), RowCover.AsDto(), PlantCare.AsDto() };
+            All = new List<FieldLaborActivityCategory> { BedPreparation, DirectSeeding, Transplanting, Irrigation, WeedManagement, RowCover, PlantCare, MechanicalHarvest };
+            AllAsDto = new List<FieldLaborActivityCategoryDto> { BedPreparation.AsDto(), DirectSeeding.AsDto(), Transplanting.AsDto(), Irrigation.AsDto(), WeedManagement.AsDto(), RowCover.AsDto(), PlantCare.AsDto(), MechanicalHarvest.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, FieldLaborActivityCategory>(All.ToDictionary(x => x.FieldLaborActivityCategoryID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, FieldLaborActivityCategoryDto>(AllAsDto.ToDictionary(x => x.FieldLaborActivityCategoryID));
         }
@@ -111,6 +112,8 @@ namespace OregonTilth.EFModels.Entities
                     return DirectSeeding;
                 case FieldLaborActivityCategoryEnum.Irrigation:
                     return Irrigation;
+                case FieldLaborActivityCategoryEnum.MechanicalHarvest:
+                    return MechanicalHarvest;
                 case FieldLaborActivityCategoryEnum.PlantCare:
                     return PlantCare;
                 case FieldLaborActivityCategoryEnum.RowCover:
@@ -133,7 +136,8 @@ namespace OregonTilth.EFModels.Entities
         Irrigation = 4,
         WeedManagement = 5,
         RowCover = 6,
-        PlantCare = 7
+        PlantCare = 7,
+        MechanicalHarvest = 8
     }
 
     public partial class FieldLaborActivityCategoryBedPreparation : FieldLaborActivityCategory
@@ -176,5 +180,11 @@ namespace OregonTilth.EFModels.Entities
     {
         private FieldLaborActivityCategoryPlantCare(int fieldLaborActivityCategoryID, string fieldLaborActivityCategoryName, string fieldLaborActivityCategoryDisplayName) : base(fieldLaborActivityCategoryID, fieldLaborActivityCategoryName, fieldLaborActivityCategoryDisplayName) {}
         public static readonly FieldLaborActivityCategoryPlantCare Instance = new FieldLaborActivityCategoryPlantCare(7, @"PlantCare", @"Plant Care");
+    }
+
+    public partial class FieldLaborActivityCategoryMechanicalHarvest : FieldLaborActivityCategory
+    {
+        private FieldLaborActivityCategoryMechanicalHarvest(int fieldLaborActivityCategoryID, string fieldLaborActivityCategoryName, string fieldLaborActivityCategoryDisplayName) : base(fieldLaborActivityCategoryID, fieldLaborActivityCategoryName, fieldLaborActivityCategoryDisplayName) {}
+        public static readonly FieldLaborActivityCategoryMechanicalHarvest Instance = new FieldLaborActivityCategoryMechanicalHarvest(8, @"MechanicalHarvest", @"Mechanical Harvest");
     }
 }
