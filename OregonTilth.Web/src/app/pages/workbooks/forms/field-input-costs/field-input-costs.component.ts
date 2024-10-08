@@ -25,6 +25,7 @@ import { DecimalEditor } from 'src/app/shared/components/ag-grid/decimal-editor/
 import { EditableRendererComponent } from 'src/app/shared/components/ag-grid/editable-renderer/editable-renderer.component';
 import { AgGridAngular } from 'ag-grid-angular';
 import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
+import { FieldUnitTypeEnum } from 'src/app/shared/generated/enum/field-unit-type-enum';
 
 @Component({
   selector: 'field-input-costs',
@@ -66,6 +67,8 @@ export class FieldInputCostsComponent implements OnInit {
   private deleteFieldInputCostRequest: any;
 
   public columnDefs: ColDef[];
+
+  public userHasSquareFeet : boolean = false;
  
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -87,8 +90,10 @@ export class FieldInputCostsComponent implements OnInit {
     forkJoin([this.getWorkbookRequest, this.getFieldUnitTypesRequest, this.getFieldInputCostsRequest]).subscribe(([workbook, fieldUnitTypes, fieldInputCosts]: [WorkbookDto, FieldUnitTypeDto[], FieldInputCostDto[]]) => {
       this.workbook = workbook;
       this.breadcrumbService.setBreadcrumbs([{label:'Workbooks', routerLink:['/workbooks']},{label:workbook.WorkbookName, routerLink:['/workbooks',workbook.WorkbookID.toString()]}, {label:'Field Input Costs'}]);
-      this.fieldUnitTypes = fieldUnitTypes;
+      this.fieldUnitTypes = fieldUnitTypes.filter(x => x.Enabled);
+
       this.fieldInputCosts = fieldInputCosts;
+      this.userHasSquareFeet = this.fieldInputCosts?.map(x => x.FieldUnitType.FieldUnitTypeID).includes(FieldUnitTypeEnum.SquareFeet);
       this.defineColumnDefs();
       this.cdr.markForCheck();
     });
