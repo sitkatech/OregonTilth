@@ -236,7 +236,7 @@ export class CropYieldInformationComponent implements OnInit {
         resizable: true,
       },
       {
-        headerName: 'Packaging Cost Per Crop Unit', 
+        headerName: 'Crop-Specific Harvest/Post-Harvest Cost', 
         field:'PackagingCostPerCropUnit',
         valueFormatter: this.gridService.currencyFormatter,
         valueGetter: function(params:any) {
