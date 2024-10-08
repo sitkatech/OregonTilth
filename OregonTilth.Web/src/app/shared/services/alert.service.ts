@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Alert} from '../models/alert';
 import { AlertContext } from '../models/enums/alert-context.enum';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -12,8 +12,9 @@ export class AlertService {
 
     }
 
-    public alerts: Alert[] = [];
-    public alertSubject: BehaviorSubject<Alert[]> = new BehaviorSubject([]);
+    private alerts: Alert[] = [];
+    private alertSubject: BehaviorSubject<Alert[]> = new BehaviorSubject([]);
+    public alerts$ : Observable<Alert[]> = this.alertSubject.asObservable();
 
 
     pushAlert(alert: Alert): void {
