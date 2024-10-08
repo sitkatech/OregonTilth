@@ -3,6 +3,7 @@ CREATE TABLE [dbo].[FieldUnitType](
 	[FieldUnitTypeID] [int] NOT NULL,
 	[FieldUnitTypeName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[FieldUnitTypeDisplayName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[Enabled] bit not null default(1),
  CONSTRAINT [PK_FieldUnitType_FieldUnitTypeID] PRIMARY KEY CLUSTERED 
 (
 	[FieldUnitTypeID] ASC

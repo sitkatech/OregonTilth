@@ -15,7 +15,8 @@ namespace OregonTilth.EFModels.Entities
             {
                 FieldUnitTypeID = fieldUnitType.FieldUnitTypeID,
                 FieldUnitTypeName = fieldUnitType.FieldUnitTypeName,
-                FieldUnitTypeDisplayName = fieldUnitType.FieldUnitTypeDisplayName
+                FieldUnitTypeDisplayName = fieldUnitType.FieldUnitTypeDisplayName,
+                Enabled = fieldUnitType.Enabled
             };
             DoCustomMappings(fieldUnitType, fieldUnitTypeDto);
             return fieldUnitTypeDto;
@@ -29,7 +30,8 @@ namespace OregonTilth.EFModels.Entities
             {
                 FieldUnitTypeID = fieldUnitType.FieldUnitTypeID,
                 FieldUnitTypeName = fieldUnitType.FieldUnitTypeName,
-                FieldUnitTypeDisplayName = fieldUnitType.FieldUnitTypeDisplayName
+                FieldUnitTypeDisplayName = fieldUnitType.FieldUnitTypeDisplayName,
+                Enabled = fieldUnitType.Enabled
             };
             DoCustomSimpleDtoMappings(fieldUnitType, fieldUnitTypeSimpleDto);
             return fieldUnitTypeSimpleDto;
