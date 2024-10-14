@@ -18,6 +18,8 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
 
     public notLoggedInRichTextID : number = CustomRichTextType.Homepage;
     public loggedInRichTextID : number = CustomRichTextType.HomePageLoggedIn;
+    public disabledRichTextID: number = CustomRichTextType.UserDisabled;
+    public unassignedRichTextID: number = CustomRichTextType.UserUnassigned;
 
     public displayNotLoggedInRichTextForAdmin : boolean = false;
 
