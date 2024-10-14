@@ -365,6 +365,7 @@ export class FieldStandardTimesComponent implements OnInit {
       var rowToRemove = this.gridApi.getRowNode(fieldStandardTimeID.toString());
       this.gridApi.applyTransaction({remove:[rowToRemove.data]})
       this.alertService.pushAlert(new Alert("Successfully deleted Field Labor Time Study", AlertContext.Success));
+      this.refreshData();
       this.cdr.detectChanges();
     }, error => {
 
