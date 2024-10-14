@@ -100,9 +100,9 @@ namespace OregonTilth.EFModels.Entities
                 result.Add(new ErrorMessage() { Type = "Workbook Name", Message = "Workbooks must have a name." });
             }
 
-            if (workbookDto.AverageHourlyWage <= 0)
+            if (workbookDto.AverageHourlyWage < 0)
             {
-                result.Add(new ErrorMessage() { Type = "Average Hourly Wage", Message = "Average Hourly Wage must be greater than zero." });
+                result.Add(new ErrorMessage() { Type = "Average Hourly Wage", Message = "Average Hourly Wage must be greater than or equal to zero." });
             }
 
             if (workbookDto.StandardUnitOfSpaceLength <= 0)

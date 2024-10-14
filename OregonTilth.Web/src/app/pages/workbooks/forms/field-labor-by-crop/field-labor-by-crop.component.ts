@@ -103,7 +103,10 @@ export class FieldLaborByCropComponent implements OnInit {
       let validCrops = harvestPostHarvestStandardTimes.filter(x => x.StandardTimePerUnit > 0).map(x => x.Crop.CropID);
       this.cropDtos = cropDtos.filter(x => validCrops.includes(x.CropID));
 
-      this.fieldStandardTimeDtos = fieldStandardTimeDtos.filter(x => {return x.TimeStudies.length > 0});
+      this.fieldStandardTimeDtos = fieldStandardTimeDtos.filter(x => {
+        return x.StandardTimePerUnit > 0;
+      });
+
       this.allFieldStandardTimeDtos = [... this.fieldStandardTimeDtos];
       this.fieldLaborByCropDtos = fieldLaborByCrops;
       this.cropSpecificInfos = cropSpecificInfos;
