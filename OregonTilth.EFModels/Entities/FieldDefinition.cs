@@ -9,7 +9,7 @@ namespace OregonTilth.EFModels.Entities
     {
         public static List<FieldDefinitionDto> List(OregonTilthDbContext dbContext)
         {
-            return dbContext.FieldDefinitions.Include(x => x.FieldDefinitionType).Select(x => x.AsDto()).ToList();
+            return dbContext.FieldDefinitions.Select(x => x.AsDto()).ToList();
         }
 
         public static FieldDefinitionDto GetByFieldDefinitionTypeID(OregonTilthDbContext dbContext, int FieldDefinitionTypeID)

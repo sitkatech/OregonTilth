@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using OregonTilth.Models.DataTransferObjects;
 using System.Linq;
 
@@ -27,5 +28,13 @@ namespace OregonTilth.EFModels.Entities
 
             return customRichText.AsDto();
         }
+
+        public static List<CustomRichTextDto> GetList(OregonTilthDbContext dbContext)
+        {
+            var customRichTexts = dbContext.CustomRichTexts.Select(x => x.AsDto()).ToList();
+
+            return customRichTexts;
+        }
+
     }
 }

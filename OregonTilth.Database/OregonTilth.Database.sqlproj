@@ -167,6 +167,7 @@
     <None Include="Scripts\Archive\0040 - add separate contents for homepage.sql" />
     <None Include="Scripts\Archive\0041 - adjust int to decimals.sql" />
     <None Include="Scripts\Archive\0042 - rename crew and operator.sql" />
+    <None Include="Scripts\ReleaseScripts\0001 - add new custom rich text defaults.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\PreReleaseScripts\README.md" />

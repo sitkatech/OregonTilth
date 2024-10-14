@@ -49,6 +49,8 @@ namespace OregonTilth.EFModels.Entities
         public static readonly CustomRichTextTypeResultsCropCropUnitCostsPerCostCategory ResultsCropCropUnitCostsPerCostCategory = OregonTilth.EFModels.Entities.CustomRichTextTypeResultsCropCropUnitCostsPerCostCategory.Instance;
         public static readonly CustomRichTextTypeWorkbookAddEdit WorkbookAddEdit = OregonTilth.EFModels.Entities.CustomRichTextTypeWorkbookAddEdit.Instance;
         public static readonly CustomRichTextTypeHomePageLoggedIn HomePageLoggedIn = OregonTilth.EFModels.Entities.CustomRichTextTypeHomePageLoggedIn.Instance;
+        public static readonly CustomRichTextTypeUserUnassigned UserUnassigned = OregonTilth.EFModels.Entities.CustomRichTextTypeUserUnassigned.Instance;
+        public static readonly CustomRichTextTypeUserDisabled UserDisabled = OregonTilth.EFModels.Entities.CustomRichTextTypeUserDisabled.Instance;
 
         public static readonly List<CustomRichTextType> All;
         public static readonly List<CustomRichTextTypeDto> AllAsDto;
@@ -60,8 +62,8 @@ namespace OregonTilth.EFModels.Entities
         /// </summary>
         static CustomRichTextType()
         {
-            All = new List<CustomRichTextType> { PlatformOverview, Disclaimer, Homepage, Help, LabelsAndDefinitionsList, WatershedList, Training, Workbooks, WorkbookDetail, FieldLaborActivityForm, MachineryCostForm, FieldStandardTimesForm, FieldLaborByCropForm, FieldInputCostForm, FieldInputByCropForm, TPLaborActivityForm, TPTrayTypeForm, TPStandardTimesForm, TPLaborByCropForm, TPInputForm, TPInputCostForm, TPInfoForm, GeneralFarmInfoForm, CropSpecificInfoForm, CropChannelSpecificInfoForm, OverheadCostEstimator, CropsForm, CropUnitsForm, HarvestPostHarvestStandardTimesForm, ResultsCropCropUnit, ResultsCropCropUnitLaborHours, ResultsCropCropUnitCostsPerCostCategory, WorkbookAddEdit, HomePageLoggedIn };
-            AllAsDto = new List<CustomRichTextTypeDto> { PlatformOverview.AsDto(), Disclaimer.AsDto(), Homepage.AsDto(), Help.AsDto(), LabelsAndDefinitionsList.AsDto(), WatershedList.AsDto(), Training.AsDto(), Workbooks.AsDto(), WorkbookDetail.AsDto(), FieldLaborActivityForm.AsDto(), MachineryCostForm.AsDto(), FieldStandardTimesForm.AsDto(), FieldLaborByCropForm.AsDto(), FieldInputCostForm.AsDto(), FieldInputByCropForm.AsDto(), TPLaborActivityForm.AsDto(), TPTrayTypeForm.AsDto(), TPStandardTimesForm.AsDto(), TPLaborByCropForm.AsDto(), TPInputForm.AsDto(), TPInputCostForm.AsDto(), TPInfoForm.AsDto(), GeneralFarmInfoForm.AsDto(), CropSpecificInfoForm.AsDto(), CropChannelSpecificInfoForm.AsDto(), OverheadCostEstimator.AsDto(), CropsForm.AsDto(), CropUnitsForm.AsDto(), HarvestPostHarvestStandardTimesForm.AsDto(), ResultsCropCropUnit.AsDto(), ResultsCropCropUnitLaborHours.AsDto(), ResultsCropCropUnitCostsPerCostCategory.AsDto(), WorkbookAddEdit.AsDto(), HomePageLoggedIn.AsDto() };
+            All = new List<CustomRichTextType> { PlatformOverview, Disclaimer, Homepage, Help, LabelsAndDefinitionsList, WatershedList, Training, Workbooks, WorkbookDetail, FieldLaborActivityForm, MachineryCostForm, FieldStandardTimesForm, FieldLaborByCropForm, FieldInputCostForm, FieldInputByCropForm, TPLaborActivityForm, TPTrayTypeForm, TPStandardTimesForm, TPLaborByCropForm, TPInputForm, TPInputCostForm, TPInfoForm, GeneralFarmInfoForm, CropSpecificInfoForm, CropChannelSpecificInfoForm, OverheadCostEstimator, CropsForm, CropUnitsForm, HarvestPostHarvestStandardTimesForm, ResultsCropCropUnit, ResultsCropCropUnitLaborHours, ResultsCropCropUnitCostsPerCostCategory, WorkbookAddEdit, HomePageLoggedIn, UserUnassigned, UserDisabled };
+            AllAsDto = new List<CustomRichTextTypeDto> { PlatformOverview.AsDto(), Disclaimer.AsDto(), Homepage.AsDto(), Help.AsDto(), LabelsAndDefinitionsList.AsDto(), WatershedList.AsDto(), Training.AsDto(), Workbooks.AsDto(), WorkbookDetail.AsDto(), FieldLaborActivityForm.AsDto(), MachineryCostForm.AsDto(), FieldStandardTimesForm.AsDto(), FieldLaborByCropForm.AsDto(), FieldInputCostForm.AsDto(), FieldInputByCropForm.AsDto(), TPLaborActivityForm.AsDto(), TPTrayTypeForm.AsDto(), TPStandardTimesForm.AsDto(), TPLaborByCropForm.AsDto(), TPInputForm.AsDto(), TPInputCostForm.AsDto(), TPInfoForm.AsDto(), GeneralFarmInfoForm.AsDto(), CropSpecificInfoForm.AsDto(), CropChannelSpecificInfoForm.AsDto(), OverheadCostEstimator.AsDto(), CropsForm.AsDto(), CropUnitsForm.AsDto(), HarvestPostHarvestStandardTimesForm.AsDto(), ResultsCropCropUnit.AsDto(), ResultsCropCropUnitLaborHours.AsDto(), ResultsCropCropUnitCostsPerCostCategory.AsDto(), WorkbookAddEdit.AsDto(), HomePageLoggedIn.AsDto(), UserUnassigned.AsDto(), UserDisabled.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, CustomRichTextType>(All.ToDictionary(x => x.CustomRichTextTypeID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, CustomRichTextTypeDto>(AllAsDto.ToDictionary(x => x.CustomRichTextTypeID));
         }
@@ -192,6 +194,10 @@ namespace OregonTilth.EFModels.Entities
                     return TPTrayTypeForm;
                 case CustomRichTextTypeEnum.Training:
                     return Training;
+                case CustomRichTextTypeEnum.UserDisabled:
+                    return UserDisabled;
+                case CustomRichTextTypeEnum.UserUnassigned:
+                    return UserUnassigned;
                 case CustomRichTextTypeEnum.WatershedList:
                     return WatershedList;
                 case CustomRichTextTypeEnum.WorkbookAddEdit:
@@ -241,7 +247,9 @@ namespace OregonTilth.EFModels.Entities
         ResultsCropCropUnitLaborHours = 31,
         ResultsCropCropUnitCostsPerCostCategory = 32,
         WorkbookAddEdit = 33,
-        HomePageLoggedIn = 34
+        HomePageLoggedIn = 34,
+        UserUnassigned = 35,
+        UserDisabled = 36
     }
 
     public partial class CustomRichTextTypePlatformOverview : CustomRichTextType
@@ -446,5 +454,17 @@ namespace OregonTilth.EFModels.Entities
     {
         private CustomRichTextTypeHomePageLoggedIn(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) {}
         public static readonly CustomRichTextTypeHomePageLoggedIn Instance = new CustomRichTextTypeHomePageLoggedIn(34, @"HomePageLoggedIn", @"Homepage User Logged In");
+    }
+
+    public partial class CustomRichTextTypeUserUnassigned : CustomRichTextType
+    {
+        private CustomRichTextTypeUserUnassigned(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) {}
+        public static readonly CustomRichTextTypeUserUnassigned Instance = new CustomRichTextTypeUserUnassigned(35, @"UserUnassigned", @"User Unassigned");
+    }
+
+    public partial class CustomRichTextTypeUserDisabled : CustomRichTextType
+    {
+        private CustomRichTextTypeUserDisabled(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) {}
+        public static readonly CustomRichTextTypeUserDisabled Instance = new CustomRichTextTypeUserDisabled(36, @"UserDisabled", @"User Disabled");
     }
 }

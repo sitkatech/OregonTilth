@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OregonTilth.API.Services;
@@ -21,6 +22,14 @@ namespace OregonTilth.API.Controllers
         {
             var customRichTextDto = CustomRichText.GetByCustomRichTextTypeID(_dbContext, customRichTextTypeID);
             return RequireNotNullThrowNotFound(customRichTextDto, "CustomRichText", customRichTextTypeID);
+        }
+
+        [HttpGet("customRichText")]
+        [AdminFeature]
+        public ActionResult<List<CustomRichTextDto>> GetAllCustomRichText()
+        {
+            var customRichTextDtos = CustomRichText.GetList(_dbContext);
+            return Ok(customRichTextDtos);
         }
 
         [HttpPut("customRichText/{customRichTextTypeID}")]

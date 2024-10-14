@@ -42,10 +42,14 @@ import { DuplicateComponent } from './pages/workbooks/duplicate/duplicate.compon
 import { PageListComponent } from './pages/page-list/page-list.component';
 import { PageEditComponent } from './pages/page-edit/page-edit.component';
 import { PageDetailComponent } from './pages/page-detail/page-detail.component';
+import { CustomRichTextListComponent } from './pages/custom-rich-text-list/custom-rich-text-list.component';
+import { CustomRichTextEditComponent } from './pages/custom-rich-text-edit/custom-rich-text-edit.component';
 
 const routes: Routes = [
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
   { path: "labels-and-definitions", component: FieldDefinitionListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
+  { path: "custom-rich-text/:id", component: CustomRichTextEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
+  { path: "custom-rich-text", component: CustomRichTextListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
   { path: "pages", component: PageListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard]},
   { path: "pages/edit/:id", component: PageEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard]},
   { path: "pages/:pageId", component: PageDetailComponent, canActivate: [UnauthenticatedAccessGuard]},

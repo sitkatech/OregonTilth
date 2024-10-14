@@ -36,11 +36,11 @@ export class FieldDefinitionListComponent implements OnInit {
     this.breadcrumbService.setBreadcrumbs([{label:'Labels and Definitions'}]);
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.fieldDefinitionsGrid.api.showLoadingOverlay();
+      // this.fieldDefinitionsGrid.api.showLoadingOverlay();
       this.fieldDefinitionService.listAllFieldDefinitions().subscribe(fieldDefinitions => {
         this.fieldDefinitions = fieldDefinitions;
         this.rowData = fieldDefinitions;
-        this.fieldDefinitionsGrid.api.hideOverlay();
+        // this.fieldDefinitionsGrid.api.hideOverlay();
         this.cdr.detectChanges();
       });
       this.columnDefs = [
