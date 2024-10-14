@@ -240,6 +240,30 @@ export class CropSpecificInfoComponent implements OnInit {
         resizable: true
       }, 
       {
+        headerName: 'Rows Per Standard Bed', 
+        field:'RowsPerStandardWidth',
+        valueGetter: function(params:any) {
+          return params.data.RowsPerStandardWidth
+        },
+        editable: true,
+        cellEditorFramework: DecimalEditor,
+        sortable: true, 
+        filter: true,
+        cellStyle: params => {
+          if (params.value) {
+              return { backgroundColor: '#ccf5cc'};
+          } 
+          return {backgroundColor: '#ffdfd6'};
+        },
+        valueSetter: params => {
+          params.data.RowsPerStandardWidth = params.newValue ? params.newValue : 0;
+          return true;
+        },
+        cellRendererFramework: EditableRendererComponent,
+        width:150,
+        resizable: true
+      },
+      {
         headerName: 'Drip Tape Rows per Standard Bed', 
         field:'DripTapeRowsPerStandardWidth',
         valueGetter: function(params:any) {
@@ -264,30 +288,7 @@ export class CropSpecificInfoComponent implements OnInit {
         resizable: true
       },
      
-      {
-        headerName: 'Rows Per Standard Bed', 
-        field:'RowsPerStandardWidth',
-        valueGetter: function(params:any) {
-          return params.data.RowsPerStandardWidth
-        },
-        editable: true,
-        cellEditorFramework: DecimalEditor,
-        sortable: true, 
-        filter: true,
-        cellStyle: params => {
-          if (params.value) {
-              return { backgroundColor: '#ccf5cc'};
-          } 
-          return {backgroundColor: '#ffdfd6'};
-        },
-        valueSetter: params => {
-          params.data.RowsPerStandardWidth = params.newValue ? params.newValue : 0;
-          return true;
-        },
-        cellRendererFramework: EditableRendererComponent,
-        width:150,
-        resizable: true
-      },
+      
       {
         headerName: 'Seed Cost per Standard Bed', 
         field:'SeedCostPerStandardUnitOfSpace',
