@@ -1,1 +1,20 @@
-<p>custom-rich-text-edit works!</p>
+@if(customRichText$ | async; as customRichText){
+    <div class="container mt-sm-4">
+        <app-alert-display></app-alert-display>
+        <h2 class="d-inline-block">
+            Edit Custom Rich Text: {{customRichText.CustomRichTextType.CustomRichTextTypeDisplayName}} </h2>
+        <div class="row mt-4">
+            <div class="col-12">
+                    <editor #tinyMceEditor
+                        [init]="tinyMceEditor | tinyMceConfig"
+                        [(ngModel)]="customRichText.CustomRichTextContent"
+                    ></editor>
+                <div style="float:right;">
+                    <button type="button" class="btn btn-fresca mt-1 mr-1 mb-1" (click)="saveCustomRichText(customRichText)">Save</button>
+                    <a routerLink="/custom-rich-text" class="btn btn-secondary mt-1 mb-1">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
