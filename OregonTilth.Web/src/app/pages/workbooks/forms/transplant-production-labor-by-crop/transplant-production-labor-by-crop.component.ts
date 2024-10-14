@@ -99,7 +99,7 @@ export class TransplantProductionLaborByCropComponent implements OnInit {
     this.availableTransplantProductionLaborActivityDtos = this.transplantProductionLaborActivityDtos.filter(x => {
       
       var standardTimes = this.transplantProductionStandardTimeDtos.filter(y => {
-        return y.TransplantProductionTrayType.TransplantProductionTrayTypeID == selectedTpInfo.TransplantProductionTrayType.TransplantProductionTrayTypeID && y.TimeStudies.length > 0
+        return y.TransplantProductionTrayType.TransplantProductionTrayTypeID == selectedTpInfo.TransplantProductionTrayType.TransplantProductionTrayTypeID && y.StandardTimePerUnit > 0
       })
 
       var laborActivityIDs = standardTimes.map(y => y.TransplantProductionLaborActivity.TransplantProductionLaborActivityID);
