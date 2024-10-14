@@ -37,15 +37,13 @@
         </div>
     </ng-template>
     <ng-container *ngIf="showEditButton()">
-        <div class="d-inline-block" (mouseenter)="notEditingMouseEnter()" (mouseleave)="notEditingMouseLeave()">
-            <span style="overflow:hidden; text-overflow:ellipsis">
-                {{getLabelText()}}
-                <i class="fas fa-question-circle small" style="cursor: help;" #p="ngbPopover" [ngbPopover]="popContent"
-                    [popoverTitle]="popTitle" triggers="manual" [autoClose]="false"
-                    popoverClass="popover-override" container="body">
-                </i>
-            </span>
-        </div>
+        <span (mouseenter)="notEditingMouseEnter()" (mouseleave)="notEditingMouseLeave()">
+            {{getLabelText()}}
+            <i class="fas fa-question-circle small" style="cursor: help;" #p="ngbPopover" [ngbPopover]="popContent"
+                [popoverTitle]="popTitle" triggers="manual" [autoClose]="false" [placement]="['right', 'auto']"
+                popoverClass="popover-override" container="body">
+            </i>
+        </span>
     </ng-container>
     <ng-container *ngIf="!showEditButton()">
         <span>
