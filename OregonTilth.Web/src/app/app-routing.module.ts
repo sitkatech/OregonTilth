@@ -44,6 +44,7 @@ import { PageEditComponent } from './pages/page-edit/page-edit.component';
 import { PageDetailComponent } from './pages/page-detail/page-detail.component';
 import { CustomRichTextListComponent } from './pages/custom-rich-text-list/custom-rich-text-list.component';
 import { CustomRichTextEditComponent } from './pages/custom-rich-text-edit/custom-rich-text-edit.component';
+import { LogoutCallbackComponent } from './pages/logout-callback/logout-callback.component';
 
 const routes: Routes = [
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
@@ -88,6 +89,7 @@ const routes: Routes = [
   { path: "workbooks/:workbookID/duplicate", component: DuplicateComponent},
   { path: "workbooks/:workbookID", component: WorkbookDetailComponent},
   { path: "login-callback", component: LoginCallbackComponent },
+  { path: "logout-callback", component: LogoutCallbackComponent },
   { path: "create-user-callback", component: CreateUserCallbackComponent },
   { path: "not-found", component: NotFoundComponent },
   { path: 'subscription-insufficient', component: SubscriptionInsufficientComponent },

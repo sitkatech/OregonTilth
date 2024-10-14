@@ -166,11 +166,9 @@ export class AuthenticationService {
   }
 
   public logout() {
+    
     this.oauthService.logOut();
 
-    setTimeout(() => {
-      this.cookieStorageService.removeAll();
-    });
   }
 
   public isUserAnAdministrator(user: UserDetailedDto): boolean {
