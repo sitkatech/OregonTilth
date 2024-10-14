@@ -18,7 +18,7 @@ data:
   keystone_scope: "openid profile offline_access keystone"
   keystone_sessionCheckEnabled: "false"
   keystone_logoutUrl: "https://identity{{eq .Values.global.env.aspNetEnvironment "Production" | ternary "" "-qa" }}.sitkatech.com/account/logout"
-  keystone_postLogoutRedirectUri: "/"
+  keystone_postLogoutRedirectUri: "/logout-callback"
   keystone_waitForTokenInMsec: "500"
   keystone_responseType: "code"
   keystone_disablePKCE: "false"
