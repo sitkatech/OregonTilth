@@ -175,6 +175,27 @@ export class CropYieldInformationComponent implements OnInit {
         width:150
       },
       {
+        headerName: 'Price Per Crop Unit', 
+        field:'PricePerCropUnit',
+        valueFormatter: this.gridService.currencyFormatter,
+        valueGetter: function(params:any) {
+          return params.data.PricePerCropUnit
+        },
+        editable: true,
+        cellEditorFramework: DecimalEditor,
+        sortable: true, 
+        filter: true,
+        cellStyle: params => {
+          if (params.value >= 0) {
+              return { backgroundColor: '#ccf5cc'};
+          } 
+          return {backgroundColor: '#ffdfd6'};
+        },
+        cellRendererFramework: EditableRendererComponent,
+        width:150,
+        resizable: true,
+      },
+      {
         headerName: 'Harvested Yield per Standard Bed', 
         field:'HarvestedYieldPerStandardUnitOfSpace',
         valueGetter: function(params:any) {
@@ -214,27 +235,7 @@ export class CropYieldInformationComponent implements OnInit {
         width:150,
         resizable: true,
       },
-      {
-        headerName: 'Price Per Crop Unit', 
-        field:'PricePerCropUnit',
-        valueFormatter: this.gridService.currencyFormatter,
-        valueGetter: function(params:any) {
-          return params.data.PricePerCropUnit
-        },
-        editable: true,
-        cellEditorFramework: DecimalEditor,
-        sortable: true, 
-        filter: true,
-        cellStyle: params => {
-          if (params.value >= 0) {
-              return { backgroundColor: '#ccf5cc'};
-          } 
-          return {backgroundColor: '#ffdfd6'};
-        },
-        cellRendererFramework: EditableRendererComponent,
-        width:150,
-        resizable: true,
-      },
+      
       {
         headerName: 'Crop-Specific Post-Harvest Cost', 
         field:'PackagingCostPerCropUnit',
