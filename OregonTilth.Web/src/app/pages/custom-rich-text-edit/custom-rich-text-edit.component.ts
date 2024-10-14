@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { AlertDisplayComponent } from 'src/app/shared/components/alert-display/alert-display.component';
@@ -13,7 +13,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 @Component({
   selector: 'oregontilth-custom-rich-text-edit',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, RouterLink],
   templateUrl: './custom-rich-text-edit.component.html',
   styleUrl: './custom-rich-text-edit.component.scss'
 })
