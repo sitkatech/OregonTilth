@@ -40,18 +40,18 @@
                     </option>
                   </select>
                 </div>
-               
+               <div class="mb-3 col-md-3 text-end">
+                <label  style="display:block"><br/></label>
+                <button type="submit" class="btn btn-success" [disabled]="!harvestPostHarvestForm.form.valid || isLoadingSubmit">
+                  <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                  Ready
+                </button>
+               </div>
               </div>
               
               <div class="row">
                 <div class="col-sm">
                   <i class="fas fa-bolt"></i> Required field
-                </div>
-                <div class="col-sm text-end">
-                  <button type="submit" class="btn btn-fresca" [disabled]="!harvestPostHarvestForm.form.valid || isLoadingSubmit">
-                    <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
-                    Start
-                  </button>
                 </div>
               </div>
             </form>
