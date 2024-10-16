@@ -31,6 +31,9 @@ spec:
       hosts:
         {{- range .Values.ingress.hosts }}
         - {{ . }}
+        {{- if .Values.global.env.aspNetEnvironment "Production" }}
+        - www.{{ . }}
+        {{- end }}
         {{- end }}
   rules:
     {{- range .Values.ingress.hosts }}
@@ -49,5 +52,22 @@ spec:
               serviceName: {{ $fullName }}
               servicePort: {{ $svcPort }}
               {{- end }}
+    {{- if .Values.global.env.aspNetEnvironment "Production" }}
+    - host: www.{{ . }}
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: {{ $svcPort }}
+              {{- else }}
+              serviceName: {{ $fullName }}
+              servicePort: {{ $svcPort }}
+              {{- end }}
+    {{- end }}
     {{- end }}
 {{- end }}
