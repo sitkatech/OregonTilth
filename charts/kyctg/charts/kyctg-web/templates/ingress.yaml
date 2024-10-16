@@ -31,7 +31,7 @@ spec:
       hosts:
         {{- range .Values.ingress.hosts }}
         - {{ . }}
-        {{- if eq .Values.global.env.aspNetEnvironment "Production" }}
+        {{ if eq $.Values.global.env.aspNetEnvironment "Production" }}
         - www.{{ . }}
         {{- end }}
         {{- end }}
@@ -52,7 +52,7 @@ spec:
               serviceName: {{ $fullName }}
               servicePort: {{ $svcPort }}
               {{- end }}
-    {{- if eq .Values.global.env.aspNetEnvironment "Production" }}
+    {{ if eq $.Values.global.env.aspNetEnvironment "Production" }}
     - host: www.{{ . }}
       http:
         paths:
