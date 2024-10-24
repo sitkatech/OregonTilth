@@ -57,7 +57,7 @@ export class DuplicateComponent implements OnInit {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
 
-      this.workbookID = parseInt(this.route.snapshot.paramMap.get("id"));
+      this.workbookID = parseInt(this.route.snapshot.paramMap.get("workbookID"));
 
       this.getWorkbookRequest = this.workbookService.getWorkbook(this.workbookID).subscribe(workbook => {
         this.workbook = workbook;
