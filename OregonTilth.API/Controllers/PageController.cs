@@ -30,13 +30,13 @@ namespace OregonTilth.API.Controllers
         }
 
         [HttpGet("/pages/{pageID}")]
-        public ActionResult<PageTreeDto> GetPage([FromRoute] int pageID)
+        public ActionResult<PageDto> GetPage([FromRoute] int pageID)
         {
             //var fieldDefinitionDtos = FieldDefinition.List(_dbContext);
             //return fieldDefinitionDtos;
 
-            var pageDtos = Page.List(_dbContext);
-            return pageDtos.Single(x => x.PageID == pageID);
+            var pageDto = Page.Single(_dbContext, pageID);
+            return pageDto;
 
         }
 

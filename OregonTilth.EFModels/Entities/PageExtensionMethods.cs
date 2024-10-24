@@ -11,12 +11,22 @@ namespace OregonTilth.EFModels.Entities
             return new PageTreeDto()
             {
                 PageID = page.PageID,
-                ParentPage = page.ParentPage?.AsDto(),
+                ParentPage = page.ParentPage?.AsMinimalDto(),
                 ParentPageID = page.ParentPageID,
-                Children = page.InverseParentPage?.Select(x => x.AsDto()).OrderBy(x => x.SortOrder).ToList(),
+                Children = page.InverseParentPage?.Select(x => x.AsMinimalDto()).OrderBy(x => x.SortOrder).ToList(),
                 PageName = page.PageName,
-                PageContent = page.PageContent,
                 SortOrder = page.SortOrder,
+            };
+        }
+
+        public static PageMinimalDto AsMinimalDto(this Page page)
+        {
+            return new PageMinimalDto()
+            {
+                PageID = page.PageID,
+                PageName = page.PageName,
+                SortOrder = page.SortOrder,
+                ParentPageID = page.ParentPageID
             };
         }
     }

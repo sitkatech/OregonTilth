@@ -15,6 +15,16 @@ namespace OregonTilth.EFModels.Entities
         //public ICollection<Page> Parent { get; set; } 
         //public ICollection<Page> Children { get; set; } 
 
+        public static PageDto Single(OregonTilthDbContext dbContext, int pageID)
+        {
+            var pages = dbContext.Pages
+                .Include(x => x.ParentPage)
+                .Include(x => x.InverseParentPage)
+                .AsNoTracking().OrderBy(x => x.SortOrder).SingleOrDefault(x => x.PageID == pageID);
+
+            return pages.AsDto();
+        }
+
         public static List<PageTreeDto> List(OregonTilthDbContext dbContext)
         {
             var pages = dbContext.Pages
@@ -22,7 +32,7 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.InverseParentPage)
                 .AsNoTracking().OrderBy(x=> x.SortOrder).ToList();
 
-            return pages.Select(x => PageExtensionMethods.AsTreeDto(x)).ToList();
+            return pages.Select(x => x.AsTreeDto()).ToList();
         }
 
         public static PageDto Create(OregonTilthDbContext dbContext, PageCreateDto pageCreateDto)
