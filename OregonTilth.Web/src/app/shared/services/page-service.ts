@@ -6,6 +6,7 @@ import { PageDto } from '../models/generated/page-dto';
 import { PageCreateDto } from '../models/page/page-create-dto';
 import { PageTreeDto } from '../models/page/page-tree-dto';
 import { PageUpdateDto } from '../models/page/page-update-dto';
+import { PageMinimalDto } from '../models/generated/page-minimal-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class PageService {
     return this.apiService.getFromApi(`/pages`);
   }
 
-  public getPage(pageID: number): Observable<PageTreeDto> {
+  public getPage(pageID: number): Observable<PageMinimalDto> {
     return this.apiService.getFromApi(`/pages/${pageID}`);
   }
 

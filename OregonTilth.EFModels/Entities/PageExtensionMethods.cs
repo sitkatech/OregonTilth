@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using OregonTilth.Models.DataTransferObjects;
+﻿using OregonTilth.Models.DataTransferObjects;
 using OregonTilth.Models.DataTransferObjects.Page;
+using System.Linq;
 
 namespace OregonTilth.EFModels.Entities
 {
@@ -19,6 +19,11 @@ namespace OregonTilth.EFModels.Entities
             };
         }
 
+        static partial void DoCustomMappings(Page page, PageDto pageDto)
+        {
+            pageDto.ParentPageName = page.ParentPage?.PageName;
+        }
+
         public static PageMinimalDto AsMinimalDto(this Page page)
         {
             return new PageMinimalDto()
@@ -26,7 +31,8 @@ namespace OregonTilth.EFModels.Entities
                 PageID = page.PageID,
                 PageName = page.PageName,
                 SortOrder = page.SortOrder,
-                ParentPageID = page.ParentPageID
+                ParentPageID = page.ParentPageID,
+                ParentPageName = page.ParentPage?.PageName
             };
         }
     }

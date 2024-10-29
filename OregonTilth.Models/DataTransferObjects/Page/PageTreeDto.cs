@@ -10,6 +10,6 @@ namespace OregonTilth.Models.DataTransferObjects.Page
 
     public class PageMinimalDto : PageDto
     {
-
+        public string ParentPageName { get; set; }
     }
 }

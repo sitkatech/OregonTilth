@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserDetailedDto } from 'src/app/shared/models';
+import { PageMinimalDto } from 'src/app/shared/models/generated/page-minimal-dto';
 import { PageTreeDto } from 'src/app/shared/models/page/page-tree-dto';
 import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
 import { PageService } from 'src/app/shared/services/page-service';
@@ -18,7 +19,7 @@ export class PageDetailComponent implements OnInit, OnDestroy {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   private pageID: number;
-  public page: PageTreeDto;
+  public page: PageMinimalDto;
   public displayedContent: SafeHtml;
 
   private paramSubscription : Subscription = Subscription.EMPTY;
@@ -46,8 +47,8 @@ export class PageDetailComponent implements OnInit, OnDestroy {
         this.pageService.getPage(params.pageId).subscribe(page => {
           this.page = page;
           let breadcrumbs = [];
-          if (page.ParentPage) {
-            breadcrumbs.push({label: page.ParentPage.PageName, routerLink: `/pages/${page.ParentPage.PageID}`});
+          if (page.ParentPageID) {
+            breadcrumbs.push({label: page.ParentPageName, routerLink: `/pages/${page.ParentPageID}`});
           }
           this.breadcrumbService.setBreadcrumbs([...breadcrumbs, {label: page.PageName}]);
           this.displayedContent = this.sanitizer.bypassSecurityTrustHtml(this.page.PageContent);

@@ -12,6 +12,8 @@ import { PageService } from 'src/app/shared/services/page-service';
 import TinyMCEHelpers from 'src/app/shared/helpers/tiny-mce-helpers';
 import { EditorComponent } from '@tinymce/tinymce-angular';
 import { BreadcrumbsService } from 'src/app/shared/services/breadcrumbs.service';
+import { PageDto } from 'src/app/shared/models/generated/page-dto';
+import { PageMinimalDto } from 'src/app/shared/models/generated/page-minimal-dto';
 @Component({
   selector: 'oregontilth-page-edit',
   templateUrl: './page-edit.component.html',
@@ -21,13 +23,15 @@ export class PageEditComponent implements OnInit {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
 
-  public page: PageTreeDto;
+  public page: PageMinimalDto;
   public allPages: PageTreeDto[];
 
   public pageID: number;
   public model: PageUpdateDto;
   
   public isLoadingSubmit: boolean = false;
+
+  public pageCannotHaveParent: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -58,8 +62,9 @@ export class PageEditComponent implements OnInit {
       ).subscribe(([page, allPages]) => {
         this.page = page;
         this.breadcrumbService.setBreadcrumbs([{label: "Pages", routerLink:['/pages']},{label: `Edit "${page.PageName}"`}]);
-        this.allPages = allPages.filter(x => !x.ParentPage);
+        this.allPages = allPages.filter(x => !x.ParentPage || x.PageID == this.page.PageID);
         
+        this.pageCannotHaveParent = allPages.some(x => x.ParentPage?.PageID == this.page.PageID) && page.ParentPageID == null;
         // var thisPageIndex = allPages.findIndex(x => x.PageID == this.page.PageID)
         // this.allPages.splice(thisPageIndex,1);
 
@@ -67,7 +72,7 @@ export class PageEditComponent implements OnInit {
         this.model.PageID = page.PageID;
         this.model.PageContent = this.page.PageContent ? this.page.PageContent : '';
         this.model.PageName = page.PageName;
-        this.model.ParentPageID = page.ParentPage?.PageID;
+        this.model.ParentPageID = page.ParentPageID;
         this.model.SortOrder = page.SortOrder;
         this.cdr.detectChanges();
 

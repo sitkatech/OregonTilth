@@ -10,11 +10,13 @@
         </div>
         <div class="mb-3 col-md-4">
           <label class="">Parent Page</label>
-          <select name="ParentPageID" class="form-select" [(ngModel)]="model.ParentPageID" [disabled]="!model.ParentPageID">
-              <option [ngValue]="undefined" [selected]="!model.ParentPageID" *ngIf="!model.ParentPageID">A root page cannot have a parent.</option>
+          <select name="ParentPageID" class="form-select" [(ngModel)]="model.ParentPageID" [disabled]="pageCannotHaveParent">
+              <option [ngValue]="null" [selected]="pageCannotHaveParent" *ngIf="pageCannotHaveParent">A root page with children cannot have a parent.</option>
+              
               <option *ngFor="let option of allPages" [value]="option.PageID">
                   {{option.PageName}}
               </option>
+              <option [ngValue]="null" *ngIf="!pageCannotHaveParent">-- Root Page --</option>
           </select>
         </div>
         <div class="mb-3 col-md-4">

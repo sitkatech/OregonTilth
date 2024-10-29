@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using OregonTilth.EFModels.Util;
 using OregonTilth.Models.DataTransferObjects;
 using OregonTilth.Models.DataTransferObjects.Page;
+using PageDto = OregonTilth.Models.DataTransferObjects.PageDto;
 
 namespace OregonTilth.EFModels.Entities
 {
@@ -96,9 +97,9 @@ namespace OregonTilth.EFModels.Entities
                 .SingleOrDefault(x => x.PageID == pageUpdateDto.PageID).AsTreeDto();
 
 
-            if (currentPage.ParentPageID == null && pageUpdateDto.ParentPageID != null)
+            if (currentPage.ParentPageID == null && pageUpdateDto.ParentPageID != null && currentPage.Children.Count > 0)
             {
-                result.Add(new ErrorMessage() { Type = "Page", Message = "A root page cannot be assigned a parent page." });
+                result.Add(new ErrorMessage() { Type = "Page", Message = "A root page with children cannot be assigned to another parent page." });
             }
 
 
