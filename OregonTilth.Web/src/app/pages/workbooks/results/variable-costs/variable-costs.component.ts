@@ -160,7 +160,7 @@ export class VariableCostsComponent implements OnInit {
       pivots.push(new ViariableCostForCropPivoted({VariableCost: 'Total Field Input Costs', DollarAmount: x.TotalFieldInputCosts}))
       pivots.push(new ViariableCostForCropPivoted({VariableCost: 'Total Labor Costs', DollarAmount: x.TotalLaborCosts}))
       pivots.push(new ViariableCostForCropPivoted({VariableCost: 'Total Machinery Costs', DollarAmount: x.TotalMachineryCosts}))
-      pivots.push(new ViariableCostForCropPivoted({VariableCost: 'Post-Harvest Input Cost', DollarAmount: x.TotalPackagingCosts}))
+      pivots.push(new ViariableCostForCropPivoted({VariableCost: 'Total Post-Harvest Input Costs', DollarAmount: x.TotalPackagingCosts}))
       pivots.push(new ViariableCostForCropPivoted({VariableCost: 'Total Seed or TP Costs', DollarAmount: x.TotalSeedOrTpCosts}))
       this.variableCostsPivotedForSelectedCrop = this.variableCostsPivotedForSelectedCrop.concat(pivots)
     });
