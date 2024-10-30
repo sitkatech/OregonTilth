@@ -48,9 +48,6 @@ export class AuthenticationService {
     this.oauthService.events
       .pipe(filter(e => ['session_terminated', 'session_error'].includes(e.type)))
       .subscribe(e => this.router.navigateByUrl("/"));
-
-    this.oauthService.setupAutomaticSilentRefresh();
-
     
   }
 
