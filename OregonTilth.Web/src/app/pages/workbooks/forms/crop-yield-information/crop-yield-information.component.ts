@@ -237,7 +237,7 @@ export class CropYieldInformationComponent implements OnInit {
       },
       
       {
-        headerName: 'Crop-Specific Post-Harvest Cost', 
+        headerName: 'Crop-Specific Post-Harvest Input Cost', 
         field:'PackagingCostPerCropUnit',
         valueFormatter: this.gridService.currencyFormatter,
         valueGetter: function(params:any) {
