@@ -184,7 +184,7 @@ namespace OregonTilth.EFModels.Entities
 
             if (tpInfoToValidateDeletion.PhaseID == (int) PhaseEnum.Seeding)
             {
-                var currentEntries = GetTransplantProductionInformationImpl(dbContext).Where(x => x.WorkbookID == tpInfoToValidateDeletion.WorkbookID);
+                var currentEntries = GetTransplantProductionInformationImpl(dbContext).Where(x => x.WorkbookID == tpInfoToValidateDeletion.WorkbookID).ToList();
 
                 if (currentEntries.Any(x =>
                     x.Crop.CropID == tpInfoToValidateDeletion.CropID && x.Phase.PhaseID == (int)PhaseEnum.PottingUp))
