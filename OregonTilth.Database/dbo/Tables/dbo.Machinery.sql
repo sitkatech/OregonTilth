@@ -9,7 +9,7 @@ CREATE TABLE [dbo].[Machinery](
 (
 	[MachineryID] ASC
 ),
-CONSTRAINT [FK_Machinery_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID])
+CONSTRAINT [FK_Machinery_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]) ON DELETE CASCADE
 );
 
 GO

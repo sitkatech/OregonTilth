@@ -17,7 +17,7 @@ CREATE TABLE [dbo].[TransplantProductionInputCost](
 	[TransplantProductionTrayTypeID] ASC
 ),
 CONSTRAINT [FK_TransplantProductionInputCost_TransplantProductionInput_TransplantProductionInputID] FOREIGN KEY([TransplantProductionInputID]) REFERENCES [dbo].[TransplantProductionInput] ([TransplantProductionInputID]),
-CONSTRAINT [FK_TransplantProductionInputCost_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]),
+CONSTRAINT [FK_TransplantProductionInputCost_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]) ON DELETE CASCADE,
 CONSTRAINT [FK_TransplantProductionTrayTypeCost_TransplantProductionTrayType_TransplantProductionTrayTypeID] FOREIGN KEY([TransplantProductionTrayTypeID]) REFERENCES [dbo].[TransplantProductionTrayType] ([TransplantProductionTrayTypeID]),
 CONSTRAINT [CK_TransplantProductionInputCost_CostPerTray_Greater_Than_Zero] CHECK  (([CostPerTray]>(0))),
 

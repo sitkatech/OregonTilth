@@ -18,7 +18,7 @@ CREATE TABLE [dbo].[FieldLaborByCrop](
 ),
 CONSTRAINT [FK_FieldLaborByCrop_Crop_CropID] FOREIGN KEY([CropID]) REFERENCES [dbo].[Crop] ([CropID]),
 CONSTRAINT [FK_FieldLaborByCrop_FieldStandardTime_FieldStandardTimeID] FOREIGN KEY([FieldStandardTimeID]) REFERENCES [dbo].[FieldStandardTime] ([FieldStandardTimeID]),
-CONSTRAINT [FK_FieldLaborByCrop_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]),
+CONSTRAINT [FK_FieldLaborByCrop_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]) ON DELETE CASCADE,
  CONSTRAINT [CK_FieldLaborByCrop_Occurrences_Greater_Than_Zero] CHECK  (([Occurrences]>(0) OR [Occurrences] IS NULL))
 );
 

@@ -16,7 +16,7 @@ CREATE TABLE [dbo].[FieldLaborActivity](
 	[WorkbookID] ASC
 ),
 CONSTRAINT [FK_FieldLaborActivity_FieldLaborActivityCategory_FieldLaborActivityCategoryID] FOREIGN KEY([FieldLaborActivityCategoryID]) REFERENCES [dbo].[FieldLaborActivityCategory] ([FieldLaborActivityCategoryID]),
-CONSTRAINT [FK_FieldLaborActivity_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]),
+CONSTRAINT [FK_FieldLaborActivity_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]) ON DELETE CASCADE,
 CONSTRAINT [CK_FieldLaborActivity_At_Least_One_Labor_Type_Checked] CHECK  (([LaborTypeManual]=(1) OR [LaborTypeMachinery]=(1)))
 );
 
