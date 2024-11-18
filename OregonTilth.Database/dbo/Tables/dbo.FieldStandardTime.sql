@@ -15,7 +15,7 @@ CONSTRAINT [FK_FieldStandardTime_FieldLaborActivity_FieldLaborActivityID] FOREIG
 CONSTRAINT [FK_FieldStandardTime_FieldUnitType_FieldUnitTypeID] FOREIGN KEY([FieldUnitTypeID]) REFERENCES [dbo].[FieldUnitType] ([FieldUnitTypeID]),
 CONSTRAINT [FK_FieldStandardTime_LaborType_LaborTypeID] FOREIGN KEY([LaborTypeID]) REFERENCES [dbo].[LaborType] ([LaborTypeID]),
 CONSTRAINT [FK_FieldStandardTime_Machinery_MachineryID] FOREIGN KEY([MachineryID]) REFERENCES [dbo].[Machinery] ([MachineryID]),
-CONSTRAINT [FK_FieldStandardTime_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]),
+CONSTRAINT [FK_FieldStandardTime_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]) ON DELETE CASCADE,
 CONSTRAINT [CK_MachineryRequiredWhenLaborTypeIsOperator] CHECK  (([LaborTypeID]=(2) AND [MachineryID] IS NOT NULL OR [MachineryID] IS NULL))
 );
 

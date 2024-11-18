@@ -12,7 +12,7 @@ CREATE TABLE [dbo].[FieldInputByCrop](
 ),
 CONSTRAINT [FK_FieldInputByCrop_Crop_CropID] FOREIGN KEY([CropID]) REFERENCES [dbo].[Crop] ([CropID]),
 CONSTRAINT [FK_FieldInputByCrop_FieldInputCost_FieldInputCostID] FOREIGN KEY([FieldInputCostID]) REFERENCES [dbo].[FieldInputCost] ([FieldInputCostID]),
-CONSTRAINT [FK_FieldInputByCrop_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID])
+CONSTRAINT [FK_FieldInputByCrop_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]) ON DELETE CASCADE
 );
 
 GO

@@ -17,7 +17,7 @@ CREATE TABLE [dbo].[TransplantProductionStandardTime](
 ),
 CONSTRAINT [FK_TransplantProductionStandardTime_TransplantProductionLaborActivity_TransplantProductionLaborActivityID] FOREIGN KEY([TransplantProductionLaborActivityID]) REFERENCES [dbo].[TransplantProductionLaborActivity] ([TransplantProductionLaborActivityID]),
 CONSTRAINT [FK_TransplantProductionStandardTime_TransplantProductionTrayType_TransplantProductionTrayTypeID] FOREIGN KEY([TransplantProductionTrayTypeID]) REFERENCES [dbo].[TransplantProductionTrayType] ([TransplantProductionTrayTypeID]),
-CONSTRAINT [FK_TransplantProductionStandardTime_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]),
+CONSTRAINT [FK_TransplantProductionStandardTime_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]) ON DELETE CASCADE,
 
 );
 

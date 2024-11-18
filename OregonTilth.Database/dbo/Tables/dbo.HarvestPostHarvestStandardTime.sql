@@ -20,7 +20,7 @@ CREATE TABLE [dbo].[HarvestPostHarvestStandardTime](
 CONSTRAINT [FK_HarvestPostHarvestStandardTime_Crop_CropID] FOREIGN KEY([CropID]) REFERENCES [dbo].[Crop] ([CropID]),
 CONSTRAINT [FK_HarvestPostHarvestStandardTime_CropUnit_CropUnitID] FOREIGN KEY([CropUnitID]) REFERENCES [dbo].[CropUnit] ([CropUnitID]),
 CONSTRAINT [FK_HarvestPostHarvestStandardTime_HarvestType_HarvestTypeID] FOREIGN KEY([HarvestTypeID]) REFERENCES [dbo].[HarvestType] ([HarvestTypeID]),
-CONSTRAINT [FK_HarvestPostHarvestStandardTime_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID])
+CONSTRAINT [FK_HarvestPostHarvestStandardTime_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]) ON DELETE CASCADE
 );
 
 GO
