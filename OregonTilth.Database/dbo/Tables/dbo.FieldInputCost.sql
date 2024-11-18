@@ -11,6 +11,6 @@ CREATE TABLE [dbo].[FieldInputCost](
 	[FieldInputCostID] ASC
 ),
 CONSTRAINT [FK_FieldInputCost_FieldUnitType_FieldUnitTypeID] FOREIGN KEY([FieldUnitTypeID]) REFERENCES [dbo].[FieldUnitType] ([FieldUnitTypeID]),
-CONSTRAINT [FK_FieldInputCost_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID])
+CONSTRAINT [FK_FieldInputCost_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]) ON DELETE CASCADE
 );
 GO

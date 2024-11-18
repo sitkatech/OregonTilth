@@ -20,6 +20,6 @@ CREATE TABLE [dbo].[CropYieldInformation](
 ),
 	CONSTRAINT [FK_CropYieldInformation_Crop_CropID] FOREIGN KEY([CropID]) REFERENCES [dbo].[Crop] ([CropID]),
 	CONSTRAINT [FK_CropYieldInformation_CropUnit_CropUnitID] FOREIGN KEY([CropUnitID]) REFERENCES [dbo].[CropUnit] ([CropUnitID]),
-	CONSTRAINT [FK_CropYieldInformation_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID])
+	CONSTRAINT [FK_CropYieldInformation_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]) ON DELETE CASCADE
 );
 GO

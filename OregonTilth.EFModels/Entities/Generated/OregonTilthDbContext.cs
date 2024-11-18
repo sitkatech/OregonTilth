@@ -68,8 +68,6 @@ public partial class OregonTilthDbContext : DbContext
         modelBuilder.Entity<Crop>(entity =>
         {
             entity.HasKey(e => e.CropID).HasName("PK_Crop_CropID");
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.Crops).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<CropSpecificInfo>(entity =>
@@ -77,15 +75,11 @@ public partial class OregonTilthDbContext : DbContext
             entity.HasKey(e => e.CropSpecificInfoID).HasName("PK_CropSpecificInfo_CropSpecificInfoD");
 
             entity.HasOne(d => d.Crop).WithMany(p => p.CropSpecificInfos).OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.CropSpecificInfos).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<CropUnit>(entity =>
         {
             entity.HasKey(e => e.CropUnitID).HasName("PK_CropUnit_CropUnitID");
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.CropUnits).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<CropYieldInformation>(entity =>
@@ -95,8 +89,6 @@ public partial class OregonTilthDbContext : DbContext
             entity.HasOne(d => d.Crop).WithMany(p => p.CropYieldInformations).OnDelete(DeleteBehavior.ClientSetNull);
 
             entity.HasOne(d => d.CropUnit).WithMany(p => p.CropYieldInformations).OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.CropYieldInformations).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<CustomRichText>(entity =>
@@ -116,22 +108,16 @@ public partial class OregonTilthDbContext : DbContext
             entity.HasOne(d => d.Crop).WithMany(p => p.FieldInputByCrops).OnDelete(DeleteBehavior.ClientSetNull);
 
             entity.HasOne(d => d.FieldInputCost).WithMany(p => p.FieldInputByCrops).OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.FieldInputByCrops).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<FieldInputCost>(entity =>
         {
             entity.HasKey(e => e.FieldInputCostID).HasName("PK_FieldInputCost_FieldInputCostID");
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.FieldInputCosts).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<FieldLaborActivity>(entity =>
         {
             entity.HasKey(e => e.FieldLaborActivityID).HasName("PK_FieldLaborActivity_FieldLaborActivityID");
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.FieldLaborActivities).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<FieldLaborByCrop>(entity =>
@@ -141,8 +127,6 @@ public partial class OregonTilthDbContext : DbContext
             entity.HasOne(d => d.Crop).WithMany(p => p.FieldLaborByCrops).OnDelete(DeleteBehavior.ClientSetNull);
 
             entity.HasOne(d => d.FieldStandardTime).WithMany(p => p.FieldLaborByCrops).OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.FieldLaborByCrops).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<FieldStandardTime>(entity =>
@@ -150,8 +134,6 @@ public partial class OregonTilthDbContext : DbContext
             entity.HasKey(e => e.FieldStandardTimeID).HasName("PK_FieldStandardTime_FieldStandardTimeID");
 
             entity.HasOne(d => d.FieldLaborActivity).WithMany(p => p.FieldStandardTimes).OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.FieldStandardTimes).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<FileResource>(entity =>
@@ -170,15 +152,11 @@ public partial class OregonTilthDbContext : DbContext
             entity.HasOne(d => d.Crop).WithMany(p => p.HarvestPostHarvestStandardTimes).OnDelete(DeleteBehavior.ClientSetNull);
 
             entity.HasOne(d => d.CropUnit).WithMany(p => p.HarvestPostHarvestStandardTimes).OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.HarvestPostHarvestStandardTimes).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<Machinery>(entity =>
         {
             entity.HasKey(e => e.MachineryID).HasName("PK_Machinery_MachineryID");
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.Machineries).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<Page>(entity =>
@@ -189,8 +167,6 @@ public partial class OregonTilthDbContext : DbContext
         modelBuilder.Entity<TimeStudy>(entity =>
         {
             entity.HasKey(e => e.TimeStudyID).HasName("PK_TimeStudy_TimeStudyID");
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.TimeStudies).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<TransplantProductionInformation>(entity =>
@@ -200,15 +176,11 @@ public partial class OregonTilthDbContext : DbContext
             entity.HasOne(d => d.Crop).WithMany(p => p.TransplantProductionInformations).OnDelete(DeleteBehavior.ClientSetNull);
 
             entity.HasOne(d => d.TransplantProductionTrayType).WithMany(p => p.TransplantProductionInformations).OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.TransplantProductionInformations).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<TransplantProductionInput>(entity =>
         {
             entity.HasKey(e => e.TransplantProductionInputID).HasName("PK_TransplantProductionInput_TransplantProductionInputID");
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.TransplantProductionInputs).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<TransplantProductionInputCost>(entity =>
@@ -220,15 +192,11 @@ public partial class OregonTilthDbContext : DbContext
             entity.HasOne(d => d.TransplantProductionTrayType).WithMany(p => p.TransplantProductionInputCosts)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TransplantProductionTrayTypeCost_TransplantProductionTrayType_TransplantProductionTrayTypeID");
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.TransplantProductionInputCosts).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<TransplantProductionLaborActivity>(entity =>
         {
             entity.HasKey(e => e.TransplantProductionLaborActivityID).HasName("PK_TransplantProductionLaborActivity_TransplantProductionLaborActivityID");
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.TransplantProductionLaborActivities).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<TransplantProductionLaborActivityByCrop>(entity =>
@@ -238,8 +206,6 @@ public partial class OregonTilthDbContext : DbContext
             entity.HasOne(d => d.TransplantProductionInformation).WithMany(p => p.TransplantProductionLaborActivityByCrops).OnDelete(DeleteBehavior.ClientSetNull);
 
             entity.HasOne(d => d.TransplantProductionLaborActivity).WithMany(p => p.TransplantProductionLaborActivityByCrops).OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.TransplantProductionLaborActivityByCrops).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<TransplantProductionStandardTime>(entity =>
@@ -249,15 +215,11 @@ public partial class OregonTilthDbContext : DbContext
             entity.HasOne(d => d.TransplantProductionLaborActivity).WithMany(p => p.TransplantProductionStandardTimes).OnDelete(DeleteBehavior.ClientSetNull);
 
             entity.HasOne(d => d.TransplantProductionTrayType).WithMany(p => p.TransplantProductionStandardTimes).OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.TransplantProductionStandardTimes).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<TransplantProductionTrayType>(entity =>
         {
             entity.HasKey(e => e.TransplantProductionTrayTypeID).HasName("PK_TransplantProductionTrayType_TransplantProductionTrayTypeID");
-
-            entity.HasOne(d => d.Workbook).WithMany(p => p.TransplantProductionTrayTypes).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<User>(entity =>

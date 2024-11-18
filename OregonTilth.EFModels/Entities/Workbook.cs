@@ -170,6 +170,33 @@ namespace OregonTilth.EFModels.Entities
 
             if (existingWorkbook != null)
             {
+                
+                
+                dbContext.CropSpecificInfos.RemoveRange(existingWorkbook.CropSpecificInfos);
+                dbContext.CropYieldInformations.RemoveRange(existingWorkbook.CropYieldInformations);
+                dbContext.FieldInputByCrops.RemoveRange(existingWorkbook.FieldInputByCrops);
+                dbContext.FieldInputCosts.RemoveRange(existingWorkbook.FieldInputCosts);
+                
+                dbContext.FieldLaborByCrops.RemoveRange(existingWorkbook.FieldLaborByCrops);
+                dbContext.FieldStandardTimes.RemoveRange(existingWorkbook.FieldStandardTimes);
+                dbContext.HarvestPostHarvestStandardTimes.RemoveRange(existingWorkbook.HarvestPostHarvestStandardTimes);
+                dbContext.Machineries.RemoveRange(existingWorkbook.Machineries);
+                dbContext.TimeStudies.RemoveRange(existingWorkbook.TimeStudies);
+                
+                
+                dbContext.TransplantProductionInputCosts.RemoveRange(existingWorkbook.TransplantProductionInputCosts);
+                dbContext.TransplantProductionLaborActivityByCrops.RemoveRange(existingWorkbook.TransplantProductionLaborActivityByCrops);
+                dbContext.TransplantProductionStandardTimes.RemoveRange(existingWorkbook.TransplantProductionStandardTimes);
+
+
+                dbContext.TransplantProductionLaborActivities.RemoveRange(existingWorkbook.TransplantProductionLaborActivities);
+                dbContext.TransplantProductionInputs.RemoveRange(existingWorkbook.TransplantProductionInputs);
+                dbContext.TransplantProductionInformations.RemoveRange(existingWorkbook.TransplantProductionInformations);
+                dbContext.TransplantProductionTrayTypes.RemoveRange(existingWorkbook.TransplantProductionTrayTypes);
+
+                dbContext.FieldLaborActivities.RemoveRange(existingWorkbook.FieldLaborActivities);
+                dbContext.CropUnits.RemoveRange(existingWorkbook.CropUnits);
+                dbContext.Crops.RemoveRange(existingWorkbook.Crops);
                 dbContext.Workbooks.Remove(existingWorkbook);
                 dbContext.SaveChanges();
             }

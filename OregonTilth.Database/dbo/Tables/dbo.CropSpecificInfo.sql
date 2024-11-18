@@ -19,7 +19,7 @@ CREATE TABLE [dbo].[CropSpecificInfo](
 ),
 CONSTRAINT [FK_CropSpecificInfo_Crop_CropID] FOREIGN KEY([CropID]) REFERENCES [dbo].[Crop] ([CropID]),
 CONSTRAINT [FK_CropSpecificInfo_TpOrDsType_TpOrDsTypeID] FOREIGN KEY([TpOrDsTypeID]) REFERENCES [dbo].[TpOrDsType] ([TpOrDsTypeID]),
-CONSTRAINT [FK_CropSpecificInfo_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]),
+CONSTRAINT [FK_CropSpecificInfo_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]) ON DELETE CASCADE,
 CONSTRAINT [CHK_CropSpecificInfo_InRowSpacing_NotNull_If_TPtype_selected] CHECK  (([TpOrDsTypeID]=(3) OR [InRowSpacing] IS NOT NULL AND ([TpOrDsTypeID]=(2) OR [TpOrDsTypeID]=(1)) AND [InRowSpacing]>(0))),
 CONSTRAINT [CHK_CropSpecificInfo_SeedCostPerStandardUnitOfSpace_Not_Null_If_DirectSeeded] CHECK  (([TpOrDsTypeID]=(2) OR [TpOrDsTypeID]=(1) OR [SeedCostPerStandardUnitOfSpace] IS NOT NULL AND [TpOrDsTypeID]=(3))),
 CONSTRAINT [CHK_CropSpecificInfo_TransplantProductionCostOutsourced_NotNull_If_TPOutsourced_selected] CHECK  (([TpOrDsTypeID]=(3) OR [TpOrDsTypeID]=(1) OR [TransplantProductionCostOutsourced] IS NOT NULL AND [TpOrDsTypeID]=(2))),

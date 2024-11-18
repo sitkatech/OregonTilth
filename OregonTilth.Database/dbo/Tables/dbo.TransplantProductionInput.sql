@@ -12,7 +12,7 @@ CREATE TABLE [dbo].[TransplantProductionInput](
 	[TransplantProductionInputName] ASC,
 	[WorkbookID] ASC
 ),
-CONSTRAINT [FK_TransplantProductionInput_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID])
+CONSTRAINT [FK_TransplantProductionInput_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]) ON DELETE CASCADE
 
 );
 

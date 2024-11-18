@@ -22,7 +22,7 @@ CREATE TABLE [dbo].[TransplantProductionInformation](
 CONSTRAINT [FK_TransplantProductionInformation_Crop_CropID] FOREIGN KEY([CropID]) REFERENCES [dbo].[Crop] ([CropID]),
 CONSTRAINT [FK_TransplantProductionInformation_Phase_PhaseID] FOREIGN KEY([PhaseID]) REFERENCES [dbo].[Phase] ([PhaseID]),
 CONSTRAINT [FK_TransplantProductionInformation_TransplantProductionTrayType_TransplantProductionTrayTypeID] FOREIGN KEY([TransplantProductionTrayTypeID]) REFERENCES [dbo].[TransplantProductionTrayType] ([TransplantProductionTrayTypeID]),
-CONSTRAINT [FK_TransplantProductionInformation_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]),
+CONSTRAINT [FK_TransplantProductionInformation_Workbook_WorkbookID] FOREIGN KEY([WorkbookID]) REFERENCES [dbo].[Workbook] ([WorkbookID]) ON DELETE CASCADE,
 CONSTRAINT [CK_TransplantProductionInformation_SeedsPerTray_Greater_Than_Zero] CHECK  (([SeedsPerTray]>(0))),
 CONSTRAINT [CK_TransplantProductionInformation_UsageRate_In_Valid_Range] CHECK  (([UsageRate]>(0) AND [UsageRate]<=(100))),
 
