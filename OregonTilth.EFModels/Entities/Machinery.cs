@@ -124,7 +124,15 @@ namespace OregonTilth.EFModels.Entities
         public static List<ErrorMessage> ValidateDelete(OregonTilthDbContext dbContext, int machineryID)
         {
             var result = new List<ErrorMessage>();
-            
+
+            var existingStandardTimesForMachinery = dbContext.FieldStandardTimes.Where(x => x.MachineryID == machineryID).ToList();
+
+            if (existingStandardTimesForMachinery.Any())
+            {
+                result.Add(new ErrorMessage() { Type = "Machinery In Use", Message = "This Machinery has Field Labor time study records and cannot be deleted unless the Field Labor time study records are deleted." });
+
+            }
+
             return result;
         }
 
