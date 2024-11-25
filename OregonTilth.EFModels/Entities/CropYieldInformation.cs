@@ -106,7 +106,7 @@ namespace OregonTilth.EFModels.Entities
                 .Include(x => x.CropUnit)
                 .Where(x => 
                     x.WorkbookID == workbookID 
-                    && x.HarvestTypeID == (int) HarvestTypeEnum.Harvest);
+                    && x.HarvestTypeID == (int) HarvestTypeEnum.Harvest && x.StandardTimePerUnit != null );
             
             return harvestRecordsForWorkbook.Select(x => x.AsAvailableCropYieldInformationDto());
         }
