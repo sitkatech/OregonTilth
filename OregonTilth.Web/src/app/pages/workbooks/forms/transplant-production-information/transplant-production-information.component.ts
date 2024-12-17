@@ -205,7 +205,7 @@ export class TransplantProductionInformationComponent implements OnInit {
         width:150
       },
       {
-        headerName: 'Seeds/Seedlings Per Tray', 
+        headerName: 'Cells/Plugs per Tray', 
         field: 'SeedsPerTray',
         editable: true,
         cellEditorFramework: IntegerEditor,
